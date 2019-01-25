@@ -1,4 +1,4 @@
-package com.isp.training.service;
+package com.isp.seeds.service;
 
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.HtmlEmail;
