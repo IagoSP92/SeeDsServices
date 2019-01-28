@@ -5,10 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
-import com.isp.seeds.dao.utils.ContenidoDAO;
+import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.service.ContenidoCriteria;
@@ -64,7 +65,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setDate(i++, new java.sql.Date(c.getFechaMod().getTime()));
 			
 			if(c.getIdAutor() == null) { // INSERTAR USUARIOS: AUTOR=NULL
-				preparedStatement.setObject(i++, null);
+				preparedStatement.setNull(i++, Types.NULL);
 			}
 			else {  // INSERTAR VIDEOS Y LISTAS
 				preparedStatement.setLong(i++, c.getIdAutor());

@@ -9,10 +9,10 @@ import java.sql.Statement;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
-import com.isp.seeds.dao.utils.ContenidoDAO;
+import com.isp.seeds.dao.spi.ContenidoDAO;
+import com.isp.seeds.dao.spi.PaisDAO;
+import com.isp.seeds.dao.spi.UsuarioDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
-import com.isp.seeds.dao.utils.PaisDAO;
-import com.isp.seeds.dao.utils.UsuarioDAO;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Pais;
 import com.isp.seeds.model.Usuario;

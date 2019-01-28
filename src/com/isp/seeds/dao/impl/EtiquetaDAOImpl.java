@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.dao.spi.EtiquetaDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
-import com.isp.seeds.dao.utils.EtiquetaDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Etiqueta;
 

@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
-import com.isp.seeds.dao.utils.ConnectionManager;
+import com.isp.seeds.dao.spi.PaisDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
-import com.isp.seeds.dao.utils.PaisDAO;
 import com.isp.seeds.model.Pais;
 
 public class PaisDAOImpl implements PaisDAO{
