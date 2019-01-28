@@ -11,6 +11,7 @@ import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.dao.utils.ContenidoDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Contenido;
+import com.isp.seeds.service.ContenidoCriteria;
 
 public class ContenidoDAOImpl implements ContenidoDAO {
 	
@@ -25,6 +26,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	}
 
 
+	@Override
+	public List<Contenido> findByCriteria (Connection connection, ContenidoCriteria contenido) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 
 	@Override
 	public List<Contenido> findAll(Connection connection) throws Exception {
@@ -32,13 +39,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		return null;
 	}
 
-
-
-	@Override
-	public List<Contenido> findByCriteria(Connection connection, Contenido criteria) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 
@@ -97,6 +97,13 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
+	
+	
+	@Override
+	public Contenido update(Connection connection, Contenido c) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 
@@ -129,4 +136,5 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
+
 }

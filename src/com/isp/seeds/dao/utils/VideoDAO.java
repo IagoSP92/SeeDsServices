@@ -1,50 +1,32 @@
 package com.isp.seeds.dao.utils;
 
-import java.sql.Date;
+import java.sql.Connection;
 import java.util.List;
 
-import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Video;
+import com.isp.seeds.service.VideoCriteria;
 
-public interface VideoDAO {
+public interface VideoDAO {	
 	
-	public List<Video> findByUsuario(Long id)
+	
+	public Video findById(Connection connection, Long id) 
 			throws Exception;
 	
-	public List<Video> findByCategoria(Long id) 
+	public List<Video> findByCriteria(Connection connection, VideoCriteria video) 
 			throws Exception;
-	
-	public List<Video> findByNombre(String nombre) 
-			throws Exception;
-	
-	public List<Video> findByFechaAlta(Date min, Date max) 
-			throws Exception;
-	
-	public List<Video> findByFechaMod(Date min, Date max) 
-			throws Exception;
-	
-	public List<Video> findByAutor(Long autor) 
-			throws Exception;
-	
-	public List<Video> findByNombreAlta(String nombre, Date min, Date max) 
-			throws Exception;
-	
-	
 
 
-	public List<Video> findAll() 
+	public List<Video> findAll(Connection connection) 
 			throws Exception;
 
-	public Video findById(Long id) 
+	
+	public Video create (Connection connection, Video p) 
 			throws Exception;
 	
-	public Video create (Video p) 
+	public Boolean update (Connection connection, Video p) 
 			throws Exception;
 	
-	public Boolean update (Video p) 
-			throws Exception;
-	
-	public void delete (Video p) 
+	public void delete (Connection connection, Long id) 
 			throws Exception;
 
 }
