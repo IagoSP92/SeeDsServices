@@ -7,8 +7,13 @@ import java.sql.SQLException;
 public class ConnectionManager	 {
 
 
-	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";  
-	static final String DB_URL = "jdbc:mysql://10.53.124.231:3306/hr?"
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	
+//	static final String DB_URL = "jdbc:mysql://10.53.124.231:3306/hr?"
+//			+ "useUnicode=true&useJDBCCompliantTimezoneShift=true"
+//			+ "&useLegacyDatetimeCode=false&serverTimezone=UTC";
+	
+	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/seeds?"
 			+ "useUnicode=true&useJDBCCompliantTimezoneShift=true"
 			+ "&useLegacyDatetimeCode=false&serverTimezone=UTC";
 

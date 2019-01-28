@@ -12,24 +12,6 @@ public interface ContenidoDAO {
 	
 	public Contenido findById(Long id) 
 			throws Exception;
-	
-	/*
-	public List<Contenido> findByNombre(String nombre) 
-			throws Exception;
-	
-	public List<Contenido> findByFechaAlta(Date min, Date max) 
-			throws Exception;
-	
-	public List<Contenido> findByFechaMod(Date min, Date max) 
-			throws Exception;
-	
-	public List<Contenido> findByAutor(Long autor) 
-			throws Exception;
-	
-	public List<Contenido> findByNombreAlta(String nombre, Date min, Date max) 
-			throws Exception;
-	*/
-
 
 
 	public List<Contenido> findByCriteria(Connection connection, Contenido criteria)
@@ -42,5 +24,7 @@ public interface ContenidoDAO {
 	public Contenido create (Connection connection, Contenido c)
 			throws Exception;
 	
+	public long delete (Connection connection, Long id) 
+			throws Exception;
 	
 }

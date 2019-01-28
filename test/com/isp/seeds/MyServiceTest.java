@@ -1,5 +1,6 @@
 package com.isp.seeds;
 
+import com.isp.seeds.dao.impl.UsuarioDAOImpl;
 import com.isp.seeds.dao.utils.UsuarioDAO;
 
 public class MyServiceTest {
@@ -8,9 +9,9 @@ public class MyServiceTest {
 		
 		//throw new Exception (" a data ta mal");
 		//throw new Exception ();
-		UsuarioDAO dao = new UsuarioDAOImpl();
-		
-		dao.create(new Connection c, null );
+//		UsuarioDAO dao = new UsuarioDAOImpl();
+//		
+//		dao.create(new Connection c, null );
 		
 		
 		

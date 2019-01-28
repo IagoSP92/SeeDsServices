@@ -43,22 +43,15 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 
 	@Override
-	public Contenido create(Connection connection, Contenido c) throws Exception {
-
-
+	public Contenido create (Connection connection, Contenido c) throws Exception {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		try {          
-			
-//			private Long id = null; 
-//			private String nombre = null; 
-//			// private String descripcion = null; SIN TABLA EN DB
-//			private Date fechaAlta = null;fecha_alta
-//			private Date fechaMod = null; fecha_mod
-//			private Long autor = null; autor_id_cont
+		
+		try {
 
 			// Creamos el preparedstatement
-			String queryString = "INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_cont) "
+			
+			String queryString = "INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido) "
 					+ "VALUES (?, ?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(queryString,
@@ -69,8 +62,13 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setString(i++, c.getNombre());
 			preparedStatement.setDate(i++, new java.sql.Date(c.getFechaAlta().getTime()));
 			preparedStatement.setDate(i++, new java.sql.Date(c.getFechaMod().getTime()));
-			preparedStatement.setLong(i++, c.getIdAutor());
-
+			
+			if(c.getIdAutor() == null) { // INSERTAR USUARIOS: AUTOR=NULL
+				preparedStatement.setObject(i++, null);
+			}
+			else {  // INSERTAR VIDEOS Y LISTAS
+				preparedStatement.setLong(i++, c.getIdAutor());
+			}
 			
 			// Execute query
 			int insertedRows = preparedStatement.executeUpdate();
@@ -80,6 +78,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 
 			// Recuperamos la PK generada
+			
 			resultSet = preparedStatement.getGeneratedKeys();
 			if (resultSet.next()) {
 				Long pk = resultSet.getLong(1); 
@@ -101,6 +100,33 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 
 
+	@Override
+	public long delete(Connection connection, Long id) throws Exception {
+
+		PreparedStatement preparedStatement = null;
+
+		try {
+			String queryString =	
+					  "DELETE FROM CONTENIDO " 
+					+ "WHERE id_contenido = ? ";
+			
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, id);
+
+			int removedRows = preparedStatement.executeUpdate();
+
+			if (removedRows == 0) {
+				throw new Exception("Exception");
+			} 
+			
+			return removedRows;
+
+		} catch (SQLException e) {
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
 }
-
-

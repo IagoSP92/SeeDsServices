@@ -24,9 +24,17 @@ public class Usuario extends Contenido implements Comparable<Usuario> {
 	private List<Lista> listasGuardadas = null;
 
 
-	public String toString() {//?????????????????????
-		return /*super.toString() + */ToStringBuilder.reflectionToString(this);
-	}
+//	public String toString() {//?????????????????????
+//		return /*super.toString() + */ToStringBuilder.reflectionToString(this);
+//	}
+	
+	public String toString() {
+		String cadena= "\nUSUARIO: "+getNombre()+" - "+ getIdContenido()+"  - "+getFechaAlta()+" - "+getFechaMod()+"\n ";
+		cadena+= getNombreReal()+" - "+ getApellidos()+" - "+getEmail()+" - "+getContrasena()+"\n";
+		cadena+= getAvatarUrl()+" - "+getDescripcion()+"\n";
+		cadena+= getPais()+"\n";
+	return cadena;
+}
 
 	@Override
 	public int compareTo(Usuario u) {

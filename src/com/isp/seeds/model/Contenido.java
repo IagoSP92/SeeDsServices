@@ -9,7 +9,6 @@ public abstract class Contenido extends AbstractValueObject {
 	//  DENUNCIAS???
 	private Long id = null;
 	private String nombre = null;
-	private String descripcion = null;
 	private Date fechaAlta = null;
 	private Date fechaMod = null;
 	private Long autor = null;
@@ -38,13 +37,6 @@ public abstract class Contenido extends AbstractValueObject {
 		this.nombre = nombre;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
 
 	public Date getFechaAlta() {
 		return fechaAlta;

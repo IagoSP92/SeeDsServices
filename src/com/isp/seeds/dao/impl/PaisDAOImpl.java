@@ -31,16 +31,16 @@ public class PaisDAOImpl implements PaisDAO{
 	}
 
 	@Override
-	public Pais findById(String id)
+	public Pais findById(Connection connection, String id)
 			throws Exception {
 
 		Pais p = null;
 
-		Connection connection = null;
+		//Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try {
-			connection = ConnectionManager.getConnection();
+			//connection = ConnectionManager.getConnection();
 
 			String sql;
 			sql =  "SELECT ID_PAIS, NOMBRE_PAIS "
@@ -83,15 +83,15 @@ public class PaisDAOImpl implements PaisDAO{
 
 
 
-	public List<Pais> findByNombre(String criterioNombre, String ap1)
+	public List<Pais> findByNombre(Connection connection, String criterioNombre, String ap1)
 			throws Exception {	
 
-		Connection connection = null;
+		//Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try{
 
-			connection = ConnectionManager.getConnection();
+			//connection = ConnectionManager.getConnection();
 
 			String sql;
 			sql =    " SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, MANAGER_ID " 
@@ -144,7 +144,7 @@ public class PaisDAOImpl implements PaisDAO{
 
 
 	@Override
-	public List<Pais> findAll() throws Exception {
+	public List<Pais> findAll(Connection connection) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
