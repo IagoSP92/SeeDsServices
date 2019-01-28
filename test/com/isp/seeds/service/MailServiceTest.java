@@ -1,4 +1,4 @@
-package com.isp.trainig.service;
+package com.isp.seeds.service;
 
 import java.util.Date;
 
@@ -7,7 +7,7 @@ import com.isp.seeds.model.Video;
 
 
 
-public class MailServiceTest {
+public class MailServiceTest {/*
 
 	public static void main(String args[]) {
 		Usuario u1 = new Usuario();
@@ -88,5 +88,5 @@ public class MailServiceTest {
 	}
 
 
-
+*/
 }

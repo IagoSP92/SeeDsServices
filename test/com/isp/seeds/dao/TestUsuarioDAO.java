@@ -6,9 +6,9 @@ import java.sql.Connection;
 
 import com.isp.seeds.dao.impl.ContenidoDAOImpl;
 import com.isp.seeds.dao.impl.UsuarioDAOImpl;
+import com.isp.seeds.dao.spi.ContenidoDAO;
+import com.isp.seeds.dao.spi.UsuarioDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
-import com.isp.seeds.dao.utils.ContenidoDAO;
-import com.isp.seeds.dao.utils.UsuarioDAO;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Pais;
 import com.isp.seeds.model.Usuario;

@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.isp.seeds.dao.impl.UsuarioDAOImpl;
+import com.isp.seeds.dao.spi.UsuarioDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
-import com.isp.seeds.dao.utils.UsuarioDAO;
 import com.isp.seeds.model.Usuario;
 
 public class UsuarioService {

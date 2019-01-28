@@ -1,8 +1,5 @@
 package com.isp.seeds;
 
-import com.isp.seeds.dao.impl.UsuarioDAOImpl;
-import com.isp.seeds.dao.utils.UsuarioDAO;
-
 public class MyServiceTest {
 	
 	public void miMetodo () /* throws Exception */ {
