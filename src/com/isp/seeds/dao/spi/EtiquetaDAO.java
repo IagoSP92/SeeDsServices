@@ -1,4 +1,4 @@
-package com.isp.seeds.dao.utils;
+package com.isp.seeds.dao.spi;
 
 import java.util.List;
 
