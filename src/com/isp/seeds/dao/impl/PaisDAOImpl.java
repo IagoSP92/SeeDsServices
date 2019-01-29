@@ -14,7 +14,7 @@ import com.isp.seeds.model.Pais;
 
 public class PaisDAOImpl implements PaisDAO{
 	
-	private Pais loadNext (ResultSet resultSet) throws Exception {
+	private Pais loadNext (ResultSet resultSet) throws SQLException {
 		
 		Pais p = new Pais();
 		int i=1;
@@ -143,9 +143,47 @@ public class PaisDAOImpl implements PaisDAO{
 
 
 	@Override
-	public List<Pais> findAll(Connection connection) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Pais> findAll(Connection connection) throws DataException {  // CURRENTCOUNT??
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+
+			// Create "preparedStatement"       
+			String queryString = 
+					"SELECT p.id_pais, p.nombre " + 
+					"FROM Pais p  " +
+					"ORDER BY p.nombre asc ";
+
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			
+			// Execute query.
+			resultSet = preparedStatement.executeQuery();
+
+			// Recupera la pagina de resultados
+			List<Pais> results = new ArrayList<Pais>();                        
+			Pais pais = null;
+			int currentCount = 0;
+						
+			if (resultSet.next()) {
+				do {
+					pais = loadNext(resultSet);
+					results.add(pais);  
+					currentCount++;                	
+				} while (resultSet.next()) ;
+			}
+			
+			return results;
+
+		} catch (SQLException e) {
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
 	}
 
 }

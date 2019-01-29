@@ -86,18 +86,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			
 			Contenido c= daoc.create(connection, u);
 			u.setIdContenido(c.getIdContenido());
-			
-			//System.out.println(u.toString());    ATA AQUI BEN
-			
-
-//			private List<Video> videosSubidos= null;
-//			private List<Lista> listasSubidas= null;
-//
-//			private List<Usuario> usuariosSeguidos= null;
-//			private List<Lista> listasSeguidas= null;
-//
-//			private List<Video> videosGuardados = null;
-//			private List<Lista> listasGuardadas = null;
 
 
 			String queryString = "INSERT INTO USUARIO (ID_CONTENIDO, EMAIL, CONTRASENA, DESCRIPCION, URL_AVATAR, NOMBRE_REAL, APELLIDOS, ID_PAIS) "
@@ -130,6 +118,13 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 			// Return the DTO
 			return u;
+			// EN SERVICIO INICIALIZAMOS :
+//			private List<Video> videosSubidos= null;
+//			private List<Lista> listasSubidas= null;
+//			private List<Usuario> usuariosSeguidos= null;
+//			private List<Lista> listasSeguidas= null;
+//			private List<Video> videosGuardados = null;
+//			private List<Lista> listasGuardadas = null;
 
 		} catch (SQLException e) {
 			throw new DataException(e);

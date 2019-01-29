@@ -23,6 +23,13 @@ public class UsuarioService {
 		catch (Exception e) {  
 			System.out.println("Exception");
 		}
+		// EN SERVICIO :
+//		private List<Video> videosSubidos= null;
+//		private List<Lista> listasSubidas= null;
+//		private List<Usuario> usuariosSeguidos= null;
+//		private List<Lista> listasSeguidas= null;
+//		private List<Video> videosGuardados = null;
+//		private List<Lista> listasGuardadas = null;
 
 		return u;
 	}
