@@ -31,7 +31,7 @@ public class PaisDAOImpl implements PaisDAO{
 
 	@Override
 	public Pais findById(Connection connection, String id)
-			throws Exception {
+			throws DataException {
 
 		Pais p = null;
 
@@ -63,10 +63,10 @@ public class PaisDAOImpl implements PaisDAO{
 				System.out.println("Cargado "+ p);
 				
 			} else {
-				throw new Exception("Non se encontrou o pais "+id);
+				throw new DataException("Non se encontrou o pais "+id);
 			}
 			if (resultSet.next()) {
-				throw new Exception("Pais "+id+" duplicado");
+				throw new DataException("Pais "+id+" duplicado");
 			}
 
 		} catch (SQLException ex) {
@@ -83,7 +83,7 @@ public class PaisDAOImpl implements PaisDAO{
 
 
 	public List<Pais> findByNombre(Connection connection, String criterioNombre, String ap1)
-			throws Exception {	
+			throws DataException {	
 
 		//Connection connection = null;
 		PreparedStatement preparedStatement = null;

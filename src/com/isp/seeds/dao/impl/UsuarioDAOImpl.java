@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
@@ -18,12 +19,18 @@ import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Pais;
 import com.isp.seeds.model.Usuario;
-import com.isp.seeds.service.Criteria.UsuarioCriteria;
+import com.isp.seeds.service.criteria.UsuarioCriteria;
 
 public class UsuarioDAOImpl implements UsuarioDAO {
 	
+	//private static Logger logger = LogManager.getLogger(UsuarioDAOImpl.class.getName());   // ESTO QUE E???
+	
+	public UsuarioDAOImpl () {
+		
+	}
+	
 	@Override
-	public Usuario findById(Connection connection, Long id) throws Exception {
+	public Usuario findById(Connection connection, Long id) throws DataException {
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -48,7 +55,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			if (resultSet.next()) {
 				e = loadNext(connection, resultSet);				
 			} else {
-				throw new Exception("\nUser with id " +id+ "not found\n");
+				throw new DataException("\nUser with id " +id+ "not found\n");
 			}
 
 			return e;
@@ -63,9 +70,103 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	
 	
 	@Override
-	public List<Usuario> findByCriteria(Connection connection, UsuarioCriteria usuario) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Usuario> findByCriteria(Connection connection, UsuarioCriteria usuario)
+			throws DataException {
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					" SELECT u.ID_CONTENIDO, u.EMAIL, u.CONTRASENA, u.DESCRIPCION, u.URL_AVATAR, u.NOMBRE_REAL, u.APELLIDOS, u.ID_PAIS " + 
+					" FROM Usuario u " +
+					" INNER JOIN Producto_Idioma pi ON p.id_producto = pi.id_producto " );
+			
+			boolean first = true;
+			
+
+			if (usuario.getIdContenido()!=null) {
+				addClause(queryString, first, " u.ID_CONTENIDO LIKE ? ");
+				first = false;
+			}
+			
+			if (usuario.getEmail()!=null) {
+				addClause(queryString, first, " u.EMAIL LIKE ? ");
+				first = false;
+			}
+
+			if (usuario.getAvatarUrl()!=null) {
+				addClause(queryString, first, " u.URL_AVATAR LIKE ? ");
+				first = false;
+			}			
+			
+			if (usuario.getNombreReal()!=null) {
+				addClause(queryString, first, " u.NOMBRE_REAL LIKE ? ");
+				first = false;
+			}	
+
+			if (usuario.getApellidos()!=null) {
+				addClause(queryString, first, " u.APELLIDOS LIKE ? ");
+				first = false;
+			}
+			
+			if (usuario.getPais()!=null) {
+				addClause(queryString, first, " u.ID_PAIS LIKE ? ");
+				first = false;
+			}
+			
+			/*
+			if (idioma!=null) {
+				addClause(queryString, first, " pi.id_idioma LIKE ? ");
+				first = false;
+			}*/
+			
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			int i = 1;
+			
+			if (usuario.getIdContenido()!=null)
+				preparedStatement.setString(i++, "%" + usuario.getIdContenido() + "%");
+			if (usuario.getEmail()!=null) 
+				preparedStatement.setString(i++, "%" + usuario.getEmail() + "%");
+			if (usuario.getAvatarUrl()!=null)
+				preparedStatement.setString(i++, "%" + usuario.getAvatarUrl() + "%");
+			if (usuario.getNombreReal()!=null) 
+				preparedStatement.setString(i++, "%" + usuario.getNombreReal() + "%");
+			if (usuario.getApellidos()!=null) 
+				preparedStatement.setString(i++, "%" + usuario.getApellidos() + "%");
+			
+			if (usuario.getPais()!=null)
+				preparedStatement.setString(i++, "%" + usuario.getPais().getIdPais() + "%");
+			/*
+			if (idioma!=null) 
+				preparedStatement.setString(i++,idioma);
+				*/
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			List<Usuario> results = new ArrayList<Usuario>();                        
+			Usuario e = null;
+			int currentCount = 0;
+
+			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
+				do {
+					e = loadNext(connection, resultSet);
+					results.add(e);               	
+					currentCount++;                	
+				} while (/*(currentCount < count) && */ resultSet.next()) ;
+			//}
+
+			return results;
+	
+			} catch (SQLException e) {
+				//logger.error("Error",e);
+				throw new DataException(e);
+			} finally {
+				JDBCUtils.closeResultSet(resultSet);
+				JDBCUtils.closeStatement(preparedStatement);
+		}
 	}
 
 
@@ -276,7 +377,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 	
 	private Usuario loadNext(Connection connection, ResultSet resultSet)
-			throws Exception {
+			throws SQLException, DataException {
 
 				int i = 1;
 				Long idContenido = resultSet.getLong(i++);	

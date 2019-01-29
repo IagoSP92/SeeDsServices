@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.isp.seeds.model.Usuario;
-import com.isp.seeds.service.Criteria.UsuarioCriteria;
+import com.isp.seeds.service.criteria.UsuarioCriteria;
 
 public interface UsuarioDAO {
 	
