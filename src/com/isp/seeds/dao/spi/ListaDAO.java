@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.isp.seeds.model.Lista;
-import com.isp.seeds.service.ListaCriteria;
+import com.isp.seeds.service.criteria.ListaCriteria;
 
 public interface ListaDAO {
 	

@@ -74,7 +74,7 @@ public class PaisDAOImpl implements PaisDAO{
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
-			JDBCUtils.closeConnection(connection);
+			//JDBCUtils.closeConnection(connection);
 		}  	
 
 		return p;

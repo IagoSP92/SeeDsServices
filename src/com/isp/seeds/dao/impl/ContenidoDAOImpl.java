@@ -12,7 +12,7 @@ import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Contenido;
-import com.isp.seeds.service.ContenidoCriteria;
+import com.isp.seeds.service.criteria.ContenidoCriteria;
 
 public class ContenidoDAOImpl implements ContenidoDAO {
 	

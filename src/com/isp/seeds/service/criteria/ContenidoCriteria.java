@@ -1,4 +1,4 @@
-package com.isp.seeds.service;
+package com.isp.seeds.service.criteria;
 
 import com.isp.seeds.model.Contenido;
 

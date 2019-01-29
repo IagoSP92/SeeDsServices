@@ -3,6 +3,7 @@ package com.isp.seeds.dao;
 
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.isp.seeds.dao.impl.ContenidoDAOImpl;
@@ -60,7 +61,7 @@ public class TestUsuarioDAO {
 			
 		}
 		catch (Exception e) {  
-			System.out.println("Exception");
+			System.out.println("Exception FindId");
 		}
 	}
 	
@@ -80,7 +81,6 @@ public class TestUsuarioDAO {
 			PaisDAO daop = new PaisDAOImpl();
 			dos.setPais(daop.findById(conexion, "ES"));
 			
-			
 			List<Usuario> lista = dao.findByCriteria(conexion, dos);
 			
 			for(Usuario u: lista) {
@@ -92,6 +92,30 @@ public class TestUsuarioDAO {
 		}
 	}
 	
+	public static void testUpdate (Connection conexion, UsuarioDAO dao){
+		
+		try {
+			
+			Usuario dos = new Usuario();
+			
+			dos.setEmail("ana1@gmail.com");
+			dos.setDescripcion("Hola! Disfruten de mis videos!");
+			dos.setAvatarUrl("C:img.jpg");
+			dos.setNombreReal("ana");
+			dos.setApellidos("LEDO PIÑEIRO");
+			
+			PaisDAO daop = new PaisDAOImpl();
+			dos.setPais(daop.findById(conexion, "ES"));
+			
+			
+			dao.update(conexion, dos);
+			
+		}
+		catch (Exception e) {  
+			System.out.println("Exception UpdateTest");
+		}
+	}
+	
 	public static void testDelete (Connection conexion, UsuarioDAO dao, Long id) {
 		
 		try {
@@ -100,7 +124,6 @@ public class TestUsuarioDAO {
 			System.out.println("BORRAR: "+id);
 			
 			dao.delete(conexion, id);
-			
 			
 			System.out.println("BORRRADO: "+id);
 			
@@ -136,7 +159,7 @@ public class TestUsuarioDAO {
 		c.setAvatarUrl("/tata/tata/avatarUNo");
 		c.setPais(pais);
 		
-		//testFind (conexion, dao, 1l);
+		testFind (conexion, dao, 1l);
 		
 		//testCreateContenido ( conexion,  dao, c);
 		
@@ -145,9 +168,63 @@ public class TestUsuarioDAO {
 		//testDelete ( conexion,dao, 60l);
 		//dao.delete(conexion, 58l);
 		
-		//testCreateUsuario ( conexion, dao, c);
+//		System.out.println("crear");
+//		testCreateUsuario ( conexion, dao, c);
+		//testFind (conexion, dao, 62l);
 		
-		testFindCriteria(conexion, dao);
+		/*
+		List<Usuario> lista2 = new ArrayList<Usuario>();
+		UsuarioCriteria dosdos = new UsuarioCriteria();
+		dosdos.setNombreReal("realUnouno");
+		
+		System.out.println("criteria");
+		lista2 = dao.findByCriteria(conexion, dosdos);
+		
+		for(Usuario u: lista2) {
+			System.out.println(u.toString());
+		}
+		
+		*/
+		Usuario jamele = new Usuario();
+		Usuario jamele2 = new Usuario();
+
+		jamele.setFechaAlta(new java.sql.Date(12));
+		jamele.setFechaMod(new java.sql.Date(12));
+		jamele.setIdAutor(null);
+		
+		jamele.setApellidos("apellidos");
+		jamele.setAvatarUrl("avatarUrl");
+		jamele.setContrasena("contrasena");
+		jamele.setDescripcion("descripcion");
+		jamele.setEmail("email");
+		jamele.setNombre("nombre");
+		jamele.setNombreReal("nombreReal");
+		jamele.setPais(pais);
+		
+
+		jamele2 = dao.create(conexion, jamele);
+		System.out.println("IMPRIMIMOS INSERTADO:");
+		System.out.println(jamele2.toString());
+		System.out.println("INSERTADO IMPRIMIDO");
+		System.out.println("BUSCAMOS EL RECIEN INSERTADO");
+		System.out.println(dao.findById(conexion, jamele2.getIdContenido()));
+		System.out.println("AHI QUEDA, AHORA EDITAMOS");
+		
+		System.out.println("modificar");
+		
+		jamele2.setApellidos("aaaaaaaaaaaaaa");
+		jamele2.setAvatarUrl("bbbbbbbbbbbbbb");
+		jamele2.setContrasena("cccccccccccc");
+		jamele2.setDescripcion("dddddddddddddd");
+		jamele2.setEmail("eeeeeeeeeee");
+		
+		dao.update(conexion, jamele2);
+		System.out.println(dao.findById(conexion, jamele2.getIdContenido()));
+
+		
+		System.out.println("fin");
+		
+		//testFindCriteria(conexion, dao);
 
 
 		JDBCUtils.closeConnection(conexion);

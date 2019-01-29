@@ -1,60 +1,133 @@
 package com.isp.seeds.dao.impl;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.dao.spi.EtiquetaDAO;
-import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Etiqueta;
 
 public class EtiquetaDAOImpl implements EtiquetaDAO {
 
 	private Etiqueta loadNext (ResultSet resultSet)
-			throws Exception {
+			throws SQLException {
 
 		Etiqueta e = new Etiqueta();
 		int i=1;
-
+		
+		Long idEtiqueta = resultSet.getLong(i++);
 		String nombre = resultSet.getString(i++);
 
-		e = new Etiqueta();
-
+		e.setIdEtiqueta(idEtiqueta);
 		e.setNombreEtiqueta(nombre);
 
 		return e;		
 	}
 
 	@Override
-	public Etiqueta findById(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Etiqueta findById (Connection connection, Long id) throws SQLException , DataException {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {          
+			String queryString = 
+					"SELECT id_etiqueta, nombre_etiqueta "+
+							"FROM Etiqueta " +
+							"WHERE id_etiqueta = ? ";
+			
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			int i = 1;                
+			preparedStatement.setLong(i++, id);
+ 
+			resultSet = preparedStatement.executeQuery();
+
+			Etiqueta e = null;
+
+			if (resultSet.next()) {
+				e = loadNext(resultSet);				
+			} else {
+				throw new DataException("\nEtiqueta with id " +id+ "not found\n");
+			}
+
+			return e;
+
+		} catch (SQLException e) {
+			throw new DataException(e);
+		} finally {            
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}	
 	}
 
 	@Override
-	public List<Etiqueta> findAll() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Etiqueta create(Etiqueta e)
-			throws Exception {
-		Connection connection = null; 
+	public List<Etiqueta> findAll(Connection connection) throws DataException {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
 		try {
-			connection = ConnectionManager.getConnection();
+
+		String queryString = 
+				"SELECT id_etiqueta, nombre_etiqueta "+
+						"FROM Etiqueta "; //+
+						//"WHERE ci.id_idioma LIKE ? ";
+			
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			/*
+			int i = 1;                
+			preparedStatement.setString(i++, idioma); */
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			
+			List<Etiqueta> results = new ArrayList<Etiqueta>();                        
+			Etiqueta etiqueta = null;
+			//int currentCount = 0;
+
+			if(resultSet.next()) {
+			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
+				do {
+					etiqueta = loadNext(resultSet);// DA FALLO AQUI
+					results.add(etiqueta);
+					//currentCount++;                	
+				} while (/*(currentCount < count) &&*/ resultSet.next()) ;
+			//}
+			}
+
+			return results;
+
+		} catch (SQLException e) {
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+
+	@Override
+	public Etiqueta create(Connection connection, Etiqueta e)
+			throws DataException {
+		//Connection connection = null; 
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+			//connection = ConnectionManager.getConnection();
 
 			String queryString = "INSERT INTO ETIQUETA (NOMBRE_ETIQUETA) "
 					+ "VALUES (?)";
 
-			preparedStatement = connection.prepareStatement(queryString);
+			preparedStatement = connection.prepareStatement(queryString,
+					Statement.RETURN_GENERATED_KEYS);
 
 			/**/
 			int i = 1;     			
@@ -63,11 +136,12 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
 
 			int insertedRows = preparedStatement.executeUpdate();
 
+			
 			if (insertedRows == 0) {
 				throw new SQLException("Can not add row to table 'Etiqueta'");
 			}
-
-			resultSet = preparedStatement.getGeneratedKeys();
+			
+			resultSet = preparedStatement.getGeneratedKeys(); //  FALLO AQUI
 
 			if (resultSet.next()) {
 				Long id = resultSet.getLong(1);
@@ -83,7 +157,7 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);			
-			JDBCUtils.closeConnection(connection);
+			//JDBCUtils.closeConnection(connection);
 		}
 
 	}

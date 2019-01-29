@@ -80,8 +80,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		try {
 			queryString = new StringBuilder(
 					" SELECT u.ID_CONTENIDO, u.EMAIL, u.CONTRASENA, u.DESCRIPCION, u.URL_AVATAR, u.NOMBRE_REAL, u.APELLIDOS, u.ID_PAIS " + 
-					" FROM Usuario u " +
-					" INNER JOIN Producto_Idioma pi ON p.id_producto = pi.id_producto " );
+					" FROM Usuario u " );
 			
 			boolean first = true;
 			
@@ -121,9 +120,11 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				addClause(queryString, first, " pi.id_idioma LIKE ? ");
 				first = false;
 			}*/
-			
+
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			
 			int i = 1;
 			
 			if (usuario.getIdContenido()!=null)
@@ -148,14 +149,16 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			
 			List<Usuario> results = new ArrayList<Usuario>();                        
 			Usuario e = null;
-			int currentCount = 0;
+			//int currentCount = 0;
 
 			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
+			if(resultSet.next()) {
 				do {
 					e = loadNext(connection, resultSet);
 					results.add(e);               	
-					currentCount++;                	
+					//currentCount++;                	
 				} while (/*(currentCount < count) && */ resultSet.next()) ;
+			}
 			//}
 
 			return results;
@@ -163,7 +166,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			} catch (SQLException e) {
 				//logger.error("Error",e);
 				throw new DataException(e);
-			} finally {
+			} catch (DataException de) {
+				//logger.error("Error",e);
+				throw new DataException(de);
+			}  finally {
 				JDBCUtils.closeResultSet(resultSet);
 				JDBCUtils.closeStatement(preparedStatement);
 		}
@@ -238,17 +244,18 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 
 	@Override
-	public void update (Connection connection, Usuario usuario) throws Exception {
+	public void update (Connection connection, Usuario usuario) throws InstanceNotFoundException, DataException {
 		
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
 		try {	
 			
 			queryString = new StringBuilder(
-					" UPDATE Usuario" 
+					" UPDATE Usuario " 
 					);
 			
 			boolean first = true;
+			
 			
 			if (usuario.getEmail()!=null) {
 				addUpdate(queryString, first, " email = ? ");
@@ -287,8 +294,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			
 			queryString.append("WHERE id_contenido = ?");
 			
+
 			preparedStatement = connection.prepareStatement(queryString.toString());
-			
 
 			int i = 1;
 			if (usuario.getEmail()!=null)

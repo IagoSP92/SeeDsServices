@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.isp.seeds.model.Video;
-import com.isp.seeds.service.VideoCriteria;
+import com.isp.seeds.service.criteria.VideoCriteria;
 
 public interface VideoDAO {	
 	

@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.isp.seeds.model.Contenido;
-import com.isp.seeds.service.ContenidoCriteria;
+import com.isp.seeds.service.criteria.ContenidoCriteria;
 
 public interface ContenidoDAO {
 	

@@ -20,12 +20,14 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 
 		Categoria c = new Categoria();
 		int i=1;
-
+		
+		Long id = resultSet.getLong(i++);
 		String nombre = resultSet.getString(i++);
 
 		c = new Categoria();
 
 		c.setNombreCategoria(nombre);
+		c.setIdCategoria(id);
 
 		return c;		
 	}
