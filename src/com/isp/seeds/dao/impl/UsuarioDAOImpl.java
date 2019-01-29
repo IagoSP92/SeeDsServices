@@ -1,5 +1,6 @@
 package com.isp.seeds.dao.impl;
 
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -8,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import com.gzone.ecommerce.model.Producto;
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.Exceptions.InstanceNotFoundException;
 import com.isp.seeds.dao.spi.ContenidoDAO;
@@ -18,7 +18,7 @@ import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Pais;
 import com.isp.seeds.model.Usuario;
-import com.isp.seeds.service.UsuarioCriteria;
+import com.isp.seeds.service.Criteria.UsuarioCriteria;
 
 public class UsuarioDAOImpl implements UsuarioDAO {
 	
@@ -137,7 +137,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 
 	@Override
-	public Boolean update(Connection connection, Usuario usuario) throws Exception {
+	public void update (Connection connection, Usuario usuario) throws Exception {
 		
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
@@ -217,12 +217,12 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			int updatedRows = preparedStatement.executeUpdate();
 
 			if (updatedRows == 0) {
-				throw new InstanceNotFoundException(producto.getIdProducto(), Producto.class.getName());
+				throw new InstanceNotFoundException(usuario.getIdContenido(), Usuario.class.getName()); //Esto ultimo pa mostrar o nome da clase??
 			}
 
 			if (updatedRows > 1) {
 				throw new SQLException("Duplicate row for id = '" + 
-						producto.getIdProducto() + "' in table 'Producto'");
+						usuario.getIdContenido() + "' in table 'USUARIO'");
 			}     
 			
 		} catch (SQLException e) {
@@ -231,6 +231,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}    
 	}
+	
 
 	@Override
 	public long delete (Connection connection, Long id) throws Exception {
@@ -257,9 +258,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			daoc.delete(connection, id);			
 
 			return removedRows;
-
-			
-		
 
 		} catch (SQLException e) {
 			throw new DataException(e);

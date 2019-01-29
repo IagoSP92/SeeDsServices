@@ -7,10 +7,11 @@ import com.isp.seeds.dao.impl.UsuarioDAOImpl;
 import com.isp.seeds.dao.spi.UsuarioDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.model.Usuario;
+import com.isp.seeds.service.spi.UsuarioService;
 
-public class UsuarioService {
+public class UsuarioServiceImpl implements UsuarioService {
 
-	public Usuario registro (Usuario u) {
+	public Usuario crearCuenta (Usuario u) {
 
 		try {
 			Connection conexion = ConnectionManager.getConnection();
