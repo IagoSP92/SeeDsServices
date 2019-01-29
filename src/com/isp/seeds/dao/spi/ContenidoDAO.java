@@ -3,6 +3,7 @@ package com.isp.seeds.dao.spi;
 import java.sql.Connection;
 import java.util.List;
 
+import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
 
@@ -10,27 +11,27 @@ public interface ContenidoDAO {
 	
 	
 	
-	public Contenido findById(Long id) 
-			throws Exception;
+	public Contenido findById(Connection connection, Contenido contenido, Long id) 
+			throws DataException;
 
 
 	public List<Contenido> findByCriteria(Connection connection, ContenidoCriteria contenido)
-			throws Exception;
+			throws DataException;
 	
 	
 	public List<Contenido> findAll(Connection connection) 
-			throws Exception;
+			throws DataException;
 	
 	
 	
 	public Contenido create (Connection connection, Contenido c)
-			throws Exception;
+			throws DataException;
 	
 	public Contenido update (Connection connection, Contenido c)
-			throws Exception;
+			throws DataException;
 	
 	
 	public long delete (Connection connection, Long id) 
-			throws Exception;
+			throws DataException;
 	
 }

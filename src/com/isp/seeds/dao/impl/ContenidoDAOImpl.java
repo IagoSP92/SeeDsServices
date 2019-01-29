@@ -1,17 +1,20 @@
 package com.isp.seeds.dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Contenido;
+import com.isp.seeds.model.Usuario;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
 
 public class ContenidoDAOImpl implements ContenidoDAO {
@@ -21,30 +24,139 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	
 
 	@Override
-	public Contenido findById(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Contenido findById(Connection connection, Contenido contenido, Long id) throws DataException {
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {          
+			String queryString = 
+					"SELECT c.id_contenido, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
+							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais " + 
+							"FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) " +
+							"WHERE u.id_contenido = ? ";
+			
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			int i = 1;                
+			preparedStatement.setLong(i++, id);
+ 
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				contenido = loadNext(connection, resultSet, contenido);				
+			} else {
+				throw new DataException("\nContenido with id " +id+ "not found\n");
+			}
+			return contenido;
+
+		} catch (SQLException e) {
+			throw new DataException(e);
+		} finally {            
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}	
 	}
 
 
 	@Override
-	public List<Contenido> findByCriteria (Connection connection, ContenidoCriteria contenido) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Contenido> findByCriteria (Connection connection, ContenidoCriteria contenido) throws DataException {
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					" SELECT c.ID_CONTENIDO, c.fecha_alta, c.fecha_mod, c.autor_id_contenido " + 
+					" FROM Contenido c " );
+			
+			boolean first = true;
+			
+			if (contenido.getIdContenido()!=null) {
+				addClause(queryString, first, " u.ID_CONTENIDO LIKE ? ");
+				first = false;
+			}
+			
+			if (contenido.getFechaAlta()!=null) {
+				addClause(queryString, first, " u.EMAIL LIKE ? ");
+				first = false;
+			}
+
+			if (contenido.getFechaMod()!=null) {
+				addClause(queryString, first, " u.URL_AVATAR LIKE ? ");
+				first = false;
+			}			
+			
+			if (contenido.getIdAutor()!=null) {
+				addClause(queryString, first, " u.NOMBRE_REAL LIKE ? ");
+				first = false;
+			}	
+			
+			/*if (idioma!=null) {
+				addClause(queryString, first, " pi.id_idioma LIKE ? ");
+				first = false;
+			}*/
+
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			int i = 1;
+			if (contenido.getIdContenido()!=null)
+				preparedStatement.setString(i++, "%" + contenido.getIdContenido() + "%");
+			if (contenido.getFechaAlta()!=null) 
+				preparedStatement.setString(i++, "%" + contenido.getFechaAlta() + "%");
+			if (contenido.getFechaMod()!=null)
+				preparedStatement.setString(i++, "%" + contenido.getFechaMod() + "%");
+			if (contenido.getIdAutor()!=null) 
+				preparedStatement.setString(i++, "%" + contenido.getIdAutor() + "%");
+
+			/*			if (idioma!=null) 
+				preparedStatement.setString(i++,idioma);
+				*/
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			
+			List<Contenido> results = new ArrayList<Contenido>();    
+			Usuario e = null;
+			//int currentCount = 0;
+
+			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
+			if(resultSet.next()) {
+				do {
+					e = loadNext(connection, resultSet, e);
+					results.add(e);               	
+					//currentCount++;                	
+				} while (/*(currentCount < count) && */ resultSet.next()) ;
+			}
+			//}
+
+			return results;
+	
+			} catch (SQLException e) {
+				//logger.error("Error",e);
+				throw new DataException(e);
+			} catch (DataException de) {
+				//logger.error("Error",e);
+				throw new DataException(de);
+			}  finally {
+				JDBCUtils.closeResultSet(resultSet);
+				JDBCUtils.closeStatement(preparedStatement);
+		}
 	}
 	
 
 	@Override
-	public List<Contenido> findAll(Connection connection) throws Exception {
+	public List<Contenido> findAll(Connection connection) throws DataException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
-
-
 	@Override
-	public Contenido create (Connection connection, Contenido c) throws Exception {
+	public Contenido create (Connection connection, Contenido c) throws DataException {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		
@@ -101,15 +213,15 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	
 	
 	@Override
-	public Contenido update(Connection connection, Contenido c) throws Exception {
+	public Contenido update(Connection connection, Contenido c) throws DataException {
 		// TODO Auto-generated method stub
-		return null;
+		return c;
 	}
 
 
 
 	@Override
-	public long delete(Connection connection, Long id) throws Exception {
+	public long delete(Connection connection, Long id) throws DataException {
 
 		PreparedStatement preparedStatement = null;
 
@@ -126,9 +238,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			int removedRows = preparedStatement.executeUpdate();
 
 			if (removedRows == 0) {
-				throw new Exception("Exception");
+				throw new DataException("Exception: No removed rows");
 			} 
-			
 			return removedRows;
 
 		} catch (SQLException e) {
@@ -136,6 +247,31 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
+	}
+	
+	private Contenido loadNext(Connection connection, ResultSet resultSet, Contenido c)
+			throws SQLException, DataException {
+
+				int i = 1;
+				Long idContenido = resultSet.getLong(i++);
+				Date fechaAlta =  resultSet.getDate(i++);
+				Date fechaMod =  resultSet.getDate(i++);
+				Long autor = resultSet.getLong(i++);	
+			
+				c.setIdContenido(idContenido);
+				c.setFechaAlta(fechaAlta);
+				c.setFechaMod(fechaMod);
+				c.setIdAutor(autor);
+
+				return c;
+			}
+	
+	private void addClause(StringBuilder queryString, boolean first, String clause) {
+		queryString.append(first?" WHERE ": " AND ").append(clause);
+	}
+	
+	private void addUpdate(StringBuilder queryString, boolean first, String clause) {
+		queryString.append(first? " SET ": " , ").append(clause);
 	}
 
 }

@@ -65,56 +65,6 @@ public class TestUsuarioDAO {
 		}
 	}
 	
-	public static void testFindCriteria (Connection conexion, UsuarioDAO dao){
-		
-		try {
-			
-			UsuarioCriteria dos = new UsuarioCriteria();
-			
-			dos.setIdContenido(5l);
-			dos.setEmail("ana1@gmail.com");
-			dos.setDescripcion("Hola! Disfruten de mis videos!");
-			dos.setAvatarUrl("C:img.jpg");
-			dos.setNombreReal("ana");
-			dos.setApellidos("LEDO PIÑEIRO");
-			
-			PaisDAO daop = new PaisDAOImpl();
-			dos.setPais(daop.findById(conexion, "ES"));
-			
-			List<Usuario> lista = dao.findByCriteria(conexion, dos);
-			
-			for(Usuario u: lista) {
-				System.out.println(u.toString());
-			}
-		}
-		catch (Exception e) {  
-			System.out.println("Exception");
-		}
-	}
-	
-	public static void testUpdate (Connection conexion, UsuarioDAO dao){
-		
-		try {
-			
-			Usuario dos = new Usuario();
-			
-			dos.setEmail("ana1@gmail.com");
-			dos.setDescripcion("Hola! Disfruten de mis videos!");
-			dos.setAvatarUrl("C:img.jpg");
-			dos.setNombreReal("ana");
-			dos.setApellidos("LEDO PIÑEIRO");
-			
-			PaisDAO daop = new PaisDAOImpl();
-			dos.setPais(daop.findById(conexion, "ES"));
-			
-			
-			dao.update(conexion, dos);
-			
-		}
-		catch (Exception e) {  
-			System.out.println("Exception UpdateTest");
-		}
-	}
 	
 	public static void testDelete (Connection conexion, UsuarioDAO dao, Long id) {
 		
@@ -134,59 +84,18 @@ public class TestUsuarioDAO {
 	}
 	
 	
+	public static void pruebaUpdate () {
+		try {
 
-	public static void main(String[] args) throws Exception {
-		
 		Connection conexion = ConnectionManager.getConnection();
 		UsuarioDAO dao = new UsuarioDAOImpl();
 		
-		Usuario c = new Usuario();
+		Usuario jamele = new Usuario();
+		Usuario jamele2 = new Usuario();
 		
 		Pais pais = new Pais();
 		pais.setIdPais("AD");
 		pais.setNombrePais("ANDORRA");
-		
-		c.setNombre("unouno");
-		c.setFechaAlta(new java.sql.Date(12) );
-		c.setFechaMod(new java.sql.Date(12) );
-		c.setIdAutor(null);
-		
-		c.setNombreReal("realUnouno");
-		c.setEmail("unouno@talicual.com");
-		c.setContrasena("abcde");
-		c.setDescripcion("descripcion");
-		c.setApellidos("apellidoUnouno");
-		c.setAvatarUrl("/tata/tata/avatarUNo");
-		c.setPais(pais);
-		
-		testFind (conexion, dao, 1l);
-		
-		//testCreateContenido ( conexion,  dao, c);
-		
-		//testContenido ( conexion, c);
-		
-		//testDelete ( conexion,dao, 60l);
-		//dao.delete(conexion, 58l);
-		
-//		System.out.println("crear");
-//		testCreateUsuario ( conexion, dao, c);
-		//testFind (conexion, dao, 62l);
-		
-		/*
-		List<Usuario> lista2 = new ArrayList<Usuario>();
-		UsuarioCriteria dosdos = new UsuarioCriteria();
-		dosdos.setNombreReal("realUnouno");
-		
-		System.out.println("criteria");
-		lista2 = dao.findByCriteria(conexion, dosdos);
-		
-		for(Usuario u: lista2) {
-			System.out.println(u.toString());
-		}
-		
-		*/
-		Usuario jamele = new Usuario();
-		Usuario jamele2 = new Usuario();
 
 		jamele.setFechaAlta(new java.sql.Date(12));
 		jamele.setFechaMod(new java.sql.Date(12));
@@ -221,13 +130,110 @@ public class TestUsuarioDAO {
 		dao.update(conexion, jamele2);
 		System.out.println(dao.findById(conexion, jamele2.getIdContenido()));
 
-		
+		JDBCUtils.closeConnection(conexion);
 		System.out.println("fin");
+		
+		} catch (Exception e) {
+			System.out.println("EXCEPTION EN TEST");
+		}
+	}
+	
+	
+	public static void pruebaCriteria () {
+		try {
+
+		Connection conexion = ConnectionManager.getConnection();
+		UsuarioDAO dao = new UsuarioDAOImpl();
+		
+		UsuarioCriteria dos = new UsuarioCriteria();
+		
+		dos.setIdContenido(5l);
+//		dos.setEmail("ana1@gmail.com");
+//		dos.setDescripcion("Hola! Disfruten de mis videos!");
+//		dos.setAvatarUrl("C:img.jpg");
+//		dos.setNombreReal("ana");
+//		dos.setApellidos("LEDO PIÑEIRO");
+		
+		PaisDAO daop = new PaisDAOImpl();
+		dos.setPais(daop.findById(conexion, "ES"));
+		
+		System.out.println("1 - BUSCAMOS POR CRITERIA:");
+		List<Usuario> lista = dao.findByCriteria(conexion, dos);
+		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDA:");
+		for(Usuario u: lista){System.out.println(u.toString());}
+		System.out.println("3 - FIN DE LA IMPRESION");
+		
+
+		JDBCUtils.closeConnection(conexion);
+		System.out.println("fin");
+		
+		} catch (Exception e) {
+			System.out.println("EXCEPTION EN TEST");
+		}
+	}
+	
+
+	public static void main(String[] args) throws Exception {
+		
+		
+		pruebaCriteria();
+		/*
+		Connection conexion = ConnectionManager.getConnection();
+		UsuarioDAO dao = new UsuarioDAOImpl();
+		
+		Usuario c = new Usuario();
+		
+		Pais pais = new Pais();
+		pais.setIdPais("AD");
+		pais.setNombrePais("ANDORRA");
+		
+		c.setNombre("unouno");
+		c.setFechaAlta(new java.sql.Date(12) );
+		c.setFechaMod(new java.sql.Date(12) );
+		c.setIdAutor(null);
+		
+		c.setNombreReal("realUnouno");
+		c.setEmail("unouno@talicual.com");
+		c.setContrasena("abcde");
+		c.setDescripcion("descripcion");
+		c.setApellidos("apellidoUnouno");
+		c.setAvatarUrl("/tata/tata/avatarUNo");
+		c.setPais(pais);
+		*/
+		
+		
+		//testFind (conexion, dao, 1l);
+		
+		//testCreateContenido ( conexion,  dao, c);
+		
+		//testContenido ( conexion, c);
+		
+		//testDelete ( conexion,dao, 60l);
+		//dao.delete(conexion, 58l);
+		
+//		System.out.println("crear");
+//		testCreateUsuario ( conexion, dao, c);
+		//testFind (conexion, dao, 62l);
+		
+		/*
+		List<Usuario> lista2 = new ArrayList<Usuario>();
+		UsuarioCriteria dosdos = new UsuarioCriteria();
+		dosdos.setNombreReal("realUnouno");
+		
+		System.out.println("criteria");
+		lista2 = dao.findByCriteria(conexion, dosdos);
+		
+		for(Usuario u: lista2) {
+			System.out.println(u.toString());
+		}
+		
+		*/
+		
 		
 		//testFindCriteria(conexion, dao);
 
 
-		JDBCUtils.closeConnection(conexion);
+		//JDBCUtils.closeConnection(conexion);
 	}
 
 }

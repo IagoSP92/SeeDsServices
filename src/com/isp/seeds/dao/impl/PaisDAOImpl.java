@@ -57,6 +57,7 @@ public class PaisDAOImpl implements PaisDAO{
 
 			resultSet = preparedStatement.executeQuery();			
 			//STEP 5: Extract data from result set			
+			
 
 			if (resultSet.next()) {
 				p  = loadNext(resultSet);
@@ -68,6 +69,7 @@ public class PaisDAOImpl implements PaisDAO{
 			if (resultSet.next()) {
 				throw new DataException("Pais "+id+" duplicado");
 			}
+			
 
 		} catch (SQLException ex) {
 			throw new DataException(ex);
@@ -75,8 +77,8 @@ public class PaisDAOImpl implements PaisDAO{
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 			//JDBCUtils.closeConnection(connection);
-		}  	
-
+		}
+		
 		return p;
 	}
 

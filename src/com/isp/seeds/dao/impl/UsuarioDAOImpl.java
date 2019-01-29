@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 		try {          
 			String queryString = 
-					"SELECT c.id_contenido, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
+					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
 							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais " + 
 							"FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) " +
 							"WHERE u.id_contenido = ? ";
@@ -78,9 +79,11 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		StringBuilder queryString = null;
 
 		try {
+					
 			queryString = new StringBuilder(
-					" SELECT u.ID_CONTENIDO, u.EMAIL, u.CONTRASENA, u.DESCRIPCION, u.URL_AVATAR, u.NOMBRE_REAL, u.APELLIDOS, u.ID_PAIS " + 
-					" FROM Usuario u " );
+					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
+							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais " + 
+							" FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) ");
 			
 			boolean first = true;
 			
@@ -123,7 +126,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
 			
 			int i = 1;
 			
@@ -147,7 +149,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			
 			resultSet = preparedStatement.executeQuery();
 			
-			List<Usuario> results = new ArrayList<Usuario>();                        
+			
+			List<Usuario> results = new ArrayList<Usuario>();    
 			Usuario e = null;
 			//int currentCount = 0;
 
@@ -205,7 +208,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 			// Rellenamos el "preparedStatement"
 			
-			
 			int i = 1;    
 			preparedStatement.setLong(i++, u.getIdContenido());
 			preparedStatement.setString(i++, u.getEmail());
@@ -255,7 +257,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 					);
 			
 			boolean first = true;
-			
 			
 			if (usuario.getEmail()!=null) {
 				addUpdate(queryString, first, " email = ? ");
@@ -387,10 +388,11 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			throws SQLException, DataException {
 
 				int i = 1;
-				Long idContenido = resultSet.getLong(i++);	
+				Long idContenido = resultSet.getLong(i++);
+				String nombre = resultSet.getString(i++);
 				Date fechaAlta =  resultSet.getDate(i++);
-				Date fechaMod =  resultSet.getDate(i++);		
-				Long autor = resultSet.getLong(i++);
+				Date fechaMod =  resultSet.getDate(i++);
+				Long autor = resultSet.getLong(i++);	
 				
 				String correo = resultSet.getString(i++);
 				String contrasena = resultSet.getString(i++);
@@ -398,15 +400,16 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				String avatar = resultSet.getString(i++);
 				String nombreReal = resultSet.getString(i++);	                
 				String apellido = resultSet.getString(i++);
-				
+
 				PaisDAO daop = new PaisDAOImpl();
 				Pais pais = daop.findById(connection, resultSet.getString(i++));
 			
 				Usuario u = new Usuario();
 				u.setIdContenido(idContenido);
+				u.setNombre(nombre);
 				u.setFechaAlta(fechaAlta);
 				u.setFechaMod(fechaMod);
-				u.setIdAutor(autor);
+				u.setIdAutor(null);
 				
 				u.setEmail(correo);
 				u.setContrasena(contrasena);
