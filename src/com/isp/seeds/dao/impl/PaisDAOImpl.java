@@ -152,17 +152,16 @@ public class PaisDAOImpl implements PaisDAO{
 
 			// Create "preparedStatement"       
 			String queryString = 
-					"SELECT p.id_pais, p.nombre " + 
+					"SELECT p.id_pais, p.nombre_pais " + 
 					"FROM Pais p  " +
-					"ORDER BY p.nombre asc ";
+					"ORDER BY p.nombre_pais asc ";
 
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
 			
 			// Execute query.
 			resultSet = preparedStatement.executeQuery();
-
+			
 			// Recupera la pagina de resultados
 			List<Pais> results = new ArrayList<Pais>();                        
 			Pais pais = null;

@@ -13,6 +13,13 @@ public class ConnectionManager	 {
 //			+ "useUnicode=true&useJDBCCompliantTimezoneShift=true"
 //			+ "&useLegacyDatetimeCode=false&serverTimezone=UTC";
 	
+	
+	//CASA
+//	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/seeds?"
+//			+ "useUnicode=true&useJDBCCompliantTimezoneShift=true"
+//			+ "&useLegacyDatetimeCode=false&serverTimezone=UTC";
+	
+	//CLASE
 	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/seeds?"
 			+ "useUnicode=true&useJDBCCompliantTimezoneShift=true"
 			+ "&useLegacyDatetimeCode=false&serverTimezone=UTC";
