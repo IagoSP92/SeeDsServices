@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import com.gzone.ecommerce.model.Producto;
 import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.Exceptions.InstanceNotFoundException;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.spi.PaisDAO;
 import com.isp.seeds.dao.spi.UsuarioDAO;
@@ -135,9 +137,99 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 
 	@Override
-	public Boolean update(Connection connection, Usuario u) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean update(Connection connection, Usuario usuario) throws Exception {
+		
+		PreparedStatement preparedStatement = null;
+		StringBuilder queryString = null;
+		try {	
+			
+			queryString = new StringBuilder(
+					" UPDATE Usuario" 
+					);
+			
+			boolean first = true;
+			
+			if (usuario.getEmail()!=null) {
+				addUpdate(queryString, first, " email = ? ");
+				first = false;
+			}
+			
+			if (usuario.getContrasena()!=null) {
+				addUpdate(queryString, first, " contrasena = ? ");
+				first = false;
+			}
+			
+			if (usuario.getDescripcion()!=null) {
+				addUpdate(queryString, first, " descripcion = ? ");
+				first = false;
+			}
+			
+			if (usuario.getAvatarUrl()!=null) {
+				addUpdate(queryString, first, " url_avatar = ? ");
+				first = false;
+			}
+			
+			if (usuario.getNombreReal()!=null) {
+				addUpdate(queryString, first, " nombre_real = ? ");
+				first = false;
+			}
+			
+			if (usuario.getApellidos()!=null) {
+				addUpdate(queryString, first, " apellidos = ? ");
+				first = false;
+			}
+			
+			if (usuario.getPais().getIdPais()!=null) {
+				addUpdate(queryString, first, " id_pais = ? ");
+				first = false;
+			}
+			
+			queryString.append("WHERE id_contenido = ?");
+			
+			preparedStatement = connection.prepareStatement(queryString.toString());
+			
+
+			int i = 1;
+			if (usuario.getEmail()!=null)
+				preparedStatement.setString(i++,usuario.getEmail());
+			
+			if (usuario.getContrasena()!=null)
+				preparedStatement.setString(i++,usuario.getContrasena());
+			
+			if (usuario.getDescripcion()!=null)
+				preparedStatement.setString(i++,usuario.getDescripcion());
+			
+			if (usuario.getAvatarUrl()!=null)
+				preparedStatement.setString(i++,usuario.getAvatarUrl());
+			
+			if (usuario.getNombreReal()!=null)
+				preparedStatement.setString(i++,usuario.getNombreReal());
+			
+			if (usuario.getApellidos()!=null)
+				preparedStatement.setString(i++,usuario.getApellidos());
+			
+			if (usuario.getPais().getIdPais()!=null) 
+				preparedStatement.setString(i++,usuario.getPais().getIdPais());
+			
+
+			preparedStatement.setLong(i++, usuario.getIdContenido());
+
+			int updatedRows = preparedStatement.executeUpdate();
+
+			if (updatedRows == 0) {
+				throw new InstanceNotFoundException(producto.getIdProducto(), Producto.class.getName());
+			}
+
+			if (updatedRows > 1) {
+				throw new SQLException("Duplicate row for id = '" + 
+						producto.getIdProducto() + "' in table 'Producto'");
+			}     
+			
+		} catch (SQLException e) {
+			throw new DataException(e);    
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}    
 	}
 
 	@Override
@@ -179,6 +271,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	
 	private void addClause(StringBuilder queryString, boolean first, String clause) {
 		queryString.append(first?" WHERE ": " AND ").append(clause);
+	}
+	
+	private void addUpdate(StringBuilder queryString, boolean first, String clause) {
+		queryString.append(first? " SET ": " , ").append(clause);
 	}
 	
 	private Usuario loadNext(Connection connection, ResultSet resultSet)

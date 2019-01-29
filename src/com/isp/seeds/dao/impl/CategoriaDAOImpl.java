@@ -4,15 +4,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.dao.spi.CategoriaDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Categoria;
+import com.isp.seeds.model.Pais;
 
-public class CategoriaDAOImpl {
+public class CategoriaDAOImpl implements CategoriaDAO {
 	
 	private Categoria loadNext (ResultSet resultSet)
-			throws Exception {
+			throws SQLException {
 
 		Categoria c = new Categoria();
 		int i=1;
@@ -75,6 +79,50 @@ public class CategoriaDAOImpl {
 		}  	
 
 		return c;
+	}
+
+
+	@Override
+	public List<Categoria> findAll(Connection connection) throws DataException {
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+
+			// Create "preparedStatement"       
+			String queryString = 
+					"SELECT c.id_Categoria, c.nombre_Categoria " + 
+					"FROM Categoria c  " +
+					"ORDER BY c.nombre_Categoria asc ";
+
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			// Execute query.
+			resultSet = preparedStatement.executeQuery();
+			
+			// Recupera la pagina de resultados
+			List<Categoria> results = new ArrayList<Categoria>();                        
+			Categoria categoria = null;
+			int currentCount = 0;
+						
+			if (resultSet.next()) {
+				do {
+					categoria = loadNext(resultSet);
+					results.add(categoria);  
+					currentCount++;                	
+				} while (resultSet.next()) ;
+			}
+			
+			return results;
+
+		} catch (SQLException e) {
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
 	}
 
 }

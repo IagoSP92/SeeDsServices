@@ -9,7 +9,7 @@ import com.isp.seeds.dao.spi.PaisDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.model.Pais;
 
-public class PaisDAOTest {
+public class TestPaisDAO {
 	
 	public static void main(String[] args) throws Exception {
 		

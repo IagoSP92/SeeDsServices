@@ -4,7 +4,7 @@ package com.isp.seeds.Exceptions;
  * NO confundir esta capa con la capa "M"odelo en MVC !!!
  * que se usa en los diferentes tipos de clientes (web, app, desktop, etc.)
  */
-public class DataException extends Exception {
+public class DataException extends BusinessException {
        
 
 	public DataException() {
