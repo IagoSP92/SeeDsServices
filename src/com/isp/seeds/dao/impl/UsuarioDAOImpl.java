@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.Exceptions.InstanceNotFoundException;
+import com.isp.seeds.Util.PasswordEncryptionUtil;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.spi.PaisDAO;
 import com.isp.seeds.dao.spi.UsuarioDAO;
@@ -214,17 +215,15 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			int i = 1;    
 			preparedStatement.setLong(i++, u.getIdContenido());
 			preparedStatement.setString(i++, u.getEmail());
-			//preparedStatement.setString(i++, PasswordEncryptionUtil.encryptPassword(u.getContrasena()));  // PRODUCE EXCEPTION
-			preparedStatement.setString(i++, u.getContrasena());
+			preparedStatement.setString(i++, PasswordEncryptionUtil.encryptPassword(u.getContrasena()));
+			//preparedStatement.setString(i++, u.getContrasena());
 			preparedStatement.setString(i++, u.getDescripcion());
 			preparedStatement.setString(i++, u.getAvatarUrl());
 			preparedStatement.setString(i++, u.getNombreReal());
 			preparedStatement.setString(i++, u.getApellidos());
 			preparedStatement.setString(i++, u.getPais().getIdPais()); // NA DB GARDASE O ID DE PAIS
 			preparedStatement.setDate(i++, (Date) u.getFechaNac());
-			
-			
-									System.out.println(preparedStatement.toString());
+
 			// Execute query
 			int insertedRows = preparedStatement.executeUpdate();
 
@@ -312,7 +311,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				preparedStatement.setString(i++,usuario.getEmail());
 			
 			if (usuario.getContrasena()!=null)
-				preparedStatement.setString(i++,usuario.getContrasena());
+				preparedStatement.setString(i++, PasswordEncryptionUtil.encryptPassword(usuario.getContrasena()) );
 			
 			if (usuario.getDescripcion()!=null)
 				preparedStatement.setString(i++,usuario.getDescripcion());
