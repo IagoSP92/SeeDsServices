@@ -27,7 +27,7 @@ public interface ContenidoDAO {
 	public Contenido create (Connection connection, Contenido c)
 			throws DataException;
 	
-	public Contenido update (Connection connection, Contenido c)
+	public void update (Connection connection, Contenido c)
 			throws DataException;
 	
 	
