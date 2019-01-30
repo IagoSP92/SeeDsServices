@@ -142,6 +142,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				JDBCUtils.closeResultSet(resultSet);
 				JDBCUtils.closeStatement(preparedStatement);
 		}
+		
 	}
 	
 

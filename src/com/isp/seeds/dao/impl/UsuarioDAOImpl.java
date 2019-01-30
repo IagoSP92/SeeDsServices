@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		try {          
 			String queryString = 
 					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
-							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais " + 
+							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais, u.fecha_nac " + 
 							"FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) " +
 							"WHERE u.id_contenido = ? ";
 			
@@ -82,11 +81,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 					
 			queryString = new StringBuilder(
 					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
-							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais " + 
+							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais , u.fecha_nac " + 
 							" FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) ");
 			
 			boolean first = true;
-			
 
 			if (usuario.getIdContenido()!=null) {
 				addClause(queryString, first, " u.ID_CONTENIDO LIKE ? ");
@@ -118,6 +116,11 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				first = false;
 			}
 			
+			if (usuario.getFechaNac()!=null) {
+				addClause(queryString, first, " u.fecha_nac LIKE ? ");
+				first = false;
+			}
+			
 			/*
 			if (idioma!=null) {
 				addClause(queryString, first, " pi.id_idioma LIKE ? ");
@@ -139,18 +142,18 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				preparedStatement.setString(i++, "%" + usuario.getNombreReal() + "%");
 			if (usuario.getApellidos()!=null) 
 				preparedStatement.setString(i++, "%" + usuario.getApellidos() + "%");
-			
 			if (usuario.getPais()!=null)
 				preparedStatement.setString(i++, "%" + usuario.getPais().getIdPais() + "%");
+			if (usuario.getFechaNac()!=null)
+				preparedStatement.setString(i++, "%" + usuario.getFechaNac() + "%");
 			/*
 			if (idioma!=null) 
 				preparedStatement.setString(i++,idioma);
-				*/
-			
+				*/			
 			resultSet = preparedStatement.executeQuery();
-			
-			
-			List<Usuario> results = new ArrayList<Usuario>();    
+
+			List<Usuario> results = new ArrayList<Usuario>(); 
+
 			Usuario e = null;
 			//int currentCount = 0;
 
@@ -180,15 +183,15 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 
 	@Override
-	public List<Usuario> findAll(Connection connection) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Usuario> findAll(Connection connection) throws DataException {
+		UsuarioDAO dao= new UsuarioDAOImpl();
+		UsuarioCriteria usuario= new UsuarioCriteria();
+		return dao.findByCriteria(connection, usuario);
 	}
 
 
-
 	@Override
-	public Usuario create(Connection connection, Usuario u) throws Exception {
+	public Usuario create(Connection connection, Usuario u) throws DataException {
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -200,8 +203,8 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			u.setIdContenido(c.getIdContenido());
 
 
-			String queryString = "INSERT INTO USUARIO (ID_CONTENIDO, EMAIL, CONTRASENA, DESCRIPCION, URL_AVATAR, NOMBRE_REAL, APELLIDOS, ID_PAIS) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ? ,?)";
+			String queryString = "INSERT INTO USUARIO (ID_CONTENIDO, EMAIL, CONTRASENA, DESCRIPCION, URL_AVATAR, NOMBRE_REAL, APELLIDOS, ID_PAIS, FECHA_NAC) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ? ,?, ?)";
 
 			preparedStatement = connection.prepareStatement(queryString,
 									Statement.RETURN_GENERATED_KEYS);
@@ -218,8 +221,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			preparedStatement.setString(i++, u.getNombreReal());
 			preparedStatement.setString(i++, u.getApellidos());
 			preparedStatement.setString(i++, u.getPais().getIdPais()); // NA DB GARDASE O ID DE PAIS
+			preparedStatement.setDate(i++, (Date) u.getFechaNac());
 			
-									
+			
+									System.out.println(preparedStatement.toString());
 			// Execute query
 			int insertedRows = preparedStatement.executeUpdate();
 
@@ -293,8 +298,12 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				first = false;
 			}
 			
-			queryString.append("WHERE id_contenido = ?");
+			if (usuario.getFechaNac()!=null) {
+				addUpdate(queryString, first, " fecha_nac = ? ");
+				first = false;
+			}
 			
+			queryString.append("WHERE id_contenido = ?");
 
 			preparedStatement = connection.prepareStatement(queryString.toString());
 
@@ -319,8 +328,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			
 			if (usuario.getPais().getIdPais()!=null) 
 				preparedStatement.setString(i++,usuario.getPais().getIdPais());
+			if (usuario.getFechaNac()!=null) 
+				preparedStatement.setDate(i++, new java.sql.Date(usuario.getFechaNac().getTime()));
 			
-
 			preparedStatement.setLong(i++, usuario.getIdContenido());
 
 			int updatedRows = preparedStatement.executeUpdate();
@@ -343,7 +353,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	
 
 	@Override
-	public long delete (Connection connection, Long id) throws Exception {
+	public long delete (Connection connection, Long id) throws DataException {
 
 		PreparedStatement preparedStatement = null;
 
@@ -360,7 +370,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			int removedRows = preparedStatement.executeUpdate();
 
 			if (removedRows == 0) {
-				throw new Exception("Exception en delete usuario");
+				throw new SQLException("Can not delete row in table 'Usuario'");
 			}
 			
 			ContenidoDAO daoc = new ContenidoDAOImpl();
@@ -403,6 +413,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 				PaisDAO daop = new PaisDAOImpl();
 				Pais pais = daop.findById(connection, resultSet.getString(i++));
+				Date fechaNac =  resultSet.getDate(i++);
 			
 				Usuario u = new Usuario();
 				u.setIdContenido(idContenido);
@@ -418,6 +429,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				u.setNombreReal(nombreReal);
 				u.setApellidos(apellido);
 				u.setPais(pais);
+				u.setFechaNac(fechaNac);
+				
+
 
 				return u;
 			}

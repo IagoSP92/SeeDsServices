@@ -1,13 +1,26 @@
 package com.isp.seeds.service.spi;
 
 
+import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Usuario;
 
 public interface UsuarioService {
 	
 	public Usuario crearCuenta (Usuario u) 
-			throws Exception;
+			throws DataException;
 	
 	public Usuario eliminarCuenta (Usuario u) 
-			throws Exception;
+			throws DataException;
+	
+	public Usuario login (String email, String contrasena)
+			throws DataException;
+	
+	public Usuario editarPerfil (Usuario usuario)
+			throws DataException;
+	
+	public void cambiarContraseña (String email, String contrasena)
+			throws DataException;
+	
+	public void recuperarContraseña (String email)
+			throws DataException;
 }

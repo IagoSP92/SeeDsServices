@@ -1,5 +1,6 @@
 package com.isp.seeds.model;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -13,6 +14,7 @@ public class Usuario extends Contenido implements Comparable<Usuario> {
 	private String nombreReal = null;
 	private String apellidos = null;
 	private Pais pais = null;
+	private Date fechaNac = null;
 
 	private List<Video> videosSubidos= null;
 	private List<Lista> listasSubidas= null;
@@ -29,7 +31,7 @@ public class Usuario extends Contenido implements Comparable<Usuario> {
 //	}
 	
 	public String toString() {
-		String cadena= "\nUSUARIO: "+getNombre()+" - "+ getIdContenido()+"  - "+getFechaAlta()+" - "+getFechaMod()+"\n ";
+		String cadena= "\nUSUARIO: "+getNombre()+" - "+ getIdContenido()+"  - "+getFechaAlta()+" - "+getFechaMod()+" - "+getFechaNac()+"\n ";
 		cadena+= getNombreReal()+" - "+ getApellidos()+" - "+getEmail()+" - "+getContrasena()+"\n";
 		cadena+= getAvatarUrl()+" - "+getDescripcion()+"\n";
 		cadena+= getPais()+"\n";
@@ -101,6 +103,14 @@ public class Usuario extends Contenido implements Comparable<Usuario> {
 
 	public void setPais(Pais pais) {
 		this.pais = pais;
+	}
+
+	public Date getFechaNac() {
+		return fechaNac;
+	}
+
+	public void setFechaNac(Date fechaNac) {
+		this.fechaNac = fechaNac;
 	}
 
 	public List<Video> getVideosSubidos() {

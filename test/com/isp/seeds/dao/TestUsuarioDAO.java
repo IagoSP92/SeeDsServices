@@ -3,7 +3,7 @@ package com.isp.seeds.dao;
 
 
 import java.sql.Connection;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.isp.seeds.dao.impl.ContenidoDAOImpl;
@@ -109,7 +109,7 @@ public class TestUsuarioDAO {
 		jamele.setNombre("nombre");
 		jamele.setNombreReal("nombreReal");
 		jamele.setPais(pais);
-		
+		jamele.setFechaNac(new java.sql.Date(12));
 
 		jamele2 = dao.create(conexion, jamele);
 		System.out.println("IMPRIMIMOS INSERTADO:");
@@ -120,15 +120,28 @@ public class TestUsuarioDAO {
 		System.out.println("AHI QUEDA, AHORA EDITAMOS");
 		
 		System.out.println("modificar");
-		
 		jamele2.setApellidos("aaaaaaaaaaaaaa");
 		jamele2.setAvatarUrl("bbbbbbbbbbbbbb");
 		jamele2.setContrasena("cccccccccccc");
 		jamele2.setDescripcion("dddddddddddddd");
 		jamele2.setEmail("eeeeeeeeeee");
+		jamele2.setFechaNac(new Date());
 		
 		dao.update(conexion, jamele2);
 		System.out.println(dao.findById(conexion, jamele2.getIdContenido()));
+		
+		
+		System.out.println("1 - BUSCAMOS ALL:");
+		List<Usuario> lista = dao.findAll(conexion);
+		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");
+		for(Usuario u: lista){System.out.println(u.toString());}
+		System.out.println("3 - FIN DE LA IMPRESION");
+		System.out.println("BORRAMOS");
+		dao.delete(conexion, jamele2.getIdContenido());
+		System.out.println("MOSTRALL");
+		lista = dao.findAll(conexion);
+		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");
+		for(Usuario u: lista){System.out.println(u.toString());}
 
 		JDBCUtils.closeConnection(conexion);
 		System.out.println("fin");
@@ -147,7 +160,7 @@ public class TestUsuarioDAO {
 		
 		UsuarioCriteria dos = new UsuarioCriteria();
 		
-		dos.setIdContenido(5l);
+	//	dos.setIdContenido(5l);
 //		dos.setEmail("ana1@gmail.com");
 //		dos.setDescripcion("Hola! Disfruten de mis videos!");
 //		dos.setAvatarUrl("C:img.jpg");
@@ -175,65 +188,9 @@ public class TestUsuarioDAO {
 
 	public static void main(String[] args) throws Exception {
 		
-		
-		pruebaCriteria();
-		/*
-		Connection conexion = ConnectionManager.getConnection();
-		UsuarioDAO dao = new UsuarioDAOImpl();
-		
-		Usuario c = new Usuario();
-		
-		Pais pais = new Pais();
-		pais.setIdPais("AD");
-		pais.setNombrePais("ANDORRA");
-		
-		c.setNombre("unouno");
-		c.setFechaAlta(new java.sql.Date(12) );
-		c.setFechaMod(new java.sql.Date(12) );
-		c.setIdAutor(null);
-		
-		c.setNombreReal("realUnouno");
-		c.setEmail("unouno@talicual.com");
-		c.setContrasena("abcde");
-		c.setDescripcion("descripcion");
-		c.setApellidos("apellidoUnouno");
-		c.setAvatarUrl("/tata/tata/avatarUNo");
-		c.setPais(pais);
-		*/
-		
-		
-		//testFind (conexion, dao, 1l);
-		
-		//testCreateContenido ( conexion,  dao, c);
-		
-		//testContenido ( conexion, c);
-		
-		//testDelete ( conexion,dao, 60l);
-		//dao.delete(conexion, 58l);
-		
-//		System.out.println("crear");
-//		testCreateUsuario ( conexion, dao, c);
-		//testFind (conexion, dao, 62l);
-		
-		/*
-		List<Usuario> lista2 = new ArrayList<Usuario>();
-		UsuarioCriteria dosdos = new UsuarioCriteria();
-		dosdos.setNombreReal("realUnouno");
-		
-		System.out.println("criteria");
-		lista2 = dao.findByCriteria(conexion, dosdos);
-		
-		for(Usuario u: lista2) {
-			System.out.println(u.toString());
-		}
-		
-		*/
-		
-		
-		//testFindCriteria(conexion, dao);
+		//pruebaCriteria();
+		pruebaUpdate();
 
-
-		//JDBCUtils.closeConnection(conexion);
 	}
 
 }
