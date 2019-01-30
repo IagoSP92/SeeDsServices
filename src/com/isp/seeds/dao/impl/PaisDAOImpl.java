@@ -30,7 +30,7 @@ public class PaisDAOImpl implements PaisDAO{
 	}
 
 	@Override
-	public Pais findById(Connection connection, String id)
+	public Pais findById(Connection connection, String id, String idioma)
 			throws DataException {
 
 		Pais p = null;
@@ -42,9 +42,9 @@ public class PaisDAOImpl implements PaisDAO{
 			//connection = ConnectionManager.getConnection();
 
 			String sql;
-			sql =  "SELECT ID_PAIS, NOMBRE_PAIS "
-					+"FROM PAIS "
-					+"WHERE ID_PAIS = ? ";
+			sql =  "SELECT p.ID_PAIS, pi.NOMBRE_PAIS "
+					+"FROM PAIS p inner join PAIS_idioma pi on (p.ID_PAIS = pi.ID_PAIS)"
+					+"WHERE p.ID_PAIS = ? and pi.id_idioma = ? ";
 
 			// Preparar a query
 			System.out.println("Creating statement...");
@@ -53,6 +53,7 @@ public class PaisDAOImpl implements PaisDAO{
 			// Establece os parámetros
 			int i = 1;
 			preparedStatement.setString(i++, id);
+			preparedStatement.setString(i++, idioma);
 
 
 			resultSet = preparedStatement.executeQuery();			
@@ -83,67 +84,6 @@ public class PaisDAOImpl implements PaisDAO{
 	}
 
 
-
-	public List<Pais> findByNombre(Connection connection, String criterioNombre, String ap1)
-			throws DataException {	
-
-		//Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		try{
-
-			//connection = ConnectionManager.getConnection();
-
-			String sql;
-			sql =    " SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, MANAGER_ID " 
-					+" FROM EMPLOYEES "
-					+" WHERE "
-					+"	UPPER(FIRST_NAME) LIKE '%?%'" 
-					+"    and"
-					+"    UPPER(LAST_NAME) LIKE '%?%'";
-
-			// Preparar a query
-			System.out.println("Creating statement...");
-			preparedStatement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
-			// Establece os parámetros
-			int i = 1;
-			preparedStatement.setString(i++, criterioNombre);
-			preparedStatement.setString(i++, ap1);
-
-
-			resultSet = preparedStatement.executeQuery();			
-			//STEP 5: Extract data from result set
-
-			String idPais = null;
-			String nombrePais = null;
-
-			List<Pais> paises = new ArrayList<Pais>();
-			Pais p = null;
-			while (resultSet.next()) {
-				i = 1;
-				idPais = resultSet.getString(i++);
-				nombrePais = resultSet.getString(i++);
-
-				p = new Pais();
-				p.setIdPais(idPais);
-				p.setNombrePais(nombrePais);
-
-				paises.add(p);
-			} 
-			return paises;
-		} catch (SQLException ex) {
-			throw new DataException(ex);
-		} finally {            
-			JDBCUtils.closeResultSet(resultSet);
-			JDBCUtils.closeStatement(preparedStatement);
-			//JDBCUtils.closeConnection(connection);
-		}  	
-	}
-
-
-
-
 	@Override
 	public List<Pais> findAll(Connection connection) throws DataException {  // CURRENTCOUNT??
 
@@ -154,9 +94,9 @@ public class PaisDAOImpl implements PaisDAO{
 
 			// Create "preparedStatement"       
 			String queryString = 
-					"SELECT p.id_pais, p.nombre_pais " + 
-					"FROM Pais p  " +
-					"ORDER BY p.nombre_pais asc ";
+					"SELECT p.id_pais, pI.nombre_pais " + 
+					"FROM Pais p inner join PAIS_idioma pi on (p.ID_PAIS = pi.ID_PAIS)  " +
+					"ORDER BY p.id_pais asc ";
 
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);

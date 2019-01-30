@@ -10,10 +10,10 @@ import com.isp.seeds.service.criteria.UsuarioCriteria;
 public interface UsuarioDAO {
 	
 	
-	public Usuario findById(Connection connection, Long id) 
+	public Usuario findById(Connection connection, Long id, String idioma) 
 			throws DataException;
 	
-	public List <Usuario> findByCriteria(Connection connection, UsuarioCriteria usuario) 
+	public List <Usuario> findByCriteria(Connection connection, UsuarioCriteria usuario, String idioma) 
 			throws DataException;
 	
 

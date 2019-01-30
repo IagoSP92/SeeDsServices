@@ -11,7 +11,6 @@ import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.dao.spi.CategoriaDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Categoria;
-import com.isp.seeds.model.Pais;
 
 public class CategoriaDAOImpl implements CategoriaDAO {
 	
@@ -33,8 +32,8 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 	}
 
 
-	public Categoria findById(Connection connection, Long id)
-			throws Exception {
+	public Categoria findById(Connection connection, Long id, String idioma)
+			throws DataException {
 
 		Categoria c = null;
 
@@ -45,9 +44,9 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 			//connection = ConnectionManager.getConnection();
 
 			String sql;
-			sql =  "SELECT ID_CATEGORIA, NOMBRE_CATEGORIA "
-					+"FROM CATEGORIA "
-					+"WHERE ID_CATEGORIA = ? ";
+			sql =  "SELECT c.ID_CATEGORIA, ci.NOMBRE_CATEGORIA "
+					+"FROM CATEGORIA C inner join categoria_idioma ci on (c.ID_CATEGORIA = ci.id_categoria)"
+					+"WHERE c.ID_CATEGORIA = ? AND CI.ID_IDIOMA = ?";
 
 			// Preparar a query
 			System.out.println("Creating statement...");
@@ -56,6 +55,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 			// Establece os parámetros
 			int i = 1;
 			preparedStatement.setLong(i++, id);
+			preparedStatement.setString(i++, idioma);
 
 
 			resultSet = preparedStatement.executeQuery();			
@@ -66,10 +66,10 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 				System.out.println("Cargado "+ c);
 
 			} else {
-				throw new Exception("Non se encontrou a categoria "+id);
+				throw new DataException("Non se encontrou a categoria "+id);
 			}
 			if (resultSet.next()) {
-				throw new Exception("Categoria "+id+" duplicado");
+				throw new DataException("Categoria "+id+" duplicado");
 			}
 
 		} catch (SQLException ex) {
@@ -94,9 +94,9 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 
 			// Create "preparedStatement"       
 			String queryString = 
-					"SELECT c.id_Categoria, c.nombre_Categoria " + 
-					"FROM Categoria c  " +
-					"ORDER BY c.nombre_Categoria asc ";
+					"SELECT c.id_Categoria, ci.nombre_Categoria " + 
+					"FROM Categoria c inner join categoria_idioma ci on (c.ID_CATEGORIA = ci.id_categoria) " +
+					"ORDER BY ci.id_categoria, ci.nombre_Categoria asc ";
 
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);

@@ -1,7 +1,5 @@
 package com.isp.seeds.dao;
 
-
-
 import java.sql.Connection;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +53,7 @@ public class TestUsuarioDAO {
 			
 			Usuario dos = null;
 			
-			dos= dao.findById(conexion, id);
+			dos= dao.findById(conexion, id, "ENG");
 			
 			System.out.println(dos.toString());
 			
@@ -116,7 +114,7 @@ public class TestUsuarioDAO {
 		System.out.println(jamele2.toString());
 		System.out.println("INSERTADO IMPRIMIDO");
 		System.out.println("BUSCAMOS EL RECIEN INSERTADO");
-		System.out.println(dao.findById(conexion, jamele2.getIdContenido()));
+		System.out.println(dao.findById(conexion, jamele2.getIdContenido(), "ESP"));
 		System.out.println("AHI QUEDA, AHORA EDITAMOS");
 		
 		System.out.println("modificar");
@@ -128,7 +126,7 @@ public class TestUsuarioDAO {
 		jamele2.setFechaNac(new Date());
 		
 		dao.update(conexion, jamele2);
-		System.out.println(dao.findById(conexion, jamele2.getIdContenido()));
+		System.out.println(dao.findById(conexion, jamele2.getIdContenido(), "ESP"));
 		
 		
 		System.out.println("1 - BUSCAMOS ALL:");
@@ -168,10 +166,10 @@ public class TestUsuarioDAO {
 //		dos.setApellidos("LEDO PIÑEIRO");
 		
 		PaisDAO daop = new PaisDAOImpl();
-		dos.setPais(daop.findById(conexion, "ES"));
+		dos.setPais(daop.findById(conexion, "ES", "ESP"));
 		
 		System.out.println("1 - BUSCAMOS POR CRITERIA:");
-		List<Usuario> lista = dao.findByCriteria(conexion, dos);
+		List<Usuario> lista = dao.findByCriteria(conexion, dos, "ESP");
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDA:");
 		for(Usuario u: lista){System.out.println(u.toString());}
 		System.out.println("3 - FIN DE LA IMPRESION");
@@ -188,7 +186,7 @@ public class TestUsuarioDAO {
 
 	public static void main(String[] args) throws Exception {
 		
-		//pruebaCriteria();
+		pruebaCriteria();
 		pruebaUpdate();
 
 	}

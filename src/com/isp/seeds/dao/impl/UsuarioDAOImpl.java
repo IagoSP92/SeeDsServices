@@ -31,7 +31,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	}
 	
 	@Override
-	public Usuario findById(Connection connection, Long id) throws DataException {
+	public Usuario findById(Connection connection, Long id, String idioma) throws DataException {
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -54,7 +54,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			Usuario e = null;
 
 			if (resultSet.next()) {
-				e = loadNext(connection, resultSet);				
+				e = loadNext(connection, resultSet, idioma);				
 			} else {
 				throw new DataException("\nUser with id " +id+ "not found\n");
 			}
@@ -71,7 +71,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	
 	
 	@Override
-	public List<Usuario> findByCriteria(Connection connection, UsuarioCriteria usuario)
+	public List<Usuario> findByCriteria(Connection connection, UsuarioCriteria usuario, String idioma)
 			throws DataException {
 
 		PreparedStatement preparedStatement = null;
@@ -161,7 +161,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
 			if(resultSet.next()) {
 				do {
-					e = loadNext(connection, resultSet);
+					e = loadNext(connection, resultSet, idioma);
 					results.add(e);               	
 					//currentCount++;                	
 				} while (/*(currentCount < count) && */ resultSet.next()) ;
@@ -187,7 +187,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 	public List<Usuario> findAll(Connection connection) throws DataException {
 		UsuarioDAO dao= new UsuarioDAOImpl();
 		UsuarioCriteria usuario= new UsuarioCriteria();
-		return dao.findByCriteria(connection, usuario);
+		return dao.findByCriteria(connection, usuario, "ESP");
 	}
 
 
@@ -393,7 +393,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		queryString.append(first? " SET ": " , ").append(clause);
 	}
 	
-	private Usuario loadNext(Connection connection, ResultSet resultSet)
+	private Usuario loadNext(Connection connection, ResultSet resultSet, String idioma)
 			throws SQLException, DataException {
 
 				int i = 1;
@@ -411,7 +411,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				String apellido = resultSet.getString(i++);
 
 				PaisDAO daop = new PaisDAOImpl();
-				Pais pais = daop.findById(connection, resultSet.getString(i++));
+				Pais pais = daop.findById(connection, resultSet.getString(i++), idioma);
 				Date fechaNac =  resultSet.getDate(i++);
 			
 				Usuario u = new Usuario();

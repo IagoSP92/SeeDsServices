@@ -17,11 +17,17 @@ public class TestCategoriaDAO {
 		CategoriaDAO dao = new CategoriaDAOImpl();
 		Connection connection = ConnectionManager.getConnection();
 		
-		System.out.println(dao.findById(connection, 1l).toString());
-		System.out.println(dao.findById(connection, 2l).toString());
-		System.out.println(dao.findById(connection, 3l).toString());
-		System.out.println(dao.findById(connection, 4l).toString());
-		System.out.println(dao.findById(connection, 5l).toString());
+		System.out.println(dao.findById(connection, 1l, "ESP").toString());
+		System.out.println(dao.findById(connection, 2l, "ESP").toString());
+		System.out.println(dao.findById(connection, 3l, "ESP").toString());
+		System.out.println(dao.findById(connection, 4l, "ESP").toString());
+		System.out.println(dao.findById(connection, 5l, "ESP").toString());
+		System.out.println("--------------------------");
+		System.out.println(dao.findById(connection, 1l, "ENG").toString());
+		System.out.println(dao.findById(connection, 2l, "ENG").toString());
+		System.out.println(dao.findById(connection, 3l, "ENG").toString());
+		System.out.println(dao.findById(connection, 4l, "ENG").toString());
+		System.out.println(dao.findById(connection, 5l, "ENG").toString());
 		
 		System.out.println("EMPEZAMOS FINDALL;");
 		
@@ -33,7 +39,7 @@ public class TestCategoriaDAO {
 		}
 		
 		} catch (Exception e) {
-			System.out.println("beeeeeeeee");
+			System.out.println("Excepcion en test categoriaDAO");
 		}
 
 	}

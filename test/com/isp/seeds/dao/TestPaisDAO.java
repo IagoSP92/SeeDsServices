@@ -14,11 +14,18 @@ public class TestPaisDAO {
 	
 	public static void main(String[] args) throws Exception {
 		
+		Connection conexion = ConnectionManager.getConnection();
+		
 		PaisDAO dao = new PaisDAOImpl();
+		
+		System.out.println(dao.findById(conexion, "ES", "ESP").toString());
+		System.out.println(dao.findById(conexion, "ES", "ENG").toString());
+		System.out.println(dao.findById(conexion, "US", "ESP").toString());
+		System.out.println(dao.findById(conexion, "US", "ENG").toString());
 		
 		List<Pais> lista = new ArrayList<Pais>();
 		
-		Connection conexion = ConnectionManager.getConnection();
+
 		lista = dao.findAll(conexion);
 		
 		for(int i =0; i<lista.size();i++) {

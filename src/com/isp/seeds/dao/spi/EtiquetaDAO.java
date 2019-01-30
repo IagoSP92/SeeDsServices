@@ -9,13 +9,18 @@ import com.isp.seeds.model.Etiqueta;
 
 public interface EtiquetaDAO {
 	
-	public Etiqueta findById(Connection conexion, Long id) 
+	public Etiqueta findById(Connection conexion, Long id, String idioma) 
 			throws SQLException, DataException;
 
 	public List<Etiqueta> findAll(Connection conexion) 
 			throws SQLException, DataException;
 	
-	public Etiqueta create (Connection conexion, Etiqueta e) 
+	public Etiqueta create (Connection conexion, Etiqueta e, String idioma) 
 			throws SQLException, DataException;
+	
+	public Etiqueta update (Connection conexion, Etiqueta e, String idioma) 
+			throws SQLException, DataException;
+	
+	
 
 }

@@ -8,7 +8,7 @@ import com.isp.seeds.model.Pais;
 
 public interface PaisDAO {
 
-	public Pais findById(Connection c, String id) 
+	public Pais findById(Connection c, String id, String idioma) 
 			throws DataException;
 
 
