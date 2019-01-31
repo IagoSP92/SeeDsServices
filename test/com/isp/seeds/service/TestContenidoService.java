@@ -65,7 +65,14 @@ public class TestContenidoService {
 			System.out.println(contenidoSvc.verContenido(contenido3.getIdContenido()).toString());
 			System.out.println();
 			System.out.println("+++++++++++++++++++++++++++++++++++++  Asignar categoria");
-			contenidoSvc.asignarCategoria(contenido2.getIdContenido(), categoriaSvc.findByNombre("VIDEOCPLIS"));
+			contenidoSvc.asignarCategoria(contenido2.getIdContenido(), categoriaSvc.findByNombre("VIDEOCLIPS", "ESP"));
+			System.out.println( contenidoSvc.verCategoria(contenido2.getIdContenido(), "ESP")  );
+			System.out.println();
+			System.out.println("+++++++++++++++++++++++++++++++++++++  Modificar categoria");
+			contenidoSvc.modificarCategoria(contenido2.getIdContenido(), categoriaSvc.findByNombre("CORTOS", "ESP"));
+			System.out.println( contenidoSvc.verCategoria(contenido2.getIdContenido(), "ESP")  );
+			System.out.println();System.out.println();
+			
 
 
 

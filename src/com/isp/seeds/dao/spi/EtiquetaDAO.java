@@ -9,7 +9,13 @@ import com.isp.seeds.model.Etiqueta;
 
 public interface EtiquetaDAO {
 	
+	public Boolean exists (Connection connection, Long idEtiqueta, String idioma) 
+			throws DataException;
+	
 	public Etiqueta findById(Connection conexion, Long id, String idioma) 
+			throws SQLException, DataException;
+	
+	public Long findByNombre(Connection conexion, String nombreEtiqueta, String idioma) 
 			throws SQLException, DataException;
 
 	public List<Etiqueta> findAll(Connection conexion) 
@@ -18,7 +24,7 @@ public interface EtiquetaDAO {
 	public Etiqueta create (Connection conexion, Etiqueta e, String idioma) 
 			throws SQLException, DataException;
 	
-	public Etiqueta update (Connection conexion, Etiqueta e, String idioma) 
+	public void delete (Connection conexion, Long idEtiqueta, String idioma) 
 			throws SQLException, DataException;
 	
 	

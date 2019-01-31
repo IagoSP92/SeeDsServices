@@ -10,7 +10,7 @@ public interface CategoriaService {
 	public Categoria findById( Long id, String idioma) 
 			throws DataException;
 	
-	public Long findByNombre( String nombreCategoria ) 
+	public Long findByNombre( String nombreCategoria, String idioma ) 
 			throws DataException;
 
 

@@ -180,9 +180,121 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
 	}
 
 	@Override
-	public Etiqueta update(Connection conexion, Etiqueta e, String idioma) throws SQLException, DataException {
-		// TODO Auto-generated method stub
-		return null;
+	public void delete(Connection connection, Long id, String idioma) throws SQLException, DataException {
+
+		PreparedStatement preparedStatement = null;
+
+		try {
+			
+			String queryString =	
+					  "DELETE FROM ETIQUETA " 
+					+ "WHERE id_ETIQUETA = ? ";
+			
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, id);
+
+			int removedRows = preparedStatement.executeUpdate();
+
+			if (removedRows == 0) {
+				//throw new DataException("Exception: No removed rows");
+			} 
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+
+	@Override
+	public Long findByNombre(Connection connection, String nombreEtiqueta, String idioma)
+			throws SQLException, DataException {
+
+		Long idEtiqueta = null;
+
+		//Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			//connection = ConnectionManager.getConnection();
+
+			String sql;
+			sql =  "SELECT ID_ETIQUETA "
+					+" FROM ETIQUETA_IDIOMA"
+					+" WHERE NOMBRE_ETIQUETA = ? AND ID_IDIOMA = ? ";
+
+			// Preparar a query
+			System.out.println("Creating statement...");
+			preparedStatement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			// Establece os parámetros
+			int i = 1;
+			preparedStatement.setString(i++, nombreEtiqueta);
+			preparedStatement.setString(i++, idioma);
+
+			resultSet = preparedStatement.executeQuery();			
+
+			if (resultSet.next()) {
+				int j=1;
+				idEtiqueta  = resultSet.getLong(j++);
+
+			} else {
+				throw new DataException("Non se encontrou a categoria "+nombreEtiqueta);
+			}
+			if (resultSet.next()) {
+				throw new DataException("Categoria "+nombreEtiqueta+" duplicado");
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new DataException(ex);
+		} finally {            
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+			//JDBCUtils.closeConnection(connection);
+		}  	
+
+		return idEtiqueta;
+	}
+
+	@Override
+	public Boolean exists(Connection connection, Long idEtiqueta, String idioma) throws DataException {
+		boolean exist = false;
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+
+			String queryString = 
+					"SELECT ID_ETIQUETA " + 
+							" FROM ETIQUETA_IDIOMA " +
+							" WHERE ID_ETIQUETA = ? and ID_IDIOMA = ? ";
+
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, idEtiqueta);
+			preparedStatement.setString(i++, idioma);
+
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				exist = true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+
+		return exist;
 	}
 
 }

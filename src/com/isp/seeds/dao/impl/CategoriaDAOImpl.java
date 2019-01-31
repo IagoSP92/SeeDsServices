@@ -103,6 +103,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
 			// Execute query.
+			System.out.println(preparedStatement.toString());
 			resultSet = preparedStatement.executeQuery();
 			
 			// Recupera la pagina de resultados
@@ -131,7 +132,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 
 
 	@Override
-	public Long findByNombre(Connection connection, String nombreCategoria) throws DataException {
+	public Long findByNombre(Connection connection, String nombreCategoria, String idioma) throws DataException {
 
 		Long idCategoria = null;
 
@@ -144,15 +145,16 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 			String sql;
 			sql =  "SELECT ID_CATEGORIA "
 					+" FROM CATEGORIA_IDIOMA"
-					+" WHERE NOMBRE_CATEGORIA = ? ";
+					+" WHERE NOMBRE_CATEGORIA = ? AND ID_IDIOMA = ? ";
 
 			// Preparar a query
 			System.out.println("Creating statement...");
 			preparedStatement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
+			
 			// Establece os parámetros
 			int i = 1;
 			preparedStatement.setString(i++, nombreCategoria);
+			preparedStatement.setString(i++, idioma);
 
 			resultSet = preparedStatement.executeQuery();			
 

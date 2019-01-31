@@ -41,13 +41,13 @@ public class CategoriaServiceImpl implements CategoriaService{
 	}
 
 	@Override
-	public Long findByNombre(String nombreCategoria) throws DataException {
+	public Long findByNombre(String nombreCategoria, String idioma) throws DataException {
 		try {
 
 			if(nombreCategoria != null) {
 				Connection connection = ConnectionManager.getConnection();
 				Long idCategoria = null;
-				idCategoria = categoriaDao.findByNombre(connection, nombreCategoria);
+				idCategoria = categoriaDao.findByNombre(connection, nombreCategoria, idioma);
 
 				JDBCUtils.closeConnection(connection);
 				return idCategoria;

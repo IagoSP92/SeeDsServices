@@ -576,7 +576,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		try {	
 			
 			queryString = new StringBuilder(
-					" UPDATE etiqueta_Contenido " 
+					" UPDATE categoria_Contenido " 
 					);
 			
 			boolean first = true;
@@ -584,10 +584,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			if (idContenido != null && idCategoria != null ) {
 				addUpdate(queryString, first, " id_categoria = ? ");
 				first = false;
-				addUpdate(queryString, first, " id_contenido = ? ");
+
 			}
 
-			queryString.append("WHERE id_categoria = ? and id_contenido= ?");
+			queryString.append("WHERE id_contenido= ?");
 
 			preparedStatement = connection.prepareStatement(queryString.toString());
 
@@ -596,7 +596,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				preparedStatement.setLong(i++, idCategoria );
 				preparedStatement.setLong(i++, idContenido );
 			}
-			
 			int updatedRows = preparedStatement.executeUpdate();
 
 			if (updatedRows == 0) {
@@ -1057,7 +1056,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		try {          
 			String queryString = 
 					" SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA " + 
-					" FROM CATEGORIA C INNER JOIN CATEGORIA_CONTENIDO CC (ON C.ID_CATEGORIA = CC.ID_CATEGORIA) " +
+					" FROM CATEGORIA C INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CATEGORIA = CC.ID_CATEGORIA) " +
 					" INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA ) " +
 					" WHERE CC.ID_CONTENIDO = ? AND CI.ID_IDIOMA = ?";
 			
@@ -1069,7 +1068,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setString(i++, idioma);
  
 			resultSet = preparedStatement.executeQuery();
-			Categoria c = null;
+			Categoria c = new Categoria();
 			if (resultSet.next()) {
 				int j=1;
 				c.setIdCategoria(resultSet.getLong(j++));
