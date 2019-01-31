@@ -334,6 +334,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 		
 	}
 
+	
 	@Override
 	public void comentarContenido(Long idUsuario, Long idContenido, String comentario) throws DataException {
 		try {

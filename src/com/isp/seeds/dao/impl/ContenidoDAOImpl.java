@@ -414,6 +414,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		PreparedStatement preparedStatement = null;
 
 		try {
+			
+			deleteCategorias(connection, id);
+			deleteEtiquetas(connection, id);
+			deleteRelaciones(connection, id);
+			
 			String queryString =	
 					  "DELETE FROM CONTENIDO " 
 					+ "WHERE id_contenido = ? ";
@@ -429,6 +434,95 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				throw new DataException("Exception: No removed rows");
 			} 
 			return removedRows;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+	
+	public void deleteEtiquetas(Connection connection, Long id) throws DataException {
+
+		PreparedStatement preparedStatement = null;
+
+		try {
+			String queryString =	
+					  "DELETE FROM ETIQUETA_CONTENIDO " 
+					+ "WHERE id_contenido = ? ";
+			
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, id);
+
+			int removedRows = preparedStatement.executeUpdate();
+
+			if (removedRows == 0) {
+				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
+				//throw new DataException("Exception: No removed rows");
+			} 
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+	
+	public void deleteCategorias (Connection connection, Long id) throws DataException {
+
+		PreparedStatement preparedStatement = null;
+
+		try {
+			String queryString =	
+					  "DELETE FROM Categoria_CONTENIDO " 
+					+ "WHERE id_contenido = ? ";
+			
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, id);
+
+			int removedRows = preparedStatement.executeUpdate();
+
+			if (removedRows == 0) {
+				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
+				//throw new DataException("Exception: No removed rows (categoria_contenido)");
+			} 
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+	
+	public void deleteRelaciones (Connection connection, Long id) throws DataException {
+
+		PreparedStatement preparedStatement = null;
+
+		try {
+			String queryString =	
+					  "DELETE FROM Usuario_CONTENIDO " 
+					+ "WHERE USUARIO_ID_CONTENIDO = ? OR CONTENIDO_ID_CONTENIDO = ? ";
+			
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, id);
+			preparedStatement.setLong(i++, id);
+
+			int removedRows = preparedStatement.executeUpdate();
+
+			if (removedRows == 0) {
+				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
+				//throw new DataException("Exception: No removed rows (categoria_contenido)");
+			} 
 
 		} catch (SQLException e) {
 			e.printStackTrace();
