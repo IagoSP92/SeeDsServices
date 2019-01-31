@@ -28,11 +28,20 @@ public interface ContenidoService {
 	public void asignarEtiqueta (Long idContenido, Long idEtiqueta)
 			throws DataException;
 	
+	public void modificarCategoria (Long idContenido, Long idCategoria)
+			throws DataException;
+	
+	public void eliminarEtiqueta (Long idContenido, Long idEtiqueta)
+			throws DataException;
+	
 	
 	public void seguirContenido (Long idUsuario, Long idContenido, Boolean siguiendo)
 			throws DataException;
 	
 	public void denunciarContenido (Long idUsuario, Long idContenido, Boolean denunciado)
+			throws DataException;
+	
+	public void cancelarDenuncia (Long idUsuario, Long idContenido, Boolean denunciado)
 			throws DataException;
 	
 	public void valorarContenido (Long idUsuario, Long idContenido, int valoracion)
@@ -42,6 +51,9 @@ public interface ContenidoService {
 			throws DataException;
 	
 	public void comentarContenido (Long idUsuario, Long idContenido, String comentario)
+			throws DataException;
+	
+	public void borrarComentario (Long idUsuario, Long idContenido, String comentario)
 			throws DataException;
 	
 }

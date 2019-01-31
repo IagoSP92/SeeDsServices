@@ -135,43 +135,70 @@ public class ContenidoServiceImpl implements ContenidoService {
 	@Override
 	public void asignarCategoria(Long idContenido, Long idCategoria) throws DataException {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void asignarEtiqueta(Long idContenido, Long idEtiqueta) throws DataException {
 		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void modificarCategoria(Long idContenido, Long idCategoria) throws DataException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void eliminarEtiqueta(Long idContenido, Long idEtiqueta) throws DataException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void seguirContenido(Long idUsuario, Long idContenido, Boolean siguiendo) throws DataException {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void denunciarContenido(Long idUsuario, Long idContenido, Boolean denunciado) throws DataException {
 		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void cancelarDenuncia(Long idUsuario, Long idContenido, Boolean denunciado) throws DataException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void valorarContenido(Long idUsuario, Long idContenido, int valoracion) throws DataException {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void guardarContenido(Long idUsuario, Long idContenido, Boolean guardado) throws DataException {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void comentarContenido(Long idUsuario, Long idContenido, String comentario) throws DataException {
 		// TODO Auto-generated method stub
-
+		
 	}
+
+	@Override
+	public void borrarComentario(Long idUsuario, Long idContenido, String comentario) throws DataException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 
 }

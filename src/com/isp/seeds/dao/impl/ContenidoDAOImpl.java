@@ -18,6 +18,8 @@ import com.isp.seeds.model.Contenido;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
 
 public class ContenidoDAOImpl implements ContenidoDAO {
+	
+	ContenidoDAO contenidoDao = new ContenidoDAOImpl();
 
 	@Override
 	public Contenido findById(Connection connection, Contenido contenido, Long id) throws DataException {
@@ -396,7 +398,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			int updatedRows = preparedStatement.executeUpdate();
 
 			if (updatedRows == 0) {
-				throw new SQLException("No se ha podido modificar la categoría"); //Esto ultimo pa mostrar o nome da clase??
+				throw new SQLException("No se ha podido modificar la categoría");
 			}
 
 			if (updatedRows > 1) {
@@ -505,6 +507,340 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	private void addUpdate(StringBuilder queryString, boolean first, String clause) {
 		queryString.append(first? " SET ": " , ").append(clause);
 	}
+
+
+	@Override
+	public Boolean comprobarExistenciaRelacion(Connection connection, Long idUsuario, Long idContenido)
+			throws DataException {
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {          
+			String queryString = 
+					"SELECT USUARIO_ID_CONTENIDO, CONTENIDO_ID_CONTENIDO " +
+							"FROM USUARIO_CONTENIDO " +
+							"WHERE USUARIO_ID_CONTENIDO = ? and CONTENIDO_ID_CONTENIDO = ? ";
+			
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			int i = 1;                
+			preparedStatement.setLong(i++, idUsuario);
+			preparedStatement.setLong(i++, idContenido);
+ 
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				return true;			
+			}
+			return false;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {            
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+
+
+	@Override
+	public void crearRelacion(Connection connection, Long idUsuario, Long idContenido) throws DataException {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			
+			String queryString = " INSERT INTO USUARIO_CONTENIDO " +
+			" (USUARIO_ID_CONTENIDO, CONTENIDO_ID_CONTENIDO, SIGUIENDO, DENUNCIADO, VALORACION, GUARDADO, COMENTARIO) "
+					+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, idUsuario);
+			preparedStatement.setLong(i++, idContenido);
+			
+			preparedStatement.setBoolean(i++, false);
+			preparedStatement.setNull(i++, Types.NULL);
+			preparedStatement.setInt(i++, 0);
+			preparedStatement.setBoolean(i++, false);
+			preparedStatement.setNull(i++, Types.NULL);
+
+			int insertedRows = preparedStatement.executeUpdate();
+
+			if (insertedRows == 0) {
+				throw new SQLException("No se ha podido crear la relacion Usuario_Contenido");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+
+
+	@Override
+	public void seguirContenido(Connection connection, Long idUsuario, Long idContenido, Boolean siguiendo) throws DataException {
+		
+		if(!contenidoDao.comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
+			contenidoDao.crearRelacion(connection, idUsuario, idContenido);
+		}
+		
+		PreparedStatement preparedStatement = null;
+		StringBuilder queryString = null;
+		try {	
+			
+			queryString = new StringBuilder(
+					" UPDATE USUARIO_CONTENIDO " 
+					);
+			
+			boolean first = true;
+			addUpdate(queryString, first, " SIGUIENDO = ? ");
+			first = false;
+
+			queryString.append("WHERE USUARIO_ID_CONTENIDO = ? and CONTENIDO_ID_CONTENIDO = ?");
+
+			preparedStatement = connection.prepareStatement(queryString.toString());
+
+			int i = 1;
+			
+			preparedStatement.setBoolean(i++, siguiendo );
+			preparedStatement.setLong(i++, idUsuario );
+			preparedStatement.setLong(i++, idContenido );
+
+			int updatedRows = preparedStatement.executeUpdate();
+
+			if (updatedRows == 0) {
+				throw new SQLException("No se ha podido modificar la tabla USUARIO_CONTENIDO (seguir)");
+			}
+
+			if (updatedRows > 1) {
+				throw new SQLException("Duplicate row for id = '" + 
+						idUsuario +" - "+idContenido+ "' in table 'USUARIO_CONTENIDO (seguir)'");
+			}     
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);    
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		
+	}
+
+
+	@Override
+	public void denunciarContenido(Connection connection, Long idUsuario, Long idContenido, String denunciado)
+			throws DataException {
+		
+		if(!contenidoDao.comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
+			contenidoDao.crearRelacion(connection, idUsuario, idContenido);
+		}
+		
+		PreparedStatement preparedStatement = null;
+		StringBuilder queryString = null;
+		try {	
+			
+			queryString = new StringBuilder(
+					" UPDATE USUARIO_CONTENIDO " 
+					);
+			
+			boolean first = true;
+			addUpdate(queryString, first, " DENUNCIADO = ? ");
+			first = false;
+
+			queryString.append("WHERE USUARIO_ID_CONTENIDO = ? and CONTENIDO_ID_CONTENIDO = ?");
+
+			preparedStatement = connection.prepareStatement(queryString.toString());
+
+			int i = 1;
+			if(denunciado == null) {
+				preparedStatement.setNull(i++, Types.NULL);
+			} else {
+				preparedStatement.setString(i++, denunciado );
+			}
+			preparedStatement.setLong(i++, idUsuario );
+			preparedStatement.setLong(i++, idContenido );
+
+			int updatedRows = preparedStatement.executeUpdate();
+
+			if (updatedRows == 0) {
+				throw new SQLException("No se ha podido modificar la tabla USUARIO_CONTENIDO (denunciar)");
+			}
+
+			if (updatedRows > 1) {
+				throw new SQLException("Duplicate row for id = '" + 
+						idUsuario +" - "+idContenido+ "' in table 'USUARIO_CONTENIDO (denunciar)'");
+			}     
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);    
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		
+	}
+
+
+	@Override
+	public void valorarContenido(Connection connection, Long idUsuario, Long idContenido, int valoracion)
+			throws DataException {
+		
+		if(!contenidoDao.comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
+			contenidoDao.crearRelacion(connection, idUsuario, idContenido);
+		}
+		
+		PreparedStatement preparedStatement = null;
+		StringBuilder queryString = null;
+		try {	
+			
+			queryString = new StringBuilder(
+					" UPDATE USUARIO_CONTENIDO " 
+					);
+			
+			boolean first = true;
+			addUpdate(queryString, first, " VALORACION = ? ");
+			first = false;
+
+			queryString.append("WHERE USUARIO_ID_CONTENIDO = ? and CONTENIDO_ID_CONTENIDO = ?");
+
+			preparedStatement = connection.prepareStatement(queryString.toString());
+
+			int i = 1;
+			
+			preparedStatement.setInt(i++, valoracion );
+			preparedStatement.setLong(i++, idUsuario );
+			preparedStatement.setLong(i++, idContenido );
+
+			int updatedRows = preparedStatement.executeUpdate();
+
+			if (updatedRows == 0) {
+				throw new SQLException("No se ha podido modificar la tabla USUARIO_CONTENIDO (valorar)");
+			}
+
+			if (updatedRows > 1) {
+				throw new SQLException("Duplicate row for id = '" + 
+						idUsuario +" - "+idContenido+ "' in table 'USUARIO_CONTENIDO (valorar)' ");
+			}     
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);    
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+
+
+	@Override
+	public void guardarContenido(Connection connection, Long idUsuario, Long idContenido, Boolean guardado)
+			throws DataException {
+		
+		if(!contenidoDao.comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
+			contenidoDao.crearRelacion(connection, idUsuario, idContenido);
+		}
+		
+		PreparedStatement preparedStatement = null;
+		StringBuilder queryString = null;
+		try {	
+			
+			queryString = new StringBuilder(
+					" UPDATE USUARIO_CONTENIDO " 
+					);
+			
+			boolean first = true;
+			addUpdate(queryString, first, " GUARDADO = ? ");
+			first = false;
+
+			queryString.append("WHERE USUARIO_ID_CONTENIDO = ? and CONTENIDO_ID_CONTENIDO = ?");
+
+			preparedStatement = connection.prepareStatement(queryString.toString());
+
+			int i = 1;
+			
+			preparedStatement.setBoolean(i++, guardado );
+			preparedStatement.setLong(i++, idUsuario );
+			preparedStatement.setLong(i++, idContenido );
+
+			int updatedRows = preparedStatement.executeUpdate();
+
+			if (updatedRows == 0) {
+				throw new SQLException("No se ha podido modificar la tabla USUARIO_CONTENIDO  (guardar)");
+			}
+
+			if (updatedRows > 1) {
+				throw new SQLException("Duplicate row for id = '" + 
+						idUsuario +" - "+idContenido+ "' in table 'USUARIO_CONTENIDO (guardar)'");
+			}     
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);    
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		
+		
+	}
+
+
+	@Override
+	public void comentarContenido(Connection connection, Long idUsuario, Long idContenido, String comentario)
+			throws DataException {
+		
+		if(!contenidoDao.comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
+			contenidoDao.crearRelacion(connection, idUsuario, idContenido);
+		}
+		
+		PreparedStatement preparedStatement = null;
+		StringBuilder queryString = null;
+		try {	
+			
+			queryString = new StringBuilder(
+					" UPDATE USUARIO_CONTENIDO " 
+					);
+			
+			boolean first = true;
+			addUpdate(queryString, first, " COMENTARIO = ? ");
+			first = false;
+
+			queryString.append("WHERE USUARIO_ID_CONTENIDO = ? and CONTENIDO_ID_CONTENIDO = ?");
+
+			preparedStatement = connection.prepareStatement(queryString.toString());
+
+			int i = 1;
+			
+			if(comentario == null) {
+				preparedStatement.setNull(i++, Types.NULL);
+			} else {
+				preparedStatement.setString(i++, comentario );
+			}
+			
+			preparedStatement.setLong(i++, idUsuario );
+			preparedStatement.setLong(i++, idContenido );
+
+			int updatedRows = preparedStatement.executeUpdate();
+
+			if (updatedRows == 0) {
+				throw new SQLException("No se ha podido modificar la tabla USUARIO_CONTENIDO (comentar)");
+			}
+
+			if (updatedRows > 1) {
+				throw new SQLException("Duplicate row for id = '" + 
+						idUsuario +" - "+idContenido+ "' in table 'USUARIO_CONTENIDO (comentar)'");
+			}     
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);    
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+				
+	}
+
+
 
 
 }

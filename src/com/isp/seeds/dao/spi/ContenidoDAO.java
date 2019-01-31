@@ -47,5 +47,27 @@ public interface ContenidoDAO {
 			throws DataException;
 	
 	
+	public Boolean comprobarExistenciaRelacion(Connection connection, Long idUsuario, Long idContenido) 
+			throws DataException;
+	
+	public void crearRelacion(Connection connection, Long idUsuario, Long idContenido) 
+			throws DataException;
+	
+	
+	
+	public void seguirContenido (Connection connection, Long idUsuario, Long idContenido, Boolean siguiendo)
+			throws DataException;
+	
+	public void denunciarContenido (Connection connection, Long idUsuario, Long idContenido, String denunciado)
+			throws DataException;
+	
+	public void valorarContenido (Connection connection, Long idUsuario, Long idContenido, int valoracion)
+			throws DataException;
+	
+	public void guardarContenido (Connection connection, Long idUsuario, Long idContenido, Boolean guardado)
+			throws DataException;
+	
+	public void comentarContenido (Connection connection, Long idUsuario, Long idContenido, String comentario)
+			throws DataException;
 	
 }
