@@ -198,6 +198,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		ResultSet resultSet = null;
 		try {
 			
+//			daoc.create(connection, u);
+//			u.setIdContenido(u.getIdContenido());
+			
+			// Facer esto arriba, fora dos metodos
 			ContenidoDAO daoc = new ContenidoDAOImpl();
 			
 			Contenido c= daoc.create(connection, u);

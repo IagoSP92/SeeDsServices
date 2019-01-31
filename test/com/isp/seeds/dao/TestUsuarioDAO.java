@@ -144,7 +144,9 @@ public class TestUsuarioDAO {
 		JDBCUtils.closeConnection(conexion);
 		System.out.println("fin");
 		
+		
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("EXCEPTION EN TEST");
 		}
 	}
@@ -179,6 +181,8 @@ public class TestUsuarioDAO {
 		System.out.println("fin");
 		
 		} catch (Exception e) {
+			e.printStackTrace();
+
 			System.out.println("EXCEPTION EN TEST");
 		}
 	}

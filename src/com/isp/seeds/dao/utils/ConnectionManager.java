@@ -15,14 +15,14 @@ public class ConnectionManager	 {
 	
 	
 	//CASA
-	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/seeds?"
-			+ "useUnicode=true&useJDBCCompliantTimezoneShift=true"
-			+ "&useLegacyDatetimeCode=false&serverTimezone=UTC";
-	
-	//CLASE
 //	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/seeds?"
 //			+ "useUnicode=true&useJDBCCompliantTimezoneShift=true"
 //			+ "&useLegacyDatetimeCode=false&serverTimezone=UTC";
+	
+	//CLASE
+	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/seeds?"
+			+ "useUnicode=true&useJDBCCompliantTimezoneShift=true"
+			+ "&useLegacyDatetimeCode=false&serverTimezone=UTC";
 
 	//  Database credentials
 	static final String USER = "iago";

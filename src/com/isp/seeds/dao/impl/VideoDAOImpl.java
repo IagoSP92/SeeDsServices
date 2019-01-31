@@ -59,6 +59,7 @@ public class VideoDAOImpl implements VideoDAO {
 		}	
 	}
 
+	
 	@Override
 	public List<Video> findByCriteria(Connection connection, VideoCriteria video) throws DataException {
 
@@ -145,6 +146,7 @@ public class VideoDAOImpl implements VideoDAO {
 		}
 	}
 
+	
 	@Override
 	public List<Video> findAll(Connection connection) throws DataException {
 		VideoDAO dao= new VideoDAOImpl();
@@ -152,6 +154,7 @@ public class VideoDAOImpl implements VideoDAO {
 		return dao.findByCriteria(connection, video);
 	}
 
+	
 	@Override
 	public Video create(Connection connection, Video video) throws DataException {
 

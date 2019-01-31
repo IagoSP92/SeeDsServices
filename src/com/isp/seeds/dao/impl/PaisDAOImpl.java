@@ -55,7 +55,7 @@ public class PaisDAOImpl implements PaisDAO{
 			preparedStatement.setString(i++, id);
 			preparedStatement.setString(i++, idioma);
 
-
+			//System.out.println("Query = "+preparedStatement.toString());
 			resultSet = preparedStatement.executeQuery();			
 			//STEP 5: Extract data from result set			
 			
@@ -73,6 +73,7 @@ public class PaisDAOImpl implements PaisDAO{
 			
 
 		} catch (SQLException ex) {
+			ex.printStackTrace();
 			throw new DataException(ex);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
