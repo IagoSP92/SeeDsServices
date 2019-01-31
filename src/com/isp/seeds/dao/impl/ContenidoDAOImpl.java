@@ -20,6 +20,113 @@ import com.isp.seeds.service.criteria.ContenidoCriteria;
 public class ContenidoDAOImpl implements ContenidoDAO {
 	
 	ContenidoDAO contenidoDao = new ContenidoDAOImpl();
+	
+	
+	public Boolean exists(Connection connection, Long idContenido) 
+			throws DataException {
+		boolean exist = false;
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+
+			String queryString = 
+					"SELECT ID_CONTENIDO " + 
+							" FROM CONTENIDO " +
+							" WHERE ID_CONTENIDO = ? ";
+
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, idContenido);
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				exist = true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+
+		return exist;
+	}
+	
+	public Boolean existsCategoria (Connection connection, Long idCategoria) 
+			throws DataException {
+		boolean exist = false;
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+
+			String queryString = 
+					"SELECT ID_CATEGORIA " + 
+							" FROM CATEGORIA " +
+							" WHERE ID_CATEGORIA = ? ";
+
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, idCategoria);
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				exist = true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+
+		return exist;
+	}
+	
+	public Boolean existsEtiqueta (Connection connection, Long idEtiqueta) 
+			throws DataException {
+		boolean exist = false;
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+
+			String queryString = 
+					"SELECT ID_ETIQUETA " + 
+							" FROM ETIQUETA " +
+							" WHERE ID_ETIQUETA = ? ";
+
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, idEtiqueta);
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				exist = true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+
+		return exist;
+	}
+	
 
 	@Override
 	public Contenido findById(Connection connection, Contenido contenido, Long id) throws DataException {
@@ -839,8 +946,5 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 				
 	}
-
-
-
 
 }

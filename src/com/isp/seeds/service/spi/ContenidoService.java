@@ -38,13 +38,13 @@ public interface ContenidoService {
 	public void seguirContenido (Long idUsuario, Long idContenido, Boolean siguiendo)
 			throws DataException;
 	
-	public void denunciarContenido (Long idUsuario, Long idContenido, Boolean denunciado)
+	public void denunciarContenido (Long idUsuario, Long idContenido, String denunciado)
 			throws DataException;
 	
-	public void cancelarDenuncia (Long idUsuario, Long idContenido, Boolean denunciado)
+	public void cancelarDenuncia (Long idUsuario, Long idContenido)
 			throws DataException;
 	
-	public void valorarContenido (Long idUsuario, Long idContenido, int valoracion)
+	public void valorarContenido (Long idUsuario, Long idContenido, Integer valoracion)
 			throws DataException;
 	
 	public void guardarContenido (Long idUsuario, Long idContenido, Boolean guardado)
@@ -53,7 +53,7 @@ public interface ContenidoService {
 	public void comentarContenido (Long idUsuario, Long idContenido, String comentario)
 			throws DataException;
 	
-	public void borrarComentario (Long idUsuario, Long idContenido, String comentario)
+	public void borrarComentario (Long idUsuario, Long idContenido)
 			throws DataException;
 	
 }

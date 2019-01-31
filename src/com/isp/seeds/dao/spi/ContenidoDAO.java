@@ -9,6 +9,15 @@ import com.isp.seeds.service.criteria.ContenidoCriteria;
 
 public interface ContenidoDAO {
 	
+	public Boolean exists (Connection connection, Long idContenido) 
+			throws DataException;
+	
+	public Boolean existsCategoria (Connection connection, Long idCategoria) 
+			throws DataException;
+	
+	public Boolean existsEtiqueta (Connection connection, Long idEtiqueta) 
+			throws DataException;
+	
 	
 	
 	public Contenido findById(Connection connection, Contenido contenido, Long id) 

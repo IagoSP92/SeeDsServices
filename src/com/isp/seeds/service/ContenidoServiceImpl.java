@@ -47,7 +47,9 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 			if(contenido != null) {
 				Connection connection = ConnectionManager.getConnection();
+
 				contenidoDao.create(connection, contenido);
+				
 				JDBCUtils.closeConnection(connection);
 
 				return contenido;
@@ -70,7 +72,9 @@ public class ContenidoServiceImpl implements ContenidoService {
 			if(idContenido != null) {
 				Connection connection = ConnectionManager.getConnection();
 				
-				contenidoDao.delete(connection, idContenido);
+				if (!contenidoDao.exists(connection, idContenido)) {
+					contenidoDao.delete(connection, idContenido);
+				}
 
 				JDBCUtils.closeConnection(connection);
 			}
@@ -91,7 +95,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			if(contenido != null) {
 				Connection connection = ConnectionManager.getConnection();
 				
-				contenidoDao.update(connection, contenido);
+				contenidoDao.update(connection, contenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿?
 				contenido= contenidoDao.findById(connection, contenido, contenido.getIdContenido());
 				
 				JDBCUtils.closeConnection(connection);
@@ -116,7 +120,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 				Connection connection = ConnectionManager.getConnection();
 				
 				Contenido contenido = new Contenido();
-				contenido= contenidoDao.findById(connection, contenido, idContenido);
+				contenido= contenidoDao.findById(connection, contenido, idContenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿?
 				contenidoDao.update(connection, contenido);
 				
 				JDBCUtils.closeConnection(connection);
@@ -134,67 +138,243 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 	@Override
 	public void asignarCategoria(Long idContenido, Long idCategoria) throws DataException {
-		// TODO Auto-generated method stub
+		try {
+			
+			if(idContenido != null && idCategoria != null) {
+				Connection connection = ConnectionManager.getConnection();
+				
+				contenidoDao.agignarCategoria(connection, idContenido, idCategoria);
+				
+				JDBCUtils.closeConnection(connection);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
 		
 	}
 
 	@Override
 	public void asignarEtiqueta(Long idContenido, Long idEtiqueta) throws DataException {
-		// TODO Auto-generated method stub
+		try {
+			
+			if(idContenido != null && idEtiqueta != null) {
+				Connection connection = ConnectionManager.getConnection();
+				
+				contenidoDao.asignarEtiqueta(connection, idContenido, idEtiqueta);
+				
+				JDBCUtils.closeConnection(connection);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
 		
 	}
 
 	@Override
 	public void modificarCategoria(Long idContenido, Long idCategoria) throws DataException {
-		// TODO Auto-generated method stub
+		try {
+			
+			if(idContenido != null && idCategoria != null) {
+				Connection connection = ConnectionManager.getConnection();
+				
+				contenidoDao.modificarCategoria(connection, idContenido, idCategoria);
+				
+				JDBCUtils.closeConnection(connection);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
 		
 	}
 
 	@Override
 	public void eliminarEtiqueta(Long idContenido, Long idEtiqueta) throws DataException {
-		// TODO Auto-generated method stub
+		try {
+			
+			if(idContenido != null && idEtiqueta != null) {
+				Connection connection = ConnectionManager.getConnection();
+				
+				contenidoDao.eliminarEtiqueta(connection, idContenido, idEtiqueta);
+				
+				JDBCUtils.closeConnection(connection);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
 		
 	}
 
 	@Override
 	public void seguirContenido(Long idUsuario, Long idContenido, Boolean siguiendo) throws DataException {
-		// TODO Auto-generated method stub
+		try {
+			
+			if(idUsuario != null && idContenido != null && siguiendo != null) {
+				Connection connection = ConnectionManager.getConnection();
+				
+				contenidoDao.seguirContenido(connection, idUsuario, idContenido, siguiendo);
+				
+				JDBCUtils.closeConnection(connection);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
 		
 	}
 
 	@Override
-	public void denunciarContenido(Long idUsuario, Long idContenido, Boolean denunciado) throws DataException {
-		// TODO Auto-generated method stub
+	public void denunciarContenido(Long idUsuario, Long idContenido, String denunciado) throws DataException {
+		try {
+			
+			if(idUsuario != null && idContenido != null && denunciado != null) {
+				Connection connection = ConnectionManager.getConnection();
+				
+				contenidoDao.denunciarContenido(connection, idUsuario, idContenido, denunciado);
+				
+				JDBCUtils.closeConnection(connection);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
 		
 	}
 
 	@Override
-	public void cancelarDenuncia(Long idUsuario, Long idContenido, Boolean denunciado) throws DataException {
-		// TODO Auto-generated method stub
+	public void cancelarDenuncia(Long idUsuario, Long idContenido) throws DataException {
+		try {
+			
+			if(idUsuario != null && idContenido != null) {
+				Connection connection = ConnectionManager.getConnection();
+				
+				contenidoDao.denunciarContenido(connection, idUsuario, idContenido, null);
+				
+				JDBCUtils.closeConnection(connection);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
 		
 	}
 
 	@Override
-	public void valorarContenido(Long idUsuario, Long idContenido, int valoracion) throws DataException {
-		// TODO Auto-generated method stub
+	public void valorarContenido(Long idUsuario, Long idContenido, Integer valoracion) throws DataException {
+		try {
+			
+			if(idUsuario != null && idContenido != null && valoracion != null) {
+				Connection connection = ConnectionManager.getConnection();
+				
+				contenidoDao.valorarContenido(connection, idUsuario, idContenido, valoracion);
+				
+				JDBCUtils.closeConnection(connection);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
 		
 	}
 
 	@Override
 	public void guardarContenido(Long idUsuario, Long idContenido, Boolean guardado) throws DataException {
-		// TODO Auto-generated method stub
+		try {
+			
+			if(idUsuario != null && idContenido != null && guardado != null) {
+				Connection connection = ConnectionManager.getConnection();
+				
+				contenidoDao.guardarContenido(connection, idUsuario, idContenido, guardado);
+				
+				JDBCUtils.closeConnection(connection);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
 		
 	}
 
 	@Override
 	public void comentarContenido(Long idUsuario, Long idContenido, String comentario) throws DataException {
-		// TODO Auto-generated method stub
+		try {
+			
+			if(idUsuario != null && idContenido != null && comentario != null) {
+				Connection connection = ConnectionManager.getConnection();
+				
+				contenidoDao.comentarContenido(connection, idUsuario, idContenido, comentario);
+				
+				JDBCUtils.closeConnection(connection);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
 		
 	}
 
 	@Override
-	public void borrarComentario(Long idUsuario, Long idContenido, String comentario) throws DataException {
-		// TODO Auto-generated method stub
+	public void borrarComentario(Long idUsuario, Long idContenido) throws DataException {
+		try {
+			
+			if(idUsuario != null && idContenido != null) {
+				Connection connection = ConnectionManager.getConnection();
+				
+				contenidoDao.comentarContenido(connection, idUsuario, idContenido, null);
+				
+				JDBCUtils.closeConnection(connection);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
 		
 	}
 
