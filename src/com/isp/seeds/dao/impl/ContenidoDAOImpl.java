@@ -15,7 +15,6 @@ import com.isp.seeds.Exceptions.InstanceNotFoundException;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Contenido;
-import com.isp.seeds.model.Usuario;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
 
 public class ContenidoDAOImpl implements ContenidoDAO {
@@ -28,7 +27,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		try {          
 			String queryString = 
-					"SELECT c.id_contenido, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
+					"SELECT c.id_contenido, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, tipo"
 							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais " + 
 							"FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) " +
 							"WHERE u.id_contenido = ? ";
@@ -49,6 +48,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			return contenido;
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataException(e);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
@@ -66,7 +66,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		try {
 			queryString = new StringBuilder(
-					" SELECT c.ID_CONTENIDO, c.fecha_alta, c.fecha_mod, c.autor_id_contenido " + 
+					" SELECT c.ID_CONTENIDO, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, tipo " + 
 					" FROM Contenido c " );
 			
 			boolean first = true;
@@ -89,6 +89,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			if (contenido.getIdAutor()!=null) {
 				addClause(queryString, first, " u.NOMBRE_REAL LIKE ? ");
 				first = false;
+			}
+			
+			if (contenido.getTipo()!=null) {
+				addClause(queryString, first, " u.tipo LIKE ? ");
+				first = false;
 			}	
 			
 			/*if (idioma!=null) {
@@ -108,6 +113,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				preparedStatement.setString(i++, "%" + contenido.getFechaMod() + "%");
 			if (contenido.getIdAutor()!=null) 
 				preparedStatement.setString(i++, "%" + contenido.getIdAutor() + "%");
+			if (contenido.getTipo()!=null) 
+				preparedStatement.setString(i++, "%" + contenido.getTipo() + "%");
 
 			/*			if (idioma!=null) 
 				preparedStatement.setString(i++,idioma);
@@ -117,7 +124,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			
 			
 			List<Contenido> results = new ArrayList<Contenido>();    
-			Usuario e = null;
+			Contenido e = null;
 			//int currentCount = 0;
 
 			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
@@ -133,6 +140,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			return results;
 	
 			} catch (SQLException e) {
+				e.printStackTrace();
 				//logger.error("Error",e);
 				throw new DataException(e);
 			} catch (DataException de) {
@@ -148,8 +156,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 	@Override
 	public List<Contenido> findAll(Connection connection) throws DataException {
-		// TODO Auto-generated method stub
-		return null;
+		ContenidoDAO dao= new ContenidoDAOImpl();
+		ContenidoCriteria contenido= new ContenidoCriteria();
+		return dao.findByCriteria(connection, contenido);
 	}
 
 
@@ -160,8 +169,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		
 		try {
 			// Creamos el preparedstatement
-			String queryString = "INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido) "
-					+ "VALUES (?, ?, ?, ?)";
+			String queryString = "INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) "
+					+ "VALUES (?, ?, ?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(queryString,
 									Statement.RETURN_GENERATED_KEYS);
@@ -177,6 +186,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			else {  // INSERTAR VIDEOS Y LISTAS
 				preparedStatement.setLong(i++, c.getIdAutor());
 			}
+			preparedStatement.setInt(i++, c.getTipo());
+
 			
 			// Execute query
 			int insertedRows = preparedStatement.executeUpdate();
@@ -198,6 +209,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			return c;
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -238,6 +250,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				addUpdate(queryString, first, " autor_id_contenido = ? ");
 				first = false;
 			}
+			
+			if (contenido.getTipo()!=null) {
+				addUpdate(queryString, first, " tipo = ? ");
+				first = false;
+			}
 
 			queryString.append("WHERE id_contenido = ?");
 
@@ -255,6 +272,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			
 			if (contenido.getIdAutor()!=null)
 				preparedStatement.setLong(i++,contenido.getIdAutor());
+			
+			if (contenido.getTipo()!=null)
+				preparedStatement.setLong(i++,contenido.getTipo());
 
 			preparedStatement.setLong(i++, contenido.getIdContenido());
 
@@ -270,6 +290,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}     
 			
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataException(e);    
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -301,6 +322,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			return removedRows;
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -315,13 +337,15 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				String nombre = resultSet.getString(i++);
 				Date fechaAlta =  resultSet.getDate(i++);
 				Date fechaMod =  resultSet.getDate(i++);
-				Long autor = resultSet.getLong(i++);	
+				Long autor = resultSet.getLong(i++);
+				Integer tipo = resultSet.getInt(i++);
 			
 				c.setIdContenido(idContenido);
 				c.setNombre(nombre);
 				c.setFechaAlta(fechaAlta);
 				c.setFechaMod(fechaMod);
 				c.setIdAutor(autor);
+				c.setTipo(tipo);
 
 				return c;
 			}

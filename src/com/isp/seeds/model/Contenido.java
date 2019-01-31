@@ -4,14 +4,15 @@ import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public abstract class Contenido extends AbstractValueObject {
+public class Contenido extends AbstractValueObject {
 
-	//  DENUNCIAS???
 	private Long id = null;
 	private String nombre = null;
 	private Date fechaAlta = null;
 	private Date fechaMod = null;
 	private Long autor = null;
+	private Integer tipo = null;
+
 
 	public String toString() {
 		return super.toString() + ToStringBuilder.reflectionToString(this);
@@ -60,6 +61,14 @@ public abstract class Contenido extends AbstractValueObject {
 
 	public void setIdAutor(Long idAutor) {
 		this.autor = idAutor;
+	}
+
+	public Integer getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Integer tipo) {
+		this.tipo = tipo;
 	}
 
 
