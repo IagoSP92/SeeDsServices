@@ -2,18 +2,22 @@ package com.isp.seeds.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.dao.impl.ContenidoDAOImpl;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
+import com.isp.seeds.model.Etiqueta;
 import com.isp.seeds.service.spi.ContenidoService;
 
 public class ContenidoServiceImpl implements ContenidoService {
 
-	private ContenidoDAO contenidoDao = new ContenidoDAOImpl();
+	private static ContenidoDAO contenidoDao = new ContenidoDAOImpl();
 
 	@Override
 	public Contenido verContenido(Long idContenido) {
@@ -121,6 +125,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 				
 				Contenido contenido = new Contenido();
 				contenido= contenidoDao.findById(connection, contenido, idContenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿?
+				contenido.setNombre(nuevo);
 				contenidoDao.update(connection, contenido);
 				
 				JDBCUtils.closeConnection(connection);
@@ -222,6 +227,52 @@ public class ContenidoServiceImpl implements ContenidoService {
 			//JDBCUtils.closeConnection(connection);
 		}
 		
+	}
+	
+	@Override
+	public Categoria verCategoria(Long id, String idioma) throws DataException {
+		try {
+			
+			if(id != null && idioma != null) {
+				Connection connection = ConnectionManager.getConnection();
+				
+				Categoria categoria= new Categoria();
+				categoria = contenidoDao.verCategoria(connection, id, idioma);
+				
+				JDBCUtils.closeConnection(connection);
+				return categoria;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
+		return null;
+	}
+
+	@Override
+	public List<Etiqueta> verEtiquetas(Long id, String idioma) throws DataException {
+		try {
+			
+			if(id != null && idioma != null) {
+				Connection connection = ConnectionManager.getConnection();
+				
+				List<Etiqueta> etiquetas= new ArrayList<Etiqueta>();
+				etiquetas = contenidoDao.verEtiquetas(connection, id, idioma);
+				
+				JDBCUtils.closeConnection(connection);
+				return etiquetas;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
+		return null;
 	}
 
 	@Override
@@ -378,6 +429,8 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}
 		
 	}
+
+
 
 
 

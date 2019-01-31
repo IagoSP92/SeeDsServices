@@ -1,7 +1,12 @@
 package com.isp.seeds.service.spi;
 
+import java.sql.Connection;
+import java.util.List;
+
 import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
+import com.isp.seeds.model.Etiqueta;
 
 public interface ContenidoService {
 	
@@ -32,6 +37,12 @@ public interface ContenidoService {
 			throws DataException;
 	
 	public void eliminarEtiqueta (Long idContenido, Long idEtiqueta)
+			throws DataException;
+	
+	public Categoria verCategoria (Long id, String idioma) 
+			throws DataException;
+	
+	public List<Etiqueta> verEtiquetas (Long id, String idioma) 
 			throws DataException;
 	
 	

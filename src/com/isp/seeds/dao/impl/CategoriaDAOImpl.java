@@ -73,6 +73,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 			}
 
 		} catch (SQLException ex) {
+			ex.printStackTrace();
 			throw new DataException(ex);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
@@ -120,11 +121,62 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 			return results;
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 		}
+	}
+
+
+	@Override
+	public Long findByNombre(Connection connection, String nombreCategoria) throws DataException {
+
+		Long idCategoria = null;
+
+		//Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			//connection = ConnectionManager.getConnection();
+
+			String sql;
+			sql =  "SELECT ID_CATEGORIA "
+					+" FROM CATEGORIA_IDIOMA"
+					+" WHERE NOMBRE_CATEGORIA = ? ";
+
+			// Preparar a query
+			System.out.println("Creating statement...");
+			preparedStatement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			// Establece os parámetros
+			int i = 1;
+			preparedStatement.setString(i++, nombreCategoria);
+
+			resultSet = preparedStatement.executeQuery();			
+
+			if (resultSet.next()) {
+				int j=1;
+				idCategoria  = resultSet.getLong(j++);
+
+			} else {
+				throw new DataException("Non se encontrou a categoria "+nombreCategoria);
+			}
+			if (resultSet.next()) {
+				throw new DataException("Categoria "+nombreCategoria+" duplicado");
+			}
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new DataException(ex);
+		} finally {            
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+			//JDBCUtils.closeConnection(connection);
+		}  	
+
+		return idCategoria;
 	}
 
 }

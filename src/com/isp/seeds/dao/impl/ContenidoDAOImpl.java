@@ -14,12 +14,14 @@ import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.Exceptions.InstanceNotFoundException;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
+import com.isp.seeds.model.Etiqueta;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
 
 public class ContenidoDAOImpl implements ContenidoDAO {
 	
-	ContenidoDAO contenidoDao = new ContenidoDAOImpl();
+	private static ContenidoDAO contenidoDao = new ContenidoDAOImpl();
 	
 	
 	public Boolean exists(Connection connection, Long idContenido) 
@@ -136,10 +138,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		try {          
 			String queryString = 
-					"SELECT c.id_contenido, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, tipo"
-							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais " + 
-							"FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) " +
-							"WHERE u.id_contenido = ? ";
+					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo"+
+							" FROM Contenido c " +
+							" WHERE c.id_contenido = ? ";
 			
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -351,7 +352,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 			
 			if (contenido.getFechaMod()!=null) {
-				addUpdate(queryString, first, " contrasena = ? ");
+				addUpdate(queryString, first, " fecha_mod = ? ");
 				first = false;
 			}
 			
@@ -374,10 +375,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				preparedStatement.setString(i++,contenido.getNombre());
 			
 			if (contenido.getFechaAlta()!=null)
-				preparedStatement.setDate(i++,(Date) contenido.getFechaAlta());
+				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAlta().getTime()));
 			
 			if (contenido.getFechaMod()!=null)
-				preparedStatement.setDate(i++,(Date) contenido.getFechaMod());
+				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaMod().getTime()));
 			
 			if (contenido.getIdAutor()!=null)
 				preparedStatement.setLong(i++,contenido.getIdAutor());
@@ -688,7 +689,13 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				String nombre = resultSet.getString(i++);
 				Date fechaAlta =  resultSet.getDate(i++);
 				Date fechaMod =  resultSet.getDate(i++);
-				Long autor = resultSet.getLong(i++);
+				Long autor = null;
+				if(resultSet.getObject(i)==null) {
+					autor = (Long) resultSet.getObject(i++);
+
+				} else {
+					autor = resultSet.getLong(i++);
+				}
 				Integer tipo = resultSet.getInt(i++);
 			
 				c.setIdContenido(idContenido);
@@ -888,7 +895,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 
 	@Override
-	public void valorarContenido(Connection connection, Long idUsuario, Long idContenido, int valoracion)
+	public void valorarContenido(Connection connection, Long idUsuario, Long idContenido, Integer valoracion)
 			throws DataException {
 		
 		if(!contenidoDao.comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
@@ -1039,6 +1046,97 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 				
+	}
+
+	@Override
+	public Categoria verCategoria(Connection connection, Long id, String idioma) throws DataException {
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {          
+			String queryString = 
+					" SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA " + 
+					" FROM CATEGORIA C INNER JOIN CATEGORIA_CONTENIDO CC (ON C.ID_CATEGORIA = CC.ID_CATEGORIA) " +
+					" INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA ) " +
+					" WHERE CC.ID_CONTENIDO = ? AND CI.ID_IDIOMA = ?";
+			
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			int i = 1;                
+			preparedStatement.setLong(i++, id);
+			preparedStatement.setString(i++, idioma);
+ 
+			resultSet = preparedStatement.executeQuery();
+			Categoria c = null;
+			if (resultSet.next()) {
+				int j=1;
+				c.setIdCategoria(resultSet.getLong(j++));
+				c.setNombreCategoria(resultSet.getString(j++));			
+			} else {
+				throw new DataException("\nContenido with id " +id+ "not found\n");
+			}
+			return c;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {            
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}	
+	}
+
+	
+	@Override
+	public List<Etiqueta> verEtiquetas(Connection connection, Long id, String idioma) throws DataException {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					" SELECT E.ID_ETIQUETA, EI.NOMBRE_ETIQUETA " + 
+					" FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC (ON E.ID_ETIQUETA = EC.ID_ETIQUETA) " +
+					" INNER JOIN ETIQUETA_IDIOMA EI ON (E.ID_ETIQUETA = EI.ID_ETIQUETA ) " +
+					" WHERE EC.ID_CONTENIDO = ? AND EI.ID_IDIOMA = ?");
+			
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			int i = 1;
+			preparedStatement.setLong(i++, id );
+			preparedStatement.setString(i++, idioma );
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			List<Etiqueta> results = new ArrayList<Etiqueta>();    
+			Etiqueta e = new Etiqueta();
+			//int currentCount = 0;
+
+			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
+			if(resultSet.next()) {
+				do {
+					int j=1;
+					e.setIdEtiqueta(resultSet.getLong(j++));
+					e.setNombreEtiqueta(resultSet.getString(j++));
+					results.add(e);               	
+					//currentCount++;                	
+				} while (/*(currentCount < count) && */ resultSet.next()) ;
+			}
+			//}
+
+			return results;
+	
+			} catch (SQLException e) {
+				e.printStackTrace();
+				//logger.error("Error",e);
+				throw new DataException(e);
+			} finally {
+				JDBCUtils.closeResultSet(resultSet);
+				JDBCUtils.closeStatement(preparedStatement);
+		}
 	}
 
 }

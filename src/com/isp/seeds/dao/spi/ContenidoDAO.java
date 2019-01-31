@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
+import com.isp.seeds.model.Etiqueta;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
 
 public interface ContenidoDAO {
@@ -64,13 +66,22 @@ public interface ContenidoDAO {
 	
 	
 	
+	public Categoria verCategoria (Connection connection, Long id, String idioma) 
+			throws DataException;
+	
+	public List<Etiqueta> verEtiquetas (Connection connection, Long id, String idioma) 
+			throws DataException;
+	
+	
+	
+	
 	public void seguirContenido (Connection connection, Long idUsuario, Long idContenido, Boolean siguiendo)
 			throws DataException;
 	
 	public void denunciarContenido (Connection connection, Long idUsuario, Long idContenido, String denunciado)
 			throws DataException;
 	
-	public void valorarContenido (Connection connection, Long idUsuario, Long idContenido, int valoracion)
+	public void valorarContenido (Connection connection, Long idUsuario, Long idContenido, Integer valoracion)
 			throws DataException;
 	
 	public void guardarContenido (Connection connection, Long idUsuario, Long idContenido, Boolean guardado)
@@ -78,5 +89,25 @@ public interface ContenidoDAO {
 	
 	public void comentarContenido (Connection connection, Long idUsuario, Long idContenido, String comentario)
 			throws DataException;
+	/*
+	
+	public List<Contenido> verSeguidos (Connection connection, Long id) 
+			throws DataException;
+	
+	public List<Contenido> verDenunciados (Connection connection, Long id) 
+			throws DataException;
+	
+	public List<Contenido> verValorados (Connection connection, Long id) 
+			throws DataException;
+	
+	public List<Contenido> verGuardados (Connection connection, Long id) 
+			throws DataException;
+	
+	public List<Contenido> verComentados (Connection connection, Long id) 
+			throws DataException;
+	
+	
+	*/
+	
 	
 }
