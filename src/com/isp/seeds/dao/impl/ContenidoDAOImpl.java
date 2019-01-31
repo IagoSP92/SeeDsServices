@@ -329,6 +329,154 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 	
+	
+
+
+	@Override
+	public void agignarCategoria(Connection connection, Long idContenido, Long idCategoria) throws DataException {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			
+			String queryString = " INSERT INTO categoria_contenido (id_categoria, id_contenido) "
+					+ " VALUES (?, ?)";
+
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, idCategoria);
+			preparedStatement.setLong(i++, idContenido);
+
+			// Execute query
+			int insertedRows = preparedStatement.executeUpdate();
+
+			if (insertedRows == 0) {
+				throw new SQLException("No se ha podido asignar la categoría");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+
+
+	@Override
+	public void modificarCategoria(Connection connection, Long idContenido, Long idCategoria) throws DataException {
+		
+		PreparedStatement preparedStatement = null;
+		StringBuilder queryString = null;
+		try {	
+			
+			queryString = new StringBuilder(
+					" UPDATE etiqueta_Contenido " 
+					);
+			
+			boolean first = true;
+			
+			if (idContenido != null && idCategoria != null ) {
+				addUpdate(queryString, first, " id_categoria = ? ");
+				first = false;
+				addUpdate(queryString, first, " id_contenido = ? ");
+			}
+
+			queryString.append("WHERE id_categoria = ? and id_contenido= ?");
+
+			preparedStatement = connection.prepareStatement(queryString.toString());
+
+			int i = 1;
+			if (idContenido != null && idCategoria != null ) {
+				preparedStatement.setLong(i++, idCategoria );
+				preparedStatement.setLong(i++, idContenido );
+			}
+			
+			int updatedRows = preparedStatement.executeUpdate();
+
+			if (updatedRows == 0) {
+				throw new SQLException("No se ha podido modificar la categoría"); //Esto ultimo pa mostrar o nome da clase??
+			}
+
+			if (updatedRows > 1) {
+				throw new SQLException("Duplicate row for id = '" + 
+						idContenido +" - "+idCategoria+ "' in table 'Categoria_Contenido'");
+			}     
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);    
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+
+
+	@Override
+	public void asignarEtiqueta(Connection connection, Long idContenido, Long idEtiqueta) throws DataException {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			
+			String queryString = " INSERT INTO etiqueta_contenido (idEtiqueta, id_contenido) "
+					+ " VALUES (?, ?)";
+
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, idEtiqueta);
+			preparedStatement.setLong(i++, idContenido);
+
+			// Execute query
+			int insertedRows = preparedStatement.executeUpdate();
+
+			if (insertedRows == 0) {
+				throw new SQLException("No se ha podido asignar la etiqueta");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+
+
+	@Override
+	public void eliminarEtiqueta(Connection connection, Long idContenido, Long idEtiqueta) throws DataException {
+
+		PreparedStatement preparedStatement = null;
+
+		try {
+			String queryString =	
+					  "DELETE FROM ETIQUETA_CONTENIDO " 
+					+ "WHERE id_contenido = ? and id_etiqueta = ?";
+			
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, idContenido);
+			preparedStatement.setLong(i++, idEtiqueta);
+
+			int removedRows = preparedStatement.executeUpdate();
+
+			if (removedRows == 0) {
+				throw new DataException("Exception: No se ha eliminado la etiqueta");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+	
+	
+	
 	private Contenido loadNext(Connection connection, ResultSet resultSet, Contenido c)
 			throws SQLException, DataException {
 
@@ -357,5 +505,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	private void addUpdate(StringBuilder queryString, boolean first, String clause) {
 		queryString.append(first? " SET ": " , ").append(clause);
 	}
+
 
 }

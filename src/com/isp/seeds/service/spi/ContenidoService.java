@@ -12,10 +12,13 @@ public interface ContenidoService {
 	public Contenido crearContenido (Contenido contenido) 
 			throws DataException;
 	
-	public Contenido eliminarContenido (Contenido contenido) 
+	public void eliminarContenido (Long idContenido) 
 			throws DataException;
 	
 	public Contenido cambiarNombre (Contenido contenido)
+			throws DataException;
+	
+	public void cambiarNombre (Long idContenido, String nuevo)
 			throws DataException;
 	
 	
