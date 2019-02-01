@@ -16,7 +16,8 @@ import com.isp.seeds.model.Etiqueta;
 
 public class EtiquetaDAOImpl implements EtiquetaDAO {
 
-	private Etiqueta loadNext (ResultSet resultSet)
+	@Override
+	public Etiqueta loadNext (ResultSet resultSet)
 			throws SQLException {
 
 		Etiqueta e = new Etiqueta();
@@ -29,6 +30,42 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
 		e.setNombreEtiqueta(nombre);
 
 		return e;		
+	}
+	
+	@Override
+	public Boolean exists (Connection connection, Long idEtiqueta) 
+			throws DataException {
+		boolean exist = false;
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+
+			String queryString = 
+					"SELECT ID_ETIQUETA " + 
+							" FROM ETIQUETA " +
+							" WHERE ID_ETIQUETA = ? ";
+
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, idEtiqueta);
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				exist = true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+
+		return exist;
 	}
 
 	@Override

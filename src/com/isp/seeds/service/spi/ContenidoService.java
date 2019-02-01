@@ -9,11 +9,15 @@ import com.isp.seeds.model.Etiqueta;
 
 public interface ContenidoService {
 	
-	public Contenido verContenido (Long idContenido) 
+	
+	public Contenido buscarId (Long idContenido) 
 			throws DataException;
+	
+	public Contenido buscarNombre(String nombreContenido);
 	
 	public List<Contenido> verTodos () 
 			throws DataException;
+	
 	
 	
 	public Contenido crearContenido (Contenido contenido) 
@@ -27,6 +31,7 @@ public interface ContenidoService {
 	
 	public void cambiarNombre (Long idContenido, String nuevo)
 			throws DataException;
+	
 	
 	
 	public void asignarCategoria (Long idContenido, Long idCategoria)
@@ -46,6 +51,7 @@ public interface ContenidoService {
 	
 	public List<Etiqueta> verEtiquetas (Long id, String idioma) 
 			throws DataException;
+	
 	
 	
 	public void seguirContenido (Long idUsuario, Long idContenido, Boolean siguiendo)
@@ -68,5 +74,7 @@ public interface ContenidoService {
 	
 	public void borrarComentario (Long idUsuario, Long idContenido)
 			throws DataException;
+
+
 	
 }

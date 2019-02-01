@@ -7,8 +7,17 @@ public class Etiqueta extends AbstractValueObject{
 	private Long idEtiqueta = null;
 	private String nombreEtiqueta = null;
 
-	public String toString() {
+	/*public String toString() {
 		return super.toString() + ToStringBuilder.reflectionToString(this);
+	}*/
+	
+	public String toString() {
+		StringBuilder cadena = new StringBuilder();
+		cadena.append("Etiqueta - ID: ");
+		cadena.append(idEtiqueta);
+		cadena.append("   Nombre: ");
+		cadena.append(nombreEtiqueta);
+		return cadena.toString();
 	}
 
 	public Etiqueta () {

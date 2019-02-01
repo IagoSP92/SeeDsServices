@@ -30,6 +30,41 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 
 		return c;		
 	}
+	
+	public Boolean exists (Connection connection, Long idCategoria) 
+			throws DataException {
+		boolean exist = false;
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+
+			String queryString = 
+					"SELECT ID_CATEGORIA " + 
+							" FROM CATEGORIA " +
+							" WHERE ID_CATEGORIA = ? ";
+
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, idCategoria);
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				exist = true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+
+		return exist;
+	}
 
 
 	public Categoria findById(Connection connection, Long id, String idioma)

@@ -12,7 +12,9 @@ import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.Exceptions.InstanceNotFoundException;
+import com.isp.seeds.dao.spi.CategoriaDAO;
 import com.isp.seeds.dao.spi.ContenidoDAO;
+import com.isp.seeds.dao.spi.EtiquetaDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
@@ -21,9 +23,22 @@ import com.isp.seeds.service.criteria.ContenidoCriteria;
 
 public class ContenidoDAOImpl implements ContenidoDAO {
 	
-	private static ContenidoDAO contenidoDao = new ContenidoDAOImpl();
+	private CategoriaDAO categoriaDao = null;
+	private EtiquetaDAO etiquetaDao = null;
+
 	
+	public ContenidoDAOImpl () {
+		categoriaDao = new CategoriaDAOImpl();
+		etiquetaDao = new EtiquetaDAOImpl();
+	}
 	
+	/**
+	 * Comprueba si Existe algún contenido con el ID que recibe.
+	 * @param connection - Connection
+	 * @param idContenido - Long
+     * @return Boolean : True si existe el contenido. False si no existe le contenido
+     * 
+	 */
 	public Boolean exists(Connection connection, Long idContenido) 
 			throws DataException {
 		boolean exist = false;
@@ -59,7 +74,49 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		return exist;
 	}
 	
-	public Boolean existsCategoria (Connection connection, Long idCategoria) 
+//	public Boolean existsCategoria (Connection connection, Long idCategoria) 
+//			throws DataException {
+//		boolean exist = false;
+//
+//		PreparedStatement preparedStatement = null;
+//		ResultSet resultSet = null;
+//
+//		try {
+//
+//			String queryString = 
+//					"SELECT ID_CATEGORIA " + 
+//							" FROM CATEGORIA " +
+//							" WHERE ID_CATEGORIA = ? ";
+//
+//			preparedStatement = connection.prepareStatement(queryString);
+//
+//			int i = 1;
+//			preparedStatement.setLong(i++, idCategoria);
+//			resultSet = preparedStatement.executeQuery();
+//
+//			if (resultSet.next()) {
+//				exist = true;
+//			}
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			throw new DataException(e);
+//		} finally {
+//			JDBCUtils.closeResultSet(resultSet);
+//			JDBCUtils.closeStatement(preparedStatement);
+//		}
+//
+//		return exist;
+//	}
+	
+	
+	/**
+	 * Comprueba si Existen relaciones entre Este contenido y Cualquier otro contenido.
+	 * @param connection - Connection
+	 * @param idContenido - Long
+    * @return Boolean : True si existen relaciones. False en caso contrario.
+	 */
+	public Boolean existsRelacion (Connection connection, Long idContenido) 
 			throws DataException {
 		boolean exist = false;
 
@@ -69,14 +126,15 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		try {
 
 			String queryString = 
-					"SELECT ID_CATEGORIA " + 
-							" FROM CATEGORIA " +
-							" WHERE ID_CATEGORIA = ? ";
+					"SELECT USUARIO_ID_CONTENIDO " + 
+							" FROM USUARIO_CONTENIDO " +
+							" WHERE CONTENIDO_ID_CONTENIDO = ? OR USUARIO_ID_CONTENIDO = ?";
 
 			preparedStatement = connection.prepareStatement(queryString);
 
 			int i = 1;
-			preparedStatement.setLong(i++, idCategoria);
+			preparedStatement.setLong(i++, idContenido);
+			preparedStatement.setLong(i++, idContenido);
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
@@ -94,44 +152,49 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		return exist;
 	}
 	
-	public Boolean existsEtiqueta (Connection connection, Long idEtiqueta) 
-			throws DataException {
-		boolean exist = false;
-
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-
-		try {
-
-			String queryString = 
-					"SELECT ID_ETIQUETA " + 
-							" FROM ETIQUETA " +
-							" WHERE ID_ETIQUETA = ? ";
-
-			preparedStatement = connection.prepareStatement(queryString);
-
-			int i = 1;
-			preparedStatement.setLong(i++, idEtiqueta);
-			resultSet = preparedStatement.executeQuery();
-
-			if (resultSet.next()) {
-				exist = true;
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataException(e);
-		} finally {
-			JDBCUtils.closeResultSet(resultSet);
-			JDBCUtils.closeStatement(preparedStatement);
-		}
-
-		return exist;
-	}
+//	public Boolean existsEtiqueta (Connection connection, Long idEtiqueta) 
+//			throws DataException {
+//		boolean exist = false;
+//
+//		PreparedStatement preparedStatement = null;
+//		ResultSet resultSet = null;
+//
+//		try {
+//
+//			String queryString = 
+//					"SELECT ID_ETIQUETA " + 
+//							" FROM ETIQUETA " +
+//							" WHERE ID_ETIQUETA = ? ";
+//
+//			preparedStatement = connection.prepareStatement(queryString);
+//
+//			int i = 1;
+//			preparedStatement.setLong(i++, idEtiqueta);
+//			resultSet = preparedStatement.executeQuery();
+//
+//			if (resultSet.next()) {
+//				exist = true;
+//			}
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			throw new DataException(e);
+//		} finally {
+//			JDBCUtils.closeResultSet(resultSet);
+//			JDBCUtils.closeStatement(preparedStatement);
+//		}
+//
+//		return exist;
+//	}
 	
-
+	/**
+	 * Devuelve el contenido identificado id recibido como parametro.
+	 * @param connection - Connection
+	 * @param idContenido - Long
+    * @return Contenido : Contenido que corresponde con el ID recibido
+	 */
 	@Override
-	public Contenido findById(Connection connection, Contenido contenido, Long id) throws DataException {
+	public Contenido findById(Connection connection, Long idContenido) throws DataException {
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -146,14 +209,61 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			int i = 1;                
-			preparedStatement.setLong(i++, id);
+			preparedStatement.setLong(i++, idContenido);
  
 			resultSet = preparedStatement.executeQuery();
+			
+			Contenido contenido = null;
 
 			if (resultSet.next()) {
 				contenido = loadNext(connection, resultSet);				
 			} else {
-				throw new DataException("\nContenido with id " +id+ "not found\n");
+				throw new DataException("\nContenido with id " +idContenido+ "not found\n");
+			}
+			return contenido;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {            
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}	
+	}
+	
+	
+	/**
+	 * Devuelve el contenido que tiene EXACTEMENTE el nombre recibido como parametro.
+	 * @param connection - Connection
+	 * @param nombreContenido - String
+    * @return Contenido : Contenido que corresponde con el nombre recibido
+	 */
+	@Override
+	public Contenido findByNombre(Connection connection, String nombreContenido) throws DataException {
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {          
+			String queryString = 
+					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo"+
+							" FROM Contenido c " +
+							" WHERE c.nombre = ? ";
+			
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			int i = 1;                
+			preparedStatement.setString(i++, nombreContenido);
+ 
+			resultSet = preparedStatement.executeQuery();
+			
+			Contenido contenido = null;
+
+			if (resultSet.next()) {
+				contenido = loadNext(connection, resultSet);				
+			} else {
+				throw new DataException("\nContenido with id " +nombreContenido+ "not found\n");
 			}
 			return contenido;
 
@@ -259,15 +369,25 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		
 	}
 	
-
+	/**
+	 * Devuelve todos los contenidos.
+	 * @param connection - Connection
+    * @return  Lista con todos los contenidos
+	 */
 	@Override
 	public List<Contenido> findAll(Connection connection) throws DataException {
 		ContenidoDAO dao= new ContenidoDAOImpl();
 		ContenidoCriteria contenido= new ContenidoCriteria();
 		return dao.findByCriteria(connection, contenido);
 	}
+	
 
-
+	/**
+	 * Crea el contenido que recibe como parámetro y lo devuelve con el campo ID cubierto.
+	 * @param connection - Connection
+	 * @param c - Contenido
+    * @return Contenido : Contenido creado (con ID)
+	 */
 	@Override
 	public Contenido create (Connection connection, Contenido c) throws DataException {
 		PreparedStatement preparedStatement = null;
@@ -404,14 +524,34 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	}
 
 
-
 	@Override
 	public long delete(Connection connection, Long id) throws DataException {
-
+		
 		PreparedStatement preparedStatement = null;
 
 		try {
-			
+			//deleteRelaciones(connection, id);
+			deleteCategorias(connection, id);
+			deleteEtiquetas(connection, id);
+			deleteCategorias(connection, id);
+			deleteEtiquetas(connection, id);
+			return deleteContenido(connection, id);
+
+		}/* catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		}*/ finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+	
+	
+	public long deleteContenido(Connection connection, Long id) throws DataException {
+		
+		PreparedStatement preparedStatement = null;
+
+		try {
+			//deleteRelaciones(connection, id);
 			String queryString =	
 					  "DELETE FROM CONTENIDO " 
 					+ "WHERE id_contenido = ? ";
@@ -420,16 +560,13 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			int i = 1;
 			preparedStatement.setLong(i++, id);
-			System.out.println(preparedStatement.toString());
+						
 			int removedRows = preparedStatement.executeUpdate();
-
-			if (removedRows == 0) {
-				throw new DataException("Exception: No removed rows");
-			} 
-			deleteCategorias(connection, id);
-			deleteEtiquetas(connection, id);
-			deleteRelaciones(connection, id);
 			
+			if (removedRows == 0) {
+				throw new DataException("Exception: No removed rows (Tabla CONTENIDO) Id:"+id);
+			} 
+	
 			return removedRows;
 
 		} catch (SQLException e) {
@@ -440,7 +577,13 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 	
-	public void deleteEtiquetas(Connection connection, Long id) throws DataException {
+	/**
+	 * Desvincula un Contenido de todas sus Etiquetas
+	 * @param connection - Connection
+	 * @param idContenido - Long
+	 */
+	
+	public void deleteEtiquetas(Connection connection, Long idContenido) throws DataException {
 
 		PreparedStatement preparedStatement = null;
 
@@ -452,14 +595,14 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement = connection.prepareStatement(queryString);
 
 			int i = 1;
-			preparedStatement.setLong(i++, id);
+			preparedStatement.setLong(i++, idContenido);
 
 			int removedRows = preparedStatement.executeUpdate();
 
-			if (removedRows == 0) {
-				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
-				//throw new DataException("Exception: No removed rows");
-			} 
+//			if (removedRows == 0) {
+//				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
+//				throw new DataException("Exception: No removed rows (ETIQUETA_CONTENIDO)");
+//			}
 
 
 		} catch (SQLException e) {
@@ -470,6 +613,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 	
+
+	/**
+	 * Desvincula un Contenido de su Categoria
+	 * @param connection - Connection
+	 * @param idContenido - Long
+	 */
 	public void deleteCategorias (Connection connection, Long id) throws DataException {
 
 		PreparedStatement preparedStatement = null;
@@ -483,13 +632,16 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			int i = 1;
 			preparedStatement.setLong(i++, id);
-
+			
+			System.out.println("Borrando categorias...");
 			int removedRows = preparedStatement.executeUpdate();
-
-			if (removedRows == 0) {
-				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
-				//throw new DataException("Exception: No removed rows (categoria_contenido)");
-			} 
+//
+//			if (removedRows == 0) {
+//				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
+//				throw new DataException("Exception: No removed rows (categoria_contenido)");
+//			}
+			
+			//deleteCategorias(connection, id);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -499,6 +651,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 	
+	
+	/**
+	 * Desvincula un Contenido del resto de Contenidos
+	 * @param connection - Connection
+	 * @param idContenido - Long
+	 */
 	public void deleteRelaciones (Connection connection, Long id) throws DataException {
 
 		PreparedStatement preparedStatement = null;
@@ -516,10 +674,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			int removedRows = preparedStatement.executeUpdate();
 
-			if (removedRows == 0) {
-				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
-				//throw new DataException("Exception: No removed rows (categoria_contenido)");
-			} 
+//			if (removedRows == 0) {
+//				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
+//				throw new DataException("Exception: No removed rows (USUARIO_CONTENIDO)");
+//			}
+			
+			//deleteEtiquetas(connection, id);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -531,7 +691,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	
 	
 
-
+	/**
+	 * Vincula un contenido a una Categoria
+	 * @param connection - Connection
+	 * @param idContenido - Long
+	 * @param idCategoria - Long
+	 */
 	@Override
 	public void agignarCategoria(Connection connection, Long idContenido, Long idCategoria) throws DataException {
 		PreparedStatement preparedStatement = null;
@@ -563,7 +728,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 
-
+	/**
+	 * Desvincula un Contenido de una Categoria y lo vincula con otra.
+	 * @param connection - Connection
+	 * @param idContenido - Long
+	 * @param idCategoria - Long
+	 */
 	@Override
 	public void modificarCategoria(Connection connection, Long idContenido, Long idCategoria) throws DataException {
 		
@@ -611,7 +781,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 
-
+	/**
+	 * Vincula un contenido a una Etiqueta
+	 * @param connection - Connection
+	 * @param idContenido - Long
+	 * @param idEtiqueta - Long
+	 */
 	@Override
 	public void asignarEtiqueta(Connection connection, Long idContenido, Long idEtiqueta) throws DataException {
 		PreparedStatement preparedStatement = null;
@@ -643,7 +818,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 
-
+	/**
+	 * Desvincula un contenido de una Etiqueta
+	 * @param connection - Connection
+	 * @param idContenido - Long
+	 * @param idEtiqueta - Long
+	 */
 	@Override
 	public void eliminarEtiqueta(Connection connection, Long idContenido, Long idEtiqueta) throws DataException {
 
@@ -674,45 +854,17 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 	
+
+
+
 	
-	
-	private Contenido loadNext(Connection connection, ResultSet resultSet)
-			throws SQLException, DataException {
-
-				int i = 1;
-				Long idContenido = resultSet.getLong(i++);
-				String nombre = resultSet.getString(i++);
-				Date fechaAlta =  resultSet.getDate(i++);
-				Date fechaMod =  resultSet.getDate(i++);
-				Long autor = null;
-				if(resultSet.getObject(i)==null) {
-					autor = (Long) resultSet.getObject(i++);
-
-				} else {
-					autor = resultSet.getLong(i++);
-				}
-				Integer tipo = resultSet.getInt(i++);
-				
-				Contenido c = new Contenido();
-				c.setIdContenido(idContenido);
-				c.setNombre(nombre);
-				c.setFechaAlta(fechaAlta);
-				c.setFechaMod(fechaMod);
-				c.setIdAutor(autor);
-				c.setTipo(tipo);
-
-				return c;
-			}
-	
-	private void addClause(StringBuilder queryString, boolean first, String clause) {
-		queryString.append(first?" WHERE ": " AND ").append(clause);
-	}
-	
-	private void addUpdate(StringBuilder queryString, boolean first, String clause) {
-		queryString.append(first? " SET ": " , ").append(clause);
-	}
-
-
+	/**
+	 * Comprueba si Existe una relacion entre un usuario y un contenido determinados.
+	 * @param connection - Connection
+	 * @param idUsuario - Long
+	 * @param idContenido - Long
+     * @return Boolean : True si existe la relacion. False en caso contrario.
+	 */
 	@Override
 	public Boolean comprobarExistenciaRelacion(Connection connection, Long idUsuario, Long idContenido)
 			throws DataException {
@@ -750,6 +902,13 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	}
 
 
+	
+	/**
+	 * Inicializa una relacion entre dos contenidos (Usuario, Conteindo).
+	 * @param connection - Connection
+	 * @param idUsuario - Long
+	 * @param idContenido - Long
+	 */
 	@Override
 	public void crearRelacion(Connection connection, Long idUsuario, Long idContenido) throws DataException {
 		PreparedStatement preparedStatement = null;
@@ -787,12 +946,19 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 
-
+	/**
+	 * Modifica la relacion SEGUIR entre un Usuario y un Contenido (Usuario o Lista).
+	 * False para dejar de seguir. True para empezar a seguir.
+	 * @param connection - Connection
+	 * @param idUsuario - Long
+	 * @param idContenido - Long
+	 * @param siguiendo - Boolean
+	 */
 	@Override
 	public void seguirContenido(Connection connection, Long idUsuario, Long idContenido, Boolean siguiendo) throws DataException {
 		
-		if(!contenidoDao.comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
-			contenidoDao.crearRelacion(connection, idUsuario, idContenido);
+		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
+			crearRelacion(connection, idUsuario, idContenido);
 		}
 		
 		PreparedStatement preparedStatement = null;
@@ -837,12 +1003,22 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	}
 
 
+	/**
+	 * Modifica la relacion DENUNCIAR entre un Usuario y un Contenido (Usuario, Video, o Lista).
+	 * Recibe un String con el motivo de la denuncia para CREAR la denuncia.
+	 * Recibe null para CANCELAR la denuncia.
+	 * 
+	 * @param connection - Connection
+	 * @param idUsuario - Long
+	 * @param idContenido - Long
+	 * @param denunciado - String
+	 */
 	@Override
 	public void denunciarContenido(Connection connection, Long idUsuario, Long idContenido, String denunciado)
 			throws DataException {
 		
-		if(!contenidoDao.comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
-			contenidoDao.crearRelacion(connection, idUsuario, idContenido);
+		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
+			crearRelacion(connection, idUsuario, idContenido);
 		}
 		
 		PreparedStatement preparedStatement = null;
@@ -890,12 +1066,21 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	}
 
 
+	
+	/**
+	 * Modifica la valoración realizada por un Usuario a un Contenido.
+	 * 
+	 * @param connection - Connection
+	 * @param idUsuario - Long
+	 * @param idContenido - Long
+	 * @param Integer - valoracion
+	 */
 	@Override
 	public void valorarContenido(Connection connection, Long idUsuario, Long idContenido, Integer valoracion)
 			throws DataException {
 		
-		if(!contenidoDao.comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
-			contenidoDao.crearRelacion(connection, idUsuario, idContenido);
+		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
+			crearRelacion(connection, idUsuario, idContenido);
 		}
 		
 		PreparedStatement preparedStatement = null;
@@ -938,13 +1123,20 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 
-
+	/**
+	 * Modifica la relacion GUARDAR entre un Usuario y un Contenido (Video o Lista).
+	 * False para Borrar. True para Guardar.
+	 * @param connection - Connection
+	 * @param idUsuario - Long
+	 * @param idContenido - Long
+	 * @param guardado - Boolean
+	 */
 	@Override
 	public void guardarContenido(Connection connection, Long idUsuario, Long idContenido, Boolean guardado)
 			throws DataException {
 		
-		if(!contenidoDao.comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
-			contenidoDao.crearRelacion(connection, idUsuario, idContenido);
+		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
+			crearRelacion(connection, idUsuario, idContenido);
 		}
 		
 		PreparedStatement preparedStatement = null;
@@ -990,12 +1182,23 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	}
 
 
+	/**
+	 * Modifica/Crea un comentario de un Usuario en un Contenido (Video, o Lista).
+	 * Recibe un String con el COMENTARIO.
+	 * Recibe null para Borrar el comentario.
+	 * 
+	 * @param connection - Connection
+	 * @param idUsuario - Long
+	 * @param idContenido - Long
+	 * @param comentario - String
+	 */
+	
 	@Override
 	public void comentarContenido(Connection connection, Long idUsuario, Long idContenido, String comentario)
 			throws DataException {
 		
-		if(!contenidoDao.comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
-			contenidoDao.crearRelacion(connection, idUsuario, idContenido);
+		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
+			crearRelacion(connection, idUsuario, idContenido);
 		}
 		
 		PreparedStatement preparedStatement = null;
@@ -1044,8 +1247,18 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				
 	}
 
+	
+
+	/**
+	 * Recupera la Categoria a la que pertenece un Contenido
+	 * 
+	 * @param connection - Connection
+	 * @param idContenido - Long
+	 * @param idioma - String ( ESP: Castellano ; ENG: Inglés)
+	 * @return Categoria
+	 */
 	@Override
-	public Categoria verCategoria(Connection connection, Long id, String idioma) throws DataException {
+	public Categoria verCategoria(Connection connection, Long idContenido, String idioma) throws DataException {
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -1061,7 +1274,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			int i = 1;                
-			preparedStatement.setLong(i++, id);
+			preparedStatement.setLong(i++, idContenido);
 			preparedStatement.setString(i++, idioma);
  
 			resultSet = preparedStatement.executeQuery();
@@ -1071,7 +1284,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				c.setIdCategoria(resultSet.getLong(j++));
 				c.setNombreCategoria(resultSet.getString(j++));			
 			} else {
-				throw new DataException("\nContenido with id " +id+ "not found\n");
+				throw new DataException("\nContenido with id " +idContenido+ "not found\n");
 			}
 			return c;
 
@@ -1084,7 +1297,14 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}	
 	}
 
-	
+	/**
+	 * Recupera las Etiquetas asignadas a un Contenido
+	 * 
+	 * @param connection - Connection
+	 * @param idContenido - Long
+	 * @param idioma - String ( ESP: Castellano ; ENG: Inglés)
+	 * @return Lista de Etiquetas
+	 */
 	@Override
 	public List<Etiqueta> verEtiquetas(Connection connection, Long id, String idioma) throws DataException {
 		PreparedStatement preparedStatement = null;
@@ -1115,12 +1335,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
 			if(resultSet.next()) {
 				do {
-					e = loadNextEtiqueta(connection, resultSet);
+					e = etiquetaDao.loadNext(resultSet);
 					results.add(e);               	
 					//currentCount++;                	
 				} while (/*(currentCount < count) && */ resultSet.next()) ;
 			}
-
 
 			return results;
 	
@@ -1134,18 +1353,44 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 	
-	private Etiqueta loadNextEtiqueta(Connection connection, ResultSet resultSet)
+	
+	
+	
+	
+	private Contenido loadNext(Connection connection, ResultSet resultSet)
 			throws SQLException, DataException {
 
 				int i = 1;
-				Long idEtiqueta = resultSet.getLong(i++);
-				String nombreEtiqueta = resultSet.getString(i++);
+				Long idContenido = resultSet.getLong(i++);
+				String nombre = resultSet.getString(i++);
+				Date fechaAlta =  resultSet.getDate(i++);
+				Date fechaMod =  resultSet.getDate(i++);
+				Long autor = null;
+				if(resultSet.getObject(i)==null) {
+					autor = (Long) resultSet.getObject(i++);
+
+				} else {
+					autor = resultSet.getLong(i++);
+				}
+				Integer tipo = resultSet.getInt(i++);
 				
-				Etiqueta c= new Etiqueta();
-				c.setIdEtiqueta(idEtiqueta);
-				c.setNombreEtiqueta(nombreEtiqueta);
+				Contenido c = new Contenido();
+				c.setIdContenido(idContenido);
+				c.setNombre(nombre);
+				c.setFechaAlta(fechaAlta);
+				c.setFechaMod(fechaMod);
+				c.setIdAutor(autor);
+				c.setTipo(tipo);
 
 				return c;
 			}
+	
+	private void addClause(StringBuilder queryString, boolean first, String clause) {
+		queryString.append(first?" WHERE ": " AND ").append(clause);
+	}
+	
+	private void addUpdate(StringBuilder queryString, boolean first, String clause) {
+		queryString.append(first? " SET ": " , ").append(clause);
+	}
 
 }

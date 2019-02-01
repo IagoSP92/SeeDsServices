@@ -14,15 +14,18 @@ public interface ContenidoDAO {
 	public Boolean exists (Connection connection, Long idContenido) 
 			throws DataException;
 	
-	public Boolean existsCategoria (Connection connection, Long idCategoria) 
+//	public Boolean existsCategoria (Connection connection, Long idCategoria) 
+//			throws DataException;
+//	
+//	public Boolean existsEtiqueta (Connection connection, Long idEtiqueta) 
+//			throws DataException;
+	
+	
+	
+	public Contenido findById(Connection connection, Long idContenido) 
 			throws DataException;
 	
-	public Boolean existsEtiqueta (Connection connection, Long idEtiqueta) 
-			throws DataException;
-	
-	
-	
-	public Contenido findById(Connection connection, Contenido contenido, Long id) 
+	public Contenido findByNombre(Connection connection, String nombreContenido) 
 			throws DataException;
 
 	public List<Contenido> findByCriteria(Connection connection, ContenidoCriteria contenido)
@@ -108,6 +111,8 @@ public interface ContenidoDAO {
 	
 	
 	*/
+
+
 	
 	
 }

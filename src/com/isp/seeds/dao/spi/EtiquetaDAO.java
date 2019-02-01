@@ -1,6 +1,7 @@
 package com.isp.seeds.dao.spi;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -26,6 +27,12 @@ public interface EtiquetaDAO {
 	
 	public void delete (Connection conexion, Long idEtiqueta, String idioma) 
 			throws SQLException, DataException;
+
+	public Etiqueta loadNext(ResultSet resultSet) 
+			throws SQLException;
+
+	public Boolean exists(Connection connection, Long idEtiqueta)
+			throws DataException;
 	
 	
 

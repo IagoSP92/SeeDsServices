@@ -20,7 +20,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 	private static ContenidoDAO contenidoDao = new ContenidoDAOImpl();
 
 	@Override
-	public Contenido verContenido(Long idContenido) {
+	public Contenido buscarId(Long idContenido) {
 
 		try {
 
@@ -28,7 +28,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 				Connection connection = ConnectionManager.getConnection();
 
 				Contenido contenido = new Contenido();
-				contenido = contenidoDao.findById(connection, contenido, idContenido);
+				contenido = contenidoDao.findById(connection, idContenido);
 
 				JDBCUtils.closeConnection(connection);
 
@@ -44,6 +44,34 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}
 		return null;
 	}
+	
+	
+	@Override
+	public Contenido buscarNombre(String nombreContenido) {
+
+		try {
+
+			if(nombreContenido != null) {
+				Connection connection = ConnectionManager.getConnection();
+
+				Contenido contenido = new Contenido();
+				contenido = contenidoDao.findByNombre(connection, nombreContenido);
+
+				JDBCUtils.closeConnection(connection);
+
+				return contenido;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
+		return null;
+	}
+	
 
 	@Override
 	public List<Contenido> verTodos() {
@@ -125,9 +153,10 @@ public class ContenidoServiceImpl implements ContenidoService {
 				Connection connection = ConnectionManager.getConnection();
 
 				contenidoDao.update(connection, contenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿?
-				contenido= contenidoDao.findById(connection, contenido, contenido.getIdContenido());
+				contenido= contenidoDao.findById(connection, contenido.getIdContenido());
 
 				JDBCUtils.closeConnection(connection);
+				
 				return contenido;
 			}
 
@@ -149,7 +178,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 				Connection connection = ConnectionManager.getConnection();
 
 				Contenido contenido = new Contenido();
-				contenido= contenidoDao.findById(connection, contenido, idContenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿?
+				contenido= contenidoDao.findById(connection, idContenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿?
 				contenido.setNombre(nuevo);
 				contenidoDao.update(connection, contenido);
 
