@@ -10,7 +10,6 @@ import com.isp.seeds.dao.impl.EtiquetaDAOImpl;
 import com.isp.seeds.dao.spi.EtiquetaDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
-import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Etiqueta;
 import com.isp.seeds.service.spi.EtiquetaService;
 
@@ -20,7 +19,7 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 
 
 	@Override
-	public Etiqueta findById(Long id, String idioma) throws SQLException, DataException {
+	public Etiqueta findById(Long id, String idioma) throws DataException {
 		try {
 
 			if(id != null && idioma != null) {
@@ -42,7 +41,7 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 	}
 
 	@Override
-	public Long findByNombre(String nombreEtiqueta, String idioma) throws SQLException, DataException {
+	public Long findByNombre(String nombreEtiqueta, String idioma) throws  DataException {
 		try {
 
 			if(nombreEtiqueta != null) {
@@ -64,7 +63,7 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 	}
 
 	@Override
-	public List<Etiqueta> findAll() throws SQLException, DataException {
+	public List<Etiqueta> findAll() throws DataException {
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			List<Etiqueta> etiquetas = new ArrayList<Etiqueta>();
@@ -84,7 +83,7 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 	}
 
 	@Override
-	public Etiqueta create(Etiqueta etiqueta, String idioma) throws SQLException, DataException {
+	public Etiqueta create(Etiqueta etiqueta, String idioma) throws  DataException {
 		try {
 
 			if(etiqueta != null) {
@@ -108,7 +107,7 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 	}
 
 	@Override
-	public void delete(Long idEtiqueta, String idioma) throws SQLException, DataException {
+	public void delete(Long idEtiqueta, String idioma) throws DataException {
 		try {
 
 			if(idEtiqueta != null) {

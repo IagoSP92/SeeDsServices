@@ -151,7 +151,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
-				contenido = loadNext(connection, resultSet, contenido);				
+				contenido = loadNext(connection, resultSet);				
 			} else {
 				throw new DataException("\nContenido with id " +id+ "not found\n");
 			}
@@ -176,40 +176,39 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		try {
 			queryString = new StringBuilder(
-					" SELECT c.ID_CONTENIDO, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, tipo " + 
+					" SELECT c.ID_CONTENIDO, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, tipo " + 
 					" FROM Contenido c " );
 			
 			boolean first = true;
 			
 			if (contenido.getIdContenido()!=null) {
-				addClause(queryString, first, " u.ID_CONTENIDO LIKE ? ");
+				addClause(queryString, first, " c.ID_CONTENIDO LIKE ? ");
+				first = false;
+			}
+			if (contenido.getNombre()!=null) {
+				addClause(queryString, first, " c.nombre LIKE ? ");
 				first = false;
 			}
 			
 			if (contenido.getFechaAlta()!=null) {
-				addClause(queryString, first, " u.EMAIL LIKE ? ");
+				addClause(queryString, first, " c.EMAIL LIKE ? ");
 				first = false;
 			}
 
 			if (contenido.getFechaMod()!=null) {
-				addClause(queryString, first, " u.URL_AVATAR LIKE ? ");
+				addClause(queryString, first, " c.URL_AVATAR LIKE ? ");
 				first = false;
 			}			
 			
 			if (contenido.getIdAutor()!=null) {
-				addClause(queryString, first, " u.NOMBRE_REAL LIKE ? ");
+				addClause(queryString, first, " c.NOMBRE_REAL LIKE ? ");
 				first = false;
 			}
 			
 			if (contenido.getTipo()!=null) {
-				addClause(queryString, first, " u.tipo LIKE ? ");
+				addClause(queryString, first, " c.tipo LIKE ? ");
 				first = false;
 			}	
-			
-			/*if (idioma!=null) {
-				addClause(queryString, first, " pi.id_idioma LIKE ? ");
-				first = false;
-			}*/
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -217,6 +216,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			int i = 1;
 			if (contenido.getIdContenido()!=null)
 				preparedStatement.setString(i++, "%" + contenido.getIdContenido() + "%");
+			if (contenido.getNombre()!=null)
+				preparedStatement.setString(i++, "%" + contenido.getNombre() + "%");
 			if (contenido.getFechaAlta()!=null) 
 				preparedStatement.setString(i++, "%" + contenido.getFechaAlta() + "%");
 			if (contenido.getFechaMod()!=null)
@@ -225,13 +226,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				preparedStatement.setString(i++, "%" + contenido.getIdAutor() + "%");
 			if (contenido.getTipo()!=null) 
 				preparedStatement.setString(i++, "%" + contenido.getTipo() + "%");
-
-			/*			if (idioma!=null) 
-				preparedStatement.setString(i++,idioma);
-				*/
 			
 			resultSet = preparedStatement.executeQuery();
-			
 			
 			List<Contenido> results = new ArrayList<Contenido>();    
 			Contenido e = null;
@@ -240,7 +236,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
 			if(resultSet.next()) {
 				do {
-					e = loadNext(connection, resultSet, e);
+					e = loadNext(connection, resultSet);
 					results.add(e);               	
 					//currentCount++;                	
 				} while (/*(currentCount < count) && */ resultSet.next()) ;
@@ -416,10 +412,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		try {
 			
-			deleteCategorias(connection, id);
-			deleteEtiquetas(connection, id);
-			deleteRelaciones(connection, id);
-			
 			String queryString =	
 					  "DELETE FROM CONTENIDO " 
 					+ "WHERE id_contenido = ? ";
@@ -428,12 +420,16 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			int i = 1;
 			preparedStatement.setLong(i++, id);
-
+			System.out.println(preparedStatement.toString());
 			int removedRows = preparedStatement.executeUpdate();
 
 			if (removedRows == 0) {
 				throw new DataException("Exception: No removed rows");
 			} 
+			deleteCategorias(connection, id);
+			deleteEtiquetas(connection, id);
+			deleteRelaciones(connection, id);
+			
 			return removedRows;
 
 		} catch (SQLException e) {
@@ -623,7 +619,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		
 		try {
 			
-			String queryString = " INSERT INTO etiqueta_contenido (idEtiqueta, id_contenido) "
+			String queryString = " INSERT INTO etiqueta_contenido (id_Etiqueta, id_contenido) "
 					+ " VALUES (?, ?)";
 
 			preparedStatement = connection.prepareStatement(queryString);
@@ -680,7 +676,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	
 	
 	
-	private Contenido loadNext(Connection connection, ResultSet resultSet, Contenido c)
+	private Contenido loadNext(Connection connection, ResultSet resultSet)
 			throws SQLException, DataException {
 
 				int i = 1;
@@ -696,7 +692,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 					autor = resultSet.getLong(i++);
 				}
 				Integer tipo = resultSet.getInt(i++);
-			
+				
+				Contenido c = new Contenido();
 				c.setIdContenido(idContenido);
 				c.setNombre(nombre);
 				c.setFechaAlta(fechaAlta);
@@ -1097,7 +1094,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		try {
 			queryString = new StringBuilder(
 					" SELECT E.ID_ETIQUETA, EI.NOMBRE_ETIQUETA " + 
-					" FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC (ON E.ID_ETIQUETA = EC.ID_ETIQUETA) " +
+					" FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC ON (E.ID_ETIQUETA = EC.ID_ETIQUETA) " +
 					" INNER JOIN ETIQUETA_IDIOMA EI ON (E.ID_ETIQUETA = EI.ID_ETIQUETA ) " +
 					" WHERE EC.ID_CONTENIDO = ? AND EI.ID_IDIOMA = ?");
 			
@@ -1111,20 +1108,19 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			resultSet = preparedStatement.executeQuery();
 			
 			List<Etiqueta> results = new ArrayList<Etiqueta>();    
-			Etiqueta e = new Etiqueta();
+
+			Etiqueta e = null;
 			//int currentCount = 0;
 
 			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
 			if(resultSet.next()) {
 				do {
-					int j=1;
-					e.setIdEtiqueta(resultSet.getLong(j++));
-					e.setNombreEtiqueta(resultSet.getString(j++));
+					e = loadNextEtiqueta(connection, resultSet);
 					results.add(e);               	
 					//currentCount++;                	
 				} while (/*(currentCount < count) && */ resultSet.next()) ;
 			}
-			//}
+
 
 			return results;
 	
@@ -1137,5 +1133,19 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
+	
+	private Etiqueta loadNextEtiqueta(Connection connection, ResultSet resultSet)
+			throws SQLException, DataException {
+
+				int i = 1;
+				Long idEtiqueta = resultSet.getLong(i++);
+				String nombreEtiqueta = resultSet.getString(i++);
+				
+				Etiqueta c= new Etiqueta();
+				c.setIdEtiqueta(idEtiqueta);
+				c.setNombreEtiqueta(nombreEtiqueta);
+
+				return c;
+			}
 
 }

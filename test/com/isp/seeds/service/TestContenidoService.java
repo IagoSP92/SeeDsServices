@@ -1,11 +1,15 @@
 package com.isp.seeds.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Contenido;
+import com.isp.seeds.model.Etiqueta;
 import com.isp.seeds.service.spi.CategoriaService;
 import com.isp.seeds.service.spi.ContenidoService;
+import com.isp.seeds.service.spi.EtiquetaService;
 
 public class TestContenidoService {
 	
@@ -18,6 +22,8 @@ public class TestContenidoService {
 	public static void main(String[] args) {
 		ContenidoService contenidoSvc = new ContenidoServiceImpl();
 		CategoriaService categoriaSvc = new CategoriaServiceImpl();
+		EtiquetaService etiquetaSvc = new EtiquetaServiceImpl();
+
 		
 		Contenido contenido1 =new Contenido();
 		Contenido contenido2 =new Contenido();
@@ -73,23 +79,39 @@ public class TestContenidoService {
 			System.out.println( contenidoSvc.verCategoria(contenido2.getIdContenido(), "ESP")  );
 			System.out.println();System.out.println();
 			
+			System.out.println("+++++++++++++++++++++++++++++++++++++  Asignar etiqueta");
+			contenidoSvc.asignarEtiqueta(contenido2.getIdContenido(), etiquetaSvc.findByNombre("Rock", "ESP"));
+			contenidoSvc.asignarEtiqueta(contenido2.getIdContenido(), etiquetaSvc.findByNombre("Pop", "ESP"));
+			List<Etiqueta> etiquetas = new ArrayList<Etiqueta>();
+			etiquetas=contenidoSvc.verEtiquetas(contenido2.getIdContenido(), "ESP");
+			for(Etiqueta e: etiquetas) {
+				System.out.println(e.toString());
+			}
+			System.out.println();
+			System.out.println("+++++++++++++++++++++++++++++++++++++  Eliminar etiqueta");
+			contenidoSvc.eliminarEtiqueta(contenido2.getIdContenido(), etiquetaSvc.findByNombre("Rock", "ESP"));
+			etiquetas = new ArrayList<Etiqueta>();
+			etiquetas=contenidoSvc.verEtiquetas(contenido2.getIdContenido(), "ESP");
+			for(Etiqueta e: etiquetas) {
+				System.out.println(e.toString());
+			}
+			System.out.println();
+			System.out.println();
+			
+			contenidoSvc.eliminarContenido(contenido1.getIdContenido());
+
+			contenidoSvc.eliminarContenido(contenido2.getIdContenido());
+			contenidoSvc.eliminarContenido(contenido3.getIdContenido());
+
+			List<Contenido> todos = new ArrayList<Contenido>();
+			System.out.println("ss");
+			todos = contenidoSvc.verTodos();
+			System.out.println("ss");
+			for(Contenido c : todos) {
+				System.out.println(c.toString());
+			}
 
 
-
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			
 			
 			} catch (DataException e) {

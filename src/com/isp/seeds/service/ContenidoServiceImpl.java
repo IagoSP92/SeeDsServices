@@ -46,6 +46,31 @@ public class ContenidoServiceImpl implements ContenidoService {
 	}
 
 	@Override
+	public List<Contenido> verTodos() {
+
+		try {
+
+			Connection connection = ConnectionManager.getConnection();
+
+			List<Contenido> contenido = new ArrayList<Contenido>();
+			contenido = contenidoDao.findAll(connection);
+
+			JDBCUtils.closeConnection(connection);
+
+			return contenido;
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
+		return null;
+	}
+
+	@Override
 	public Contenido crearContenido(Contenido contenido) throws DataException {
 		try {
 
@@ -53,7 +78,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 				Connection connection = ConnectionManager.getConnection();
 
 				contenidoDao.create(connection, contenido);
-				
+
 				JDBCUtils.closeConnection(connection);
 
 				return contenido;
@@ -75,10 +100,10 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 			if(idContenido != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
-				if (!contenidoDao.exists(connection, idContenido)) {
+
+				//if (!contenidoDao.exists(connection, idContenido)) {
 					contenidoDao.delete(connection, idContenido);
-				}
+				//}
 
 				JDBCUtils.closeConnection(connection);
 			}
@@ -98,10 +123,10 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 			if(contenido != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				contenidoDao.update(connection, contenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿?
 				contenido= contenidoDao.findById(connection, contenido, contenido.getIdContenido());
-				
+
 				JDBCUtils.closeConnection(connection);
 				return contenido;
 			}
@@ -115,19 +140,19 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void cambiarNombre(Long idContenido, String nuevo) throws DataException {
 		try {
 
 			if(idContenido != null && nuevo != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				Contenido contenido = new Contenido();
 				contenido= contenidoDao.findById(connection, contenido, idContenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿?
 				contenido.setNombre(nuevo);
 				contenidoDao.update(connection, contenido);
-				
+
 				JDBCUtils.closeConnection(connection);
 
 			}
@@ -144,12 +169,12 @@ public class ContenidoServiceImpl implements ContenidoService {
 	@Override
 	public void asignarCategoria(Long idContenido, Long idCategoria) throws DataException {
 		try {
-			
+
 			if(idContenido != null && idCategoria != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				contenidoDao.agignarCategoria(connection, idContenido, idCategoria);
-				
+
 				JDBCUtils.closeConnection(connection);
 			}
 
@@ -160,18 +185,18 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
-		
+
 	}
 
 	@Override
 	public void asignarEtiqueta(Long idContenido, Long idEtiqueta) throws DataException {
 		try {
-			
+
 			if(idContenido != null && idEtiqueta != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				contenidoDao.asignarEtiqueta(connection, idContenido, idEtiqueta);
-				
+
 				JDBCUtils.closeConnection(connection);
 			}
 
@@ -182,18 +207,18 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
-		
+
 	}
 
 	@Override
 	public void modificarCategoria(Long idContenido, Long idCategoria) throws DataException {
 		try {
-			
+
 			if(idContenido != null && idCategoria != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				contenidoDao.modificarCategoria(connection, idContenido, idCategoria);
-				
+
 				JDBCUtils.closeConnection(connection);
 			}
 
@@ -204,18 +229,18 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
-		
+
 	}
 
 	@Override
 	public void eliminarEtiqueta(Long idContenido, Long idEtiqueta) throws DataException {
 		try {
-			
+
 			if(idContenido != null && idEtiqueta != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				contenidoDao.eliminarEtiqueta(connection, idContenido, idEtiqueta);
-				
+
 				JDBCUtils.closeConnection(connection);
 			}
 
@@ -226,19 +251,19 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
-		
+
 	}
-	
+
 	@Override
 	public Categoria verCategoria(Long id, String idioma) throws DataException {
 		try {
-			
+
 			if(id != null && idioma != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				Categoria categoria= new Categoria();
 				categoria = contenidoDao.verCategoria(connection, id, idioma);
-				
+
 				JDBCUtils.closeConnection(connection);
 				return categoria;
 			}
@@ -255,13 +280,13 @@ public class ContenidoServiceImpl implements ContenidoService {
 	@Override
 	public List<Etiqueta> verEtiquetas(Long id, String idioma) throws DataException {
 		try {
-			
+
 			if(id != null && idioma != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				List<Etiqueta> etiquetas= new ArrayList<Etiqueta>();
 				etiquetas = contenidoDao.verEtiquetas(connection, id, idioma);
-				
+
 				JDBCUtils.closeConnection(connection);
 				return etiquetas;
 			}
@@ -278,12 +303,12 @@ public class ContenidoServiceImpl implements ContenidoService {
 	@Override
 	public void seguirContenido(Long idUsuario, Long idContenido, Boolean siguiendo) throws DataException {
 		try {
-			
+
 			if(idUsuario != null && idContenido != null && siguiendo != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				contenidoDao.seguirContenido(connection, idUsuario, idContenido, siguiendo);
-				
+
 				JDBCUtils.closeConnection(connection);
 			}
 
@@ -294,18 +319,18 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
-		
+
 	}
 
 	@Override
 	public void denunciarContenido(Long idUsuario, Long idContenido, String denunciado) throws DataException {
 		try {
-			
+
 			if(idUsuario != null && idContenido != null && denunciado != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				contenidoDao.denunciarContenido(connection, idUsuario, idContenido, denunciado);
-				
+
 				JDBCUtils.closeConnection(connection);
 			}
 
@@ -316,18 +341,18 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
-		
+
 	}
 
 	@Override
 	public void cancelarDenuncia(Long idUsuario, Long idContenido) throws DataException {
 		try {
-			
+
 			if(idUsuario != null && idContenido != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				contenidoDao.denunciarContenido(connection, idUsuario, idContenido, null);
-				
+
 				JDBCUtils.closeConnection(connection);
 			}
 
@@ -338,18 +363,18 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
-		
+
 	}
 
 	@Override
 	public void valorarContenido(Long idUsuario, Long idContenido, Integer valoracion) throws DataException {
 		try {
-			
+
 			if(idUsuario != null && idContenido != null && valoracion != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				contenidoDao.valorarContenido(connection, idUsuario, idContenido, valoracion);
-				
+
 				JDBCUtils.closeConnection(connection);
 			}
 
@@ -360,18 +385,18 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
-		
+
 	}
 
 	@Override
 	public void guardarContenido(Long idUsuario, Long idContenido, Boolean guardado) throws DataException {
 		try {
-			
+
 			if(idUsuario != null && idContenido != null && guardado != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				contenidoDao.guardarContenido(connection, idUsuario, idContenido, guardado);
-				
+
 				JDBCUtils.closeConnection(connection);
 			}
 
@@ -382,19 +407,19 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
-		
+
 	}
 
-	
+
 	@Override
 	public void comentarContenido(Long idUsuario, Long idContenido, String comentario) throws DataException {
 		try {
-			
+
 			if(idUsuario != null && idContenido != null && comentario != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				contenidoDao.comentarContenido(connection, idUsuario, idContenido, comentario);
-				
+
 				JDBCUtils.closeConnection(connection);
 			}
 
@@ -405,18 +430,18 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
-		
+
 	}
 
 	@Override
 	public void borrarComentario(Long idUsuario, Long idContenido) throws DataException {
 		try {
-			
+
 			if(idUsuario != null && idContenido != null) {
 				Connection connection = ConnectionManager.getConnection();
-				
+
 				contenidoDao.comentarContenido(connection, idUsuario, idContenido, null);
-				
+
 				JDBCUtils.closeConnection(connection);
 			}
 
@@ -427,7 +452,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
-		
+
 	}
 
 

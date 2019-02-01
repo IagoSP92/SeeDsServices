@@ -1,6 +1,5 @@
 package com.isp.seeds.service.spi;
 
-import java.sql.Connection;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
@@ -11,6 +10,9 @@ import com.isp.seeds.model.Etiqueta;
 public interface ContenidoService {
 	
 	public Contenido verContenido (Long idContenido) 
+			throws DataException;
+	
+	public List<Contenido> verTodos () 
 			throws DataException;
 	
 	
