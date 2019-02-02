@@ -6,6 +6,7 @@ import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Etiqueta;
+import com.isp.seeds.service.criteria.ContenidoCriteria;
 
 public interface ContenidoService {
 	
@@ -14,6 +15,9 @@ public interface ContenidoService {
 			throws DataException;
 	
 	public Contenido buscarNombre(String nombreContenido);
+	
+	public List<Contenido> buscarCriteria(ContenidoCriteria contenido)
+			throws DataException;
 	
 	public List<Contenido> verTodos () 
 			throws DataException;

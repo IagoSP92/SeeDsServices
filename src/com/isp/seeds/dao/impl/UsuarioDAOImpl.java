@@ -22,7 +22,7 @@ import com.isp.seeds.model.Pais;
 import com.isp.seeds.model.Usuario;
 import com.isp.seeds.service.criteria.UsuarioCriteria;
 
-public class UsuarioDAOImpl implements UsuarioDAO {
+public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 	
 	//private static Logger logger = LogManager.getLogger(UsuarioDAOImpl.class.getName());   // ESTO QUE E???
 	
@@ -433,8 +433,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 				u.setApellidos(apellido);
 				u.setPais(pais);
 				u.setFechaNac(fechaNac);
-				
-
 
 				return u;
 			}

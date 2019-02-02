@@ -13,6 +13,7 @@ import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Etiqueta;
+import com.isp.seeds.service.criteria.ContenidoCriteria;
 import com.isp.seeds.service.spi.ContenidoService;
 
 public class ContenidoServiceImpl implements ContenidoService {
@@ -60,6 +61,32 @@ public class ContenidoServiceImpl implements ContenidoService {
 				JDBCUtils.closeConnection(connection);
 
 				return contenido;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
+		return null;
+	}
+	
+	
+	@Override
+	public List<Contenido> buscarCriteria(ContenidoCriteria contenido) throws DataException {
+		try {
+
+			if(contenido != null) {
+				Connection connection = ConnectionManager.getConnection();
+
+				List<Contenido> contenidos = new ArrayList<Contenido>();
+				contenidos = contenidoDao.findByCriteria(connection, contenido);
+
+				JDBCUtils.closeConnection(connection);
+
+				return contenidos;
 			}
 
 		} catch (SQLException e) {
@@ -483,7 +510,6 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}
 
 	}
-
 
 
 

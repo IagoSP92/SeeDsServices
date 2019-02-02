@@ -286,37 +286,48 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		try {
 			queryString = new StringBuilder(
-					" SELECT c.ID_CONTENIDO, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, tipo " + 
-					" FROM Contenido c " );
+					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO " + 
+					" FROM CONTENIDO C " );
 			
 			boolean first = true;
 			
 			if (contenido.getIdContenido()!=null) {
-				addClause(queryString, first, " c.ID_CONTENIDO LIKE ? ");
+				addClause(queryString, first, " C.ID_CONTENIDO LIKE ? ");
 				first = false;
 			}
 			if (contenido.getNombre()!=null) {
-				addClause(queryString, first, " c.nombre LIKE ? ");
+				addClause(queryString, first, " C.NOMBRE LIKE ? ");
 				first = false;
 			}
 			
 			if (contenido.getFechaAlta()!=null) {
-				addClause(queryString, first, " c.EMAIL LIKE ? ");
+				addClause(queryString, first, " C.FECHA_ALTA > ?  ");
+				first = false;
+			}
+			
+			if (contenido.getFechaAltaHasta()!=null) {
+				addClause(queryString, first, " C.FECHA_ALTA < ?  ");
 				first = false;
 			}
 
 			if (contenido.getFechaMod()!=null) {
-				addClause(queryString, first, " c.URL_AVATAR LIKE ? ");
+				addClause(queryString, first, " C.FECHA_MOD > ?  ");
 				first = false;
-			}			
+			}
+			
+			if (contenido.getFechaModHasta()!=null) {
+				addClause(queryString, first, " C.FECHA_MOD < ?  ");
+				first = false;
+			}
+			
 			
 			if (contenido.getIdAutor()!=null) {
-				addClause(queryString, first, " c.NOMBRE_REAL LIKE ? ");
+				addClause(queryString, first, " C.AUTOR_ID_CONTENIDO LIKE ? ");
 				first = false;
 			}
 			
 			if (contenido.getTipo()!=null) {
-				addClause(queryString, first, " c.tipo LIKE ? ");
+				addClause(queryString, first, " C.TIPO = ? ");
 				first = false;
 			}	
 
@@ -328,14 +339,22 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				preparedStatement.setString(i++, "%" + contenido.getIdContenido() + "%");
 			if (contenido.getNombre()!=null)
 				preparedStatement.setString(i++, "%" + contenido.getNombre() + "%");
+			
+			
 			if (contenido.getFechaAlta()!=null) 
-				preparedStatement.setString(i++, "%" + contenido.getFechaAlta() + "%");
-			if (contenido.getFechaMod()!=null)
-				preparedStatement.setString(i++, "%" + contenido.getFechaMod() + "%");
+			preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAlta().getTime()));
+		if (contenido.getFechaAltaHasta()!=null) 
+			preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAltaHasta().getTime()));
+		if (contenido.getFechaMod()!=null)
+			preparedStatement.setDate(i++,  new java.sql.Date(contenido.getFechaMod().getTime()));
+		if (contenido.getFechaModHasta()!=null)
+			preparedStatement.setDate(i++,  new java.sql.Date(contenido.getFechaModHasta().getTime()));
+			
+			
 			if (contenido.getIdAutor()!=null) 
 				preparedStatement.setString(i++, "%" + contenido.getIdAutor() + "%");
 			if (contenido.getTipo()!=null) 
-				preparedStatement.setString(i++, "%" + contenido.getTipo() + "%");
+				preparedStatement.setInt(i++, contenido.getTipo());
 			
 			resultSet = preparedStatement.executeQuery();
 			

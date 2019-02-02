@@ -1,12 +1,14 @@
 package com.isp.seeds.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Etiqueta;
+import com.isp.seeds.service.criteria.ContenidoCriteria;
 import com.isp.seeds.service.spi.CategoriaService;
 import com.isp.seeds.service.spi.ContenidoService;
 import com.isp.seeds.service.spi.EtiquetaService;
@@ -110,6 +112,93 @@ public class TestContenidoService {
 			for(Contenido c : todos) {
 				System.out.println(c.toString());
 			}
+			
+			System.out.println();
+			System.out.println();	
+			System.out.println("____________________________________________  Buscar Critera");
+
+			ContenidoCriteria contenidoCriteria = new ContenidoCriteria();
+			
+			Calendar calendar  = Calendar.getInstance();
+			Date date = new Date();
+			
+			calendar.set(2001, Calendar.JANUARY, 10);
+			date= calendar.getTime();
+			contenidoCriteria.setFechaAlta(date);
+			
+			calendar.set(2001, Calendar.JANUARY, 16);
+			date= calendar.getTime();
+			contenidoCriteria.setFechaAltaHasta(date);
+			
+			
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
+			for(Contenido c : todos) {
+				System.out.println(c.toString());
+			}System.out.println("---------------------------------------------------------------");
+			contenidoCriteria= null;
+			contenidoCriteria= new ContenidoCriteria();
+			
+			
+			calendar.set(2001, Calendar.JANUARY, 10);
+			date= calendar.getTime();
+			contenidoCriteria.setFechaMod(date);
+			
+			calendar.set(2001, Calendar.FEBRUARY, 16);
+			date= calendar.getTime();
+			contenidoCriteria.setFechaModHasta(date);
+			
+			
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
+			for(Contenido c : todos) {
+				System.out.println(c.toString());
+			}System.out.println("---------------------------------------------------------------");
+			contenidoCriteria= null;
+			contenidoCriteria= new ContenidoCriteria();
+			
+			contenidoCriteria.setNombre("al");
+			
+			
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
+			for(Contenido c : todos) {
+				System.out.println(c.toString());
+			}System.out.println("---------------------------------------------------------------");
+			
+			
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
+			for(Contenido c : todos) {
+				System.out.println(c.toString());
+			}System.out.println("---------------------------------------------------------------");
+			contenidoCriteria= null;
+			contenidoCriteria= new ContenidoCriteria();
+			
+			contenidoCriteria.setNombre("al");
+			
+			calendar.set(2010, Calendar.OCTOBER, 9);
+			date= calendar.getTime();
+			contenidoCriteria.setFechaAlta(date);
+			
+			calendar.set(2010, Calendar.OCTOBER, 11);
+			date= calendar.getTime();
+			contenidoCriteria.setFechaAltaHasta(date);
+			
+			calendar.set(2010, Calendar.OCTOBER, 9);
+			date= calendar.getTime();
+			contenidoCriteria.setFechaMod(date);
+			
+			calendar.set(2010, Calendar.OCTOBER, 11);
+			date= calendar.getTime();
+			contenidoCriteria.setFechaModHasta(date);
+			
+			contenidoCriteria.setIdAutor(7l);
+			contenidoCriteria.setTipo(2);
+			
+			
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
+			for(Contenido c : todos) {
+				System.out.println(c.toString());
+			}System.out.println("---------------------------------------------------------------");
+			
+			
 			
 			} catch (DataException e) {
 				e.printStackTrace();

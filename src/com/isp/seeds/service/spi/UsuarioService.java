@@ -12,7 +12,10 @@ public interface UsuarioService {
 	public Usuario eliminarCuenta (Usuario u) 
 			throws DataException;
 	
-	public Usuario login (String email, String contrasena)
+	public Usuario logIn (String email, String contrasena)
+			throws DataException;
+	
+	public Boolean logOut (String email, String contrasena)
 			throws DataException;
 	
 	public Usuario editarPerfil (Usuario usuario)
