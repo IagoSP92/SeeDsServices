@@ -337,4 +337,41 @@ public class VideoDAOImpl implements VideoDAO {
 				return v;
 			}
 
+
+	@Override
+	public int getReproducciones(Connection connection, Long idContenido) throws DataException {
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		String queryString = null;
+		Integer valor = null;
+
+		try {
+			queryString =" SELECT REPRODUCCIONES FROM VIDEO WHERE ID_CONTENIDO = ? ";
+			
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			int i = 1;                
+			preparedStatement.setLong(i++, idContenido);
+
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				if(resultSet.getObject(1) != null) {
+					valor = resultSet.getInt(1);
+				}
+			} else {
+				throw new DataException("\nReproducciones del video con id " +idContenido+ " no encontradas \n");
+			}
+
+			return valor;
+			
+		} catch (SQLException e) {
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+
 }

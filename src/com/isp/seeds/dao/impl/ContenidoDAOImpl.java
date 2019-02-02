@@ -15,6 +15,7 @@ import com.isp.seeds.Exceptions.InstanceNotFoundException;
 import com.isp.seeds.dao.spi.CategoriaDAO;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.spi.EtiquetaDAO;
+import com.isp.seeds.dao.spi.VideoDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
@@ -22,22 +23,24 @@ import com.isp.seeds.model.Etiqueta;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
 
 public class ContenidoDAOImpl implements ContenidoDAO {
-	
+
 	private CategoriaDAO categoriaDao = null;
 	private EtiquetaDAO etiquetaDao = null;
+	private VideoDAO videoDao = null;
 
-	
+
 	public ContenidoDAOImpl () {
 		categoriaDao = new CategoriaDAOImpl();
 		etiquetaDao = new EtiquetaDAOImpl();
+		videoDao = new VideoDAOImpl();
 	}
-	
+
 	/**
 	 * Comprueba si Existe algún contenido con el ID que recibe.
 	 * @param connection - Connection
 	 * @param idContenido - Long
-     * @return Boolean : True si existe el contenido. False si no existe le contenido
-     * 
+	 * @return Boolean : True si existe el contenido. False si no existe le contenido
+	 * 
 	 */
 	public Boolean exists(Connection connection, Long idContenido) 
 			throws DataException {
@@ -73,48 +76,13 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		return exist;
 	}
-	
-//	public Boolean existsCategoria (Connection connection, Long idCategoria) 
-//			throws DataException {
-//		boolean exist = false;
-//
-//		PreparedStatement preparedStatement = null;
-//		ResultSet resultSet = null;
-//
-//		try {
-//
-//			String queryString = 
-//					"SELECT ID_CATEGORIA " + 
-//							" FROM CATEGORIA " +
-//							" WHERE ID_CATEGORIA = ? ";
-//
-//			preparedStatement = connection.prepareStatement(queryString);
-//
-//			int i = 1;
-//			preparedStatement.setLong(i++, idCategoria);
-//			resultSet = preparedStatement.executeQuery();
-//
-//			if (resultSet.next()) {
-//				exist = true;
-//			}
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			throw new DataException(e);
-//		} finally {
-//			JDBCUtils.closeResultSet(resultSet);
-//			JDBCUtils.closeStatement(preparedStatement);
-//		}
-//
-//		return exist;
-//	}
-	
-	
+
+
 	/**
 	 * Comprueba si Existen relaciones entre Este contenido y Cualquier otro contenido.
 	 * @param connection - Connection
 	 * @param idContenido - Long
-    * @return Boolean : True si existen relaciones. False en caso contrario.
+	 * @return Boolean : True si existen relaciones. False en caso contrario.
 	 */
 	public Boolean existsRelacion (Connection connection, Long idContenido) 
 			throws DataException {
@@ -151,47 +119,14 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		return exist;
 	}
-	
-//	public Boolean existsEtiqueta (Connection connection, Long idEtiqueta) 
-//			throws DataException {
-//		boolean exist = false;
-//
-//		PreparedStatement preparedStatement = null;
-//		ResultSet resultSet = null;
-//
-//		try {
-//
-//			String queryString = 
-//					"SELECT ID_ETIQUETA " + 
-//							" FROM ETIQUETA " +
-//							" WHERE ID_ETIQUETA = ? ";
-//
-//			preparedStatement = connection.prepareStatement(queryString);
-//
-//			int i = 1;
-//			preparedStatement.setLong(i++, idEtiqueta);
-//			resultSet = preparedStatement.executeQuery();
-//
-//			if (resultSet.next()) {
-//				exist = true;
-//			}
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			throw new DataException(e);
-//		} finally {
-//			JDBCUtils.closeResultSet(resultSet);
-//			JDBCUtils.closeStatement(preparedStatement);
-//		}
-//
-//		return exist;
-//	}
-	
+
+
+
 	/**
 	 * Devuelve el contenido identificado id recibido como parametro.
 	 * @param connection - Connection
 	 * @param idContenido - Long
-    * @return Contenido : Contenido que corresponde con el ID recibido
+	 * @return Contenido : Contenido que corresponde con el ID recibido
 	 */
 	@Override
 	public Contenido findById(Connection connection, Long idContenido) throws DataException {
@@ -204,15 +139,15 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo"+
 							" FROM Contenido c " +
 							" WHERE c.id_contenido = ? ";
-			
+
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			int i = 1;                
 			preparedStatement.setLong(i++, idContenido);
- 
+
 			resultSet = preparedStatement.executeQuery();
-			
+
 			Contenido contenido = null;
 
 			if (resultSet.next()) {
@@ -230,13 +165,13 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}	
 	}
-	
-	
+
+
 	/**
 	 * Devuelve el contenido que tiene EXACTEMENTE el nombre recibido como parametro.
 	 * @param connection - Connection
 	 * @param nombreContenido - String
-    * @return Contenido : Contenido que corresponde con el nombre recibido
+	 * @return Contenido : Contenido que corresponde con el nombre recibido
 	 */
 	@Override
 	public Contenido findByNombre(Connection connection, String nombreContenido) throws DataException {
@@ -249,15 +184,15 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo"+
 							" FROM Contenido c " +
 							" WHERE c.nombre = ? ";
-			
+
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			int i = 1;                
 			preparedStatement.setString(i++, nombreContenido);
- 
+
 			resultSet = preparedStatement.executeQuery();
-			
+
 			Contenido contenido = null;
 
 			if (resultSet.next()) {
@@ -287,10 +222,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		try {
 			queryString = new StringBuilder(
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO " + 
-					" FROM CONTENIDO C " );
-			
+					" FROM CONTENIDO C ");
+
 			boolean first = true;
-			
+
 			if (contenido.getIdContenido()!=null) {
 				addClause(queryString, first, " C.ID_CONTENIDO LIKE ? ");
 				first = false;
@@ -299,12 +234,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				addClause(queryString, first, " C.NOMBRE LIKE ? ");
 				first = false;
 			}
-			
+
 			if (contenido.getFechaAlta()!=null) {
 				addClause(queryString, first, " C.FECHA_ALTA > ?  ");
 				first = false;
 			}
-			
+
 			if (contenido.getFechaAltaHasta()!=null) {
 				addClause(queryString, first, " C.FECHA_ALTA < ?  ");
 				first = false;
@@ -314,50 +249,51 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				addClause(queryString, first, " C.FECHA_MOD > ?  ");
 				first = false;
 			}
-			
+
 			if (contenido.getFechaModHasta()!=null) {
 				addClause(queryString, first, " C.FECHA_MOD < ?  ");
 				first = false;
 			}
-			
-			
+
+
 			if (contenido.getIdAutor()!=null) {
 				addClause(queryString, first, " C.AUTOR_ID_CONTENIDO LIKE ? ");
 				first = false;
 			}
-			
+
 			if (contenido.getTipo()!=null) {
 				addClause(queryString, first, " C.TIPO = ? ");
 				first = false;
-			}	
+			}
+
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			
+
 			int i = 1;
 			if (contenido.getIdContenido()!=null)
 				preparedStatement.setString(i++, "%" + contenido.getIdContenido() + "%");
 			if (contenido.getNombre()!=null)
 				preparedStatement.setString(i++, "%" + contenido.getNombre() + "%");
-			
-			
+
+
 			if (contenido.getFechaAlta()!=null) 
-			preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAlta().getTime()));
-		if (contenido.getFechaAltaHasta()!=null) 
-			preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAltaHasta().getTime()));
-		if (contenido.getFechaMod()!=null)
-			preparedStatement.setDate(i++,  new java.sql.Date(contenido.getFechaMod().getTime()));
-		if (contenido.getFechaModHasta()!=null)
-			preparedStatement.setDate(i++,  new java.sql.Date(contenido.getFechaModHasta().getTime()));
-			
-			
+				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAlta().getTime()));
+			if (contenido.getFechaAltaHasta()!=null) 
+				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAltaHasta().getTime()));
+			if (contenido.getFechaMod()!=null)
+				preparedStatement.setDate(i++,  new java.sql.Date(contenido.getFechaMod().getTime()));
+			if (contenido.getFechaModHasta()!=null)
+				preparedStatement.setDate(i++,  new java.sql.Date(contenido.getFechaModHasta().getTime()));
+
+
 			if (contenido.getIdAutor()!=null) 
 				preparedStatement.setString(i++, "%" + contenido.getIdAutor() + "%");
 			if (contenido.getTipo()!=null) 
 				preparedStatement.setInt(i++, contenido.getTipo());
-			
+
 			resultSet = preparedStatement.executeQuery();
-			
+
 			List<Contenido> results = new ArrayList<Contenido>();    
 			Contenido e = null;
 			//int currentCount = 0;
@@ -366,32 +302,157 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			if(resultSet.next()) {
 				do {
 					e = loadNext(connection, resultSet);
-					results.add(e);               	
-					//currentCount++;                	
+					if (contenido.getValoracionMin()!=null || contenido.getValoracionMax()!=null) {
+						
+						if(filtrarValoracion(connection, contenido, e)) {
+							
+							if (contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null) {
+								if(filtrarReproducciones(connection, contenido, e)) {
+									results.add(e);
+									//currentCount++;
+								}
+							} else {
+								results.add(e);
+								//currentCount++;
+							}
+						}
+					}else {
+						
+						if (contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null) {
+							if(filtrarReproducciones(connection, contenido, e)) {
+								results.add(e);
+								//currentCount++;
+							}
+						} else {
+							results.add(e);
+							//currentCount++;
+						}
+					}          	
 				} while (/*(currentCount < count) && */ resultSet.next()) ;
 			}
 			//}
 
 			return results;
-	
-			} catch (SQLException e) {
-				e.printStackTrace();
-				//logger.error("Error",e);
-				throw new DataException(e);
-			} catch (DataException de) {
-				//logger.error("Error",e);
-				throw new DataException(de);
-			}  finally {
-				JDBCUtils.closeResultSet(resultSet);
-				JDBCUtils.closeStatement(preparedStatement);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			//logger.error("Error",e);
+			throw new DataException(e);
+		} catch (DataException de) {
+			//logger.error("Error",e);
+			throw new DataException(de);
+		}  finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
 		}
-		
+
+	}
+
+	private Boolean filtrarValoracion (Connection connection, ContenidoCriteria contenido, Contenido esteContenido) 
+			throws DataException {
+
+		Boolean valido = true;
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					" SELECT AVG(VALORACION) " + 
+					" FROM USUARIO_CONTENIDO WHERE CONTENIDO_ID_CONTENIDO = ? ");
+
+			if (contenido.getValoracionMax()!=null) {
+				if(contenido.getValoracionMax() < getValoracion(connection, esteContenido.getIdContenido()) ) {
+					valido = false;
+				}
+			}
+			if (contenido.getValoracionMin()!=null) {
+				if(contenido.getValoracionMax() < getValoracion(connection, esteContenido.getIdContenido()) ) {
+					valido = false;
+				}
+			}
+
+			return valido;
+
+		}  catch (DataException de) {
+			//logger.error("Error",e);
+			throw new DataException(de);
+		}  finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+
 	}
 	
+	private Boolean filtrarReproducciones (Connection connection, ContenidoCriteria contenido, Contenido esteContenido) 
+			throws DataException {
+
+		Boolean valido = true;
+
+			if (contenido.getReproduccionesMax()!=null) {
+				if(contenido.getReproduccionesMax() < videoDao.getReproducciones(connection, esteContenido.getIdContenido())) {
+					valido = false;
+				}
+			}
+			if (contenido.getReproduccionesMin()!=null) {
+				if(contenido.getReproduccionesMin() > videoDao.getReproducciones(connection, esteContenido.getIdContenido()) ) {
+					valido = false;
+				}
+			}
+		return valido;
+	}
+	
+
+	@Override
+	public Integer getValoracion (Connection connection, Long idContenido) 
+			throws DataException {
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Integer valor = null;
+		String queryString = null;
+		try {
+			queryString = " SELECT AVG(VALORACION) FROM USUARIO_CONTENIDO WHERE CONTENIDO_ID_CONTENIDO = ? ";
+
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			int i = 1;                
+			preparedStatement.setLong(i++, idContenido);
+
+			resultSet = preparedStatement.executeQuery();
+
+
+			if (resultSet.next()) {
+				if(resultSet.getObject(1) != null) {
+					valor = resultSet.getInt(1);
+				}
+			} else {
+				throw new DataException("\nValoracion del contenido " +idContenido+ " no encontrada \n");
+			}
+
+			return valor;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			//logger.error("Error",e);
+			throw new DataException(e);
+		} catch (DataException de) {
+			//logger.error("Error",e);
+			throw new DataException(de);
+		}  finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+
+	}
+
+
 	/**
 	 * Devuelve todos los contenidos.
 	 * @param connection - Connection
-    * @return  Lista con todos los contenidos
+	 * @return  Lista con todos los contenidos
 	 */
 	@Override
 	public List<Contenido> findAll(Connection connection) throws DataException {
@@ -399,26 +460,26 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		ContenidoCriteria contenido= new ContenidoCriteria();
 		return dao.findByCriteria(connection, contenido);
 	}
-	
+
 
 	/**
 	 * Crea el contenido que recibe como parámetro y lo devuelve con el campo ID cubierto.
 	 * @param connection - Connection
 	 * @param c - Contenido
-    * @return Contenido : Contenido creado (con ID)
+	 * @return Contenido : Contenido creado (con ID)
 	 */
 	@Override
 	public Contenido create (Connection connection, Contenido c) throws DataException {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		
+
 		try {
 			// Creamos el preparedstatement
 			String queryString = "INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) "
 					+ "VALUES (?, ?, ?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(queryString,
-									Statement.RETURN_GENERATED_KEYS);
+					Statement.RETURN_GENERATED_KEYS);
 
 			// Rellenamos el "preparedStatement"
 			int i = 1;
@@ -433,7 +494,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 			preparedStatement.setInt(i++, c.getTipo());
 
-			
+
 			// Execute query
 			int insertedRows = preparedStatement.executeUpdate();
 
@@ -442,7 +503,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 
 			// Recuperamos la PK generada
-			
+
 			resultSet = preparedStatement.getGeneratedKeys();
 			if (resultSet.next()) {
 				Long pk = resultSet.getLong(1); 
@@ -461,41 +522,41 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
-	
-	
+
+
 	@Override
 	public void update(Connection connection, Contenido contenido) throws DataException {
-		
+
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
 		try {	
-			
+
 			queryString = new StringBuilder(
 					" UPDATE Contenido " 
 					);
-			
+
 			boolean first = true;
-			
+
 			if (contenido.getNombre()!=null) {
 				addUpdate(queryString, first, " nombre = ? ");
 				first = false;
 			}
-			
+
 			if (contenido.getFechaAlta()!=null) {
 				addUpdate(queryString, first, " fecha_alta = ? ");
 				first = false;
 			}
-			
+
 			if (contenido.getFechaMod()!=null) {
 				addUpdate(queryString, first, " fecha_mod = ? ");
 				first = false;
 			}
-			
+
 			if (contenido.getIdAutor()!=null) {
 				addUpdate(queryString, first, " autor_id_contenido = ? ");
 				first = false;
 			}
-			
+
 			if (contenido.getTipo()!=null) {
 				addUpdate(queryString, first, " tipo = ? ");
 				first = false;
@@ -508,16 +569,16 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			int i = 1;
 			if (contenido.getNombre()!=null)
 				preparedStatement.setString(i++,contenido.getNombre());
-			
+
 			if (contenido.getFechaAlta()!=null)
 				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAlta().getTime()));
-			
+
 			if (contenido.getFechaMod()!=null)
 				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaMod().getTime()));
-			
+
 			if (contenido.getIdAutor()!=null)
 				preparedStatement.setLong(i++,contenido.getIdAutor());
-			
+
 			if (contenido.getTipo()!=null)
 				preparedStatement.setLong(i++,contenido.getTipo());
 
@@ -533,7 +594,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				throw new SQLException("Duplicate row for id = '" + 
 						contenido.getIdContenido() + "' in table 'Contenido'");
 			}     
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);    
@@ -545,7 +606,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 	@Override
 	public long delete(Connection connection, Long id) throws DataException {
-		
+
 		PreparedStatement preparedStatement = null;
 
 		try {
@@ -563,29 +624,29 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
-	
-	
+
+
 	public long deleteContenido(Connection connection, Long id) throws DataException {
-		
+
 		PreparedStatement preparedStatement = null;
 
 		try {
 			//deleteRelaciones(connection, id);
 			String queryString =	
-					  "DELETE FROM CONTENIDO " 
-					+ "WHERE id_contenido = ? ";
-			
+					"DELETE FROM CONTENIDO " 
+							+ "WHERE id_contenido = ? ";
+
 			preparedStatement = connection.prepareStatement(queryString);
 
 			int i = 1;
 			preparedStatement.setLong(i++, id);
-						
+
 			int removedRows = preparedStatement.executeUpdate();
-			
+
 			if (removedRows == 0) {
 				throw new DataException("Exception: No removed rows (Tabla CONTENIDO) Id:"+id);
 			} 
-	
+
 			return removedRows;
 
 		} catch (SQLException e) {
@@ -595,22 +656,22 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
-	
+
 	/**
 	 * Desvincula un Contenido de todas sus Etiquetas
 	 * @param connection - Connection
 	 * @param idContenido - Long
 	 */
-	
+
 	public void deleteEtiquetas(Connection connection, Long idContenido) throws DataException {
 
 		PreparedStatement preparedStatement = null;
 
 		try {
 			String queryString =	
-					  "DELETE FROM ETIQUETA_CONTENIDO " 
-					+ "WHERE id_contenido = ? ";
-			
+					"DELETE FROM ETIQUETA_CONTENIDO " 
+							+ "WHERE id_contenido = ? ";
+
 			preparedStatement = connection.prepareStatement(queryString);
 
 			int i = 1;
@@ -618,10 +679,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			int removedRows = preparedStatement.executeUpdate();
 
-//			if (removedRows == 0) {
-//				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
-//				throw new DataException("Exception: No removed rows (ETIQUETA_CONTENIDO)");
-//			}
+			//			if (removedRows == 0) {
+			//				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
+			//				throw new DataException("Exception: No removed rows (ETIQUETA_CONTENIDO)");
+			//			}
 
 
 		} catch (SQLException e) {
@@ -631,7 +692,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
-	
+
 
 	/**
 	 * Desvincula un Contenido de su Categoria
@@ -644,22 +705,22 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		try {
 			String queryString =	
-					  "DELETE FROM Categoria_CONTENIDO " 
-					+ "WHERE id_contenido = ? ";
-			
+					"DELETE FROM Categoria_CONTENIDO " 
+							+ "WHERE id_contenido = ? ";
+
 			preparedStatement = connection.prepareStatement(queryString);
 
 			int i = 1;
 			preparedStatement.setLong(i++, id);
-			
+
 			System.out.println("Borrando categorias...");
 			int removedRows = preparedStatement.executeUpdate();
-//
-//			if (removedRows == 0) {
-//				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
-//				throw new DataException("Exception: No removed rows (categoria_contenido)");
-//			}
-			
+			//
+			//			if (removedRows == 0) {
+			//				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
+			//				throw new DataException("Exception: No removed rows (categoria_contenido)");
+			//			}
+
 			//deleteCategorias(connection, id);
 
 		} catch (SQLException e) {
@@ -669,8 +730,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Desvincula un Contenido del resto de Contenidos
 	 * @param connection - Connection
@@ -682,9 +743,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		try {
 			String queryString =	
-					  "DELETE FROM Usuario_CONTENIDO " 
-					+ "WHERE USUARIO_ID_CONTENIDO = ? OR CONTENIDO_ID_CONTENIDO = ? ";
-			
+					"DELETE FROM Usuario_CONTENIDO " 
+							+ "WHERE USUARIO_ID_CONTENIDO = ? OR CONTENIDO_ID_CONTENIDO = ? ";
+
 			preparedStatement = connection.prepareStatement(queryString);
 
 			int i = 1;
@@ -693,11 +754,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			int removedRows = preparedStatement.executeUpdate();
 
-//			if (removedRows == 0) {
-//				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
-//				throw new DataException("Exception: No removed rows (USUARIO_CONTENIDO)");
-//			}
-			
+			//			if (removedRows == 0) {
+			//				// PODRIAMOS COMPROBAR SI HAN QUEDADO ENTRADAS HACIENDO UNA BUSQUEDA O UN EXISTS PARA LA TABLA
+			//				throw new DataException("Exception: No removed rows (USUARIO_CONTENIDO)");
+			//			}
+
 			//deleteEtiquetas(connection, id);
 
 		} catch (SQLException e) {
@@ -707,8 +768,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
-	
-	
+
 
 	/**
 	 * Vincula un contenido a una Categoria
@@ -720,9 +780,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	public void agignarCategoria(Connection connection, Long idContenido, Long idCategoria) throws DataException {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		
+
 		try {
-			
+
 			String queryString = " INSERT INTO categoria_contenido (id_categoria, id_contenido) "
 					+ " VALUES (?, ?)";
 
@@ -755,17 +815,17 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 */
 	@Override
 	public void modificarCategoria(Connection connection, Long idContenido, Long idCategoria) throws DataException {
-		
+
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
 		try {	
-			
+
 			queryString = new StringBuilder(
 					" UPDATE categoria_Contenido " 
 					);
-			
+
 			boolean first = true;
-			
+
 			if (idContenido != null && idCategoria != null ) {
 				addUpdate(queryString, first, " id_categoria = ? ");
 				first = false;
@@ -791,7 +851,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				throw new SQLException("Duplicate row for id = '" + 
 						idContenido +" - "+idCategoria+ "' in table 'Categoria_Contenido'");
 			}     
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataException(e);    
@@ -810,9 +870,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	public void asignarEtiqueta(Connection connection, Long idContenido, Long idEtiqueta) throws DataException {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		
+
 		try {
-			
+
 			String queryString = " INSERT INTO etiqueta_contenido (id_Etiqueta, id_contenido) "
 					+ " VALUES (?, ?)";
 
@@ -850,9 +910,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		try {
 			String queryString =	
-					  "DELETE FROM ETIQUETA_CONTENIDO " 
-					+ "WHERE id_contenido = ? and id_etiqueta = ?";
-			
+					"DELETE FROM ETIQUETA_CONTENIDO " 
+							+ "WHERE id_contenido = ? and id_etiqueta = ?";
+
 			preparedStatement = connection.prepareStatement(queryString);
 
 			int i = 1;
@@ -872,22 +932,22 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
-	
 
 
 
-	
+
+
 	/**
 	 * Comprueba si Existe una relacion entre un usuario y un contenido determinados.
 	 * @param connection - Connection
 	 * @param idUsuario - Long
 	 * @param idContenido - Long
-     * @return Boolean : True si existe la relacion. False en caso contrario.
+	 * @return Boolean : True si existe la relacion. False en caso contrario.
 	 */
 	@Override
 	public Boolean comprobarExistenciaRelacion(Connection connection, Long idUsuario, Long idContenido)
 			throws DataException {
-		
+
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -896,14 +956,14 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 					"SELECT USUARIO_ID_CONTENIDO, CONTENIDO_ID_CONTENIDO " +
 							"FROM USUARIO_CONTENIDO " +
 							"WHERE USUARIO_ID_CONTENIDO = ? and CONTENIDO_ID_CONTENIDO = ? ";
-			
+
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			int i = 1;                
 			preparedStatement.setLong(i++, idUsuario);
 			preparedStatement.setLong(i++, idContenido);
- 
+
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
@@ -921,7 +981,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	}
 
 
-	
+
 	/**
 	 * Inicializa una relacion entre dos contenidos (Usuario, Conteindo).
 	 * @param connection - Connection
@@ -932,11 +992,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	public void crearRelacion(Connection connection, Long idUsuario, Long idContenido) throws DataException {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		
+
 		try {
-			
+
 			String queryString = " INSERT INTO USUARIO_CONTENIDO " +
-			" (USUARIO_ID_CONTENIDO, CONTENIDO_ID_CONTENIDO, SIGUIENDO, DENUNCIADO, VALORACION, GUARDADO, COMENTARIO) "
+					" (USUARIO_ID_CONTENIDO, CONTENIDO_ID_CONTENIDO, SIGUIENDO, DENUNCIADO, VALORACION, GUARDADO, COMENTARIO) "
 					+ " VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(queryString);
@@ -944,7 +1004,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			int i = 1;
 			preparedStatement.setLong(i++, idUsuario);
 			preparedStatement.setLong(i++, idContenido);
-			
+
 			preparedStatement.setBoolean(i++, false);
 			preparedStatement.setNull(i++, Types.NULL);
 			preparedStatement.setInt(i++, 0);
@@ -975,19 +1035,19 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 */
 	@Override
 	public void seguirContenido(Connection connection, Long idUsuario, Long idContenido, Boolean siguiendo) throws DataException {
-		
+
 		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
 			crearRelacion(connection, idUsuario, idContenido);
 		}
-		
+
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
 		try {	
-			
+
 			queryString = new StringBuilder(
 					" UPDATE USUARIO_CONTENIDO " 
 					);
-			
+
 			boolean first = true;
 			addUpdate(queryString, first, " SIGUIENDO = ? ");
 			first = false;
@@ -997,7 +1057,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement = connection.prepareStatement(queryString.toString());
 
 			int i = 1;
-			
+
 			preparedStatement.setBoolean(i++, siguiendo );
 			preparedStatement.setLong(i++, idUsuario );
 			preparedStatement.setLong(i++, idContenido );
@@ -1018,7 +1078,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
-		
+
 	}
 
 
@@ -1035,19 +1095,19 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	@Override
 	public void denunciarContenido(Connection connection, Long idUsuario, Long idContenido, String denunciado)
 			throws DataException {
-		
+
 		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
 			crearRelacion(connection, idUsuario, idContenido);
 		}
-		
+
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
 		try {	
-			
+
 			queryString = new StringBuilder(
 					" UPDATE USUARIO_CONTENIDO " 
 					);
-			
+
 			boolean first = true;
 			addUpdate(queryString, first, " DENUNCIADO = ? ");
 			first = false;
@@ -1081,11 +1141,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
-		
+
 	}
 
 
-	
+
 	/**
 	 * Modifica la valoración realizada por un Usuario a un Contenido.
 	 * 
@@ -1097,19 +1157,19 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	@Override
 	public void valorarContenido(Connection connection, Long idUsuario, Long idContenido, Integer valoracion)
 			throws DataException {
-		
+
 		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
 			crearRelacion(connection, idUsuario, idContenido);
 		}
-		
+
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
 		try {	
-			
+
 			queryString = new StringBuilder(
 					" UPDATE USUARIO_CONTENIDO " 
 					);
-			
+
 			boolean first = true;
 			addUpdate(queryString, first, " VALORACION = ? ");
 			first = false;
@@ -1119,7 +1179,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement = connection.prepareStatement(queryString.toString());
 
 			int i = 1;
-			
+
 			preparedStatement.setInt(i++, valoracion );
 			preparedStatement.setLong(i++, idUsuario );
 			preparedStatement.setLong(i++, idContenido );
@@ -1153,19 +1213,19 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	@Override
 	public void guardarContenido(Connection connection, Long idUsuario, Long idContenido, Boolean guardado)
 			throws DataException {
-		
+
 		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
 			crearRelacion(connection, idUsuario, idContenido);
 		}
-		
+
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
 		try {	
-			
+
 			queryString = new StringBuilder(
 					" UPDATE USUARIO_CONTENIDO " 
 					);
-			
+
 			boolean first = true;
 			addUpdate(queryString, first, " GUARDADO = ? ");
 			first = false;
@@ -1175,7 +1235,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement = connection.prepareStatement(queryString.toString());
 
 			int i = 1;
-			
+
 			preparedStatement.setBoolean(i++, guardado );
 			preparedStatement.setLong(i++, idUsuario );
 			preparedStatement.setLong(i++, idContenido );
@@ -1196,8 +1256,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
-		
-		
+
+
 	}
 
 
@@ -1211,23 +1271,23 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 * @param idContenido - Long
 	 * @param comentario - String
 	 */
-	
+
 	@Override
 	public void comentarContenido(Connection connection, Long idUsuario, Long idContenido, String comentario)
 			throws DataException {
-		
+
 		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
 			crearRelacion(connection, idUsuario, idContenido);
 		}
-		
+
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
 		try {	
-			
+
 			queryString = new StringBuilder(
 					" UPDATE USUARIO_CONTENIDO " 
 					);
-			
+
 			boolean first = true;
 			addUpdate(queryString, first, " COMENTARIO = ? ");
 			first = false;
@@ -1237,13 +1297,13 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement = connection.prepareStatement(queryString.toString());
 
 			int i = 1;
-			
+
 			if(comentario == null) {
 				preparedStatement.setNull(i++, Types.NULL);
 			} else {
 				preparedStatement.setString(i++, comentario );
 			}
-			
+
 			preparedStatement.setLong(i++, idUsuario );
 			preparedStatement.setLong(i++, idContenido );
 
@@ -1263,10 +1323,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
-				
+
 	}
 
-	
+
 
 	/**
 	 * Recupera la Categoria a la que pertenece un Contenido
@@ -1285,17 +1345,17 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		try {          
 			String queryString = 
 					" SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA " + 
-					" FROM CATEGORIA C INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CATEGORIA = CC.ID_CATEGORIA) " +
-					" INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA ) " +
-					" WHERE CC.ID_CONTENIDO = ? AND CI.ID_IDIOMA = ?";
-			
+							" FROM CATEGORIA C INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CATEGORIA = CC.ID_CATEGORIA) " +
+							" INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA ) " +
+							" WHERE CC.ID_CONTENIDO = ? AND CI.ID_IDIOMA = ?";
+
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			int i = 1;                
 			preparedStatement.setLong(i++, idContenido);
 			preparedStatement.setString(i++, idioma);
- 
+
 			resultSet = preparedStatement.executeQuery();
 			Categoria c = new Categoria();
 			if (resultSet.next()) {
@@ -1333,19 +1393,19 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		try {
 			queryString = new StringBuilder(
 					" SELECT E.ID_ETIQUETA, EI.NOMBRE_ETIQUETA " + 
-					" FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC ON (E.ID_ETIQUETA = EC.ID_ETIQUETA) " +
-					" INNER JOIN ETIQUETA_IDIOMA EI ON (E.ID_ETIQUETA = EI.ID_ETIQUETA ) " +
+							" FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC ON (E.ID_ETIQUETA = EC.ID_ETIQUETA) " +
+							" INNER JOIN ETIQUETA_IDIOMA EI ON (E.ID_ETIQUETA = EI.ID_ETIQUETA ) " +
 					" WHERE EC.ID_CONTENIDO = ? AND EI.ID_IDIOMA = ?");
-			
+
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			
+
 			int i = 1;
 			preparedStatement.setLong(i++, id );
 			preparedStatement.setString(i++, idioma );
-			
+
 			resultSet = preparedStatement.executeQuery();
-			
+
 			List<Etiqueta> results = new ArrayList<Etiqueta>();    
 
 			Etiqueta e = null;
@@ -1361,53 +1421,50 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 
 			return results;
-	
-			} catch (SQLException e) {
-				e.printStackTrace();
-				//logger.error("Error",e);
-				throw new DataException(e);
-			} finally {
-				JDBCUtils.closeResultSet(resultSet);
-				JDBCUtils.closeStatement(preparedStatement);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			//logger.error("Error",e);
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
-	
-	
-	
-	
-	
+
+
 	private Contenido loadNext(Connection connection, ResultSet resultSet)
 			throws SQLException, DataException {
 
-				int i = 1;
-				Long idContenido = resultSet.getLong(i++);
-				String nombre = resultSet.getString(i++);
-				Date fechaAlta =  resultSet.getDate(i++);
-				Date fechaMod =  resultSet.getDate(i++);
-				Long autor = null;
-				if(resultSet.getObject(i)==null) {
-					autor = (Long) resultSet.getObject(i++);
+		int i = 1;
+		Long idContenido = resultSet.getLong(i++);
+		String nombre = resultSet.getString(i++);
+		Date fechaAlta =  resultSet.getDate(i++);
+		Date fechaMod =  resultSet.getDate(i++);
+		Long autor = null;
+		if(resultSet.getObject(i)==null) {
+			autor = (Long) resultSet.getObject(i++);
 
-				} else {
-					autor = resultSet.getLong(i++);
-				}
-				Integer tipo = resultSet.getInt(i++);
-				
-				Contenido c = new Contenido();
-				c.setIdContenido(idContenido);
-				c.setNombre(nombre);
-				c.setFechaAlta(fechaAlta);
-				c.setFechaMod(fechaMod);
-				c.setIdAutor(autor);
-				c.setTipo(tipo);
+		} else {
+			autor = resultSet.getLong(i++);
+		}
+		Integer tipo = resultSet.getInt(i++);
 
-				return c;
-			}
-	
+		Contenido c = new Contenido();
+		c.setIdContenido(idContenido);
+		c.setNombre(nombre);
+		c.setFechaAlta(fechaAlta);
+		c.setFechaMod(fechaMod);
+		c.setIdAutor(autor);
+		c.setTipo(tipo);
+
+		return c;
+	}
+
 	private void addClause(StringBuilder queryString, boolean first, String clause) {
 		queryString.append(first?" WHERE ": " AND ").append(clause);
 	}
-	
+
 	private void addUpdate(StringBuilder queryString, boolean first, String clause) {
 		queryString.append(first? " SET ": " , ").append(clause);
 	}

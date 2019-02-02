@@ -19,6 +19,9 @@ public interface VideoDAO {
 
 	public List<Video> findAll(Connection connection) 
 			throws DataException;
+	
+	public int getReproducciones (Connection connection, Long idContenido) 
+			throws DataException;
 
 	
 	public Video create (Connection connection, Video p) 

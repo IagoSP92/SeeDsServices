@@ -115,7 +115,7 @@ public class TestContenidoService {
 			
 			System.out.println();
 			System.out.println();	
-			System.out.println("____________________________________________  Buscar Critera");
+			System.out.println("____________________________________________  Buscar buscarCriteriaTodo");
 
 			ContenidoCriteria contenidoCriteria = new ContenidoCriteria();
 			
@@ -198,6 +198,41 @@ public class TestContenidoService {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
 			
+			
+			contenidoCriteria = new ContenidoCriteria();
+			
+			contenidoCriteria.setNombre("al");
+			
+			calendar.set(2010, Calendar.OCTOBER, 9);
+			date= calendar.getTime();
+			contenidoCriteria.setFechaAlta(date);
+			
+			calendar.set(2010, Calendar.OCTOBER, 11);
+			date= calendar.getTime();
+			contenidoCriteria.setFechaAltaHasta(date);
+			
+			calendar.set(2010, Calendar.OCTOBER, 9);
+			date= calendar.getTime();
+			contenidoCriteria.setFechaMod(date);
+			
+			calendar.set(2010, Calendar.OCTOBER, 11);
+			date= calendar.getTime();
+			contenidoCriteria.setFechaModHasta(date);
+			
+			contenidoCriteria.setIdAutor(7l);
+			contenidoCriteria.setTipo(2);
+			
+			contenidoCriteria.setValoracionMin(5);
+			contenidoCriteria.setValoracionMax(7);
+			
+			contenidoCriteria.setReproduccionesMin(16);
+			contenidoCriteria.setReproduccionesMax(18);
+
+			
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
+			for(Contenido c : todos) {
+				System.out.println(c.toString());
+			}System.out.println("---------------------------------------------------------------");
 			
 			
 			} catch (DataException e) {

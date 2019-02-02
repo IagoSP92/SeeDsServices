@@ -12,14 +12,7 @@ import com.isp.seeds.service.criteria.ContenidoCriteria;
 public interface ContenidoDAO {
 	
 	public Boolean exists (Connection connection, Long idContenido) 
-			throws DataException;
-	
-//	public Boolean existsCategoria (Connection connection, Long idCategoria) 
-//			throws DataException;
-//	
-//	public Boolean existsEtiqueta (Connection connection, Long idEtiqueta) 
-//			throws DataException;
-	
+			throws DataException;	
 	
 	
 	public Contenido findById(Connection connection, Long idContenido) 
@@ -27,11 +20,16 @@ public interface ContenidoDAO {
 	
 	public Contenido findByNombre(Connection connection, String nombreContenido) 
 			throws DataException;
-
+	
 	public List<Contenido> findByCriteria(Connection connection, ContenidoCriteria contenido)
 			throws DataException;
 	
+	
 	public List<Contenido> findAll(Connection connection) 
+			throws DataException;
+	
+
+	Integer getValoracion(Connection connection, Long idContenido)
 			throws DataException;
 	
 	
@@ -111,6 +109,7 @@ public interface ContenidoDAO {
 	
 	
 	*/
+
 
 
 	

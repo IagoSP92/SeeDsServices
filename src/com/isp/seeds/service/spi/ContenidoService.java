@@ -16,8 +16,10 @@ public interface ContenidoService {
 	
 	public Contenido buscarNombre(String nombreContenido);
 	
+
 	public List<Contenido> buscarCriteria(ContenidoCriteria contenido)
 			throws DataException;
+
 	
 	public List<Contenido> verTodos () 
 			throws DataException;
