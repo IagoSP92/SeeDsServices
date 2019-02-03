@@ -10,24 +10,24 @@ public interface ListaService {
 	public Lista crearLista (Lista lista) 
 			throws DataException;
 	
-	public Lista eliminarLista (Lista lista) 
+	public void eliminarLista (Lista lista) 
 			throws DataException;
 	
 	
-	public void editarLista (Lista lista, String idioma)
+	public void editarLista (Lista lista)
 			throws DataException;
 	
-	public void meterVideo (Lista lista, String idioma)
+	public void meterVideo (Long idLista, Long idVideo)
 			throws DataException;
 	
-	public void sacarVideo (Lista lista, String idioma)
+	public void sacarVideo (Long idLista, Long idVideo)
 			throws DataException;
 	
 
-	public Lista buscarId (Long idVideo, String idioma)
+	public Lista buscarId (Long idVideo)
 			throws DataException;
 	
-	public List<Lista> buscarTodas (String idioma)
+	public List<Lista> buscarTodas ()
 			throws DataException;
 	
 	public List<Lista> buscarPorAutor (Long idAutor, String idioma)

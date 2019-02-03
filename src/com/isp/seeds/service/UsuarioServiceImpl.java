@@ -57,7 +57,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return u;
 	}
 	
-	public Usuario eliminarCuenta (Usuario u) {
+	public void eliminarCuenta (Usuario u) {
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			usuarioDao.delete(connection, u.getIdContenido());
@@ -69,7 +69,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		catch (Exception e) { 
 			e.printStackTrace();
 		}
-		return u;
+		// if usuario not null Excepcion????????????????
 	}
 
 	@Override
@@ -159,6 +159,30 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
+	public Usuario buscarId(Long id, String idioma) throws DataException {
+		try {
+			if(id != null && idioma!=null) {
+				Connection connection = ConnectionManager.getConnection();
+				Usuario usuario = new Usuario();
+				usuario = usuarioDao.findById(connection, id, idioma);
+
+				JDBCUtils.closeConnection(connection);
+
+				return usuario;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (DataException e) {
+			e.printStackTrace();
+		}finally{
+			//JDBCUtils.closeConnection(connection);
+		}
+		return null;
+	}
+	
+	
+	@Override
 	public List<Usuario> buscarTodos(String idioma) throws DataException {
 		try {
 			if(idioma != null) {
@@ -181,5 +205,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		return null;
 	}
+
 
 }

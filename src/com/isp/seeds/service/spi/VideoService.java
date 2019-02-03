@@ -10,18 +10,18 @@ public interface VideoService {
 	public Video crearVideo (Video video) 
 			throws DataException;
 	
-	public Video eliminarVideo (Video video) 
+	public void eliminarVideo (Video video) 
 			throws DataException;
 	
 	
-	public void editarVideo (Video video, String idioma)
+	public void editarVideo (Video video)
 			throws DataException;
 	
 
-	public Video buscarId (Long idVideo, String idioma)
+	public Video buscarId (Long idVideo)
 			throws DataException;
 	
-	public List<Video> buscarTodos (String idioma)
+	public List<Video> buscarTodos ()
 			throws DataException;
 	
 	public List<Video> buscarPorAutor (Long idAutor, String idioma)

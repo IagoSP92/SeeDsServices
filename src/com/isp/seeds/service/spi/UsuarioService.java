@@ -11,7 +11,7 @@ public interface UsuarioService {
 	public Usuario crearCuenta (Usuario u) 
 			throws DataException;
 	
-	public Usuario eliminarCuenta (Usuario u) 
+	public void eliminarCuenta (Usuario u) 
 			throws DataException;
 	
 	public Usuario logIn (String email, String contrasena, String idioma)
@@ -29,6 +29,8 @@ public interface UsuarioService {
 	public void recuperarContraseña (String email)
 			throws DataException;
 	
+	public Usuario buscarId (Long id, String idioma)
+			throws DataException;
 
 	public Usuario buscarEmail (String email, String idioma)
 			throws DataException;

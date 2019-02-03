@@ -12,13 +12,19 @@ public interface ListaDAO {
 	
 	public Lista findById (Connection connection, Long id) 
 			throws DataException;
-
 	
-	public List <Lista> findByCriteria(Connection connection, ListaCriteria lista) 
+	public List <Lista>  findByAutor (Connection connection, Long idAutor) 
 			throws DataException;
 	
+	public List <Lista>  findByCategoria (Connection connection, Long idCategoria) 
+			throws DataException;
 
-	public List <Lista> findAll(Connection connection) 
+	
+//	public List <Lista> findByCriteria(Connection connection, ListaCriteria lista) 
+//			throws DataException;
+	
+
+	public List <Lista> findAllListas(Connection connection) 
 			throws DataException;
 	
 

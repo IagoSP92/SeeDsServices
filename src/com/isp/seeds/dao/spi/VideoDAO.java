@@ -13,11 +13,17 @@ public interface VideoDAO {
 	public Video findById(Connection connection, Long id) 
 			throws DataException;
 	
-	public List<Video> findByCriteria(Connection connection, VideoCriteria video) 
+	public List<Video> findByAutor(Connection connection, Long idAutor) 
 			throws DataException;
+	
+	public List<Video> findByCategoria(Connection connection, Long idCategoria) 
+			throws DataException;
+	
+//	public List<Video> findByCriteria(Connection connection, VideoCriteria video) 
+//			throws DataException;
 
 
-	public List<Video> findAll(Connection connection) 
+	public List<Video> findAllVideos(Connection connection) 
 			throws DataException;
 	
 	public int getReproducciones (Connection connection, Long idContenido) 

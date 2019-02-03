@@ -15,10 +15,11 @@ import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.spi.VideoDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Contenido;
+import com.isp.seeds.model.Usuario;
 import com.isp.seeds.model.Video;
-import com.isp.seeds.service.criteria.VideoCriteria;
+import com.isp.seeds.service.criteria.ContenidoCriteria;
 
-public class VideoDAOImpl implements VideoDAO {
+public class VideoDAOImpl extends UsuarioDAOImpl implements VideoDAO {
 
 	@Override
 	public Video findById(Connection connection, Long id) throws DataException {
@@ -60,98 +61,131 @@ public class VideoDAOImpl implements VideoDAO {
 	}
 
 	
+//	@Override
+//	public List<Video> findByCriteria(Connection connection, VideoCriteria video) throws DataException {
+//
+//		PreparedStatement preparedStatement = null;
+//		ResultSet resultSet = null;
+//		StringBuilder queryString = null;
+//
+//		try {	
+//			queryString = new StringBuilder(
+//					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
+//							+ " v.descripcion, v.reproducciones, v.url_video " + 
+//							" FROM Video v INNER JOIN Contenido c ON (c.id_contenido = v.id_contenido ) ");
+//			
+//			boolean first = true;
+//
+//			if (video.getIdContenido()!=null) {
+//				addClause(queryString, first, " v.ID_CONTENIDO LIKE ? ");
+//				first = false;
+//			}
+//			
+//			if (video.getDescripcion()!=null) {
+//				addClause(queryString, first, " v.descripcion LIKE ? ");
+//				first = false;
+//			}
+//
+//			if (video.getReproducciones()!=null) {
+//				addClause(queryString, first, " v.reproducciones LIKE ? ");
+//				first = false;
+//			}			
+//			
+//			if (video.getUrl()!=null) {
+//				addClause(queryString, first, " v.url_video LIKE ? ");
+//				first = false;
+//			}	
+//			/*
+//			if (idioma!=null) {
+//				addClause(queryString, first, " pi.id_idioma LIKE ? ");
+//				first = false;
+//			}*/
+//
+//			preparedStatement = connection.prepareStatement(queryString.toString(),
+//					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+//			int i = 1;
+//			if (video.getIdContenido()!=null)
+//				preparedStatement.setString(i++, "%" + video.getIdContenido() + "%");
+//			if (video.getDescripcion()!=null) 
+//				preparedStatement.setString(i++, "%" + video.getDescripcion() + "%");
+//			if (video.getReproducciones()!=null)
+//				preparedStatement.setString(i++, "%" + video.getReproducciones() + "%");
+//			if (video.getUrl()!=null) 
+//				preparedStatement.setString(i++, "%" + video.getUrl() + "%");
+//			/*
+//			if (idioma!=null) 
+//				preparedStatement.setString(i++,idioma);
+//				*/			
+//			resultSet = preparedStatement.executeQuery();
+//
+//			List<Video> results = new ArrayList<Video>(); 
+//
+//			Video e = null;
+//			//int currentCount = 0;
+//
+//			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
+//			if(resultSet.next()) {
+//				do {
+//					e = loadNext(connection, resultSet);
+//					results.add(e);               	
+//					//currentCount++;                	
+//				} while (/*(currentCount < count) && */ resultSet.next()) ;
+//			}
+//			//}
+//
+//			return results;
+//	
+//			} catch (SQLException e) {
+//				//logger.error("Error",e);
+//				throw new DataException(e);
+//			} catch (DataException de) {
+//				//logger.error("Error",e);
+//				throw new DataException(de);
+//			}  finally {
+//				JDBCUtils.closeResultSet(resultSet);
+//				JDBCUtils.closeStatement(preparedStatement);
+//		}
+//	}
+
+	
 	@Override
-	public List<Video> findByCriteria(Connection connection, VideoCriteria video) throws DataException {
+	public List<Video> findAllVideos(Connection connection) throws DataException {
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		StringBuilder queryString = null;
 
-		try {	
+		try {
 			queryString = new StringBuilder(
-					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
-							+ " v.descripcion, v.reproducciones, v.url_video " + 
-							" FROM Video v INNER JOIN Contenido c ON (c.id_contenido = v.id_contenido ) ");
-			
-			boolean first = true;
-
-			if (video.getIdContenido()!=null) {
-				addClause(queryString, first, " v.ID_CONTENIDO LIKE ? ");
-				first = false;
-			}
-			
-			if (video.getDescripcion()!=null) {
-				addClause(queryString, first, " v.descripcion LIKE ? ");
-				first = false;
-			}
-
-			if (video.getReproducciones()!=null) {
-				addClause(queryString, first, " v.reproducciones LIKE ? ");
-				first = false;
-			}			
-			
-			if (video.getUrl()!=null) {
-				addClause(queryString, first, " v.url_video LIKE ? ");
-				first = false;
-			}	
-			/*
-			if (idioma!=null) {
-				addClause(queryString, first, " pi.id_idioma LIKE ? ");
-				first = false;
-			}*/
+					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO,"
+							+ " V.DESCRIPCION, V.REPRODUCCIONES, V.URL_VIDEO  " + 
+					" FROM VIDEO V INNER JOIN CONTEINDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) ");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			int i = 1;
-			if (video.getIdContenido()!=null)
-				preparedStatement.setString(i++, "%" + video.getIdContenido() + "%");
-			if (video.getDescripcion()!=null) 
-				preparedStatement.setString(i++, "%" + video.getDescripcion() + "%");
-			if (video.getReproducciones()!=null)
-				preparedStatement.setString(i++, "%" + video.getReproducciones() + "%");
-			if (video.getUrl()!=null) 
-				preparedStatement.setString(i++, "%" + video.getUrl() + "%");
-			/*
-			if (idioma!=null) 
-				preparedStatement.setString(i++,idioma);
-				*/			
+
 			resultSet = preparedStatement.executeQuery();
 
 			List<Video> results = new ArrayList<Video>(); 
 
-			Video e = null;
-			//int currentCount = 0;
+			Video video = null;
 
-			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
-			if(resultSet.next()) {
-				do {
-					e = loadNext(connection, resultSet);
-					results.add(e);               	
-					//currentCount++;                	
-				} while (/*(currentCount < count) && */ resultSet.next()) ;
-			}
-			//}
-
+			while (resultSet.next()) {
+				video = loadNext(connection, resultSet);
+				results.add(video);               	
+			} 
 			return results;
-	
-			} catch (SQLException e) {
-				//logger.error("Error",e);
-				throw new DataException(e);
-			} catch (DataException de) {
-				//logger.error("Error",e);
-				throw new DataException(de);
-			}  finally {
-				JDBCUtils.closeResultSet(resultSet);
-				JDBCUtils.closeStatement(preparedStatement);
-		}
-	}
 
-	
-	@Override
-	public List<Video> findAll(Connection connection) throws DataException {
-		VideoDAO dao= new VideoDAOImpl();
-		VideoCriteria video= new VideoCriteria();
-		return dao.findByCriteria(connection, video);
+		} catch (SQLException e) {
+			//logger.error("Error",e);
+			throw new DataException(e);
+		} catch (DataException de) {
+			//logger.error("Error",e);
+			throw new DataException(de);
+		}  finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
 	}
 
 	
@@ -229,7 +263,6 @@ public class VideoDAOImpl implements VideoDAO {
 				addUpdate(queryString, first, " url_video = ? ");
 				first = false;
 			}
-			
 			
 			queryString.append("WHERE id_contenido = ?");
 
@@ -370,6 +403,94 @@ public class VideoDAOImpl implements VideoDAO {
 		} catch (SQLException e) {
 			throw new DataException(e);
 		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+
+
+	@Override
+	public List<Video> findByAutor(Connection connection, Long idAutor) throws DataException {
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO,"
+							+ " V.DESCRIPCION, V.REPRODUCCIONES, V.URL_VIDEO  " + 
+					" FROM VIDEO V INNER JOIN CONTEINDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "+
+					" WHERE C.AUTOR_ID_CONTENIDO = ? ");
+
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			preparedStatement.setLong(1, idAutor);
+
+			resultSet = preparedStatement.executeQuery();
+
+			List<Video> results = new ArrayList<Video>(); 
+
+			Video video = null;
+
+			while (resultSet.next()) {
+				video = loadNext(connection, resultSet);
+				results.add(video);               	
+			} 
+			return results;
+
+		} catch (SQLException e) {
+			//logger.error("Error",e);
+			throw new DataException(e);
+		} catch (DataException de) {
+			//logger.error("Error",e);
+			throw new DataException(de);
+		}  finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+
+
+	@Override
+	public List<Video> findByCategoria(Connection connection, Long idCategoria) throws DataException {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO,"
+							+ " V.DESCRIPCION, V.REPRODUCCIONES, V.URL_VIDEO  " + 
+					" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "+
+					"  INNER JOIN CATEGORIA_CONTENIDO CC ON (CC.ID_CONTENIDO = V.ID_CONTENIDO ) "+
+					" WHERE CC.ID_CATEGORIA = ? ");
+
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			preparedStatement.setLong(1, idCategoria);
+
+			resultSet = preparedStatement.executeQuery();
+
+			List<Video> results = new ArrayList<Video>(); 
+
+			Video video = null;
+
+			while (resultSet.next()) {
+				video = loadNext(connection, resultSet);
+				results.add(video);               	
+			} 
+			return results;
+
+		} catch (SQLException e) {
+			//logger.error("Error",e);
+			throw new DataException(e);
+		} catch (DataException de) {
+			//logger.error("Error",e);
+			throw new DataException(de);
+		}  finally {
+			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}

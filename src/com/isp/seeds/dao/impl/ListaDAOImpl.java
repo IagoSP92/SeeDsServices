@@ -16,9 +16,9 @@ import com.isp.seeds.dao.spi.ListaDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Lista;
-import com.isp.seeds.service.criteria.ListaCriteria;
+import com.isp.seeds.model.Video;
 
-public class ListaDAOImpl implements ListaDAO {
+public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 
 	@Override
 	public Lista findById(Connection connection, Long id) throws DataException {
@@ -59,90 +59,123 @@ public class ListaDAOImpl implements ListaDAO {
 		}	
 	}
 
+//	@Override
+//	public List<Lista> findByCriteria(Connection connection, ListaCriteria lista) throws DataException {
+//
+//		PreparedStatement preparedStatement = null;
+//		ResultSet resultSet = null;
+//		StringBuilder queryString = null;
+//
+//		try {	
+//			queryString = new StringBuilder(
+//					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
+//							+ " l.descripcion, l.publica " + 
+//							" FROM Lista l INNER JOIN Contenido c ON (c.id_contenido = l.id_contenido ) ");
+//			
+//			boolean first = true;
+//
+//			if (lista.getIdContenido()!=null) {
+//				addClause(queryString, first, " l.ID_CONTENIDO LIKE ? ");
+//				first = false;
+//			}
+//			
+//			if (lista.getDescripcion()!=null) {
+//				addClause(queryString, first, " l.descripcion LIKE ? ");
+//				first = false;
+//			}
+//
+//			if (lista.getPublica()!=null) {
+//				addClause(queryString, first, " l.publica LIKE ? ");
+//				first = false;
+//			}			
+//			/*
+//			if (idioma!=null) {
+//				addClause(queryString, first, " pi.id_idioma LIKE ? ");
+//				first = false;
+//			}*/
+//
+//			preparedStatement = connection.prepareStatement(queryString.toString(),
+//					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+//			int i = 1;
+//			if (lista.getIdContenido()!=null)
+//				preparedStatement.setString(i++, "%" + lista.getIdContenido() + "%");
+//			if (lista.getDescripcion()!=null) 
+//				preparedStatement.setString(i++, "%" + lista.getDescripcion() + "%");
+//			if (lista.getPublica()!=null)
+//				preparedStatement.setString(i++, "%" + lista.getPublica() + "%");
+//			/*
+//			if (idioma!=null) 
+//				preparedStatement.setString(i++,idioma);
+//				*/			
+//			resultSet = preparedStatement.executeQuery();
+//
+//			List<Lista> results = new ArrayList<Lista>(); 
+//
+//			Lista e = null;
+//			//int currentCount = 0;
+//
+//			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
+//			if(resultSet.next()) {
+//				do {
+//					e = loadNext(connection, resultSet);
+//					results.add(e);               	
+//					//currentCount++;                	
+//				} while (/*(currentCount < count) && */ resultSet.next()) ;
+//			}
+//			//}
+//
+//			return results;
+//	
+//			} catch (SQLException e) {
+//				//logger.error("Error",e);
+//				throw new DataException(e);
+//			} catch (DataException de) {
+//				//logger.error("Error",e);
+//				throw new DataException(de);
+//			}  finally {
+//				JDBCUtils.closeResultSet(resultSet);
+//				JDBCUtils.closeStatement(preparedStatement);
+//		}
+//	}
+
 	@Override
-	public List<Lista> findByCriteria(Connection connection, ListaCriteria lista) throws DataException {
+	public List<Lista> findAllListas(Connection connection) throws DataException {
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		StringBuilder queryString = null;
 
-		try {	
+		try {
 			queryString = new StringBuilder(
-					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
-							+ " l.descripcion, l.publica " + 
-							" FROM Lista l INNER JOIN Contenido c ON (c.id_contenido = l.id_contenido ) ");
-			
-			boolean first = true;
-
-			if (lista.getIdContenido()!=null) {
-				addClause(queryString, first, " l.ID_CONTENIDO LIKE ? ");
-				first = false;
-			}
-			
-			if (lista.getDescripcion()!=null) {
-				addClause(queryString, first, " l.descripcion LIKE ? ");
-				first = false;
-			}
-
-			if (lista.getPublica()!=null) {
-				addClause(queryString, first, " l.publica LIKE ? ");
-				first = false;
-			}			
-			/*
-			if (idioma!=null) {
-				addClause(queryString, first, " pi.id_idioma LIKE ? ");
-				first = false;
-			}*/
+					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO,"
+							+ " L.DESCRIPCION, L.PUBLICA " + 
+					" FROM LISTA L INNER JOIN CONTEINDO C ON (C.ID_CONTENIDO = L.ID_CONTENIDO ) ");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			int i = 1;
-			if (lista.getIdContenido()!=null)
-				preparedStatement.setString(i++, "%" + lista.getIdContenido() + "%");
-			if (lista.getDescripcion()!=null) 
-				preparedStatement.setString(i++, "%" + lista.getDescripcion() + "%");
-			if (lista.getPublica()!=null)
-				preparedStatement.setString(i++, "%" + lista.getPublica() + "%");
-			/*
-			if (idioma!=null) 
-				preparedStatement.setString(i++,idioma);
-				*/			
+
 			resultSet = preparedStatement.executeQuery();
 
 			List<Lista> results = new ArrayList<Lista>(); 
 
-			Lista e = null;
-			//int currentCount = 0;
+			Lista lista = null;
 
-			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
-			if(resultSet.next()) {
-				do {
-					e = loadNext(connection, resultSet);
-					results.add(e);               	
-					//currentCount++;                	
-				} while (/*(currentCount < count) && */ resultSet.next()) ;
-			}
-			//}
-
+			while (resultSet.next()) {
+				lista = loadNext(connection, resultSet);
+				results.add(lista);               	
+			} 
 			return results;
-	
-			} catch (SQLException e) {
-				//logger.error("Error",e);
-				throw new DataException(e);
-			} catch (DataException de) {
-				//logger.error("Error",e);
-				throw new DataException(de);
-			}  finally {
-				JDBCUtils.closeResultSet(resultSet);
-				JDBCUtils.closeStatement(preparedStatement);
-		}
-	}
 
-	@Override
-	public List<Lista> findAll(Connection connection) throws DataException {
-		ListaDAO dao= new ListaDAOImpl();
-		ListaCriteria lista= new ListaCriteria();
-		return dao.findByCriteria(connection, lista);
+		} catch (SQLException e) {
+			//logger.error("Error",e);
+			throw new DataException(e);
+		} catch (DataException de) {
+			//logger.error("Error",e);
+			throw new DataException(de);
+		}  finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
 	}
 
 	@Override
@@ -312,5 +345,92 @@ public class ListaDAOImpl implements ListaDAO {
 
 				return l;
 			}
+
+	@Override
+	public List<Lista> findByAutor(Connection connection, Long idAutor) throws DataException {
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO,"
+							+ " V.DESCRIPCION, V.REPRODUCCIONES, V.URL_VIDEO  " + 
+					" FROM VIDEO V INNER JOIN CONTEINDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "+
+					" WHERE C.AUTOR_ID_CONTENIDO = ? ");
+
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			preparedStatement.setLong(1, idAutor);
+
+			resultSet = preparedStatement.executeQuery();
+
+			List<Lista> results = new ArrayList<Lista>(); 
+
+			Lista lista = null;
+
+			while (resultSet.next()) {
+				lista = loadNext(connection, resultSet);
+				results.add(lista);               	
+			} 
+			return results;
+
+		} catch (SQLException e) {
+			//logger.error("Error",e);
+			throw new DataException(e);
+		} catch (DataException de) {
+			//logger.error("Error",e);
+			throw new DataException(de);
+		}  finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+
+	@Override
+	public List<Lista> findByCategoria(Connection connection, Long idCategoria) throws DataException {
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO,"
+							+ " L.DESCRIPCION, L.PUBLICA  " + 
+					" FROM LISTA L INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = L.ID_CONTENIDO ) "+
+					"  INNER JOIN CATEGORIA_CONTENIDO CC ON (CC.ID_CONTENIDO = L.ID_CONTENIDO ) "+
+					" WHERE CC.ID_CATEGORIA = ? ");
+
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			preparedStatement.setLong(1, idCategoria);
+
+			resultSet = preparedStatement.executeQuery();
+
+			List<Lista> results = new ArrayList<Lista>(); 
+
+			Lista lista = null;
+
+			while (resultSet.next()) {
+				lista = loadNext(connection, resultSet);
+				results.add(lista);               	
+			} 
+			return results;
+
+		} catch (SQLException e) {
+			//logger.error("Error",e);
+			throw new DataException(e);
+		} catch (DataException de) {
+			//logger.error("Error",e);
+			throw new DataException(de);
+		}  finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
 
 }

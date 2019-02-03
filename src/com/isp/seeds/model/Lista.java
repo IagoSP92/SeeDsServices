@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class Lista extends Contenido{
+public class Lista extends Contenido {
 
 	private String descripcion = null;
 	private Boolean publica = null;

@@ -130,14 +130,14 @@ public class TestUsuarioDAO {
 		
 		
 		System.out.println("1 - BUSCAMOS ALL:");
-		List<Usuario> lista = dao.findAll(conexion);
+		List<Usuario> lista = dao.findAllUsers(conexion, "ESP");
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");
 		for(Usuario u: lista){System.out.println(u.toString());}
 		System.out.println("3 - FIN DE LA IMPRESION");
 		System.out.println("BORRAMOS");
 		dao.delete(conexion, jamele2.getIdContenido());
 		System.out.println("MOSTRALL");
-		lista = dao.findAll(conexion);
+		lista = dao.findAllUsers(conexion, "ESP");
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");
 		for(Usuario u: lista){System.out.println(u.toString());}
 
