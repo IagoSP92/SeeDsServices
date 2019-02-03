@@ -15,11 +15,9 @@ import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.spi.VideoDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Contenido;
-import com.isp.seeds.model.Usuario;
 import com.isp.seeds.model.Video;
-import com.isp.seeds.service.criteria.ContenidoCriteria;
 
-public class VideoDAOImpl extends UsuarioDAOImpl implements VideoDAO {
+public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 
 	@Override
 	public Video findById(Connection connection, Long id) throws DataException {
@@ -159,7 +157,7 @@ public class VideoDAOImpl extends UsuarioDAOImpl implements VideoDAO {
 			queryString = new StringBuilder(
 					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO,"
 							+ " V.DESCRIPCION, V.REPRODUCCIONES, V.URL_VIDEO  " + 
-					" FROM VIDEO V INNER JOIN CONTEINDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) ");
+					" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) ");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);

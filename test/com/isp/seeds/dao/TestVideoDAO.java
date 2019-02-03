@@ -30,6 +30,8 @@ public class TestVideoDAO {
 		videoUno.setDescripcion("descripcion");
 		videoUno.setReproducciones(10);
 		videoUno.setUrl("url.mp4");
+		videoUno.setTipo(2);
+
 		
 		video2 = dao.create(conexion, videoUno);
 		System.out.println("IMPRIMIMOS INSERTADO:");
@@ -46,14 +48,14 @@ public class TestVideoDAO {
 		System.out.println(dao.findById(conexion, video2.getIdContenido()));
 		
 		System.out.println("1 - BUSCAMOS ALL:");
-		List<Video> lista = dao.findAll(conexion);
+		List<Video> lista = dao.findAllVideos(conexion);
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");
 		for(Video u: lista){System.out.println(u.toString());}
 		System.out.println("3 - FIN DE LA IMPRESION");
 		System.out.println("BORRAMOS");
 		dao.delete(conexion, video2.getIdContenido());
 		System.out.println("MOSTRALL");
-		lista = dao.findAll(conexion);
+		lista = dao.findAllVideos(conexion);
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");
 		for(Video u: lista){System.out.println(u.toString());}
 
@@ -61,7 +63,7 @@ public class TestVideoDAO {
 		System.out.println("fin");
 		
 		} catch (Exception e) {
-			System.out.println("EXCEPTION EN TEST");
+			e.printStackTrace();
 		}
 	}
 	
@@ -80,8 +82,9 @@ public class TestVideoDAO {
 //		videoUno.setUrl("herencia.mp4");
 		videoUno.setNombre("cuatro");
 		
-		System.out.println("1 - BUSCAMOS POR CRITERIA:");
-		List<Video> lista = dao.findByCriteria(conexion, videoUno);
+		System.out.println("1 - BUSCAMOS POR autor:");
+		List<Video> lista = dao.findByAutor(conexion, 1l
+				);
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDA:");
 		for(Video u: lista){System.out.println(u.toString());}
 		System.out.println("3 - FIN DE LA IMPRESION");

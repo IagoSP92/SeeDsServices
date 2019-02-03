@@ -32,7 +32,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	public ContenidoDAOImpl () {
 		categoriaDao = new CategoriaDAOImpl();
 		etiquetaDao = new EtiquetaDAOImpl();
-		videoDao = new VideoDAOImpl();
+		//videoDao = new VideoDAOImpl();
 	}
 
 	/**
@@ -387,6 +387,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	
 	private Boolean filtrarReproducciones (Connection connection, ContenidoCriteria contenido, Contenido esteContenido) 
 			throws DataException {
+		videoDao = new VideoDAOImpl();
 
 		Boolean valido = true;
 

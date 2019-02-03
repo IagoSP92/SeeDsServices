@@ -36,4 +36,12 @@ public interface ListaDAO {
 	
 	public long delete (Connection connection, Long id) 
 			throws DataException;
+	
+	
+	
+	public void meterVideo (Connection connection, Long idLista, Long idVideo)
+			throws DataException;
+	
+	public void sacarVideo (Connection connection, Long idLista, Long idVideo)
+			throws DataException;
 }

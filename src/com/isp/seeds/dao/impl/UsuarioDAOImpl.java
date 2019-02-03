@@ -25,8 +25,6 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 	//private static Logger logger = LogManager.getLogger(UsuarioDAOImpl.class.getName());   // ESTO QUE E???
 
-	public UsuarioDAOImpl () {
-	}
 
 	@Override
 	public Usuario findById(Connection connection, Long id, String idioma) throws DataException {

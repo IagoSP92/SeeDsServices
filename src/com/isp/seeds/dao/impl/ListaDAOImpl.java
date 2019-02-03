@@ -52,6 +52,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			return e;
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataException(e);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
@@ -149,7 +150,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			queryString = new StringBuilder(
 					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO,"
 							+ " L.DESCRIPCION, L.PUBLICA " + 
-					" FROM LISTA L INNER JOIN CONTEINDO C ON (C.ID_CONTENIDO = L.ID_CONTENIDO ) ");
+					" FROM LISTA L INNER JOIN CONTENiDO C ON (C.ID_CONTENIDO = L.ID_CONTENIDO ) ");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -168,8 +169,10 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 
 		} catch (SQLException e) {
 			//logger.error("Error",e);
+			e.printStackTrace();
 			throw new DataException(e);
 		} catch (DataException de) {
+			de.printStackTrace();
 			//logger.error("Error",e);
 			throw new DataException(de);
 		}  finally {
@@ -216,6 +219,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			return lista;
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -272,6 +276,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			}     
 			
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataException(e);    
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -305,6 +310,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			return removedRows;
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -379,8 +385,10 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 
 		} catch (SQLException e) {
 			//logger.error("Error",e);
+			e.printStackTrace();
 			throw new DataException(e);
 		} catch (DataException de) {
+			de.printStackTrace();
 			//logger.error("Error",e);
 			throw new DataException(de);
 		}  finally {
@@ -423,14 +431,28 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 
 		} catch (SQLException e) {
 			//logger.error("Error",e);
+			e.printStackTrace();
 			throw new DataException(e);
 		} catch (DataException de) {
 			//logger.error("Error",e);
+			de.printStackTrace();
 			throw new DataException(de);
 		}  finally {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 		}
+	}
+
+	@Override
+	public void meterVideo(Connection connection, Long idLista, Long idVideo) throws DataException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sacarVideo(Connection connection, Long idLista, Long idVideo) throws DataException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

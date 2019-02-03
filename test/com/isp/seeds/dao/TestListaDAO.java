@@ -25,6 +25,7 @@ public class TestListaDAO {
 		listaUno.setFechaMod(new java.sql.Date(12));
 		listaUno.setIdAutor(007l);
 		listaUno.setNombre("nombre");
+		listaUno.setTipo(3);
 		
 		listaUno.setDescripcion("descripcion");
 		listaUno.setPublica(true);
@@ -40,18 +41,19 @@ public class TestListaDAO {
 		System.out.println("modificar");
 		lista2.setDescripcion("he cambiaadoo la descripcion");
 		lista2.setPublica(false);
+		lista2.setTipo(3);
 		dao.update(conexion, lista2);
 		System.out.println(dao.findById(conexion, lista2.getIdContenido()));
 		
 		System.out.println("1 - BUSCAMOS ALL:");
-		List<Lista> lista = dao.findAll(conexion);
+		List<Lista> lista = dao.findAllListas(conexion);
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");
 		for(Lista u: lista){System.out.println(u.toString());}
 		System.out.println("3 - FIN DE LA IMPRESION");
 		System.out.println("BORRAMOS");
 		dao.delete(conexion, lista2.getIdContenido());
 		System.out.println("MOSTRALL");
-		lista = dao.findAll(conexion);
+		lista = dao.findAllListas(conexion);
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");
 		for(Lista u: lista){System.out.println(u.toString());}
 
@@ -59,6 +61,7 @@ public class TestListaDAO {
 		System.out.println("fin");
 		
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("EXCEPTION EN TEST");
 		}
 	}
@@ -78,8 +81,8 @@ public class TestListaDAO {
 //		videoUno.setUrl("herencia.mp4");
 //		listaUno.setNombre("cuatro");
 		
-		System.out.println("1 - BUSCAMOS POR CRITERIA:");
-		List<Lista> lista = dao.findByCriteria(conexion, listaUno);
+		System.out.println("1 - BUSCAMOS POR CATEGORIA:");
+		List<Lista> lista = dao.findByCategoria(conexion, 2l);
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDA:");
 		for(Lista u: lista){System.out.println(u.toString());}
 		System.out.println("3 - FIN DE LA IMPRESION");
@@ -88,14 +91,15 @@ public class TestListaDAO {
 		System.out.println("fin");
 		
 		} catch (Exception e) {
-			System.out.println("EXCEPTION EN TEST");
+			e.printStackTrace();
 		}
 	}
 
 	public static void main(String[] args) {
 		
+		
+		//pruebaUpdate();
 		pruebaCriteria();
-		pruebaUpdate();
 	}
 
 }

@@ -138,6 +138,7 @@ public class ListaServiceImpl implements ListaService {
 		return null;
 	}
 
+	
 	@Override
 	public List<Lista> buscarPorCategoria(Long idCategoria, String idioma) throws DataException {
 		try {
