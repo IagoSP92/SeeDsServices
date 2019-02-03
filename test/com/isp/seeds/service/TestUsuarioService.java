@@ -106,7 +106,8 @@ public class TestUsuarioService {
 			}
 			
 			usuarioNuevo = usuarioSvc.crearCuenta(usuarioNuevo);
-
+			
+System.out.println(usuarioNuevo.toString());
 			usuarioNuevo = usuarioSvc.buscarEmail(usuarioNuevo.getEmail(), "ESP");
 			System.out.println(usuarioNuevo.toString());
 
@@ -130,7 +131,7 @@ public class TestUsuarioService {
 			usuarioSvc.editarPerfil(usuarioNuevo, "ES");
 			usuarioNuevo = usuarioSvc.buscarEmail(usuarioNuevo.getEmail(), "ESP");
 			System.out.println(usuarioNuevo.toString());
-			System.out.println("____________________________________________");
+			//System.out.println("____________________________________________");
 
 
 		} catch (DataException de) {
