@@ -15,8 +15,6 @@ import com.isp.seeds.service.spi.EtiquetaService;
 
 public class TestContenidoService {
 	
-	ContenidoService contenidoSvc = new ContenidoServiceImpl();
-
 
 	public static void main(String[] args) {
 		ContenidoService contenidoSvc = new ContenidoServiceImpl();
@@ -115,7 +113,7 @@ public class TestContenidoService {
 			
 			System.out.println();
 			System.out.println();	
-			System.out.println("____________________________________________  Buscar buscarCriteriaTodo");
+			System.out.println("____________________________________________  Buscar buscarCriteriaTodo  10-1-01 a 16-1-01");
 
 			ContenidoCriteria contenidoCriteria = new ContenidoCriteria();
 			
@@ -136,6 +134,7 @@ public class TestContenidoService {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
 			contenidoCriteria= null;
+			System.out.println("____________________________________________  Buscar buscarCriteriaTodo  10-1-01 a 16-2-01");
 			contenidoCriteria= new ContenidoCriteria();
 			
 			
@@ -148,10 +147,12 @@ public class TestContenidoService {
 			contenidoCriteria.setFechaModHasta(date);
 			
 			
+
 			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
 			for(Contenido c : todos) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
+			System.out.println("____________________________________________  Buscar buscarCriteriaTodo  al");
 			contenidoCriteria= null;
 			contenidoCriteria= new ContenidoCriteria();
 			
@@ -163,11 +164,7 @@ public class TestContenidoService {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
 			
-			
-			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
-			for(Contenido c : todos) {
-				System.out.println(c.toString());
-			}System.out.println("---------------------------------------------------------------");
+			System.out.println("____________________________________________  Buscar buscarCriteriaTodo  al + +");
 			contenidoCriteria= null;
 			contenidoCriteria= new ContenidoCriteria();
 			
@@ -197,6 +194,7 @@ public class TestContenidoService {
 			for(Contenido c : todos) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
+			System.out.println("aa");
 			
 			
 			contenidoCriteria = new ContenidoCriteria();
@@ -207,7 +205,7 @@ public class TestContenidoService {
 			date= calendar.getTime();
 			contenidoCriteria.setFechaAlta(date);
 			
-			calendar.set(2010, Calendar.OCTOBER, 11);
+			calendar.set(2010, Calendar.OCTOBER, 12);
 			date= calendar.getTime();
 			contenidoCriteria.setFechaAltaHasta(date);
 			
@@ -215,7 +213,7 @@ public class TestContenidoService {
 			date= calendar.getTime();
 			contenidoCriteria.setFechaMod(date);
 			
-			calendar.set(2010, Calendar.OCTOBER, 11);
+			calendar.set(2010, Calendar.OCTOBER, 12);
 			date= calendar.getTime();
 			contenidoCriteria.setFechaModHasta(date);
 			
@@ -233,6 +231,7 @@ public class TestContenidoService {
 			for(Contenido c : todos) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
+			System.out.println("______________________________________________________________________________________");
 			
 			
 			} catch (DataException e) {

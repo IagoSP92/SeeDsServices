@@ -88,7 +88,6 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 				return contenidos;
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (DataException e) {

@@ -30,94 +30,76 @@ public class PaisDAOImpl implements PaisDAO{
 	}
 
 	@Override
-	public Pais findById(Connection connection, String id, String idioma)
+	public Pais findById(Connection connection, String idPais, String idioma)
 			throws DataException {
 
 		Pais p = null;
-
-		//Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try {
-			//connection = ConnectionManager.getConnection();
-
 			String sql;
 			sql =  "SELECT p.ID_PAIS, pi.NOMBRE_PAIS "
 					+"FROM PAIS p inner join PAIS_idioma pi on (p.ID_PAIS = pi.ID_PAIS)"
 					+"WHERE p.ID_PAIS = ? and pi.id_idioma = ? ";
 
-			// Preparar a query
-			System.out.println("Creating statement...");
 			preparedStatement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
-			// Establece os parámetros
 			int i = 1;
-			preparedStatement.setString(i++, id);
+			preparedStatement.setString(i++, idPais);
 			preparedStatement.setString(i++, idioma);
 
-			//System.out.println("Query = "+preparedStatement.toString());
-			resultSet = preparedStatement.executeQuery();			
-			//STEP 5: Extract data from result set			
-			
+			resultSet = preparedStatement.executeQuery();						
 
 			if (resultSet.next()) {
-				p  = loadNext(resultSet);
-				System.out.println("Cargado "+ p);
-				
-			} else {
-				throw new DataException("Non se encontrou o pais "+id);
+				p  = loadNext(resultSet);				
+			}
+			else {
+				throw new DataException("Non se encontrou o pais "+idPais);
 			}
 			if (resultSet.next()) {
-				throw new DataException("Pais "+id+" duplicado");
+				throw new DataException("Pais "+idPais+" duplicado");
 			}
 			
-
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new DataException(ex);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
-			//JDBCUtils.closeConnection(connection);
 		}
-		
 		return p;
 	}
 
 
 	@Override
-	public List<Pais> findAll(Connection connection) throws DataException {  // CURRENTCOUNT??
+	public List<Pais> findAll(Connection connection, String idioma) throws DataException {
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
 		try {
-
-			// Create "preparedStatement"       
 			String queryString = 
 					"SELECT p.id_pais, pI.nombre_pais " + 
 					"FROM Pais p inner join PAIS_idioma pi on (p.ID_PAIS = pi.ID_PAIS)  " +
-					"ORDER BY p.id_pais asc ";
-
+					" WHERE PI.ID_IDIOMA = ? " +
+					"ORDER BY pi.nombre_pais asc ";
+			
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
-			// Execute query.
+			preparedStatement.setString(1, idioma);
+			
 			resultSet = preparedStatement.executeQuery();
 			
-			// Recupera la pagina de resultados
 			List<Pais> results = new ArrayList<Pais>();                        
 			Pais pais = null;
-			int currentCount = 0;
 						
 			if (resultSet.next()) {
 				do {
 					pais = loadNext(resultSet);
 					results.add(pais);  
-					currentCount++;                	
 				} while (resultSet.next()) ;
 			}
-			
 			return results;
 
 		} catch (SQLException e) {
@@ -129,7 +111,5 @@ public class PaisDAOImpl implements PaisDAO{
 	}
 
 }
-
-
 
 

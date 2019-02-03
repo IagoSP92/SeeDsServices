@@ -581,10 +581,14 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			if (contenido.getTipo()!=null)
 				preparedStatement.setLong(i++,contenido.getTipo());
+			
 
 			preparedStatement.setLong(i++, contenido.getIdContenido());
 
 			int updatedRows = preparedStatement.executeUpdate();
+			System.out.println(preparedStatement.toString());
+			System.out.println(findByNombre(connection, "nombreModificado"));
+
 
 			if (updatedRows == 0) {
 				throw new InstanceNotFoundException(contenido.getIdContenido(), Contenido.class.getName()); //Esto ultimo pa mostrar o nome da clase??

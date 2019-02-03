@@ -13,11 +13,14 @@ public interface UsuarioDAO {
 	public Usuario findById(Connection connection, Long id, String idioma) 
 			throws DataException;
 	
-	public List <Usuario> findByCriteria(Connection connection, UsuarioCriteria usuario, String idioma) 
+	public Usuario findByEmail(Connection connection, String email, String idioma) 
 			throws DataException;
 	
+//	public List <Usuario> findByCriteria(Connection connection, UsuarioCriteria usuario, String idioma) 
+//			throws DataException;
+	
 
-	public List <Usuario> findAll(Connection connection) 
+	public List <Usuario> findAllUsers(Connection connection, String idioma) 
 			throws DataException;
 
 
@@ -25,10 +28,14 @@ public interface UsuarioDAO {
 	public Usuario create (Connection connection, Usuario u) 
 			throws DataException;
 	
-	public void update (Connection connection, Usuario u) 
+	public void update (Connection connection, Usuario u, String idioma) 
 			throws DataException;
 	
 	public long delete (Connection connection, Long id) 
 			throws DataException;
+	
+	public Boolean verificarContrasena(Connection connection, String email, String contrasena)
+			throws DataException;
+	
 
 }

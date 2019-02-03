@@ -1,6 +1,8 @@
 package com.isp.seeds.service.spi;
 
 
+import java.util.List;
+
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Usuario;
 
@@ -12,18 +14,29 @@ public interface UsuarioService {
 	public Usuario eliminarCuenta (Usuario u) 
 			throws DataException;
 	
-	public Usuario logIn (String email, String contrasena)
+	public Usuario logIn (String email, String contrasena, String idioma)
 			throws DataException;
 	
-	public Boolean logOut (String email, String contrasena)
+	public Boolean logOut (String email, String contrasena) // COMO SE FAI ESTO?
 			throws DataException;
 	
-	public Usuario editarPerfil (Usuario usuario)
+	public void editarPerfil (Usuario usuario, String idioma)
 			throws DataException;
 	
-	public void cambiarContraseña (String email, String contrasena)
+	public void cambiarContraseña (String email, String contrasena, String idioma)
 			throws DataException;
 	
 	public void recuperarContraseña (String email)
 			throws DataException;
+	
+
+	public Usuario buscarEmail (String email, String idioma)
+			throws DataException;
+	
+	public List<Usuario> buscarTodos (String idioma)
+			throws DataException;
+	
+	
+	
 }
+

@@ -1,15 +1,10 @@
 package com.isp.seeds.service;
 
-import java.util.Date;
-
 import com.isp.seeds.model.Usuario;
-import com.isp.seeds.model.Video;
 
+public class MailServiceTest {
 
-
-public class MailServiceTest {/*
-
-	public static void main(String args[]) {
+	public static void main(String args[]) {/*
 		Usuario u1 = new Usuario();
 		u1.setNick("Xose");
 		u1.setEmail("joseantoniolp.teacher@gmail.com");	
@@ -68,10 +63,25 @@ public class MailServiceTest {/*
 		video1.setReproducciones(3);
 		video1.setValoracion(7d);
 		video1.setFechaSubida(new Date());
-
+*/
 
 		MailService mailService = new MailService();
+		
+		Usuario u= new Usuario();
+		u.setNombre("Iago");
+		u.setEmail("seijasiago@gmail.com");
 
+		String htmlMessage;
+		htmlMessage = "<html>";
+		htmlMessage += "<body><p>Hola "+u.getNombre()+"!</p>";
+		htmlMessage += "<p>Quieres conseguir aprobar?</p>";
+		htmlMessage += "<p><b>Por solo una vida de sufrimiento </b></p>";
+		htmlMessage += "</body>";
+		htmlMessage += "</html>";
+
+		mailService.sendHTMLMail("Mail de prueba ", htmlMessage, u.getEmail());
+		System.out.println("Mail enviado a "+u.getEmail());
+/*
 		String htmlMessage;
 		for (Usuario u: usuarios) {
 			htmlMessage = "<html>";
@@ -89,4 +99,5 @@ public class MailServiceTest {/*
 
 
 */
+}
 }

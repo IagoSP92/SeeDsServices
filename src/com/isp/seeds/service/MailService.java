@@ -10,14 +10,14 @@ public class MailService {
 		
 	}
 	
-	public boolean sendMail(String asunto, String mensajeHTML, String... para) {
+	public boolean sendHTMLMail(String asunto, String mensajeHTML, String... para) {
 		try {
 			HtmlEmail email = new HtmlEmail();
 			email.setHostName("smtp.googlemail.com");
 			email.setSmtpPort(465);
-			email.setAuthenticator(new DefaultAuthenticator("seijasiago@gmail.com", PASS));
+			email.setAuthenticator(new DefaultAuthenticator("seijasiago@gmail.com", "5Mailsous"));
 			email.setSSLOnConnect(true);
-			email.setFrom("joseantoniolp.teacher@gmail.com");
+			email.setFrom("seijasiago@gmail.com");
 			email.setSubject(asunto);
 			email.setHtmlMsg(mensajeHTML);			
 			email.addTo(para);
@@ -28,6 +28,8 @@ public class MailService {
 			return false;
 		}
 	}
+	
+
 	
 	
 	
