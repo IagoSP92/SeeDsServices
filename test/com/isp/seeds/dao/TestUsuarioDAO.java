@@ -98,6 +98,7 @@ public class TestUsuarioDAO {
 		jamele.setFechaAlta(new java.sql.Date(12));
 		jamele.setFechaMod(new java.sql.Date(12));
 		jamele.setIdAutor(null);
+		jamele.setTipo(1);
 		
 		jamele.setApellidos("apellidos");
 		jamele.setAvatarUrl("avatarUrl");
@@ -124,8 +125,9 @@ public class TestUsuarioDAO {
 		jamele2.setDescripcion("dddddddddddddd");
 		jamele2.setEmail("eeeeeeeeeee");
 		jamele2.setFechaNac(new Date());
+		jamele2.setTipo(1);
 		
-		dao.update(conexion, jamele2);
+		dao.update(conexion, jamele2, "ESP");
 		System.out.println(dao.findById(conexion, jamele2.getIdContenido(), "ESP"));
 		
 		
@@ -142,8 +144,7 @@ public class TestUsuarioDAO {
 		for(Usuario u: lista){System.out.println(u.toString());}
 
 		JDBCUtils.closeConnection(conexion);
-		System.out.println("fin");
-		
+		System.out.println("fin");		
 		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -170,12 +171,11 @@ public class TestUsuarioDAO {
 		PaisDAO daop = new PaisDAOImpl();
 		dos.setPais(daop.findById(conexion, "ES", "ESP"));
 		
-		System.out.println("1 - BUSCAMOS POR CRITERIA:");
-		List<Usuario> lista = dao.findByCriteria(conexion, dos, "ESP");
-		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDA:");
-		for(Usuario u: lista){System.out.println(u.toString());}
-		System.out.println("3 - FIN DE LA IMPRESION");
-		
+//		System.out.println("1 - BUSCAMOS POR CRITERIA:");
+//		List<Usuario> lista = dao.findByCriteria(conexion, dos, "ESP");
+//		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDA:");
+//		for(Usuario u: lista){System.out.println(u.toString());}
+//		System.out.println("3 - FIN DE LA IMPRESION");		
 
 		JDBCUtils.closeConnection(conexion);
 		System.out.println("fin");
@@ -188,11 +188,10 @@ public class TestUsuarioDAO {
 	}
 	
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {		
 		
-		pruebaCriteria();
 		pruebaUpdate();
-
+		//pruebaCriteria();
 	}
 
 }

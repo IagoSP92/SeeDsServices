@@ -163,7 +163,6 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
 		try {	
-			
 			super.update(connection,usuario);
 
 			queryString = new StringBuilder(

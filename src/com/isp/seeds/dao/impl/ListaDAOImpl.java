@@ -454,5 +454,286 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private Boolean esUltimaPosicion (Connection connection, Long idLista, int posicion  )  // SUBSTITUIBLE POR ULTIMAPOSICION
+			throws DataException {
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {          
+			String queryString = "SELECT COUNT(*) FROM VIDEO_LISTA " +
+								" WHERE LISTA_ID_CONTENIDO = ? AND POSICION >= ? ";
+
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			int i = 1;                
+			preparedStatement.setLong(i++, idLista);
+			preparedStatement.setInt(i++, posicion);
+
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				if ( resultSet.getInt(1) > 0 ) { return false; }
+			}
+			return true;
+			
+		} catch (SQLException e) {
+			//logger.error("Error",e);
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		
+	}
+	
+	private int ultimaPosicion (Connection connection, Long idLista  ) 
+			throws DataException {
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {          
+			String queryString = "SELECT COUNT(*) FROM VIDEO_LISTA " +
+								" WHERE LISTA_ID_CONTENIDO = ? AND POSICION > 0 ";
+
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			int i = 1;                
+			preparedStatement.setLong(i++, idLista);
+
+			resultSet = preparedStatement.executeQuery();
+			int ultima =0;
+			if (resultSet.next()) {
+				if ( resultSet.getInt(1) > ultima ) { ultima =  resultSet.getInt(1); }
+			}
+			return ultima;
+			
+		} catch (SQLException e) {
+			//logger.error("Error",e);
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		
+	}
+	
+	private void sumarPosicion (Connection connection, Long idLista, int posicion  ) 
+			throws DataException {
+		
+		int ultima = ultimaPosicion(connection, idLista);
+		int actual= posicion;
+		int nueva = actual++;
+		for (int j=posicion; j <= ultima+1; j++) {
+			
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;			
+			
+			try {
+				String queryString = "UPDATE VIDEO_LISTA SET POSICION = ? " +
+									" WHERE LISTA_ID_CONTENIDO = ? AND POSICION = ? ";
+
+				preparedStatement = connection.prepareStatement(queryString,
+						ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+				int i = 1;
+				preparedStatement.setInt(i++, nueva);
+				preparedStatement.setLong(i++, idLista);
+				preparedStatement.setInt(i++, actual);
+
+				resultSet = preparedStatement.executeQuery();
+				
+				int updatedRows = preparedStatement.executeUpdate();
+
+				if (updatedRows == 0) {
+					throw new InstanceNotFoundException (idLista, Lista.class.getName() ); //Esto ultimo pa mostrar o nome da clase??
+				}
+
+				if (updatedRows > 1) {
+					throw new SQLException("Duplicate position in list with id = '" + 
+							idLista + "' in table 'Video_Lista'");
+				}
+				nueva++;
+				actual++;
+				
+			} catch (SQLException e) {
+				//logger.error("Error",e);
+				e.printStackTrace();
+				throw new DataException(e);
+			} finally {
+				JDBCUtils.closeResultSet(resultSet);
+				JDBCUtils.closeStatement(preparedStatement);
+			}
+		}
+	}
+	
+	
+	private void restarPosicion (Connection connection, Long idLista, int posicion  ) 
+			throws DataException {
+		
+		int ultima = ultimaPosicion(connection, idLista);
+		int actual= posicion;
+		int nueva = actual--;
+		for (int j=posicion; j <= ultima; j++) {
+			
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;			
+			
+			try {
+				String queryString = "UPDATE VIDEO_LISTA SET POSICION = ? " +
+									" WHERE LISTA_ID_CONTENIDO = ? AND POSICION = ? ";
+
+				preparedStatement = connection.prepareStatement(queryString,
+						ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+				int i = 1;
+				preparedStatement.setInt(i++, nueva);
+				preparedStatement.setLong(i++, idLista);
+				preparedStatement.setInt(i++, actual);
+
+				resultSet = preparedStatement.executeQuery();
+				
+				int updatedRows = preparedStatement.executeUpdate();
+
+				if (updatedRows == 0) {
+					throw new InstanceNotFoundException (idLista, Lista.class.getName() ); //Esto ultimo pa mostrar o nome da clase??
+				}
+
+				if (updatedRows > 1) {
+					throw new SQLException("Duplicate position in list with id = '" + 
+							idLista + "' in table 'Video_Lista'");
+				}
+				nueva++;
+				actual++;
+				
+			} catch (SQLException e) {
+				//logger.error("Error",e);
+				e.printStackTrace();
+				throw new DataException(e);
+			} finally {
+				JDBCUtils.closeResultSet(resultSet);
+				JDBCUtils.closeStatement(preparedStatement);
+			}
+		}
+	}
+	
+	
+	private Boolean esEnLista (Connection connection, Long idLista, Long idVideo  )  // SUBSTITUIBLE POR ULTIMAPOSICION
+			throws DataException {
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {          
+			String queryString = "SELECT COUNT(*) FROM VIDEO_LISTA " +
+								" WHERE LISTA_ID_CONTENIDO = ? AND VIDEO_ID_CONTENIDO = ? ";
+
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			int i = 1;                
+			preparedStatement.setLong(i++, idLista);
+			preparedStatement.setLong(i++, idVideo);
+
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				if ( resultSet.getInt(1) < 1 ) { return false; }
+				else {
+					if ( resultSet.getInt(1) > 1 ) { 
+						throw new SQLException("Video con id: "+idVideo+" duplicado en lista con id: "+idLista);
+					}
+				}
+			}
+			return true;
+			
+		} catch (SQLException e) {
+			//logger.error("Error",e);
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		
+	}
+
+	
+	private void insertarEnPosicion(Connection connection, Long idLista, Long idVideo, int posicion)
+			throws DataException {
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			String queryString = "INSERT INTO VIDEO_LISTA (LISTA_ID_CONTENIDO, CONTENIDO_ID_CONTENIDO, POSICION ) "
+					+ "VALUES (?, ?, ?)";
+
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			int i = 1;    
+			preparedStatement.setLong(i++, idLista);
+			preparedStatement.setLong(i++, idVideo);
+			preparedStatement.setInt(i++, posicion);
+
+			int insertedRows = preparedStatement.executeUpdate();
+
+			if (insertedRows == 0) {
+				throw new SQLException("Can not add row to table 'Video_Lista'");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+	}
+	
+	
+	public void insertarEnLista(Connection connection, Long idLista, Long idVideo, int posicion)
+			throws DataException {
+		if (!esEnLista(connection, idLista, idVideo)) {
+			int ultima = ultimaPosicion(connection, idLista);
+			if(posicion > ultima) {
+				
+			}
+			
+			// e t c
+			
+			
+		}
+		
+	}
+	
+	public void eliminarDeLista(Connection connection, Long idLista, Long idVideo)
+			throws DataException {
+		if (esEnLista(connection, idLista, idVideo)) {
+			get
+			int ultima = ultimaPosicion(connection, idLista);
+			if(posicion > ultima) {
+				
+			}
+			
+			
+			
+			
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
 
 }

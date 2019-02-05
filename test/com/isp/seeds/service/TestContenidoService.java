@@ -193,7 +193,8 @@ public class TestContenidoService {
 			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
 			for(Contenido c : todos) {
 				System.out.println(c.toString());
-			}System.out.println("---------------------------------------------------------------");
+			}System.out.println("----------------------------------------------"
+					+ "-----------------");
 			System.out.println("aa");
 			
 			

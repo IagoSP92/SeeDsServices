@@ -98,7 +98,8 @@ public class TestListaDAO {
 	public static void main(String[] args) {
 		
 		
-		//pruebaUpdate();
+		
+		pruebaUpdate();
 		pruebaCriteria();
 	}
 

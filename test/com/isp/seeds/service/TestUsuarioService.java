@@ -21,6 +21,7 @@ public class TestUsuarioService {
 		PaisDAO paisDao = new PaisDAOImpl();
 
 		try {
+			
 			List<Usuario> lista = new ArrayList<Usuario>();
 
 			System.out.println("____________________________TODOS__________");
@@ -97,6 +98,7 @@ public class TestUsuarioService {
 			usuarioNuevo.setFechaNac(new Date());
 			usuarioNuevo.setEmail("email");
 			usuarioNuevo.setContrasena("contrasena");
+			
 			try {
 				Connection connection = ConnectionManager.getConnection();
 				usuarioNuevo.setPais(paisDao.findById(connection, "es", "esp"));
@@ -104,14 +106,15 @@ public class TestUsuarioService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+			System.out.println(usuarioNuevo.getIdContenido());
+
 			usuarioNuevo = usuarioSvc.crearCuenta(usuarioNuevo);
-			
-System.out.println(usuarioNuevo.toString());
-			usuarioNuevo = usuarioSvc.buscarEmail(usuarioNuevo.getEmail(), "ESP");
+			System.out.println(usuarioNuevo.getIdContenido());
+
+			System.out.println(usuarioNuevo.toString());
+			usuarioNuevo = usuarioSvc.buscarId(usuarioNuevo.getIdContenido(), "ESP");
 			System.out.println(usuarioNuevo.toString());
 
-			
 			System.out.println("____________________________   modificar");
 
 			usuarioNuevo.setFechaAlta(new Date());
@@ -129,15 +132,13 @@ System.out.println(usuarioNuevo.toString());
 			}
 			
 			usuarioSvc.editarPerfil(usuarioNuevo, "ES");
-			usuarioNuevo = usuarioSvc.buscarEmail(usuarioNuevo.getEmail(), "ESP");
+			usuarioNuevo = usuarioSvc.buscarId(usuarioNuevo.getIdContenido(), "ESP");
 			System.out.println(usuarioNuevo.toString());
 			//System.out.println("____________________________________________");
-
 
 		} catch (DataException de) {
 			de.printStackTrace();
 		}
-
 	}
 
 }

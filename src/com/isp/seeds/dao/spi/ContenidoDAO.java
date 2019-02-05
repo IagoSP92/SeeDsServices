@@ -29,7 +29,7 @@ public interface ContenidoDAO {
 			throws DataException;
 	
 
-	Integer getValoracion(Connection connection, Long idContenido)
+	Double getValoracion(Connection connection, Long idContenido)
 			throws DataException;
 	
 	

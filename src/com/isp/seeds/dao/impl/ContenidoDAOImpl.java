@@ -84,7 +84,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 * @param idContenido - Long
 	 * @return Boolean : True si existen relaciones. False en caso contrario.
 	 */
-	public Boolean existsRelacion (Connection connection, Long idContenido) 
+	public Boolean existsRelacion (Connection connection, Long idContenido)
 			throws DataException {
 		boolean exist = false;
 
@@ -406,12 +406,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	
 
 	@Override
-	public Integer getValoracion (Connection connection, Long idContenido) 
+	public Double getValoracion (Connection connection, Long idContenido) 
 			throws DataException {
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		Integer valor = null;
+		Double valor = null;
 		String queryString = null;
 		try {
 			queryString = " SELECT AVG(VALORACION) FROM USUARIO_CONTENIDO WHERE CONTENIDO_ID_CONTENIDO = ? ";
@@ -424,10 +424,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			resultSet = preparedStatement.executeQuery();
 
-
 			if (resultSet.next()) {
 				if(resultSet.getObject(1) != null) {
-					valor = resultSet.getInt(1);
+					valor = resultSet.getDouble(1);
 				}
 			} else {
 				throw new DataException("\nValoracion del contenido " +idContenido+ " no encontrada \n");
@@ -562,11 +561,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				addUpdate(queryString, first, " tipo = ? ");
 				first = false;
 			}
+			
+			
 
 			queryString.append("WHERE id_contenido = ?");
-
 			preparedStatement = connection.prepareStatement(queryString.toString());
-
+			
 			int i = 1;
 			if (contenido.getNombre()!=null)
 				preparedStatement.setString(i++,contenido.getNombre());
@@ -587,9 +587,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, contenido.getIdContenido());
 
 			int updatedRows = preparedStatement.executeUpdate();
-			System.out.println(preparedStatement.toString());
-			System.out.println(findByNombre(connection, "nombreModificado"));
-
 
 			if (updatedRows == 0) {
 				throw new InstanceNotFoundException(contenido.getIdContenido(), Contenido.class.getName()); //Esto ultimo pa mostrar o nome da clase??
