@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.dao.impl.UsuarioDAOImpl;
 import com.isp.seeds.dao.spi.UsuarioDAO;
@@ -15,6 +18,7 @@ import com.isp.seeds.service.spi.UsuarioService;
 
 public class UsuarioServiceImpl implements UsuarioService {
 	
+	private static Logger logger = LogManager.getLogger(UsuarioServiceImpl.class);
 	UsuarioDAO usuarioDao= null;
 	
 	public UsuarioServiceImpl () {
@@ -34,17 +38,21 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	public Usuario crearCuenta (Usuario u) {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Usuario= {} ", u);
+		}
 
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			u = usuarioDao.create(connection, u);
 			JDBCUtils.closeConnection(connection);
 		}
-		catch (SQLException se) { 
-			se.printStackTrace();
+		catch (SQLException e) { 
+			logger.warn(e.getMessage(), e);
 		}
 		catch (Exception e) {  
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}
 		// EN SERVICIO :
 //		private List<Video> videosSubidos= null;
@@ -58,22 +66,32 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 	
 	public void eliminarCuenta (Usuario u) {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Usuario= {} ", u);
+		}
+		
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			usuarioDao.delete(connection, u.getIdContenido());
 			JDBCUtils.closeConnection(connection);
 		}
-		catch (SQLException se) { 
-			se.printStackTrace();
+		catch (SQLException e) { 
+			logger.warn(e.getMessage(), e);
 		}
 		catch (Exception e) { 
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}
 		// if usuario not null Excepcion????????????????
 	}
 
 	@Override
 	public Usuario logIn (String email, String contrasena, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("email= {} contrasena= {} idioma= {}", email, contrasena==null, idioma);
+		}
+		
 		Usuario usuario = null;
 		try {
 			Connection connection = ConnectionManager.getConnection();
@@ -87,11 +105,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 				throw new DataException("Contraseña incorrecta");
 			}
 		}
-		catch (SQLException se) {  
-			se.printStackTrace();
+		catch (SQLException e) {  
+			logger.warn(e.getMessage(), e);
 		}
 		catch (Exception e) {  
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}
 		
 		return usuario;
@@ -101,13 +119,18 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public void editarPerfil(Usuario usuario, String idioma) throws DataException { //Podria non necesitar idioma
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Usuario= {} idioma= {} ", usuario, idioma);
+		}
+		
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			usuarioDao.update(connection, usuario, idioma);
 			JDBCUtils.closeConnection(connection);
 		}
-		catch (SQLException se) {  
-			se.printStackTrace();
+		catch (SQLException e) {  
+			logger.warn(e.getMessage(), e);
 		}
 		catch (Exception e) {  
 			e.printStackTrace();
@@ -116,6 +139,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public void cambiarContraseña(String email, String contrasena, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("email= {} contrasena= {} idioma= {}", email, contrasena==null, idioma);
+		}
+		
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			Usuario usuario = buscarEmail(email, idioma);
@@ -123,8 +151,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 			usuarioDao.update(connection, usuario, idioma);
 			JDBCUtils.closeConnection(connection);
 		}
-		catch (SQLException se) {  
-			se.printStackTrace();
+		catch (SQLException e) {  
+			logger.warn(e.getMessage(), e);
 		}
 		catch (Exception e) {  
 			e.printStackTrace();
@@ -135,6 +163,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public Usuario buscarEmail(String email, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("email= {} idioma= {}", email, idioma);
+		}
 
 		try {
 			if(email != null) {
@@ -149,9 +181,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
@@ -159,12 +191,17 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public Usuario buscarId(Long id, String idioma) throws DataException {
+	public Usuario buscarId(Long idUsuario, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idUsuario= {} idioma= {}", idUsuario, idioma);
+		}
+		
 		try {
-			if(id != null && idioma!=null) {
+			if(idUsuario != null && idioma!=null) {
 				Connection connection = ConnectionManager.getConnection();
 				Usuario usuario = new Usuario();
-				usuario = usuarioDao.findById(connection, id, idioma);
+				usuario = usuarioDao.findById(connection, idUsuario, idioma);
 
 				JDBCUtils.closeConnection(connection);
 
@@ -172,9 +209,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
@@ -184,6 +221,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	@Override
 	public List<Usuario> buscarTodos(String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idioma= {}", idioma);
+		}
+		
 		try {
 			if(idioma != null) {
 				Connection connection = ConnectionManager.getConnection();
@@ -197,9 +239,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}

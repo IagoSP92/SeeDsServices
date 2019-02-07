@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.dao.impl.ListaDAOImpl;
 import com.isp.seeds.dao.spi.ListaDAO;
@@ -15,6 +18,7 @@ import com.isp.seeds.service.spi.ListaService;
 
 public class ListaServiceImpl implements ListaService {
 
+	private static Logger logger = LogManager.getLogger(ListaServiceImpl.class);
 	ListaDAO listaDao= null;
 
 	public ListaServiceImpl () {
@@ -23,47 +27,62 @@ public class ListaServiceImpl implements ListaService {
 
 	@Override
 	public Lista crearLista(Lista lista) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Lista= {} ", lista);
+		}
+		
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			lista = listaDao.create(connection, lista);
 			JDBCUtils.closeConnection(connection);
 		}
-		catch (SQLException se) { 
-			se.printStackTrace();
+		catch (SQLException e) { 
+			logger.warn(e.getMessage(), e);
 		}
 		catch (Exception e) {  
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}
 		return lista;
 	}
 
 	@Override
 	public void eliminarLista(Lista lista) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Lista= {} ", lista);
+		}
+		
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			listaDao.delete(connection, lista.getIdContenido());
 			JDBCUtils.closeConnection(connection);
 		}
-		catch (SQLException se) { 
-			se.printStackTrace();
+		catch (SQLException e) { 
+			logger.warn(e.getMessage(), e);
 		}
 		catch (Exception e) { 
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}
 	}
 
 	@Override
 	public void editarLista(Lista lista) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Lista= {} ", lista);
+		}
+		
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			listaDao.update(connection, lista);
 			JDBCUtils.closeConnection(connection);
 		}
-		catch (SQLException se) {  
-			se.printStackTrace();
+		catch (SQLException e) {  
+			logger.warn(e.getMessage(), e);
 		}
 		catch (Exception e) {  
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}	
 	}
 
@@ -81,6 +100,11 @@ public class ListaServiceImpl implements ListaService {
 
 	@Override
 	public Lista buscarId(Long idLista) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idLista= {} ", idLista);
+		}
+		
 		try {
 			if(idLista !=null) {
 				Connection connection = ConnectionManager.getConnection();
@@ -91,9 +115,9 @@ public class ListaServiceImpl implements ListaService {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
@@ -103,6 +127,9 @@ public class ListaServiceImpl implements ListaService {
 
 	@Override
 	public List<Lista> buscarTodas() throws DataException {
+		
+		//LOGGER
+		
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			List<Lista> listas = new ArrayList<Lista>();
@@ -110,9 +137,9 @@ public class ListaServiceImpl implements ListaService {
 			JDBCUtils.closeConnection(connection);
 			return listas;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
@@ -122,6 +149,11 @@ public class ListaServiceImpl implements ListaService {
 
 	@Override
 	public List<Lista> buscarPorAutor(Long idAutor, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idAutor= {} idioma= {}", idAutor, idioma);
+		}
+		
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			List<Lista> listas = new ArrayList<Lista>();
@@ -129,9 +161,9 @@ public class ListaServiceImpl implements ListaService {
 			JDBCUtils.closeConnection(connection);
 			return listas;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
@@ -141,6 +173,11 @@ public class ListaServiceImpl implements ListaService {
 	
 	@Override
 	public List<Lista> buscarPorCategoria(Long idCategoria, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idCategoria= {} idioma= {}", idCategoria, idioma);
+		}
+		
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			List<Lista> listas = new ArrayList<Lista>();
@@ -148,9 +185,9 @@ public class ListaServiceImpl implements ListaService {
 			JDBCUtils.closeConnection(connection);
 			return listas;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}

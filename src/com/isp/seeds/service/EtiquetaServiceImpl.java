@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.dao.impl.EtiquetaDAOImpl;
 import com.isp.seeds.dao.spi.EtiquetaDAO;
@@ -15,25 +18,31 @@ import com.isp.seeds.service.spi.EtiquetaService;
 
 public class EtiquetaServiceImpl implements EtiquetaService {
 	
+	private static Logger logger = LogManager.getLogger(EtiquetaServiceImpl.class);
 	private static EtiquetaDAO etiquetaDao = new EtiquetaDAOImpl();
 
 
 	@Override
-	public Etiqueta findById(Long id, String idioma) throws DataException {
+	public Etiqueta findById(Long idEtiqueta, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idEtiqueta= {} idioma= {} ", idEtiqueta, idioma);
+		}
+		
 		try {
 
-			if(id != null && idioma != null) {
+			if(idEtiqueta != null && idioma != null) {
 				Connection connection = ConnectionManager.getConnection();
 				Etiqueta etiqueta = new Etiqueta();
-				etiqueta = etiquetaDao.findById(connection, id, idioma);
+				etiqueta = etiquetaDao.findById(connection, idEtiqueta, idioma);
 
 				JDBCUtils.closeConnection(connection);
 				return etiqueta;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
@@ -42,6 +51,11 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 
 	@Override
 	public Long findByNombre(String nombreEtiqueta, String idioma) throws  DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("nombreEtiqueta= {} idioma= {} ", nombreEtiqueta, idioma);
+		}
+		
 		try {
 
 			if(nombreEtiqueta != null) {
@@ -53,9 +67,9 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 				return idEtiqueta;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
@@ -64,6 +78,9 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 
 	@Override
 	public List<Etiqueta> findAll() throws DataException {
+		
+		// LOGGER
+		
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			List<Etiqueta> etiquetas = new ArrayList<Etiqueta>();
@@ -73,9 +90,9 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 			return etiquetas;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
@@ -84,6 +101,11 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 
 	@Override
 	public Etiqueta create(Etiqueta etiqueta, String idioma) throws  DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Etiqueta= {} idioma= {} ", etiqueta, idioma);
+		}
+		
 		try {
 
 			if(etiqueta != null) {
@@ -97,9 +119,9 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
@@ -108,6 +130,11 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 
 	@Override
 	public void delete(Long idEtiqueta, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idEtiqueta= {} idioma= {} ", idEtiqueta, idioma);
+		}
+		
 		try {
 
 			if(idEtiqueta != null) {
@@ -121,9 +148,9 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}

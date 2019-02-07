@@ -27,6 +27,7 @@ public class TestContenidoService {
 		Contenido contenido3 =new Contenido();
 		
 		try {
+			
 			contenido1.setFechaAlta(new Date());
 			contenido1.setFechaMod(new Date());
 			contenido1.setIdAutor(null);

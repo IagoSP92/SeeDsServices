@@ -2,15 +2,23 @@ package com.isp.seeds.service;
 
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.HtmlEmail;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MailService {
 	
+	private static Logger logger = LogManager.getLogger(MailService.class);
 	
 	public MailService() {
 		
 	}
 	
 	public boolean sendHTMLMail(String asunto, String mensajeHTML, String... para) {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Asunto= {} Mensaje HTML= {} Para:{}", asunto, mensajeHTML, para);
+		}
+		
 		try {
 			HtmlEmail email = new HtmlEmail();
 			email.setHostName("smtp.googlemail.com");
@@ -24,7 +32,7 @@ public class MailService {
 			email.send();
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			return false;
 		}
 	}

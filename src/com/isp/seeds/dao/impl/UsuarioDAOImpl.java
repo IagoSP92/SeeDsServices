@@ -29,12 +29,13 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 	private static Logger logger = LogManager.getLogger(UsuarioDAOImpl.class);
 
 
-	//private static Logger logger = LogManager.getLogger(UsuarioDAOImpl.class.getName());   // ESTO QUE E???
-
-
 	@Override
-	public Usuario findById(Connection connection, Long id, String idioma) throws DataException {
-
+	public Usuario findById(Connection connection, Long idUsuario, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idUsuario= {} idioma= {} ", idUsuario, idioma);
+		}
+		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -49,8 +50,12 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			int i = 1;                
-			preparedStatement.setLong(i++, id);
+			preparedStatement.setLong(i++, idUsuario);
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",queryString);
+			}
+			
 			resultSet = preparedStatement.executeQuery();
 
 			Usuario e = null;
@@ -58,26 +63,33 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			if (resultSet.next()) {
 				e = loadNext(connection, resultSet, idioma);				
 			} else {
-				throw new DataException("\nUser with id " +id+ "not found\n");
+				logger.debug("Usuario con id= {} no encontrado.", idUsuario );
+				throw new DataException("\nUser with id " +idUsuario+ "not found\n");
 			}
 			return e;
 		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
-		}		
+		}
 	}
 
 
 	@Override
 	public List<Usuario> findAllUsers(Connection connection, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idioma= {} ", idioma);
+		}
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		StringBuilder queryString = null;
 
 		try {
+			
 			queryString = new StringBuilder(
 					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
 							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais , u.fecha_nac " + 
@@ -86,6 +98,11 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",queryString);
+			}
+			
 			resultSet = preparedStatement.executeQuery();
 
 			List<Usuario> results = new ArrayList<Usuario>(); 
@@ -99,11 +116,11 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			return results;
 
 		} catch (SQLException e) {
-			//logger.error("Error",e);
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
-		} catch (DataException de) {
-			//logger.error("Error",e);
-			throw new DataException(de);
+		} catch (DataException e) {
+			logger.warn(e.getMessage(), e);
+			throw new DataException(e);
 		}  finally {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
@@ -113,6 +130,10 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 	@Override
 	public Usuario create(Connection connection, Usuario nuevoUsuario) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Nuevo Usuario={} idioma= {} ", nuevoUsuario);
+		}
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -136,9 +157,14 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			preparedStatement.setString(i++, nuevoUsuario.getPais().getIdPais()); // NA DB GARDASE O ID DE PAIS
 			preparedStatement.setDate(i++, new java.sql.Date(nuevoUsuario.getFechaNac().getTime()));
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",queryString);
+			}
+			
 			int insertedRows = preparedStatement.executeUpdate();
 
 			if (insertedRows == 0) {
+				logger.debug("No se ha podido insertar en la tabla USUARIO");
 				throw new SQLException("Can not add row to table 'Usuario'");
 			}
 
@@ -153,7 +179,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			//			private List<Lista> listasGuardadas = null;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -166,6 +192,10 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 	@Override
 	public void update (Connection connection, Usuario usuario, String idioma) throws InstanceNotFoundException, DataException {
 
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Usuario= {} idioma= {} ", usuario, idioma);
+		}
+		
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
 		try {	
@@ -247,18 +277,25 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 			preparedStatement.setLong(i++, usuario.getIdContenido());
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",queryString);
+			}
+			
 			int updatedRows = preparedStatement.executeUpdate();
 
 			if (updatedRows == 0) {
-				throw new InstanceNotFoundException(usuario.getIdContenido(), Usuario.class.getName()); //Esto ultimo pa mostrar o nome da clase??
+				logger.debug("No se ha podido eliminar el usuario con id{} de la tabla USUARIO", usuario.getIdContenido());
+				throw new InstanceNotFoundException(usuario.getIdContenido(), Usuario.class.getName());
 			}
 
 			if (updatedRows > 1) {
+				logger.debug("Filas duplicadas para id={} en tabla USUARIO", usuario.getIdContenido());
 				throw new SQLException("Duplicate row for id = '" + 
 						usuario.getIdContenido() + "' in table 'USUARIO'");
 			}
 
 		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);    
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -267,7 +304,12 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 
 	@Override
-	public long delete (Connection connection, Long id) throws DataException {
+	public long delete (Connection connection, Long idUsuario)
+			throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idUsuario= {} ", idUsuario);
+		}
 
 		PreparedStatement preparedStatement = null;
 
@@ -279,20 +321,25 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			preparedStatement = connection.prepareStatement(queryString);
 
 			int i = 1;
-			preparedStatement.setLong(i++, id);
+			preparedStatement.setLong(i++, idUsuario);
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",queryString);
+			}
+			
 			int removedRows = preparedStatement.executeUpdate();
 
 			if (removedRows == 0) {
+				logger.debug("No se ha podido eliminar el usuario con id{} de la tabla USUARIO", idUsuario);
 				throw new SQLException("Can not delete row in table 'Usuario'");
 			}
 
-			ContenidoDAO daoc = new ContenidoDAOImpl();
-			daoc.delete(connection, id);			
+			super.delete(connection, idUsuario);	
 
 			return removedRows;
 
 		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -302,8 +349,13 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 
 	@Override
-	public Usuario findByEmail(Connection connection, String email, String idioma) throws DataException {
+	public Usuario findByEmail(Connection connection, String email, String idioma)
+			throws DataException {
 
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Email= {} idioma= {} ", email, idioma);
+		}
+		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -320,6 +372,10 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			int i = 1;                
 			preparedStatement.setString(i++, email);
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",queryString);
+			}
+			
 			resultSet = preparedStatement.executeQuery();
 
 			Usuario e = null;
@@ -327,13 +383,14 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			if (resultSet.next()) {
 				e = loadNext(connection, resultSet, idioma);				
 			} else {
+				logger.debug("Usuario con email:{} no encontrado", email);
 				throw new DataException("\nUser with email: " +email+ "not found\n");
 			}
 
 			return e;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
@@ -342,8 +399,13 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 	}
 
 	@Override
-	public Boolean verificarContrasena(Connection connection, String email, String contrasena) throws DataException {
+	public Boolean verificarContrasena(Connection connection, String email, String contrasena)
+			throws DataException {
 
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Email= {} Contrasena={} ", email, contrasena==null);
+		}
+		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try {          
@@ -355,6 +417,10 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			int i = 1;                
 			preparedStatement.setString(i++, email);
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",queryString);
+			}
+			
 			resultSet = preparedStatement.executeQuery();
 
 			String contrasenaGuardada = null;
@@ -362,13 +428,14 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			if (resultSet.next()) {
 				contrasenaGuardada = resultSet.getString(1);				
 			} else {
+				logger.debug("Usuario con email:{} no encontrado", email);
 				throw new DataException("\nUser with email: " +email+ "not found\n");
 			}
 
 			return PasswordEncryptionUtil.checkPassword(contrasena, contrasenaGuardada);
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);

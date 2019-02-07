@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.dao.impl.CategoriaDAOImpl;
 import com.isp.seeds.dao.spi.CategoriaDAO;
@@ -14,26 +17,32 @@ import com.isp.seeds.model.Categoria;
 import com.isp.seeds.service.spi.CategoriaService;
 
 public class CategoriaServiceImpl implements CategoriaService{
-
+	
+	private static Logger logger = LogManager.getLogger(CategoriaServiceImpl.class);
 	private static CategoriaDAO categoriaDao = new CategoriaDAOImpl();
 
 
 	@Override
-	public Categoria findById(Long id, String idioma) throws DataException {
+	public Categoria findById(Long idCategoria, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idCategoria= {} idioma= {} ", idCategoria, idioma);
+		}
+		
 		try {
 
-			if(id != null && idioma != null) {
+			if(idCategoria != null && idioma != null) {
 				Connection connection = ConnectionManager.getConnection();
 				Categoria categoria = new Categoria();
-				categoria = categoriaDao.findById(connection, id, idioma);
+				categoria = categoriaDao.findById(connection, idCategoria, idioma);
 
 				JDBCUtils.closeConnection(connection);
 				return categoria;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
@@ -42,6 +51,11 @@ public class CategoriaServiceImpl implements CategoriaService{
 
 	@Override
 	public Long findByNombre(String nombreCategoria, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("nombreCategoria= {} idioma= {} ", nombreCategoria, idioma);
+		}
+		
 		try {
 
 			if(nombreCategoria != null) {
@@ -53,9 +67,9 @@ public class CategoriaServiceImpl implements CategoriaService{
 				return idCategoria;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
@@ -64,6 +78,9 @@ public class CategoriaServiceImpl implements CategoriaService{
 
 	@Override
 	public List<Categoria> findAll() throws DataException {
+		
+			// LOOOOOOGGEEERR
+		
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			List<Categoria> categorias = new ArrayList<Categoria>();
@@ -73,9 +90,9 @@ public class CategoriaServiceImpl implements CategoriaService{
 			return categorias;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		} catch (DataException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
