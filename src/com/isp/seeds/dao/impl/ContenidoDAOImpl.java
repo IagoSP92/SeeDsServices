@@ -10,6 +10,9 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.Exceptions.InstanceNotFoundException;
 import com.isp.seeds.dao.spi.CategoriaDAO;
@@ -27,12 +30,16 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	private CategoriaDAO categoriaDao = null;
 	private EtiquetaDAO etiquetaDao = null;
 	private VideoDAO videoDao = null;
+	
+	private static Logger logger = LogManager.getLogger(ContenidoDAOImpl.class);
 
 
 	public ContenidoDAOImpl () {
 		categoriaDao = new CategoriaDAOImpl();
 		etiquetaDao = new EtiquetaDAOImpl();
 		//videoDao = new VideoDAOImpl();
+		
+		
 	}
 
 	/**
@@ -45,7 +52,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	public Boolean exists(Connection connection, Long idContenido) 
 			throws DataException {
 		boolean exist = false;
-
+		
+		logger.debug ("Id: "+idContenido);
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -56,6 +64,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 							" FROM CONTENIDO " +
 							" WHERE ID_CONTENIDO = ? ";
 
+			logger.debug(queryString);
+			
 			preparedStatement = connection.prepareStatement(queryString);
 
 			int i = 1;
@@ -67,7 +77,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
+			//e.printStackTrace();    SUBSTITUIDO POR LOGGER
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);

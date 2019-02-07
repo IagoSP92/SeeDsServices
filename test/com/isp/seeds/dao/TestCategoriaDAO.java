@@ -7,6 +7,7 @@ import java.util.List;
 import com.isp.seeds.dao.impl.CategoriaDAOImpl;
 import com.isp.seeds.dao.spi.CategoriaDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
+import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Categoria;
 
 public class TestCategoriaDAO {
@@ -33,7 +34,8 @@ public class TestCategoriaDAO {
 		
 		List <Categoria> lista = new ArrayList <Categoria> ();
 		lista = dao.findAll(connection);
-		
+		JDBCUtils.closeConnection(conexion);
+
 		for(Categoria c: lista) {
 			System.out.println(c.toString());
 		}
