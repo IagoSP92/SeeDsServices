@@ -303,9 +303,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				do {
 					e = loadNext(connection, resultSet);
 					if (contenido.getValoracionMin()!=null || contenido.getValoracionMax()!=null) {
-						
+
 						if(filtrarValoracion(connection, contenido, e)) {
-							
+
 							if (contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null) {
 								if(filtrarReproducciones(connection, contenido, e)) {
 									results.add(e);
@@ -317,7 +317,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 							}
 						}
 					}else {
-						
+
 						if (contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null) {
 							if(filtrarReproducciones(connection, contenido, e)) {
 								results.add(e);
@@ -363,15 +363,24 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 					" FROM USUARIO_CONTENIDO WHERE CONTENIDO_ID_CONTENIDO = ? ");
 
 			if (contenido.getValoracionMax()!=null) {
-				if(contenido.getValoracionMax() < getValoracion(connection, esteContenido.getIdContenido()) ) {
-					valido = false;
+				if(getValoracion(connection, esteContenido.getIdContenido()) !=null){
+					if(contenido.getValoracionMax() < getValoracion(connection, esteContenido.getIdContenido()) ) {
+						valido = false;
+					}else {
+						valido=false;
+					}
 				}
 			}
+			
 			if (contenido.getValoracionMin()!=null) {
-				if(contenido.getValoracionMax() < getValoracion(connection, esteContenido.getIdContenido()) ) {
-					valido = false;
+				if(getValoracion(connection, esteContenido.getIdContenido()) !=null){
+					if(contenido.getValoracionMin() < getValoracion(connection, esteContenido.getIdContenido()) ) {
+						valido = false;
+					}else {
+						valido=false;
+					}
 				}
-			}
+			} 
 
 			return valido;
 
@@ -384,26 +393,26 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 
 	}
-	
+
 	private Boolean filtrarReproducciones (Connection connection, ContenidoCriteria contenido, Contenido esteContenido) 
 			throws DataException {
 		videoDao = new VideoDAOImpl();
 
 		Boolean valido = true;
 
-			if (contenido.getReproduccionesMax()!=null) {
-				if(contenido.getReproduccionesMax() < videoDao.getReproducciones(connection, esteContenido.getIdContenido())) {
-					valido = false;
-				}
+		if (contenido.getReproduccionesMax()!=null) {
+			if(contenido.getReproduccionesMax() < videoDao.getReproducciones(connection, esteContenido.getIdContenido())) {
+				valido = false;
 			}
-			if (contenido.getReproduccionesMin()!=null) {
-				if(contenido.getReproduccionesMin() > videoDao.getReproducciones(connection, esteContenido.getIdContenido()) ) {
-					valido = false;
-				}
+		}
+		if (contenido.getReproduccionesMin()!=null) {
+			if(contenido.getReproduccionesMin() > videoDao.getReproducciones(connection, esteContenido.getIdContenido()) ) {
+				valido = false;
 			}
+		}
 		return valido;
 	}
-	
+
 
 	@Override
 	public Double getValoracion (Connection connection, Long idContenido) 
@@ -561,12 +570,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				addUpdate(queryString, first, " tipo = ? ");
 				first = false;
 			}
-			
-			
+
+
 
 			queryString.append("WHERE id_contenido = ?");
 			preparedStatement = connection.prepareStatement(queryString.toString());
-			
+
 			int i = 1;
 			if (contenido.getNombre()!=null)
 				preparedStatement.setString(i++,contenido.getNombre());
@@ -582,7 +591,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			if (contenido.getTipo()!=null)
 				preparedStatement.setLong(i++,contenido.getTipo());
-			
+
 
 			preparedStatement.setLong(i++, contenido.getIdContenido());
 
