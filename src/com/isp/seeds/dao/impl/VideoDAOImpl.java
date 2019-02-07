@@ -9,6 +9,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.Exceptions.InstanceNotFoundException;
 import com.isp.seeds.dao.spi.ContenidoDAO;
@@ -18,6 +21,9 @@ import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Video;
 
 public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
+	
+	private static Logger logger = LogManager.getLogger(VideoDAOImpl.class);
+
 
 	@Override
 	public Video findById(Connection connection, Long id) throws DataException {

@@ -39,7 +39,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		etiquetaDao = new EtiquetaDAOImpl();
 		//videoDao = new VideoDAOImpl();
 		
-		
 	}
 
 	/**
@@ -53,7 +52,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			throws DataException {
 		boolean exist = false;
 		
-		logger.debug ("Id: "+idContenido);
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Id= {0} ", idContenido);
+		}
+		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -63,13 +65,16 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 					"SELECT ID_CONTENIDO " + 
 							" FROM CONTENIDO " +
 							" WHERE ID_CONTENIDO = ? ";
-
-			logger.debug(queryString);
 			
 			preparedStatement = connection.prepareStatement(queryString);
 
 			int i = 1;
 			preparedStatement.setLong(i++, idContenido);
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
@@ -78,7 +83,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
-			//e.printStackTrace();    SUBSTITUIDO POR LOGGER
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -98,6 +102,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	public Boolean existsRelacion (Connection connection, Long idContenido)
 			throws DataException {
 		boolean exist = false;
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Id= {0} ", idContenido);
+		}
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -108,12 +116,17 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 					"SELECT USUARIO_ID_CONTENIDO " + 
 							" FROM USUARIO_CONTENIDO " +
 							" WHERE CONTENIDO_ID_CONTENIDO = ? OR USUARIO_ID_CONTENIDO = ?";
-
+			
 			preparedStatement = connection.prepareStatement(queryString);
 
 			int i = 1;
 			preparedStatement.setLong(i++, idContenido);
 			preparedStatement.setLong(i++, idContenido);
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
@@ -121,7 +134,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -142,6 +155,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	@Override
 	public Contenido findById(Connection connection, Long idContenido) throws DataException {
 
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Id= {0} ", idContenido);
+		}
+		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -150,13 +167,17 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo"+
 							" FROM Contenido c " +
 							" WHERE c.id_contenido = ? ";
-
+			
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			int i = 1;                
 			preparedStatement.setLong(i++, idContenido);
-
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			resultSet = preparedStatement.executeQuery();
 
 			Contenido contenido = null;
@@ -169,7 +190,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			return contenido;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
@@ -186,6 +207,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 */
 	@Override
 	public Contenido findByNombre(Connection connection, String nombreContenido) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Nombre= {0} ", nombreContenido);
+		}
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -201,7 +226,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			int i = 1;                
 			preparedStatement.setString(i++, nombreContenido);
-
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			resultSet = preparedStatement.executeQuery();
 
 			Contenido contenido = null;
@@ -214,7 +243,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			return contenido;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
@@ -225,6 +254,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 	@Override
 	public List<Contenido> findByCriteria (Connection connection, ContenidoCriteria contenido) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Criteria= {0} ", contenido);
+		}
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -303,6 +336,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			if (contenido.getTipo()!=null) 
 				preparedStatement.setInt(i++, contenido.getTipo());
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			resultSet = preparedStatement.executeQuery();
 
 			List<Contenido> results = new ArrayList<Contenido>();    
@@ -346,11 +383,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			return results;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			//logger.error("Error",e);
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} catch (DataException de) {
-			//logger.error("Error",e);
+			logger.warn(de.getMessage(), de);
 			throw new DataException(de);
 		}  finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -361,6 +397,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 	private Boolean filtrarValoracion (Connection connection, ContenidoCriteria contenido, Contenido esteContenido) 
 			throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Criteria= {0} Contenido= {1} ", contenido, esteContenido);
+		}
 
 		Boolean valido = true;
 
@@ -373,6 +413,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 					" SELECT AVG(VALORACION) " + 
 					" FROM USUARIO_CONTENIDO WHERE CONTENIDO_ID_CONTENIDO = ? ");
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);  // ESTO VAI DESPOIS DO EXECUTE QUE FALTA
+			}
+			
+			
+			
 			if (contenido.getValoracionMax()!=null) {
 				if(getValoracion(connection, esteContenido.getIdContenido()) !=null){
 					if(contenido.getValoracionMax() < getValoracion(connection, esteContenido.getIdContenido()) ) {
@@ -396,7 +442,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			return valido;
 
 		}  catch (DataException de) {
-			//logger.error("Error",e);
+			logger.warn(de.getMessage(), de);
 			throw new DataException(de);
 		}  finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -407,6 +453,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 	private Boolean filtrarReproducciones (Connection connection, ContenidoCriteria contenido, Contenido esteContenido) 
 			throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Criteria= {0} Contenido= {1} ", contenido, esteContenido);
+		}
+		
 		videoDao = new VideoDAOImpl();
 
 		Boolean valido = true;
@@ -428,6 +479,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	@Override
 	public Double getValoracion (Connection connection, Long idContenido) 
 			throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Id= {0} ", idContenido);
+		}
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -442,6 +497,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			int i = 1;                
 			preparedStatement.setLong(i++, idContenido);
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
@@ -455,11 +514,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			return valor;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			//logger.error("Error",e);
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} catch (DataException de) {
-			//logger.error("Error",e);
+			logger.warn(de.getMessage(), de);
 			throw new DataException(de);
 		}  finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -490,6 +548,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 */
 	@Override
 	public Contenido create (Connection connection, Contenido c) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Contenido= {0} ", c);
+		}
+		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -514,28 +577,29 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 			preparedStatement.setInt(i++, c.getTipo());
 
-
-			// Execute query
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			int insertedRows = preparedStatement.executeUpdate();
 
 			if (insertedRows == 0) {
 				throw new SQLException("Can not add row to table 'Contenido'");
 			}
 
-			// Recuperamos la PK generada
-
 			resultSet = preparedStatement.getGeneratedKeys();
 			if (resultSet.next()) {
 				Long pk = resultSet.getLong(1); 
 				c.setIdContenido(pk);
 			} else {
+				logger.debug("No se ha recogido la clave del contenido {}", c );
 				throw new DataException("Unable to fetch autogenerated primary key");
 			}
-			// Return the DTO
+
 			return c;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -546,6 +610,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 	@Override
 	public void update(Connection connection, Contenido contenido) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Contenido= {0} ", contenido);
+		}
 
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
@@ -582,8 +650,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				first = false;
 			}
 
-
-
 			queryString.append("WHERE id_contenido = ?");
 			preparedStatement = connection.prepareStatement(queryString.toString());
 
@@ -606,6 +672,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			preparedStatement.setLong(i++, contenido.getIdContenido());
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			int updatedRows = preparedStatement.executeUpdate();
 
 			if (updatedRows == 0) {
@@ -618,7 +688,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}     
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);    
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -627,7 +697,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 
 	@Override
-	public long delete(Connection connection, Long id) throws DataException {
+	public long delete(Connection connection, Long id) throws DataException {   //  REVISAR ESTO
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Id= {0} ", id);
+		}
 
 		PreparedStatement preparedStatement = null;
 
@@ -649,6 +723,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 
 	public long deleteContenido(Connection connection, Long id) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Id= {0} ", id);
+		}
 
 		PreparedStatement preparedStatement = null;
 
@@ -663,6 +741,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			int i = 1;
 			preparedStatement.setLong(i++, id);
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			int removedRows = preparedStatement.executeUpdate();
 
 			if (removedRows == 0) {
@@ -672,7 +754,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			return removedRows;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -686,6 +768,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 */
 
 	public void deleteEtiquetas(Connection connection, Long idContenido) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Id= {0} ", idContenido);
+		}
 
 		PreparedStatement preparedStatement = null;
 
@@ -698,6 +784,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			int i = 1;
 			preparedStatement.setLong(i++, idContenido);
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
 
 			int removedRows = preparedStatement.executeUpdate();
 
@@ -708,7 +798,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -722,6 +812,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 * @param idContenido - Long
 	 */
 	public void deleteCategorias (Connection connection, Long id) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Id= {0} ", id);
+		}
 
 		PreparedStatement preparedStatement = null;
 
@@ -736,6 +830,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, id);
 
 			System.out.println("Borrando categorias...");
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			int removedRows = preparedStatement.executeUpdate();
 			//
 			//			if (removedRows == 0) {
@@ -746,7 +845,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			//deleteCategorias(connection, id);
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -760,6 +859,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 * @param idContenido - Long
 	 */
 	public void deleteRelaciones (Connection connection, Long id) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Id= {0} ", id);
+		}
 
 		PreparedStatement preparedStatement = null;
 
@@ -774,6 +877,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, id);
 			preparedStatement.setLong(i++, id);
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			int removedRows = preparedStatement.executeUpdate();
 
 			//			if (removedRows == 0) {
@@ -784,7 +891,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			//deleteEtiquetas(connection, id);
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -800,6 +907,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 */
 	@Override
 	public void agignarCategoria(Connection connection, Long idContenido, Long idCategoria) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("IdContenido= {0} IdCategoria= {1} ", idContenido, idCategoria);
+		}
+		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -814,14 +926,17 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idCategoria);
 			preparedStatement.setLong(i++, idContenido);
 
-			// Execute query
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			int insertedRows = preparedStatement.executeUpdate();
 
 			if (insertedRows == 0) {
 				throw new SQLException("No se ha podido asignar la categoría");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -837,6 +952,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 */
 	@Override
 	public void modificarCategoria(Connection connection, Long idContenido, Long idCategoria) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("IdContenido= {0} IdCategoria= {1} ", idContenido, idCategoria);
+		}
 
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
@@ -863,6 +982,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				preparedStatement.setLong(i++, idCategoria );
 				preparedStatement.setLong(i++, idContenido );
 			}
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			int updatedRows = preparedStatement.executeUpdate();
 
 			if (updatedRows == 0) {
@@ -875,7 +999,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}     
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);    
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -890,6 +1014,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 */
 	@Override
 	public void asignarEtiqueta(Connection connection, Long idContenido, Long idEtiqueta) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("IdContenido= {0} idEtiqueta= {1} ", idContenido, idEtiqueta);
+		}
+		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -904,14 +1033,17 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idEtiqueta);
 			preparedStatement.setLong(i++, idContenido);
 
-			// Execute query
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			int insertedRows = preparedStatement.executeUpdate();
 
 			if (insertedRows == 0) {
 				throw new SQLException("No se ha podido asignar la etiqueta");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -927,6 +1059,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 */
 	@Override
 	public void eliminarEtiqueta(Connection connection, Long idContenido, Long idEtiqueta) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("IdContenido= {0} idEtiqueta= {1} ", idContenido, idEtiqueta);
+		}
 
 		PreparedStatement preparedStatement = null;
 
@@ -940,6 +1076,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			int i = 1;
 			preparedStatement.setLong(i++, idContenido);
 			preparedStatement.setLong(i++, idEtiqueta);
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
 
 			int removedRows = preparedStatement.executeUpdate();
 
@@ -948,7 +1088,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -969,6 +1109,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	@Override
 	public Boolean comprobarExistenciaRelacion(Connection connection, Long idUsuario, Long idContenido)
 			throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idUsuario= {0} idContenido= {1} ", idUsuario, idContenido);
+		}
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -986,6 +1130,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idUsuario);
 			preparedStatement.setLong(i++, idContenido);
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
@@ -994,7 +1142,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			return false;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
@@ -1012,6 +1160,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 */
 	@Override
 	public void crearRelacion(Connection connection, Long idUsuario, Long idContenido) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idUsuario= {0} idContenido= {1} ", idUsuario, idContenido);
+		}
+		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -1033,13 +1186,17 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setBoolean(i++, false);
 			preparedStatement.setNull(i++, Types.NULL);
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			int insertedRows = preparedStatement.executeUpdate();
 
 			if (insertedRows == 0) {
 				throw new SQLException("No se ha podido crear la relacion Usuario_Contenido");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -1057,6 +1214,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 */
 	@Override
 	public void seguirContenido(Connection connection, Long idUsuario, Long idContenido, Boolean siguiendo) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idUsuario= {0} idContenido= {1} Siguiendo{2} ", idUsuario, idContenido, siguiendo);
+		}
 
 		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
 			crearRelacion(connection, idUsuario, idContenido);
@@ -1084,6 +1245,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idUsuario );
 			preparedStatement.setLong(i++, idContenido );
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			int updatedRows = preparedStatement.executeUpdate();
 
 			if (updatedRows == 0) {
@@ -1095,7 +1260,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 						idUsuario +" - "+idContenido+ "' in table 'USUARIO_CONTENIDO (seguir)'");
 			}     
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);    
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -1117,6 +1282,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	@Override
 	public void denunciarContenido(Connection connection, Long idUsuario, Long idContenido, String denunciado)
 			throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idUsuario= {0} idContenido= {1} Denunciado{2} ", idUsuario, idContenido, denunciado);
+		}
 
 		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
 			crearRelacion(connection, idUsuario, idContenido);
@@ -1146,6 +1315,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 			preparedStatement.setLong(i++, idUsuario );
 			preparedStatement.setLong(i++, idContenido );
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
 
 			int updatedRows = preparedStatement.executeUpdate();
 
@@ -1158,7 +1331,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 						idUsuario +" - "+idContenido+ "' in table 'USUARIO_CONTENIDO (denunciar)'");
 			}     
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);    
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -1179,6 +1352,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	@Override
 	public void valorarContenido(Connection connection, Long idUsuario, Long idContenido, Integer valoracion)
 			throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idUsuario= {0} idContenido= {1} Valoracion{2} ", idUsuario, idContenido, valoracion);
+		}
 
 		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
 			crearRelacion(connection, idUsuario, idContenido);
@@ -1206,6 +1383,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idUsuario );
 			preparedStatement.setLong(i++, idContenido );
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
+			
 			int updatedRows = preparedStatement.executeUpdate();
 
 			if (updatedRows == 0) {
@@ -1217,7 +1398,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 						idUsuario +" - "+idContenido+ "' in table 'USUARIO_CONTENIDO (valorar)' ");
 			}     
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);    
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -1235,6 +1416,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	@Override
 	public void guardarContenido(Connection connection, Long idUsuario, Long idContenido, Boolean guardado)
 			throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idUsuario= {0} idContenido= {1} Guardado{2} ", idUsuario, idContenido, guardado);
+		}
 
 		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
 			crearRelacion(connection, idUsuario, idContenido);
@@ -1261,6 +1446,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setBoolean(i++, guardado );
 			preparedStatement.setLong(i++, idUsuario );
 			preparedStatement.setLong(i++, idContenido );
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
 
 			int updatedRows = preparedStatement.executeUpdate();
 
@@ -1273,7 +1462,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 						idUsuario +" - "+idContenido+ "' in table 'USUARIO_CONTENIDO (guardar)'");
 			}     
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);    
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -1297,6 +1486,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	@Override
 	public void comentarContenido(Connection connection, Long idUsuario, Long idContenido, String comentario)
 			throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idUsuario= {0} idContenido= {1} Comentario{2} ", idUsuario, idContenido, comentario);
+		}
 
 		if(!comprobarExistenciaRelacion(connection, idUsuario, idContenido)) {
 			crearRelacion(connection, idUsuario, idContenido);
@@ -1328,6 +1521,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			preparedStatement.setLong(i++, idUsuario );
 			preparedStatement.setLong(i++, idContenido );
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
 
 			int updatedRows = preparedStatement.executeUpdate();
 
@@ -1340,7 +1537,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 						idUsuario +" - "+idContenido+ "' in table 'USUARIO_CONTENIDO (comentar)'");
 			}     
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);    
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
@@ -1360,6 +1557,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 */
 	@Override
 	public Categoria verCategoria(Connection connection, Long idContenido, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idContenido= {0} idioma= {1} ", idContenido, idioma);
+		}
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -1377,20 +1578,25 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			int i = 1;                
 			preparedStatement.setLong(i++, idContenido);
 			preparedStatement.setString(i++, idioma);
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
 
 			resultSet = preparedStatement.executeQuery();
+			
 			Categoria c = new Categoria();
 			if (resultSet.next()) {
 				int j=1;
 				c.setIdCategoria(resultSet.getLong(j++));
 				c.setNombreCategoria(resultSet.getString(j++));			
 			} else {
-				throw new DataException("\nContenido with id " +idContenido+ "not found\n");
+				throw new DataException("\nContenido with id " +idContenido+ "not found\n");     ///////////////////////////////////////////
 			}
 			return c;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
@@ -1408,6 +1614,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 */
 	@Override
 	public List<Etiqueta> verEtiquetas(Connection connection, Long id, String idioma) throws DataException {
+		
+		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		StringBuilder queryString = null;
@@ -1425,6 +1633,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			int i = 1;
 			preparedStatement.setLong(i++, id );
 			preparedStatement.setString(i++, idioma );
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {0}",queryString);
+			}
 
 			resultSet = preparedStatement.executeQuery();
 
@@ -1445,8 +1657,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			return results;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			//logger.error("Error",e);
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
