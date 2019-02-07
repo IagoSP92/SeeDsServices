@@ -72,7 +72,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		
 		try {
-			Connection connection = ConnectionManager.getConnection();
+			Connection connection = ConnectionManager.getConnection();  // if usuario not null Excepcion????????????????
 			usuarioDao.delete(connection, u.getIdContenido());
 			JDBCUtils.closeConnection(connection);
 		}
@@ -82,7 +82,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		catch (Exception e) { 
 			logger.warn(e.getMessage(), e);
 		}
-		// if usuario not null Excepcion????????????????
+		
 	}
 
 	@Override
@@ -93,6 +93,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		
 		Usuario usuario = null;
+		
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			if(email!=null && contrasena!=null && idioma !=null) {

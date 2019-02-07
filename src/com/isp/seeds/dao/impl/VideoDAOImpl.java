@@ -51,17 +51,19 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 			if (resultSet.next()) {
 				e = loadNext(connection, resultSet);				
 			} else {
+				logger.debug("Video con id= {} no encontrado.", id );
 				throw new DataException("\n Video with id " +id+ "not found\n");
 			}
 
 			return e;
 
 		} catch (SQLException e) {
-			throw new DataException(e);
+			logger.warn(e.getMessage(), e);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
-		}	
+		}
+		return null;
 	}
 
 	
@@ -181,15 +183,14 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 			return results;
 
 		} catch (SQLException e) {
-			//logger.error("Error",e);
-			throw new DataException(e);
-		} catch (DataException de) {
-			//logger.error("Error",e);
-			throw new DataException(de);
+			logger.warn(e.getMessage(), e);
+		} catch (DataException e) {
+			logger.warn(e.getMessage(), e);
 		}  finally {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 		}
+		return null;
 	}
 
 	
@@ -211,8 +212,6 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 
 			preparedStatement = connection.prepareStatement(queryString,
 									Statement.RETURN_GENERATED_KEYS);
-
-			// Rellenamos el "preparedStatement"
 			
 			int i = 1;    
 			preparedStatement.setLong(i++, video.getIdContenido());
@@ -226,18 +225,19 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 			int insertedRows = preparedStatement.executeUpdate();
 
 			if (insertedRows == 0) {
+				logger.debug("No se ha podido insertar en tabla VIDEO");
 				throw new SQLException("Can not add row to table 'Video'");
 			}
 
-			// Return the DTO
 			return video;
 
 		} catch (SQLException e) {
-			throw new DataException(e);
+			logger.warn(e.getMessage(), e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 		}
+		return null;
 	}
 
 	@Override
@@ -289,16 +289,18 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 			int updatedRows = preparedStatement.executeUpdate();
 
 			if (updatedRows == 0) {
+				logger.debug("Video con id= {} no encontrado.", video.getIdContenido() );
 				throw new InstanceNotFoundException(video.getIdContenido(), Video.class.getName()); //Esto ultimo pa mostrar o nome da clase??
 			}
 
 			if (updatedRows > 1) {
+				logger.debug("Video con id= {} duplicado.", video.getIdContenido() );
 				throw new SQLException("Duplicate row for id = '" + 
 						video.getIdContenido() + "' in table 'Video'");
 			}     
 			
 		} catch (SQLException e) {
-			throw new DataException(e);    
+			logger.warn(e.getMessage(), e);  
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
 		}    
@@ -306,7 +308,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 	}
 
 	@Override
-	public long delete(Connection connection, Long id) throws DataException {
+	public void delete(Connection connection, Long id) throws DataException {
 		PreparedStatement preparedStatement = null;
 
 		try {
@@ -322,20 +324,18 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 			int removedRows = preparedStatement.executeUpdate();
 
 			if (removedRows == 0) {
+				logger.debug("No se ha podido eliminar en al tabla VIDEO" );
 				throw new SQLException("Can not delete row in table 'Video'");
 			}
 			
 			ContenidoDAO daoc = new ContenidoDAOImpl();
-			daoc.delete(connection, id);			
-
-			return removedRows;
-
+			daoc.delete(connection, id);	
+			
 		} catch (SQLException e) {
-			throw new DataException(e);
+			logger.warn(e.getMessage(), e);
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
-		}
-		
+		}	
 	}
 	
 	private void addClause(StringBuilder queryString, boolean first, String clause) {
@@ -376,7 +376,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 
 
 	@Override
-	public int getReproducciones(Connection connection, Long idContenido) throws DataException {
+	public Integer getReproducciones(Connection connection, Long idContenido) throws DataException {
 		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -399,16 +399,18 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 					valor = resultSet.getInt(1);
 				}
 			} else {
+				logger.debug("Reproducciones del video con id= {} no encontradas.",idContenido );
 				throw new DataException("\nReproducciones del video con id " +idContenido+ " no encontradas \n");
 			}
 
 			return valor;
 			
 		} catch (SQLException e) {
-			throw new DataException(e);
+			logger.warn(e.getMessage(), e);
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
+		return null;
 	}
 
 
@@ -444,15 +446,14 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 			return results;
 
 		} catch (SQLException e) {
-			//logger.error("Error",e);
-			throw new DataException(e);
-		} catch (DataException de) {
-			//logger.error("Error",e);
-			throw new DataException(de);
+			logger.warn(e.getMessage(), e);
+		} catch (DataException e) {
+			logger.warn(e.getMessage(), e);
 		}  finally {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 		}
+		return null;
 	}
 
 
@@ -488,15 +489,14 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 			return results;
 
 		} catch (SQLException e) {
-			//logger.error("Error",e);
-			throw new DataException(e);
-		} catch (DataException de) {
-			//logger.error("Error",e);
-			throw new DataException(de);
+			logger.warn(e.getMessage(), e);
+		} catch (DataException e) {
+			logger.warn(e.getMessage(), e);
 		}  finally {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 		}
+		return null;
 	}
 
 }

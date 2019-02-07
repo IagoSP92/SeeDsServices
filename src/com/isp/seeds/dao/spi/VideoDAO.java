@@ -26,7 +26,7 @@ public interface VideoDAO {
 	public List<Video> findAllVideos(Connection connection) 
 			throws DataException;
 	
-	public int getReproducciones (Connection connection, Long idContenido) 
+	public Integer getReproducciones (Connection connection, Long idContenido) 
 			throws DataException;
 
 	
@@ -36,7 +36,7 @@ public interface VideoDAO {
 	public void update (Connection connection, Video p) 
 			throws DataException;
 	
-	public long delete (Connection connection, Long id) 
+	public void delete (Connection connection, Long id) 
 			throws DataException;
 
 }

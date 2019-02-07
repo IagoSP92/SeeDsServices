@@ -681,7 +681,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 
 	@Override
-	public long delete(Connection connection, Long id)
+	public void delete(Connection connection, Long id)
 			throws DataException {
 
 		if(logger.isDebugEnabled()) {
@@ -691,11 +691,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		deleteRelaciones(connection, id);
 		deleteCategorias(connection, id);
 		deleteEtiquetas(connection, id);
-		return deleteContenido(connection, id);
+		deleteContenido(connection, id);
 	}
 
 
-	public long deleteContenido(Connection connection, Long id)
+	public void deleteContenido(Connection connection, Long id)
 			throws DataException {
 
 		if(logger.isDebugEnabled()) {
@@ -722,9 +722,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			if (removedRows == 0) {
 				throw new DataException("Exception: No removed rows (Tabla CONTENIDO) Id:"+id);
-			} 
-
-			return removedRows;
+			}
 
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
