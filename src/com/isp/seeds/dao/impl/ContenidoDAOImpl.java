@@ -72,7 +72,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			resultSet = preparedStatement.executeQuery();
@@ -124,7 +124,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			resultSet = preparedStatement.executeQuery();
@@ -175,7 +175,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			resultSet = preparedStatement.executeQuery();
@@ -228,7 +228,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setString(i++, nombreContenido);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			resultSet = preparedStatement.executeQuery();
@@ -337,7 +337,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				preparedStatement.setInt(i++, contenido.getTipo());
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			resultSet = preparedStatement.executeQuery();
@@ -482,7 +482,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			resultSet = preparedStatement.executeQuery();
@@ -562,7 +562,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setInt(i++, c.getTipo());
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int insertedRows = preparedStatement.executeUpdate();
@@ -657,7 +657,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, contenido.getIdContenido());
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int updatedRows = preparedStatement.executeUpdate();
@@ -715,7 +715,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, id);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int removedRows = preparedStatement.executeUpdate();
@@ -757,7 +757,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			preparedStatement.executeUpdate();
@@ -795,7 +795,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, id);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			preparedStatement.executeUpdate();
@@ -834,7 +834,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				preparedStatement.setLong(i++, idContenido);
 
 				if(logger.isDebugEnabled()) {
-					logger.debug("QUERY= {}",queryString);
+					logger.debug("QUERY= {}",preparedStatement);
 				}
 
 				preparedStatement.executeUpdate();
@@ -876,7 +876,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int insertedRows = preparedStatement.executeUpdate();
@@ -933,7 +933,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int updatedRows = preparedStatement.executeUpdate();
@@ -983,7 +983,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int insertedRows = preparedStatement.executeUpdate();
@@ -1027,7 +1027,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idEtiqueta);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int removedRows = preparedStatement.executeUpdate();
@@ -1080,7 +1080,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			resultSet = preparedStatement.executeQuery();
@@ -1136,7 +1136,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setNull(i++, Types.NULL);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int insertedRows = preparedStatement.executeUpdate();
@@ -1195,7 +1195,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido );
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int updatedRows = preparedStatement.executeUpdate();
@@ -1266,7 +1266,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido );
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int updatedRows = preparedStatement.executeUpdate();
@@ -1333,7 +1333,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido );
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int updatedRows = preparedStatement.executeUpdate();
@@ -1397,7 +1397,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido );
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int updatedRows = preparedStatement.executeUpdate();
@@ -1472,7 +1472,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido );
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int updatedRows = preparedStatement.executeUpdate();
@@ -1529,7 +1529,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setString(i++, idioma);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			resultSet = preparedStatement.executeQuery();
@@ -1587,7 +1587,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setString(i++, idioma );
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			resultSet = preparedStatement.executeQuery();

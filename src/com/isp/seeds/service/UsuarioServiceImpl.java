@@ -33,7 +33,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 	
 	@Override
 	public void recuperarContraseña(String email) throws DataException {
-		// TODO Auto-generated method stub
+		
+
 		
 	}
 

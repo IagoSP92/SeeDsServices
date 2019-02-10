@@ -13,7 +13,7 @@ public class Video extends Contenido  implements Comparable<Video> {
 	private Double valoracion = null;
 
 	private Categoria categoria= null;
-	private Etiqueta etiqueta = null;
+	private List<Etiqueta> etiquetas = null;
 
 	private List<String> comentarios= null;
 
@@ -76,13 +76,13 @@ public class Video extends Contenido  implements Comparable<Video> {
 	}
 
 
-	public Etiqueta getEtiqueta() {
-		return etiqueta;
+	public List<Etiqueta> getEtiqueta() {
+		return etiquetas;
 	}
 
 
-	public void setEtiqueta(Etiqueta etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setEtiqueta(List<Etiqueta> etiquetas) {
+		this.etiquetas = etiquetas;
 	}
 
 

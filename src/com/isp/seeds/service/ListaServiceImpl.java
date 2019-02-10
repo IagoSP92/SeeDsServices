@@ -87,15 +87,43 @@ public class ListaServiceImpl implements ListaService {
 	}
 
 	@Override
-	public void meterVideo(Long idLista, Long idVideo) throws DataException {
-		// TODO Auto-generated method stub
-
+	public void meterVideo(Long idLista, Long idVideo, Integer posicion) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idLista= {} idVideo= {} posicion= {}", idLista, idVideo, posicion);
+		}
+		
+		try {
+			Connection connection = ConnectionManager.getConnection();
+			listaDao.insertInList(connection, idLista, idVideo, posicion);
+			JDBCUtils.closeConnection(connection);
+		}
+		catch (SQLException e) {  
+			logger.warn(e.getMessage(), e);
+		}
+		catch (Exception e) {  
+			logger.warn(e.getMessage(), e);
+		}	
 	}
 
 	@Override
 	public void sacarVideo(Long idLista, Long idVideo) throws DataException {
-		// TODO Auto-generated method stub
-
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idLista= {} idVideo= {} ", idLista, idVideo);
+		}
+		
+		try {
+			Connection connection = ConnectionManager.getConnection();
+			listaDao.deleteFromList(connection, idLista, idVideo);
+			JDBCUtils.closeConnection(connection);
+		}
+		catch (SQLException e) {  
+			logger.warn(e.getMessage(), e);
+		}
+		catch (Exception e) {  
+			logger.warn(e.getMessage(), e);
+		}	
 	}
 
 	@Override

@@ -53,7 +53,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			preparedStatement.setLong(i++, idUsuario);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			resultSet = preparedStatement.executeQuery();
@@ -100,7 +100,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 			
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			resultSet = preparedStatement.executeQuery();
@@ -158,7 +158,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			preparedStatement.setDate(i++, new java.sql.Date(nuevoUsuario.getFechaNac().getTime()));
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			int insertedRows = preparedStatement.executeUpdate();
@@ -278,7 +278,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			preparedStatement.setLong(i++, usuario.getIdContenido());
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			int updatedRows = preparedStatement.executeUpdate();
@@ -324,7 +324,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			preparedStatement.setLong(i++, idUsuario);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			int removedRows = preparedStatement.executeUpdate();
@@ -371,7 +371,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			preparedStatement.setString(i++, email);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			resultSet = preparedStatement.executeQuery();
@@ -416,7 +416,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			preparedStatement.setString(i++, email);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			resultSet = preparedStatement.executeQuery();

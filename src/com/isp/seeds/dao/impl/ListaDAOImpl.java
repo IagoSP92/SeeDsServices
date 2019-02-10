@@ -50,7 +50,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			preparedStatement.setLong(i++, idLista);
  
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			resultSet = preparedStatement.executeQuery();
@@ -172,7 +172,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			resultSet = preparedStatement.executeQuery();
@@ -226,7 +226,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			preparedStatement.setBoolean(i++, lista.getPublica());
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			int insertedRows = preparedStatement.executeUpdate();
@@ -285,7 +285,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			preparedStatement.setLong(i++, lista.getIdContenido());
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			int updatedRows = preparedStatement.executeUpdate();
@@ -327,7 +327,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			preparedStatement.setLong(i++, idLista);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			int removedRows = preparedStatement.executeUpdate();
@@ -372,7 +372,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			preparedStatement.setLong(1, idAutor);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			resultSet = preparedStatement.executeQuery();
@@ -424,7 +424,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			preparedStatement.setLong(1, idCategoria);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			resultSet = preparedStatement.executeQuery();
@@ -516,11 +516,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			preparedStatement.setLong(i++, idVideo);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
-			}
-
-			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			resultSet = preparedStatement.executeQuery();
@@ -571,7 +567,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			preparedStatement.setInt(i++, posicion);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			resultSet = preparedStatement.executeQuery();
@@ -612,7 +608,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			preparedStatement.setLong(i++, idLista);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			resultSet = preparedStatement.executeQuery();
@@ -662,7 +658,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 				//resultSet = preparedStatement.executeQuery();
 				
 				if(logger.isDebugEnabled()) {
-					logger.debug("QUERY= {}",queryString);
+					logger.debug("QUERY= {}",preparedStatement);
 				}
 				
 				int updatedRows = preparedStatement.executeUpdate();
@@ -719,7 +715,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 				//resultSet = preparedStatement.executeQuery();
 				
 				if(logger.isDebugEnabled()) {
-					logger.debug("QUERY= {}",queryString);
+					logger.debug("QUERY= {}",preparedStatement);
 				}
 				
 				int updatedRows = preparedStatement.executeUpdate();
@@ -768,7 +764,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			preparedStatement.setLong(i++, idVideo);
 
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 			
 			resultSet = preparedStatement.executeQuery();
@@ -816,7 +812,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			preparedStatement.setInt(i++, posicion);
 			
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int insertedRows = preparedStatement.executeUpdate();
@@ -855,7 +851,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			preparedStatement.setLong(i++, idVideo);
 			
 			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",queryString);
+				logger.debug("QUERY= {}",preparedStatement);
 			}
 
 			int removedRows = preparedStatement.executeUpdate();

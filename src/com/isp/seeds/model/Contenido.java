@@ -14,26 +14,27 @@ public class Contenido extends AbstractValueObject {
 	private Integer tipo = null;
 
 	
-	/*public String toString() {
-		return super.toString() + ToStringBuilder.reflectionToString(this);
-	}*/
-	
 	public String toString() {
-		StringBuilder cadena = new StringBuilder();
-		cadena.append("Contenido - ID: ");
-		cadena.append(id);
-		cadena.append("   Nombre: ");
-		cadena.append(nombre);
-		cadena.append("   F.Alta: ");
-		cadena.append(fechaAlta);
-		cadena.append("   F.Mod: ");
-		cadena.append(fechaMod);
-		cadena.append("   Autor: ");
-		cadena.append(autor);
-		cadena.append("   Tipo: ");
-		cadena.append(tipo);
-		return cadena.toString();
+		return super.toString() + ToStringBuilder.reflectionToString(this);
 	}
+	
+//	public String toString() {
+//		StringBuilder cadena = new StringBuilder();
+//		cadena.append("|CONTENIDO::ID:");
+//		cadena.append(id);
+//		cadena.append(" Nombre:");
+//		cadena.append(nombre);
+//		cadena.append(" F.Alta:");
+//		cadena.append(fechaAlta);
+//		cadena.append(" F.Mod:");
+//		cadena.append(fechaMod);
+//		cadena.append(" Autor:");
+//		cadena.append(autor);
+//		cadena.append(" Tipo:");
+//		cadena.append(tipo);
+//		cadena.append("||");
+//		return cadena.toString();
+//	}
 
 	public Contenido() {
 

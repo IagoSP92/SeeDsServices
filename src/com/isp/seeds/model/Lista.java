@@ -9,7 +9,7 @@ public class Lista extends Contenido {
 	private String descripcion = null;
 	private Boolean publica = null;
 	private Categoria categoria= null;
-	private Etiqueta etiqueta = null;
+	private List<Etiqueta> etiquetas = null;
 
 	private List<String> comentarios= null;
 	private List<Video> videos= null; /*??????????? ORDEN*/
@@ -46,12 +46,12 @@ public class Lista extends Contenido {
 		this.categoria = categoria;
 	}
 
-	public Etiqueta getEtiqueta() {
-		return etiqueta;
+	public List<Etiqueta> getEtiquetas() {
+		return etiquetas;
 	}
 
-	public void setEtiqueta(Etiqueta etiqueta) {
-		this.etiqueta = etiqueta;
+	public void setEtiquetas(List<Etiqueta> etiquetas) {
+		this.etiquetas = etiquetas;
 	}
 
 	public List<String> getComentarios() {

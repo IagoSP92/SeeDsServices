@@ -17,7 +17,7 @@ public interface ListaService {
 	public void editarLista (Lista lista)
 			throws DataException;
 	
-	public void meterVideo (Long idLista, Long idVideo)
+	public void meterVideo (Long idLista, Long idVideo, Integer posicion)
 			throws DataException;
 	
 	public void sacarVideo (Long idLista, Long idVideo)
