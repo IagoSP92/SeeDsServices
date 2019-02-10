@@ -31,7 +31,7 @@ public interface UsuarioDAO {
 	public void update (Connection connection, Usuario u, String idioma) 
 			throws DataException;
 	
-	public long delete (Connection connection, Long id) 
+	public void delete (Connection connection, Long id) 
 			throws DataException;
 	
 	public Boolean verificarContrasena(Connection connection, String email, String contrasena)

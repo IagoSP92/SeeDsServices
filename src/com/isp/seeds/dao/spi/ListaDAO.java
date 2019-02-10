@@ -1,6 +1,7 @@
 package com.isp.seeds.dao.spi;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
@@ -34,14 +35,14 @@ public interface ListaDAO {
 	public void update (Connection connection, Lista p) 
 			throws DataException;
 	
-	public long delete (Connection connection, Long id) 
+	public void delete (Connection connection, Long id) 
 			throws DataException;
 	
 	
 	
-	public void meterVideo (Connection connection, Long idLista, Long idVideo)
-			throws DataException;
+	public void insertInList (Connection connection, Long idLista, Long idVideo, int posicion)
+			throws DataException, SQLException;
 	
-	public void sacarVideo (Connection connection, Long idLista, Long idVideo)
-			throws DataException;
+	public void deleteFromList (Connection connection, Long idLista, Long idVideo)
+			throws DataException, SQLException;
 }

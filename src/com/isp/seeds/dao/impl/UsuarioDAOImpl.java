@@ -304,7 +304,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 
 	@Override
-	public long delete (Connection connection, Long idUsuario)
+	public void delete (Connection connection, Long idUsuario)
 			throws DataException {
 		
 		if(logger.isDebugEnabled()) {
@@ -335,8 +335,6 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			}
 
 			super.delete(connection, idUsuario);	
-
-			return removedRows;
 
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
