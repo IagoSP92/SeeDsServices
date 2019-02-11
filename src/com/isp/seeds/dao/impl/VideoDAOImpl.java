@@ -217,7 +217,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 			preparedStatement.setLong(i++, video.getIdContenido());
 			preparedStatement.setLong(i++, video.getIdAutor());
 			preparedStatement.setString(i++, video.getDescripcion());
-			preparedStatement.setInt(i++, video.getReproducciones());
+			preparedStatement.setInt(i++,0);
 			preparedStatement.setString(i++, video.getUrl());	
 			
 			System.out.println(preparedStatement.toString());
