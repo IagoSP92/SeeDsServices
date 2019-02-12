@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Lista;
+import com.isp.seeds.model.Video;
 
 public interface ListaService {
 	
@@ -34,5 +35,8 @@ public interface ListaService {
 			throws DataException;
 	
 	public List<Lista> buscarPorCategoria (Long idCategoria)
+			throws DataException;
+	
+	public List<Video> verVideosLista (Long idLista)
 			throws DataException;
 }

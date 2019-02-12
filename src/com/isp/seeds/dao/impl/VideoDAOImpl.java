@@ -499,4 +499,48 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 		return null;
 	}
 
+
+	@Override
+	public List<Video> verVideosLista(Connection connection, Long idLista) throws DataException {
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO,"
+							+ " V.DESCRIPCION, V.REPRODUCCIONES, V.URL_VIDEO  " + 
+					" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "+
+					"  INNER JOIN VIDEO_LISTA VL ON (VL.VIDEO_ID_CONTENIDO = V.ID_CONTENIDO ) "+
+					" WHERE VL.LISTA_ID_CONTENIDO = ? ORDER BY VL.POSICION");
+
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			preparedStatement.setLong(1, idLista);
+
+			resultSet = preparedStatement.executeQuery();
+
+			List<Video> results = new ArrayList<Video>(); 
+
+			Video video = null;
+
+			while (resultSet.next()) {
+				video = loadNext(connection, resultSet);
+				results.add(video);               	
+			} 
+			return results;
+
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+		} catch (DataException e) {
+			logger.warn(e.getMessage(), e);
+		}  finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		return null;
+	}
+
 }

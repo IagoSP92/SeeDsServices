@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Lista;
+import com.isp.seeds.model.Video;
 import com.isp.seeds.service.criteria.ListaCriteria;
 
 public interface ListaDAO {
@@ -45,4 +46,6 @@ public interface ListaDAO {
 	
 	public void deleteFromList (Connection connection, Long idLista, Long idVideo)
 			throws DataException, SQLException;
+
+	
 }

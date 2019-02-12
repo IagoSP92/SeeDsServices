@@ -800,7 +800,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 		ResultSet resultSet = null;
 		
 		try {
-			String queryString = "INSERT INTO VIDEO_LISTA (LISTA_ID_CONTENIDO, CONTENIDO_ID_CONTENIDO, POSICION ) "
+			String queryString = "INSERT INTO VIDEO_LISTA (LISTA_ID_CONTENIDO, VIDEO_ID_CONTENIDO, POSICION ) "
 					+ "VALUES (?, ?, ?)";
 
 			preparedStatement = connection.prepareStatement(queryString,

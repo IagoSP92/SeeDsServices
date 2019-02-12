@@ -38,5 +38,9 @@ public interface VideoDAO {
 	
 	public void delete (Connection connection, Long idVideo) 
 			throws DataException;
+	
+	
+	public List<Video> verVideosLista (Connection connection, Long idLista)
+			throws DataException;
 
 }

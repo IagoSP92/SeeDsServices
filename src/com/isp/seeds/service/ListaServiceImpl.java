@@ -10,19 +10,24 @@ import org.apache.logging.log4j.Logger;
 
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.dao.impl.ListaDAOImpl;
+import com.isp.seeds.dao.impl.VideoDAOImpl;
 import com.isp.seeds.dao.spi.ListaDAO;
+import com.isp.seeds.dao.spi.VideoDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Lista;
+import com.isp.seeds.model.Video;
 import com.isp.seeds.service.spi.ListaService;
 
 public class ListaServiceImpl implements ListaService {
 
 	private static Logger logger = LogManager.getLogger(ListaServiceImpl.class);
 	ListaDAO listaDao= null;
+	VideoDAO videoDao= null;
 
 	public ListaServiceImpl () {
 		listaDao = new ListaDAOImpl();
+		videoDao = new VideoDAOImpl();
 	}
 
 	@Override
@@ -232,6 +237,32 @@ public class ListaServiceImpl implements ListaService {
 				listas = listaDao.findByCategoria (connection, idCategoria);
 				JDBCUtils.closeConnection(connection);
 				return listas;
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
+		}
+		return null;
+	}
+
+	
+	@Override
+	public List<Video> verVideosLista(Long idLista) throws DataException {
+
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idLista= {} ", idLista);
+		}
+
+		if(idLista != null) {
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				List<Video> videos = new ArrayList<Video>();
+				videos = videoDao.verVideosLista (connection, idLista);
+				JDBCUtils.closeConnection(connection);
+				return videos;
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
