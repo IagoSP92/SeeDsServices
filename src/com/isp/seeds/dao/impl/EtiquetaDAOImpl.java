@@ -160,12 +160,10 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
 	@Override
 	public Etiqueta create(Connection connection, Etiqueta e, String idioma)
 			throws DataException {
-		//Connection connection = null; 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
 		try {
-			//connection = ConnectionManager.getConnection();
 
 			String queryString = "INSERT INTO ETIQUETA () "
 					+ "VALUES ()";
@@ -173,13 +171,7 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
 			preparedStatement = connection.prepareStatement(queryString,
 					Statement.RETURN_GENERATED_KEYS);
 
-			/**/
-//			int i = 1;     			
-//			preparedStatement.setString(i++, e.getNombreEtiqueta());
-			/**/
-
 			int insertedRows = preparedStatement.executeUpdate();
-
 			
 			if (insertedRows == 0) {
 				throw new SQLException("Can not add row to table 'Etiqueta'");
@@ -217,7 +209,6 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);			
-			//JDBCUtils.closeConnection(connection);
 		}
 
 	}
@@ -230,7 +221,7 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
 		try {
 			
 			String queryString =	
-					  "DELETE FROM ETIQUETA " 
+					  "DELETE FROM ETIQUETA_IDIOMA " 
 					+ "WHERE id_ETIQUETA = ? ";
 			
 			preparedStatement = connection.prepareStatement(queryString);
@@ -243,6 +234,21 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
 			if (removedRows == 0) {
 				//throw new DataException("Exception: No removed rows");
 			} 
+			
+			queryString =	
+					  "DELETE FROM ETIQUETA " 
+					+ "WHERE id_ETIQUETA = ? ";
+			
+			preparedStatement = connection.prepareStatement(queryString);
+
+			i = 1;
+			preparedStatement.setLong(i++, id);
+
+			removedRows = preparedStatement.executeUpdate();
+
+			if (removedRows == 0) {
+				//throw new DataException("Exception: No removed rows");
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -253,27 +259,22 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
 	}
 
 	@Override
-	public Long findByNombre(Connection connection, String nombreEtiqueta, String idioma)
+	public Etiqueta findByNombre(Connection connection, String nombreEtiqueta, String idioma)
 			throws SQLException, DataException {
 
-		Long idEtiqueta = null;
+		Etiqueta etiqueta = null;
 
-		//Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try {
-			//connection = ConnectionManager.getConnection();
 
 			String sql;
-			sql =  "SELECT ID_ETIQUETA "
+			sql =  "SELECT ID_ETIQUETA, NOMBRE_ETIQUETA"
 					+" FROM ETIQUETA_IDIOMA"
 					+" WHERE NOMBRE_ETIQUETA = ? AND ID_IDIOMA = ? ";
 
-			// Preparar a query
-			System.out.println("Creating statement...");
 			preparedStatement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
-			// Establece os parámetros
 			int i = 1;
 			preparedStatement.setString(i++, nombreEtiqueta);
 			preparedStatement.setString(i++, idioma);
@@ -281,8 +282,7 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
 			resultSet = preparedStatement.executeQuery();			
 
 			if (resultSet.next()) {
-				int j=1;
-				idEtiqueta  = resultSet.getLong(j++);
+				etiqueta = loadNext(resultSet);// DA FALLO AQUI
 
 			} else {
 				throw new DataException("Non se encontrou a categoria "+nombreEtiqueta);
@@ -297,10 +297,9 @@ public class EtiquetaDAOImpl implements EtiquetaDAO {
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
-			//JDBCUtils.closeConnection(connection);
 		}  	
 
-		return idEtiqueta;
+		return etiqueta;
 	}
 
 	@Override

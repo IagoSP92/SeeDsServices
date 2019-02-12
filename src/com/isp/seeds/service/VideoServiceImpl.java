@@ -27,89 +27,95 @@ public class VideoServiceImpl implements VideoService {
 
 	@Override
 	public Video crearVideo(Video video) throws DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Video= {}", video);
 		}
 		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			video = videoDao.create(connection, video);
-			JDBCUtils.closeConnection(connection);
-		}
-		catch (SQLException e) { 
-			logger.warn(e.getMessage(), e);
-		}
-		catch (Exception e) {  
-			logger.warn(e.getMessage(), e);
+		if(video !=null) {
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				video = videoDao.create(connection, video);
+				JDBCUtils.closeConnection(connection);
+			}
+			catch (SQLException e) { 
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) {  
+				logger.warn(e.getMessage(), e);
+			}
 		}
 		return video;
 	}
 
 	@Override
-	public void eliminarVideo(Video video) throws DataException {
-		
+	public void eliminarVideo(Long idVideo) throws DataException {
+
 		if(logger.isDebugEnabled()) {
-			logger.debug ("Video= {} ", video);
+			logger.debug ("idVideo= {} ", idVideo);
 		}
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			videoDao.delete(connection, video.getIdContenido());
-			JDBCUtils.closeConnection(connection);
-		}
-		catch (SQLException e) { 
-			logger.warn(e.getMessage(), e);
-		}
-		catch (Exception e) { 
-			logger.warn(e.getMessage(), e);
+
+		if(idVideo !=null) {
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				videoDao.delete(connection, idVideo);
+				JDBCUtils.closeConnection(connection);
+			}
+			catch (SQLException e) { 
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) { 
+				logger.warn(e.getMessage(), e);
+			}
 		}
 	}
 
 	@Override
 	public void editarVideo(Video video) throws DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Video= {} ", video);
 		}
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			videoDao.update(connection, video);
-			JDBCUtils.closeConnection(connection);
+
+		if(video !=null) {
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				videoDao.update(connection, video);
+				JDBCUtils.closeConnection(connection);
+			}
+			catch (SQLException e) {  
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) {  
+				logger.warn(e.getMessage(), e);
+			}
 		}
-		catch (SQLException e) {  
-			logger.warn(e.getMessage(), e);
-		}
-		catch (Exception e) {  
-			logger.warn(e.getMessage(), e);
-		}		
 	}
 
 	@Override
 	public Video buscarId(Long idVideo) throws DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idVideo= {} ", idVideo);
 		}
-		
-		try {
-			if(idVideo !=null) {
+
+		Video video = null;
+		if(idVideo!=null) {
+
+			try {
 				Connection connection = ConnectionManager.getConnection();
-				Video video = new Video();
 				video = videoDao.findById(connection, idVideo);
 				JDBCUtils.closeConnection(connection);
-				return video;
-			}
 
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
 		}
-		return null;
+		return video;
 	}
 
 	@Override
@@ -134,47 +140,52 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public List<Video> buscarPorAutor(Long idAutor, String idioma) throws DataException {
-		
+	public List<Video> buscarPorAutor(Long idAutor) throws DataException {
+
 		if(logger.isDebugEnabled()) {
-			logger.debug ("idAutor= {} idioma= {} ", idAutor, idioma);
+			logger.debug ("idAutor= {} ", idAutor);
 		}
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			List<Video> videos = new ArrayList<Video>();
-			videos = videoDao.findByAutor(connection, idAutor);
-			JDBCUtils.closeConnection(connection);
-			return videos;
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
+
+		if(idAutor != null) {
+
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				List<Video> videos = new ArrayList<Video>();
+				videos = videoDao.findByAutor(connection, idAutor);
+				JDBCUtils.closeConnection(connection);
+				return videos;
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
 		}
 		return null;
 	}
 
 	@Override
-	public List<Video> buscarPorCategoria(Long idCategoria, String idioma) throws DataException {
-		
+	public List<Video> buscarPorCategoria(Long idCategoria) throws DataException {
+
 		if(logger.isDebugEnabled()) {
-			logger.debug ("idCategoria= {} idioma= {} ", idCategoria, idioma);
+			logger.debug ("idCategoria= {} ", idCategoria);
 		}
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			List<Video> videos = new ArrayList<Video>();
-			videos = videoDao.findByCategoria(connection, idCategoria);
-			JDBCUtils.closeConnection(connection);
-			return videos;
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
+
+		if (idCategoria!=null) {
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				List<Video> videos = new ArrayList<Video>();
+				videos = videoDao.findByCategoria(connection, idCategoria);
+				JDBCUtils.closeConnection(connection);
+				return videos;
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
 		}
 		return null;
 	}

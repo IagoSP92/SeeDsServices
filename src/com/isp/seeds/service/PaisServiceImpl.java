@@ -24,29 +24,29 @@ public class PaisServiceImpl implements PaisService{
 
 	@Override
 	public Pais findById(String idPais, String idioma) throws DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idPais= {} idioma= {} ", idPais, idioma);
 		}
 		
-		try {
+		Pais pais = null;
+		if(idPais != null && idioma != null) {
 
-			if(idPais != null && idioma != null) {
+			try {
+
 				Connection connection = ConnectionManager.getConnection();
-				Pais pais = new Pais();
 				pais = paisDao.findById(connection, idPais, idioma);
-
 				JDBCUtils.closeConnection(connection);
-				return pais;
+
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
 			}
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
 		}
-		return null;
+		return pais;
 	}
 
 

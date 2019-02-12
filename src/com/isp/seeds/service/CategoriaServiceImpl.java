@@ -24,58 +24,60 @@ public class CategoriaServiceImpl implements CategoriaService{
 
 	@Override
 	public Categoria findById(Long idCategoria, String idioma) throws DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idCategoria= {} idioma= {} ", idCategoria, idioma);
 		}
-		
-		try {
 
-			if(idCategoria != null && idioma != null) {
+		Categoria categoria = null;
+		if(idCategoria != null && idioma != null) {
+
+			try {
+
 				Connection connection = ConnectionManager.getConnection();
-				Categoria categoria = new Categoria();
 				categoria = categoriaDao.findById(connection, idCategoria, idioma);
-
 				JDBCUtils.closeConnection(connection);
-				return categoria;
+
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
 			}
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
 		}
-		return null;
+		return categoria;
 	}
 
+	
 	@Override
 	public Long findByNombre(String nombreCategoria, String idioma) throws DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("nombreCategoria= {} idioma= {} ", nombreCategoria, idioma);
 		}
-		
-		try {
 
-			if(nombreCategoria != null) {
-				Connection connection = ConnectionManager.getConnection();
-				Long idCategoria = null;
+		Long idCategoria = null;
+		if(nombreCategoria != null) {
+
+			try {
+
+				Connection connection = ConnectionManager.getConnection();				
 				idCategoria = categoriaDao.findByNombre(connection, nombreCategoria, idioma);
-
 				JDBCUtils.closeConnection(connection);
-				return idCategoria;
+
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
 			}
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
 		}
-		return null;
+		return idCategoria;
 	}
 
+	
 	@Override
 	public List<Categoria> findAll() throws DataException {
 		

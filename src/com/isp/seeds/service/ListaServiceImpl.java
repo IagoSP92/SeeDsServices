@@ -27,131 +27,148 @@ public class ListaServiceImpl implements ListaService {
 
 	@Override
 	public Lista crearLista(Lista lista) throws DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Lista= {} ", lista);
 		}
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			lista = listaDao.create(connection, lista);
-			JDBCUtils.closeConnection(connection);
-		}
-		catch (SQLException e) { 
-			logger.warn(e.getMessage(), e);
-		}
-		catch (Exception e) {  
-			logger.warn(e.getMessage(), e);
+
+		if(lista != null) {
+
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				lista = listaDao.create(connection, lista);
+				JDBCUtils.closeConnection(connection);
+			}
+			catch (SQLException e) { 
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) {  
+				logger.warn(e.getMessage(), e);
+			}
 		}
 		return lista;
 	}
 
 	@Override
 	public void eliminarLista(Lista lista) throws DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Lista= {} ", lista);
 		}
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			listaDao.delete(connection, lista.getIdContenido());
-			JDBCUtils.closeConnection(connection);
-		}
-		catch (SQLException e) { 
-			logger.warn(e.getMessage(), e);
-		}
-		catch (Exception e) { 
-			logger.warn(e.getMessage(), e);
+
+		if(lista != null) {
+
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				listaDao.delete(connection, lista.getIdContenido());
+				JDBCUtils.closeConnection(connection);
+			}
+			catch (SQLException e) { 
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) { 
+				logger.warn(e.getMessage(), e);
+			}
 		}
 	}
 
 	@Override
 	public void editarLista(Lista lista) throws DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Lista= {} ", lista);
 		}
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			listaDao.update(connection, lista);
-			JDBCUtils.closeConnection(connection);
+
+		if(lista != null) {
+
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				listaDao.update(connection, lista);
+				JDBCUtils.closeConnection(connection);
+			}
+			catch (SQLException e) {  
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) {  
+				logger.warn(e.getMessage(), e);
+			}
 		}
-		catch (SQLException e) {  
-			logger.warn(e.getMessage(), e);
-		}
-		catch (Exception e) {  
-			logger.warn(e.getMessage(), e);
-		}	
 	}
 
 	@Override
-	public void meterVideo(Long idLista, Long idVideo, Integer posicion) throws DataException {
-		
+	public void meterVideo(Long idLista, Long idVideo, Integer posicion) throws DataException {    // PODRIA INSERTAR AL FINAL SI POSICION ES NULL
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idLista= {} idVideo= {} posicion= {}", idLista, idVideo, posicion);
 		}
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			listaDao.insertInList(connection, idLista, idVideo, posicion);
-			JDBCUtils.closeConnection(connection);
+
+		if(idLista!=null && idVideo!=null  && posicion!=null) {
+			
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				listaDao.insertInList(connection, idLista, idVideo, posicion);
+				JDBCUtils.closeConnection(connection);
+			}
+			catch (SQLException e) {  
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) {  
+				logger.warn(e.getMessage(), e);
+			}
 		}
-		catch (SQLException e) {  
-			logger.warn(e.getMessage(), e);
-		}
-		catch (Exception e) {  
-			logger.warn(e.getMessage(), e);
-		}	
 	}
+
 
 	@Override
 	public void sacarVideo(Long idLista, Long idVideo) throws DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idLista= {} idVideo= {} ", idLista, idVideo);
 		}
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			listaDao.deleteFromList(connection, idLista, idVideo);
-			JDBCUtils.closeConnection(connection);
+
+		if(idLista!=null && idVideo!=null) {
+			
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				listaDao.deleteFromList(connection, idLista, idVideo);
+				JDBCUtils.closeConnection(connection);
+			}
+			catch (SQLException e) {  
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) {  
+				logger.warn(e.getMessage(), e);
+			}
 		}
-		catch (SQLException e) {  
-			logger.warn(e.getMessage(), e);
-		}
-		catch (Exception e) {  
-			logger.warn(e.getMessage(), e);
-		}	
 	}
 
+	
 	@Override
 	public Lista buscarId(Long idLista) throws DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idLista= {} ", idLista);
 		}
-		
-		try {
-			if(idLista !=null) {
+
+		Lista lista = null;
+		if(idLista != null) {
+			
+			try {
 				Connection connection = ConnectionManager.getConnection();
-				Lista lista = new Lista();
 				lista = listaDao.findById(connection, idLista);
 				JDBCUtils.closeConnection(connection);
-				return lista;
-			}
 
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
 		}
-		return null;
+		return lista;
 	}
-	
+
 
 	@Override
 	public List<Lista> buscarTodas() throws DataException {
@@ -176,48 +193,52 @@ public class ListaServiceImpl implements ListaService {
 	
 
 	@Override
-	public List<Lista> buscarPorAutor(Long idAutor, String idioma) throws DataException {
-		
+	public List<Lista> buscarPorAutor(Long idAutor) throws DataException {
+
 		if(logger.isDebugEnabled()) {
-			logger.debug ("idAutor= {} idioma= {}", idAutor, idioma);
+			logger.debug ("idAutor= {} ", idAutor);
 		}
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			List<Lista> listas = new ArrayList<Lista>();
-			listas = listaDao.findByAutor (connection, idAutor);
-			JDBCUtils.closeConnection(connection);
-			return listas;
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
+
+		if(idAutor != null) {
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				List<Lista> listas = new ArrayList<Lista>();
+				listas = listaDao.findByAutor (connection, idAutor);
+				JDBCUtils.closeConnection(connection);
+				return listas;
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
 		}
 		return null;
 	}
 
-	
+
 	@Override
-	public List<Lista> buscarPorCategoria(Long idCategoria, String idioma) throws DataException {
-		
+	public List<Lista> buscarPorCategoria(Long idCategoria) throws DataException {
+
 		if(logger.isDebugEnabled()) {
-			logger.debug ("idCategoria= {} idioma= {}", idCategoria, idioma);
+			logger.debug ("idCategoria= {} ", idCategoria);
 		}
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			List<Lista> listas = new ArrayList<Lista>();
-			listas = listaDao.findByCategoria (connection, idCategoria);
-			JDBCUtils.closeConnection(connection);
-			return listas;
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
+
+		if(idCategoria != null) {
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				List<Lista> listas = new ArrayList<Lista>();
+				listas = listaDao.findByCategoria (connection, idCategoria);
+				JDBCUtils.closeConnection(connection);
+				return listas;
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
 		}
 		return null;
 	}

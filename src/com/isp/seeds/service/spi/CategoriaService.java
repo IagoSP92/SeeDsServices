@@ -7,7 +7,7 @@ import com.isp.seeds.model.Categoria;
 
 public interface CategoriaService {
 	
-	public Categoria findById( Long id, String idioma) 
+	public Categoria findById( Long idCategoria, String idioma) 
 			throws DataException;
 	
 	public Long findByNombre( String nombreCategoria, String idioma ) 

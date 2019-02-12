@@ -24,15 +24,15 @@ public interface ListaService {
 			throws DataException;
 	
 
-	public Lista buscarId (Long idVideo)
+	public Lista buscarId (Long idLista)
 			throws DataException;
 	
 	public List<Lista> buscarTodas ()
 			throws DataException;
 	
-	public List<Lista> buscarPorAutor (Long idAutor, String idioma)
+	public List<Lista> buscarPorAutor (Long idAutor)
 			throws DataException;
 	
-	public List<Lista> buscarPorCategoria (Long idCategoria, String idioma)
+	public List<Lista> buscarPorCategoria (Long idCategoria)
 			throws DataException;
 }

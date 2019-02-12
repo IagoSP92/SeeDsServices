@@ -8,34 +8,31 @@ import com.isp.seeds.model.Usuario;
 
 public interface UsuarioService {
 	
-	public Usuario crearCuenta (Usuario u) 
+	public Usuario crearCuenta (Usuario usuario) 
 			throws DataException;
 	
-	public void eliminarCuenta (Usuario u) 
+	public void eliminarCuenta (Long idUsuario) 
 			throws DataException;
 	
-	public Usuario logIn (String email, String contrasena, String idioma)
+	public Usuario logIn (String email, String contrasena)
 			throws DataException;
 	
-	public Boolean logOut (String email, String contrasena) // COMO SE FAI ESTO?
+	public void editarPerfil (Usuario usuario)
 			throws DataException;
 	
-	public void editarPerfil (Usuario usuario, String idioma)
-			throws DataException;
-	
-	public void cambiarContraseña (String email, String contrasena, String idioma)
+	public void cambiarContraseña (String email, String contrasena)
 			throws DataException;
 	
 	public void recuperarContraseña (String email)
 			throws DataException;
 	
-	public Usuario buscarId (Long id, String idioma)
+	public Usuario buscarId (Long idUsuario)
 			throws DataException;
 
-	public Usuario buscarEmail (String email, String idioma)
+	public Usuario buscarEmail (String email)
 			throws DataException;
 	
-	public List<Usuario> buscarTodos (String idioma)
+	public List<Usuario> buscarTodos ()
 			throws DataException;
 	
 	

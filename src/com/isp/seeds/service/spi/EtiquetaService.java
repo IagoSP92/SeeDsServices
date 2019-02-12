@@ -7,16 +7,16 @@ import com.isp.seeds.model.Etiqueta;
 
 public interface EtiquetaService {
 	
-	public Etiqueta findById(Long id, String idioma) 
+	public Etiqueta findById(Long idEtiqueta, String idioma) 
 			throws DataException;
 	
-	public Long findByNombre( String nombreEtiqueta, String idioma) 
+	public Etiqueta findByNombre( String nombreEtiqueta, String idioma) 
 			throws DataException;
 
 	public List<Etiqueta> findAll( ) 
 			throws DataException;
 	
-	public Etiqueta create ( Etiqueta e, String idioma) 
+	public Etiqueta create ( Etiqueta etiqueta, String idioma) 
 			throws DataException;
 	
 	public void delete (Long idEtiqueta, String idioma) 

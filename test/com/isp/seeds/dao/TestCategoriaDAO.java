@@ -34,7 +34,7 @@ public class TestCategoriaDAO {
 		
 		List <Categoria> lista = new ArrayList <Categoria> ();
 		lista = dao.findAll(connection);
-		JDBCUtils.closeConnection(conexion);
+		JDBCUtils.closeConnection(connection);
 
 		for(Categoria c: lista) {
 			System.out.println(c.toString());

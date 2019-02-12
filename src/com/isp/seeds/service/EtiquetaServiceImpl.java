@@ -24,58 +24,60 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 
 	@Override
 	public Etiqueta findById(Long idEtiqueta, String idioma) throws DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idEtiqueta= {} idioma= {} ", idEtiqueta, idioma);
 		}
-		
-		try {
 
-			if(idEtiqueta != null && idioma != null) {
+		Etiqueta etiqueta = null;
+		if(idEtiqueta != null && idioma != null) {
+
+			try {
+				
 				Connection connection = ConnectionManager.getConnection();
-				Etiqueta etiqueta = new Etiqueta();
 				etiqueta = etiquetaDao.findById(connection, idEtiqueta, idioma);
-
 				JDBCUtils.closeConnection(connection);
-				return etiqueta;
+
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
 			}
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
 		}
-		return null;
+		return etiqueta;
 	}
 
+	
 	@Override
-	public Long findByNombre(String nombreEtiqueta, String idioma) throws  DataException {
-		
+	public Etiqueta findByNombre(String nombreEtiqueta, String idioma) throws  DataException {
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("nombreEtiqueta= {} idioma= {} ", nombreEtiqueta, idioma);
 		}
 		
-		try {
+		Etiqueta etiqueta = null;
+		if(nombreEtiqueta != null) {
 
-			if(nombreEtiqueta != null) {
+			try {
+
 				Connection connection = ConnectionManager.getConnection();
-				Long idEtiqueta = null;
-				idEtiqueta = etiquetaDao.findByNombre(connection, nombreEtiqueta, idioma);
-
+				etiqueta = etiquetaDao.findByNombre(connection, nombreEtiqueta, idioma);
 				JDBCUtils.closeConnection(connection);
-				return idEtiqueta;
+
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
 			}
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
 		}
-		return null;
+		return etiqueta;
 	}
 
+	
 	@Override
 	public List<Etiqueta> findAll() throws DataException {
 		
@@ -99,62 +101,60 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 		return null;
 	}
 
+	
 	@Override
 	public Etiqueta create(Etiqueta etiqueta, String idioma) throws  DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Etiqueta= {} idioma= {} ", etiqueta, idioma);
 		}
-		
-		try {
 
-			if(etiqueta != null) {
+		if(etiqueta != null && idioma!=null) {
+
+			try {
+
 				Connection connection = ConnectionManager.getConnection();
-
 				etiquetaDao.create(connection, etiqueta, idioma);
-				
 				JDBCUtils.closeConnection(connection);
-
 				return etiqueta;
-			}
 
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
 		}
 		return null;
 	}
 
+
 	@Override
 	public void delete(Long idEtiqueta, String idioma) throws DataException {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idEtiqueta= {} idioma= {} ", idEtiqueta, idioma);
 		}
-		
-		try {
 
-			if(idEtiqueta != null) {
+		if(idEtiqueta != null && idioma!=null) {
+
+			try {
+
 				Connection connection = ConnectionManager.getConnection();
-				
 				if (!etiquetaDao.exists(connection, idEtiqueta, idioma)) {
 					etiquetaDao.delete(connection, idEtiqueta, idioma);
 				}
-
 				JDBCUtils.closeConnection(connection);
-			}
 
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
 		}
-		
 	}
 
 }

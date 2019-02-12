@@ -16,7 +16,7 @@ public interface EtiquetaDAO {
 	public Etiqueta findById(Connection conexion, Long id, String idioma) 
 			throws SQLException, DataException;
 	
-	public Long findByNombre(Connection conexion, String nombreEtiqueta, String idioma) 
+	public Etiqueta findByNombre(Connection conexion, String nombreEtiqueta, String idioma) 
 			throws SQLException, DataException;
 
 	public List<Etiqueta> findAll(Connection conexion) 

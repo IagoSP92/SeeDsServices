@@ -13,7 +13,7 @@ public class Usuario extends Contenido implements Comparable<Usuario> {
 	private String avatarUrl = null;
 	private String nombreReal = null;
 	private String apellidos = null;
-	private Pais pais = null;
+	private String idPais = null;
 	private Date fechaNac = null;
 
 	private List<Video> videosSubidos= null;
@@ -33,8 +33,7 @@ public class Usuario extends Contenido implements Comparable<Usuario> {
 	public String toString() {
 		String cadena= "\nUSUARIO: "+getNombre()+" - "+ getIdContenido()+"  - "+getFechaAlta()+" - "+getFechaMod()+" - "+getFechaNac()+"\n ";
 		cadena+= getNombreReal()+" - "+ getApellidos()+" - "+getEmail()+" - "+getContrasena()+"\n";
-		cadena+= getAvatarUrl()+" - "+getDescripcion()+"\n";
-		cadena+= getPais()+"\n";
+		cadena+= getAvatarUrl()+" - "+getDescripcion()+" - "+ getPais()+"\n";
 	return cadena;
 }
 
@@ -97,12 +96,12 @@ public class Usuario extends Contenido implements Comparable<Usuario> {
 		this.apellidos = apellidos;
 	}
 
-	public Pais getPais() {
-		return pais;
+	public String getPais() {
+		return idPais;
 	}
 
-	public void setPais(Pais pais) {
-		this.pais = pais;
+	public void setPais(String pais) {
+		this.idPais = pais;
 	}
 
 	public Date getFechaNac() {

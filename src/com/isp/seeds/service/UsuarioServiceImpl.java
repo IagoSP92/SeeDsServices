@@ -17,228 +17,224 @@ import com.isp.seeds.model.Usuario;
 import com.isp.seeds.service.spi.UsuarioService;
 
 public class UsuarioServiceImpl implements UsuarioService {
-	
+
 	private static Logger logger = LogManager.getLogger(UsuarioServiceImpl.class);
 	UsuarioDAO usuarioDao= null;
-	
+
 	public UsuarioServiceImpl () {
 		usuarioDao = new UsuarioDAOImpl();
 	}
-	
-	@Override
-	public Boolean logOut(String email, String contrasena) throws DataException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+
 	@Override
 	public void recuperarContraseña(String email) throws DataException {
-		
 
-		
+
+
 	}
 
 	public Usuario crearCuenta (Usuario u) {
-		
+
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Usuario= {} ", u);
 		}
 
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			u = usuarioDao.create(connection, u);
-			JDBCUtils.closeConnection(connection);
+		if(u != null) {
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				u = usuarioDao.create(connection, u);
+				JDBCUtils.closeConnection(connection);
+			}
+			catch (SQLException e) { 
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) {  
+				logger.warn(e.getMessage(), e);
+			}
 		}
-		catch (SQLException e) { 
-			logger.warn(e.getMessage(), e);
-		}
-		catch (Exception e) {  
-			logger.warn(e.getMessage(), e);
-		}
+
 		// EN SERVICIO :
-//		private List<Video> videosSubidos= null;
-//		private List<Lista> listasSubidas= null;
-//		private List<Usuario> usuariosSeguidos= null;
-//		private List<Lista> listasSeguidas= null;
-//		private List<Video> videosGuardados = null;
-//		private List<Lista> listasGuardadas = null;
+		//		private List<Video> videosSubidos= null;
+		//		private List<Lista> listasSubidas= null;
+		//		private List<Usuario> usuariosSeguidos= null;
+		//		private List<Lista> listasSeguidas= null;
+		//		private List<Video> videosGuardados = null;
+		//		private List<Lista> listasGuardadas = null;
 
 		return u;
 	}
-	
-	public void eliminarCuenta (Usuario u) {
-		
+
+	public void eliminarCuenta (Long idUsuario) {
+
 		if(logger.isDebugEnabled()) {
-			logger.debug ("Usuario= {} ", u);
+			logger.debug ("idUsuario= {} ", idUsuario);
 		}
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();  // if usuario not null Excepcion????????????????
-			usuarioDao.delete(connection, u.getIdContenido());
-			JDBCUtils.closeConnection(connection);
+
+		if(idUsuario!=null) {
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				usuarioDao.delete(connection, idUsuario);
+				JDBCUtils.closeConnection(connection);
+			}
+			catch (SQLException e) { 
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) { 
+				logger.warn(e.getMessage(), e);
+			}
 		}
-		catch (SQLException e) { 
-			logger.warn(e.getMessage(), e);
-		}
-		catch (Exception e) { 
-			logger.warn(e.getMessage(), e);
-		}
-		
+
 	}
 
 	@Override
-	public Usuario logIn (String email, String contrasena, String idioma) throws DataException {
-		
+	public Usuario logIn (String email, String contrasena) throws DataException {
+
 		if(logger.isDebugEnabled()) {
-			logger.debug ("email= {} contrasena= {} idioma= {}", email, contrasena==null, idioma);
+			logger.debug ("email= {} contrasena= {} ", email, contrasena==null);
 		}
-		
+
 		Usuario usuario = null;
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			if(email!=null && contrasena!=null && idioma !=null) {
+		if(email!=null && contrasena!=null) {
+			
+			try {
+				Connection connection = ConnectionManager.getConnection();
+
 				if(usuarioDao.verificarContrasena(connection, email, contrasena)) {
-					usuario = usuarioDao.findByEmail(connection, email, idioma);
+					usuario = usuarioDao.findByEmail(connection, email);
+				}
+
+				JDBCUtils.closeConnection(connection);
+				if (usuario==null) {
+					throw new DataException("Contraseña incorrecta");
 				}
 			}
-			JDBCUtils.closeConnection(connection);
-			if (usuario==null) {
-				throw new DataException("Contraseña incorrecta");
+			catch (SQLException e) {  
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) {  
+				logger.warn(e.getMessage(), e);
 			}
 		}
-		catch (SQLException e) {  
-			logger.warn(e.getMessage(), e);
-		}
-		catch (Exception e) {  
-			logger.warn(e.getMessage(), e);
-		}
-		
 		return usuario;
 	}
 
 
 
 	@Override
-	public void editarPerfil(Usuario usuario, String idioma) throws DataException { //Podria non necesitar idioma
-		
+	public void editarPerfil(Usuario usuario) throws DataException {
+
 		if(logger.isDebugEnabled()) {
-			logger.debug ("Usuario= {} idioma= {} ", usuario, idioma);
+			logger.debug ("Usuario= {} ", usuario);
 		}
 		
+		if(usuario!=null) {
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				usuarioDao.update(connection, usuario);
+				JDBCUtils.closeConnection(connection);
+			}
+			catch (SQLException e) {  
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) {  
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void cambiarContraseña(String email, String contrasena) throws DataException {
+
+		if(logger.isDebugEnabled()) {
+			logger.debug ("email= {} contrasena= {} ", email, contrasena==null);
+		}
+
+		if(email!=null && contrasena!=null) {
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				Usuario usuario = buscarEmail(email);
+				usuario.setContrasena(contrasena);
+				usuarioDao.update(connection, usuario);
+				JDBCUtils.closeConnection(connection);
+			}
+			catch (SQLException e) {  
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) {  
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+
+	@Override
+	public Usuario buscarEmail(String email) throws DataException {
+
+		if(logger.isDebugEnabled()) {
+			logger.debug ("email= {} ", email);
+		}
+
+		Usuario usuario = null;
+		if(email != null) {
+
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				usuario = usuarioDao.findByEmail(connection, email);
+				JDBCUtils.closeConnection(connection);
+
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
+		}
+		return usuario;
+	}
+
+	@Override
+	public Usuario buscarId(Long idUsuario) throws DataException {
+
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idUsuario= {} ", idUsuario);
+		}
+		
+		Usuario usuario = null;
+		if(idUsuario != null) {
+			
+			try {
+				Connection connection = ConnectionManager.getConnection();
+				usuario = usuarioDao.findById(connection, idUsuario);
+				JDBCUtils.closeConnection(connection);
+
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
+		}
+		return usuario;
+	}
+
+
+	@Override
+	public List<Usuario> buscarTodos() throws DataException {
+
+		// LOGGER
+		
 		try {
+
 			Connection connection = ConnectionManager.getConnection();
-			usuarioDao.update(connection, usuario, idioma);
+
+			List<Usuario> usuarios = new ArrayList<Usuario>();
+			usuarios = usuarioDao.findAllUsers(connection);
+
 			JDBCUtils.closeConnection(connection);
-		}
-		catch (SQLException e) {  
-			logger.warn(e.getMessage(), e);
-		}
-		catch (Exception e) {  
-			e.printStackTrace();
-		}
-	}
 
-	@Override
-	public void cambiarContraseña(String email, String contrasena, String idioma) throws DataException {
-		
-		if(logger.isDebugEnabled()) {
-			logger.debug ("email= {} contrasena= {} idioma= {}", email, contrasena==null, idioma);
-		}
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			Usuario usuario = buscarEmail(email, idioma);
-			usuario.setContrasena(contrasena);
-			usuarioDao.update(connection, usuario, idioma);
-			JDBCUtils.closeConnection(connection);
-		}
-		catch (SQLException e) {  
-			logger.warn(e.getMessage(), e);
-		}
-		catch (Exception e) {  
-			e.printStackTrace();
-		}
-		
-	}
-
-
-	@Override
-	public Usuario buscarEmail(String email, String idioma) throws DataException {
-		
-		if(logger.isDebugEnabled()) {
-			logger.debug ("email= {} idioma= {}", email, idioma);
-		}
-
-		try {
-			if(email != null) {
-				Connection connection = ConnectionManager.getConnection();
-
-				Usuario usuario = new Usuario();
-				usuario = usuarioDao.findByEmail(connection, email, idioma);
-
-				JDBCUtils.closeConnection(connection);
-
-				return usuario;
-			}
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
-		}
-		return null;
-	}
-
-	@Override
-	public Usuario buscarId(Long idUsuario, String idioma) throws DataException {
-		
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idUsuario= {} idioma= {}", idUsuario, idioma);
-		}
-		
-		try {
-			if(idUsuario != null && idioma!=null) {
-				Connection connection = ConnectionManager.getConnection();
-				Usuario usuario = new Usuario();
-				usuario = usuarioDao.findById(connection, idUsuario, idioma);
-
-				JDBCUtils.closeConnection(connection);
-
-				return usuario;
-			}
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
-		}
-		return null;
-	}
-	
-	
-	@Override
-	public List<Usuario> buscarTodos(String idioma) throws DataException {
-		
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idioma= {}", idioma);
-		}
-		
-		try {
-			if(idioma != null) {
-				Connection connection = ConnectionManager.getConnection();
-
-				List<Usuario> usuarios = new ArrayList<Usuario>();
-				usuarios = usuarioDao.findAllUsers(connection, idioma);
-
-				JDBCUtils.closeConnection(connection);
-
-				return usuarios;
-			}
+			return usuarios;
 
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);

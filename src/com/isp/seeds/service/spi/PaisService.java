@@ -7,7 +7,7 @@ import com.isp.seeds.model.Pais;
 
 public interface PaisService {
 	
-	public Pais findById( String id, String idioma) 
+	public Pais findById( String idPais, String idioma) 
 			throws DataException;
 
 	public List<Pais> findAll(String idioma) 

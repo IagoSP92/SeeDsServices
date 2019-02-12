@@ -10,7 +10,7 @@ public interface VideoService {
 	public Video crearVideo (Video video) 
 			throws DataException;
 	
-	public void eliminarVideo (Video video) 
+	public void eliminarVideo (Long idVideo) 
 			throws DataException;
 	
 	
@@ -24,10 +24,10 @@ public interface VideoService {
 	public List<Video> buscarTodos ()
 			throws DataException;
 	
-	public List<Video> buscarPorAutor (Long idAutor, String idioma)
+	public List<Video> buscarPorAutor (Long idAutor)
 			throws DataException;
 	
-	public List<Video> buscarPorCategoria (Long idCategoria, String idioma)
+	public List<Video> buscarPorCategoria (Long idCategoria)
 			throws DataException;
 	
 	

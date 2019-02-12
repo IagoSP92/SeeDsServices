@@ -10,7 +10,7 @@ import com.isp.seeds.service.criteria.VideoCriteria;
 public interface VideoDAO {	
 	
 	
-	public Video findById(Connection connection, Long id) 
+	public Video findById(Connection connection, Long idVideo) 
 			throws DataException;
 	
 	public List<Video> findByAutor(Connection connection, Long idAutor) 
@@ -26,17 +26,17 @@ public interface VideoDAO {
 	public List<Video> findAllVideos(Connection connection) 
 			throws DataException;
 	
-	public Integer getReproducciones (Connection connection, Long idContenido) 
+	public Integer getReproducciones (Connection connection, Long idVideo) 
 			throws DataException;
 
 	
-	public Video create (Connection connection, Video p) 
+	public Video create (Connection connection, Video video) 
 			throws DataException;
 	
-	public void update (Connection connection, Video p) 
+	public void update (Connection connection, Video video) 
 			throws DataException;
 	
-	public void delete (Connection connection, Long id) 
+	public void delete (Connection connection, Long idVideo) 
 			throws DataException;
 
 }

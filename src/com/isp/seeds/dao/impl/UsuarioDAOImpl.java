@@ -30,10 +30,10 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 
 	@Override
-	public Usuario findById(Connection connection, Long idUsuario, String idioma) throws DataException {
+	public Usuario findById(Connection connection, Long idUsuario) throws DataException {
 		
 		if(logger.isDebugEnabled()) {
-			logger.debug ("idUsuario= {} idioma= {} ", idUsuario, idioma);
+			logger.debug ("idUsuario= {} ", idUsuario);
 		}
 		
 		PreparedStatement preparedStatement = null;
@@ -61,7 +61,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			Usuario e = null;
 
 			if (resultSet.next()) {
-				e = loadNext(connection, resultSet, idioma);				
+				e = loadNext(connection, resultSet);				
 			} else {
 				logger.debug("Usuario con id= {} no encontrado.", idUsuario );
 				throw new DataException("\nUser with id " +idUsuario+ "not found\n");
@@ -78,11 +78,9 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 
 	@Override
-	public List<Usuario> findAllUsers(Connection connection, String idioma) throws DataException {
+	public List<Usuario> findAllUsers(Connection connection) throws DataException {
 		
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idioma= {} ", idioma);
-		}
+		// LOGGER
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -110,7 +108,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			Usuario e = null;
 
 			while (resultSet.next()) {
-				e = loadNext(connection, resultSet, idioma);
+				e = loadNext(connection, resultSet);
 				results.add(e);               	
 			} 
 			return results;
@@ -132,7 +130,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 	public Usuario create(Connection connection, Usuario nuevoUsuario) throws DataException {
 		
 		if(logger.isDebugEnabled()) {
-			logger.debug ("Nuevo Usuario={} idioma= {} ", nuevoUsuario);
+			logger.debug ("Nuevo Usuario={} ", nuevoUsuario);
 		}
 
 		PreparedStatement preparedStatement = null;
@@ -154,7 +152,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			preparedStatement.setString(i++, nuevoUsuario.getAvatarUrl());
 			preparedStatement.setString(i++, nuevoUsuario.getNombreReal());
 			preparedStatement.setString(i++, nuevoUsuario.getApellidos());
-			preparedStatement.setString(i++, nuevoUsuario.getPais().getIdPais()); // NA DB GARDASE O ID DE PAIS
+			preparedStatement.setString(i++, nuevoUsuario.getPais());
 			preparedStatement.setDate(i++, new java.sql.Date(nuevoUsuario.getFechaNac().getTime()));
 
 			if(logger.isDebugEnabled()) {
@@ -190,10 +188,10 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 
 	@Override
-	public void update (Connection connection, Usuario usuario, String idioma) throws InstanceNotFoundException, DataException {
+	public void update (Connection connection, Usuario usuario) throws InstanceNotFoundException, DataException {
 
 		if(logger.isDebugEnabled()) {
-			logger.debug ("Usuario= {} idioma= {} ", usuario, idioma);
+			logger.debug ("Usuario= {} ", usuario);
 		}
 		
 		PreparedStatement preparedStatement = null;
@@ -237,7 +235,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 				first = false;
 			}
 
-			if (usuario.getPais().getIdPais()!=null) {
+			if (usuario.getPais()!=null) {
 				addUpdate(queryString, first, " id_pais = ? ");
 				first = false;
 			}
@@ -270,8 +268,8 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			if (usuario.getApellidos()!=null)
 				preparedStatement.setString(i++,usuario.getApellidos());
 
-			if (usuario.getPais().getIdPais()!=null) 
-				preparedStatement.setString(i++,usuario.getPais().getIdPais());
+			if (usuario.getPais()!=null) 
+				preparedStatement.setString(i++,usuario.getPais());
 			if (usuario.getFechaNac()!=null) 
 				preparedStatement.setDate(i++, new java.sql.Date(usuario.getFechaNac().getTime()));
 
@@ -347,11 +345,11 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 
 	@Override
-	public Usuario findByEmail(Connection connection, String email, String idioma)
+	public Usuario findByEmail(Connection connection, String email)
 			throws DataException {
 
 		if(logger.isDebugEnabled()) {
-			logger.debug ("Email= {} idioma= {} ", email, idioma);
+			logger.debug ("Email= {} ", email);
 		}
 		
 		PreparedStatement preparedStatement = null;
@@ -379,7 +377,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			Usuario e = null;
 
 			if (resultSet.next()) {
-				e = loadNext(connection, resultSet, idioma);				
+				e = loadNext(connection, resultSet);				
 			} else {
 				logger.debug("Usuario con email:{} no encontrado", email);
 				throw new DataException("\nUser with email: " +email+ "not found\n");
@@ -450,7 +448,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		queryString.append(first? " SET ": " , ").append(clause);
 	}
 
-	private Usuario loadNext(Connection connection, ResultSet resultSet, String idioma)
+	private Usuario loadNext(Connection connection, ResultSet resultSet)
 			throws SQLException, DataException {
 
 		int i = 1;
@@ -467,8 +465,8 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		String nombreReal = resultSet.getString(i++);	                
 		String apellido = resultSet.getString(i++);
 
-		PaisDAO daop = new PaisDAOImpl();
-		Pais pais = daop.findById(connection, resultSet.getString(i++), idioma);
+
+		String pais = resultSet.getString(i++);
 		Date fechaNac =  resultSet.getDate(i++);
 
 		Usuario u = new Usuario();

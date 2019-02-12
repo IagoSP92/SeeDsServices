@@ -9,7 +9,6 @@ import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Usuario;
 import com.isp.seeds.model.Video;
 import com.isp.seeds.service.spi.ListaService;
-import com.isp.seeds.service.spi.PaisService;
 import com.isp.seeds.service.spi.UsuarioService;
 import com.isp.seeds.service.spi.VideoService;
 
@@ -21,11 +20,10 @@ public class TestListaSvc {
 		
 		UsuarioService usuarioSvc = new UsuarioServiceImpl();
 		ListaService listaSvc  = new ListaServiceImpl();
-		PaisService paisSvc = new PaisServiceImpl();
 		VideoService videoSvc = new VideoServiceImpl();
 		
 		Usuario userUno = new Usuario();
-		try {userUno.setPais(paisSvc.findById("ES", "ESP"));}catch(DataException e) {logger.warn(e.getMessage(), e);};
+		userUno.setPais("ES");
 		userUno.setTipo(1);
 		userUno.setFechaAlta(new Date());
 		userUno.setFechaMod(new Date());

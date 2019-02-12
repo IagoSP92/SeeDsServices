@@ -41,7 +41,7 @@ public interface ContenidoDAO {
 			throws DataException;
 	
 	
-	public void delete (Connection connection, Long id) 
+	public void delete (Connection connection, Long idContenido) 
 			throws DataException;
 	
 	

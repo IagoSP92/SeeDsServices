@@ -11,7 +11,7 @@ import com.isp.seeds.service.criteria.ListaCriteria;
 public interface ListaDAO {
 	
 	
-	public Lista findById (Connection connection, Long id) 
+	public Lista findById (Connection connection, Long idLista) 
 			throws DataException;
 	
 	public List <Lista>  findByAutor (Connection connection, Long idAutor) 
@@ -29,13 +29,13 @@ public interface ListaDAO {
 			throws DataException;
 	
 
-	public Lista create (Connection connection, Lista p) 
+	public Lista create (Connection connection, Lista lista) 
 			throws DataException;
 	
-	public void update (Connection connection, Lista p) 
+	public void update (Connection connection, Lista lista) 
 			throws DataException;
 	
-	public void delete (Connection connection, Long id) 
+	public void delete (Connection connection, Long idLista) 
 			throws DataException;
 	
 	

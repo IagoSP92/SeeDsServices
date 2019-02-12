@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
-import com.isp.seeds.dao.impl.PaisDAOImpl;
-import com.isp.seeds.dao.spi.PaisDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Usuario;
@@ -18,21 +16,20 @@ public class TestUsuarioService {
 	public static void main(String[] args) {
 
 		UsuarioService usuarioSvc =  new UsuarioServiceImpl();
-		PaisDAO paisDao = new PaisDAOImpl();
-
+		
 		try {
 			
 			List<Usuario> lista = new ArrayList<Usuario>();
 
 			System.out.println("____________________________TODOS__________");
-			lista= usuarioSvc.buscarTodos("ESP");
+			lista= usuarioSvc.buscarTodos();
 			for(Usuario u: lista) {
 				System.out.println(u.toString());
 			}System.out.println("________________________________________________ FIN TODOS");
 
 			System.out.println("____________________________BUSCA EMAIL: ana1@gmail.com");
 			Usuario user = new Usuario();
-			user = usuarioSvc.buscarEmail("ana1@gmail.com", "ESP");
+			user = usuarioSvc.buscarEmail("ana1@gmail.com");
 			System.out.println(user.toString());
 
 			System.out.println();
@@ -52,7 +49,7 @@ public class TestUsuarioService {
 			usuarioNuevo.setContrasena("contrasena");
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				usuarioNuevo.setPais(paisDao.findById(connection, "es", "esp"));
+				usuarioNuevo.setPais("es");
 				JDBCUtils.closeConnection(connection);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -60,27 +57,27 @@ public class TestUsuarioService {
 
 			usuarioNuevo = usuarioSvc.crearCuenta(usuarioNuevo);
 
-			user = usuarioSvc.buscarEmail(usuarioNuevo.getEmail(), "ESP");
+			user = usuarioSvc.buscarEmail(usuarioNuevo.getEmail());
 			System.out.println(user.toString());
 
 			System.out.println();
 			System.out.println("____________________________TODOS__________");
-			lista= usuarioSvc.buscarTodos("ESP");
+			lista= usuarioSvc.buscarTodos();
 			for(Usuario u: lista) {
 				System.out.println(u.toString());
 			}System.out.println("________________________________________________ FIN TODOS");
 
-			usuarioSvc.eliminarCuenta(user);
+			usuarioSvc.eliminarCuenta(user.getIdContenido());
 
 			System.out.println();
 			System.out.println("____________________________TODOS__________");
-			lista= usuarioSvc.buscarTodos("ESP");
+			lista= usuarioSvc.buscarTodos();
 			for(Usuario u: lista) {
 				System.out.println(u.toString());
 			}System.out.println("________________________________________________ FIN TODOS");
 
 			System.out.println("____________________________LOG IN");
-			System.out.println(usuarioSvc.logIn("email", "contrasena", "ESP").toString());
+			System.out.println(usuarioSvc.logIn("email", "contrasena").toString());
 			System.out.println();
 
 			System.out.println();
@@ -101,7 +98,7 @@ public class TestUsuarioService {
 			
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				usuarioNuevo.setPais(paisDao.findById(connection, "es", "esp"));
+				usuarioNuevo.setPais("es");
 				JDBCUtils.closeConnection(connection);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -112,7 +109,7 @@ public class TestUsuarioService {
 			System.out.println(usuarioNuevo.getIdContenido());
 
 			System.out.println(usuarioNuevo.toString());
-			usuarioNuevo = usuarioSvc.buscarId(usuarioNuevo.getIdContenido(), "ESP");
+			usuarioNuevo = usuarioSvc.buscarId(usuarioNuevo.getIdContenido());
 			System.out.println(usuarioNuevo.toString());
 
 			System.out.println("____________________________   modificar");
@@ -125,14 +122,14 @@ public class TestUsuarioService {
 			usuarioNuevo.setContrasena("contrasenaModificada");
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				usuarioNuevo.setPais(paisDao.findById(connection, "GB", "esp"));
+				usuarioNuevo.setPais("GB");
 				JDBCUtils.closeConnection(connection);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
-			usuarioSvc.editarPerfil(usuarioNuevo, "ES");
-			usuarioNuevo = usuarioSvc.buscarId(usuarioNuevo.getIdContenido(), "ESP");
+			usuarioSvc.editarPerfil(usuarioNuevo);
+			usuarioNuevo = usuarioSvc.buscarId(usuarioNuevo.getIdContenido());
 			System.out.println(usuarioNuevo.toString());
 			//System.out.println("____________________________________________");
 

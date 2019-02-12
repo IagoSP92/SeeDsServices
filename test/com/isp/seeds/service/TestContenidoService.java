@@ -78,8 +78,8 @@ public class TestContenidoService {
 			System.out.println();System.out.println();
 			
 			System.out.println("____________________________________________  Asignar etiqueta");
-			contenidoSvc.asignarEtiqueta(contenido2.getIdContenido(), etiquetaSvc.findByNombre("Rock", "ESP"));
-			contenidoSvc.asignarEtiqueta(contenido2.getIdContenido(), etiquetaSvc.findByNombre("Pop", "ESP"));
+			contenidoSvc.asignarEtiqueta(contenido2.getIdContenido(), etiquetaSvc.findByNombre("Rock", "ESP").getIdEtiqueta());
+			contenidoSvc.asignarEtiqueta(contenido2.getIdContenido(), etiquetaSvc.findByNombre("Pop", "ESP").getIdEtiqueta());
 			List<Etiqueta> etiquetas = new ArrayList<Etiqueta>();
 			etiquetas=contenidoSvc.verEtiquetas(contenido2.getIdContenido(), "ESP");
 			for(Etiqueta e: etiquetas) {
@@ -87,7 +87,7 @@ public class TestContenidoService {
 			}
 			System.out.println();
 			System.out.println("____________________________________________  Eliminar etiqueta");
-			contenidoSvc.eliminarEtiqueta(contenido2.getIdContenido(), etiquetaSvc.findByNombre("Rock", "ESP"));
+			contenidoSvc.eliminarEtiqueta(contenido2.getIdContenido(), etiquetaSvc.findByNombre("Rock", "ESP").getIdEtiqueta());
 			etiquetas = new ArrayList<Etiqueta>();
 			etiquetas=contenidoSvc.verEtiquetas(contenido2.getIdContenido(), "ESP");
 			for(Etiqueta e: etiquetas) {

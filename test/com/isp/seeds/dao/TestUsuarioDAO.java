@@ -53,7 +53,7 @@ public class TestUsuarioDAO {
 			
 			Usuario dos = null;
 			
-			dos= dao.findById(conexion, id, "ENG");
+			dos= dao.findById(conexion, id);
 			
 			System.out.println(dos.toString());
 			
@@ -91,9 +91,7 @@ public class TestUsuarioDAO {
 		Usuario jamele = new Usuario();
 		Usuario jamele2 = new Usuario();
 		
-		Pais pais = new Pais();
-		pais.setIdPais("AD");
-		pais.setNombrePais("ANDORRA");
+		String pais = ("AD");
 
 		jamele.setFechaAlta(new java.sql.Date(12));
 		jamele.setFechaMod(new java.sql.Date(12));
@@ -115,7 +113,7 @@ public class TestUsuarioDAO {
 		System.out.println(jamele2.toString());
 		System.out.println("INSERTADO IMPRIMIDO");
 		System.out.println("BUSCAMOS EL RECIEN INSERTADO");
-		System.out.println(dao.findById(conexion, jamele2.getIdContenido(), "ESP"));
+		System.out.println(dao.findById(conexion, jamele2.getIdContenido()));
 		System.out.println("AHI QUEDA, AHORA EDITAMOS");
 		
 		System.out.println("modificar");
@@ -127,19 +125,19 @@ public class TestUsuarioDAO {
 		jamele2.setFechaNac(new Date());
 		jamele2.setTipo(1);
 		
-		dao.update(conexion, jamele2, "ESP");
-		System.out.println(dao.findById(conexion, jamele2.getIdContenido(), "ESP"));
+		dao.update(conexion, jamele2);
+		System.out.println(dao.findById(conexion, jamele2.getIdContenido()));
 		
 		
 		System.out.println("1 - BUSCAMOS ALL:");
-		List<Usuario> lista = dao.findAllUsers(conexion, "ESP");
+		List<Usuario> lista = dao.findAllUsers(conexion);
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");
 		for(Usuario u: lista){System.out.println(u.toString());}
 		System.out.println("3 - FIN DE LA IMPRESION");
 		System.out.println("BORRAMOS");
 		dao.delete(conexion, jamele2.getIdContenido());
 		System.out.println("MOSTRALL");
-		lista = dao.findAllUsers(conexion, "ESP");
+		lista = dao.findAllUsers(conexion);
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");
 		for(Usuario u: lista){System.out.println(u.toString());}
 
@@ -169,7 +167,7 @@ public class TestUsuarioDAO {
 //		dos.setApellidos("LEDO PIÑEIRO");
 		
 		PaisDAO daop = new PaisDAOImpl();
-		dos.setPais(daop.findById(conexion, "ES", "ESP"));
+		dos.setPais("ES");
 		
 //		System.out.println("1 - BUSCAMOS POR CRITERIA:");
 //		List<Usuario> lista = dao.findByCriteria(conexion, dos, "ESP");

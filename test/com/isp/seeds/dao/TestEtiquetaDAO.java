@@ -9,6 +9,7 @@ import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.dao.impl.EtiquetaDAOImpl;
 import com.isp.seeds.dao.spi.EtiquetaDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
+import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Etiqueta;
 
 public class TestEtiquetaDAO {
@@ -57,14 +58,23 @@ public class TestEtiquetaDAO {
 			System.out.println(dao.findById(conexion, tres.getIdEtiqueta(), "ESP").toString());
 
 			System.out.println(" FIND ALL");
-
 			lista  = null;
-
 			lista = dao.findAll(conexion);
-
 			for(Etiqueta e: lista) {
 				System.out.println(e.toString());
 			}
+			
+			dao.delete(conexion, uno.getIdEtiqueta(), "ESP");
+			dao.delete(conexion, dos.getIdEtiqueta(), "ESP");
+			dao.delete(conexion, tres.getIdEtiqueta(), "ESP");
+			
+			System.out.println(" FIND ALL");
+			lista  = null;
+			lista = dao.findAll(conexion);
+			for(Etiqueta e: lista) {
+				System.out.println(e.toString());
+			}			
+			
 
 		} catch (SQLException e) {
 			System.out.println("SQLException"+e+" en TestEtiquetaDAO");
