@@ -9,6 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.cache.Cache;
+import com.isp.seeds.cache.CacheManager;
 import com.isp.seeds.dao.impl.CategoriaDAOImpl;
 import com.isp.seeds.dao.spi.CategoriaDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
@@ -28,25 +30,46 @@ public class CategoriaServiceImpl implements CategoriaService{
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idCategoria= {} idioma= {} ", idCategoria, idioma);
 		}
-
-		Categoria categoria = null;
-		if(idCategoria != null && idioma != null) {
-
-			try {
-
-				Connection connection = ConnectionManager.getConnection();
-				categoria = categoriaDao.findById(connection, idCategoria, idioma);
-				JDBCUtils.closeConnection(connection);
-
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-			} catch (DataException e) {
-				logger.warn(e.getMessage(), e);
-			}finally{
-				//JDBCUtils.closeConnection(connection);
+		
+		Cache <Long, Categoria> cache = CacheManager.getCache(CacheNames.CATEGORIAS, Long.class, Categoria.class);
+		
+		Categoria categoria= cache.get(idCategoria);
+		
+		if (categoria != null) {
+			//EXITO CACHE
+			if(logger.isDebugEnabled()) {
+				logger.debug("Acierto Cache",idCategoria);
 			}
+			return categoria;	
+			
+		} else {
+			//FALLO CACHE
+			if(logger.isDebugEnabled()) {
+				logger.debug("Fallo Cache",idCategoria);
+			}
+			
+			if(idCategoria != null && idioma != null) {
+
+				try {
+
+					Connection connection = ConnectionManager.getConnection();
+					categoria = categoriaDao.findById(connection, idCategoria, idioma);
+					JDBCUtils.closeConnection(connection);
+
+				} catch (SQLException e) {
+					logger.warn(e.getMessage(), e);
+				} catch (DataException e) {
+					logger.warn(e.getMessage(), e);
+				}finally{
+					//JDBCUtils.closeConnection(connection);
+				}
+			}
+			cache.put(idCategoria, categoria);	
+			return categoria;			
+			
 		}
-		return categoria;
+		
+
 	}
 
 	
