@@ -24,5 +24,17 @@ public class CacheImpl<K,V> implements Cache<K,V> {
 		return _cache.get(k);
 	}
 
+	@Override
+	public void clear() {
+		_cache.clear();
+		
+	}
+
+	@Override
+	public void remove(K k) {
+		_cache.remove(k);
+		
+	}
+
 	
 }

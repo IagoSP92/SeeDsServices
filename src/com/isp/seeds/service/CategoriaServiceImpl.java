@@ -31,7 +31,7 @@ public class CategoriaServiceImpl implements CategoriaService{
 			logger.debug ("idCategoria= {} idioma= {} ", idCategoria, idioma);
 		}
 		
-		Cache <Long, Categoria> cache = CacheManager.getCache(CacheNames.CATEGORIAS, Long.class, Categoria.class);
+		Cache <Long, Categoria> cache = CacheManager.getInstance().getCache(CacheNames.CATEGORIAS, Long.class, Categoria.class);
 		
 		Categoria categoria= cache.get(idCategoria);
 		
@@ -68,8 +68,6 @@ public class CategoriaServiceImpl implements CategoriaService{
 			return categoria;			
 			
 		}
-		
-
 	}
 
 	
@@ -104,6 +102,9 @@ public class CategoriaServiceImpl implements CategoriaService{
 	@Override
 	public List<Categoria> findAll() throws DataException {
 		
+		Cache <String , List<Categoria>> cacheListados =
+				CacheManager.getInstance().getCache(CacheNames.CATEGORIAS_LISTA, String.class, List.class);
+		List<Categoria> todas = cacheListados.get("ALL");
 			// LOOOOOOGGEEERR
 		
 		try {
