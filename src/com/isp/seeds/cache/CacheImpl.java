@@ -1,19 +1,27 @@
 package com.isp.seeds.cache;
 
-import com.isp.seeds.cache.Cache;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CacheImpl<K,V> implements Cache<K,V> {
+	
+	String name= null;
+	private Map <K, V> _cache = null;
+	
+	public CacheImpl(String name) {
+		this.name= name;
+		_cache= new HashMap<K,V>();
+	}
 
 	@Override
-	public void put(K k, V v) {
-		// TODO Auto-generated method stub
+	public void put (K k, V v) {
+		_cache.put(k, v);
 		
 	}
 
 	@Override
-	public V get(K k) {
-		// TODO Auto-generated method stub
-		return null;
+	public V get (K k) {
+		return _cache.get(k);
 	}
 
 	
