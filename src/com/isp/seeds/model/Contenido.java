@@ -12,6 +12,27 @@ public class Contenido extends AbstractValueObject {
 	private Date fechaMod = null;
 	private Long autor = null;
 	private Integer tipo = null;
+	
+	@Override
+	public boolean equals (Object o) {
+		
+		if (o==null || this==null || !(o instanceof Contenido)) {
+			return false;
+		}
+		Contenido c = (Contenido) o;
+		if (id !=null && c.getIdContenido()!=null && id==c.getIdContenido()) {
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		if(id==null) {
+			return Integer.MAX_VALUE;
+		}
+		return id.hashCode();
+	}
 
 	
 	public String toString() {
