@@ -78,9 +78,11 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 
 	@Override
-	public List<Usuario> findAllUsers(Connection connection) throws DataException {
+	public List<Usuario> findAllUsers(Connection connection, int startIndex, int count) throws DataException {
 		
-		// LOGGER
+		if(logger.isDebugEnabled()) {
+			logger.debug ("startIndex={} count={}", startIndex, count);
+		}
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -91,11 +93,10 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			queryString = new StringBuilder(
 					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
 							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais , u.fecha_nac " + 
-					" FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) ");
+					" FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) ORDER BY c.fecha_alta ");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
 			
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);
@@ -103,14 +104,19 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			
 			resultSet = preparedStatement.executeQuery();
 
-			List<Usuario> results = new ArrayList<Usuario>(); 
+			List<Usuario> results = new ArrayList<Usuario>();
 
 			Usuario e = null;
+			int currentCount=0;
 
-			while (resultSet.next()) {
-				e = loadNext(connection, resultSet);
-				results.add(e);               	
-			} 
+			while (startIndex<0 && resultSet.absolute(startIndex)) {
+				do {
+					while (resultSet.next()) {
+						e = loadNext(connection, resultSet);
+						results.add(e);
+					}
+				} while ((currentCount < count) &&  resultSet.next());
+			}
 			return results;
 
 		} catch (SQLException e) {
@@ -490,3 +496,4 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 
 }
+	

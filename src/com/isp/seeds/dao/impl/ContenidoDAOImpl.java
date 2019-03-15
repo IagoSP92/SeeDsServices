@@ -253,10 +253,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 
 	@Override
-	public List<Contenido> findByCriteria (Connection connection, ContenidoCriteria contenido) throws DataException {
+	public List<Contenido> findByCriteria (Connection connection, ContenidoCriteria contenido, int startIndex, int count) throws DataException {
 
 		if(logger.isDebugEnabled()) {
-			logger.debug ("Criteria= {} ", contenido);
+			logger.debug ("Criteria= {} startIndex={} count={}", contenido, startIndex, count);
 		}
 
 		PreparedStatement preparedStatement = null;
@@ -266,7 +266,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		try {
 			queryString = new StringBuilder(
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO " + 
-					" FROM CONTENIDO C ");
+					" FROM CONTENIDO C");
 
 			boolean first = true;
 
@@ -309,8 +309,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				addClause(queryString, first, " C.TIPO = ? ");
 				first = false;
 			}
-
-
+			
+			queryString.append(" ORDER BY C.FECHA_ALTA ");
+			
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
@@ -344,41 +345,42 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			List<Contenido> results = new ArrayList<Contenido>();    
 			Contenido e = null;
-			//int currentCount = 0;
 
-			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
-			if(resultSet.next()) {
-				do {
-					e = loadNext(connection, resultSet);
-					if (contenido.getValoracionMin()!=null || contenido.getValoracionMax()!=null) {
+			int currentCount = 0;
 
-						if(filtrarValoracion(connection, contenido, e)) {
+			if ((startIndex >=1) && resultSet.absolute(startIndex)) {
+				if(resultSet.next()) {
+					do {
+						e = loadNext(connection, resultSet);
+						if (contenido.getValoracionMin()!=null || contenido.getValoracionMax()!=null) {
+
+							if(filtrarValoracion(connection, contenido, e)) {
+
+								if (contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null) {
+									if(filtrarReproducciones(connection, contenido, e)) {
+										results.add(e);
+										currentCount++;
+									}
+								} else {
+									results.add(e);
+									currentCount++;
+								}
+							}
+						}else {
 
 							if (contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null) {
 								if(filtrarReproducciones(connection, contenido, e)) {
 									results.add(e);
-									//currentCount++;
+									currentCount++;
 								}
 							} else {
 								results.add(e);
-								//currentCount++;
+								currentCount++;
 							}
-						}
-					}else {
-
-						if (contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null) {
-							if(filtrarReproducciones(connection, contenido, e)) {
-								results.add(e);
-								//currentCount++;
-							}
-						} else {
-							results.add(e);
-							//currentCount++;
-						}
-					}          	
-				} while (/*(currentCount < count) && */ resultSet.next()) ;
+						}          	
+					} while ((currentCount < count) &&  resultSet.next()) ;
+				}
 			}
-			//}
 
 			return results;
 
@@ -520,7 +522,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	public List<Contenido> findAll(Connection connection) throws DataException {
 		ContenidoDAO dao= new ContenidoDAOImpl();
 		ContenidoCriteria contenido= new ContenidoCriteria();
-		return dao.findByCriteria(connection, contenido);
+		return dao.findByCriteria(connection, contenido, 1, 5);
 	}
 
 
@@ -687,7 +689,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Id= {} ", id);
 		}
-		
+
 		deleteRelaciones(connection, id);
 		deleteCategorias(connection, id);
 		deleteEtiquetas(connection, id);
@@ -732,7 +734,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 
-	
+
 	/**
 	 * Desvincula un Contenido de todas sus Etiquetas
 	 * @param connection - Connection
@@ -820,31 +822,31 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			logger.debug ("Id= {} ", idContenido);
 		}
 
-			PreparedStatement preparedStatement = null;
+		PreparedStatement preparedStatement = null;
 
-			try {
-				String queryString =	
-						"DELETE FROM Usuario_CONTENIDO " 
-								+ "WHERE USUARIO_ID_CONTENIDO = ? OR CONTENIDO_ID_CONTENIDO = ? ";
+		try {
+			String queryString =	
+					"DELETE FROM Usuario_CONTENIDO " 
+							+ "WHERE USUARIO_ID_CONTENIDO = ? OR CONTENIDO_ID_CONTENIDO = ? ";
 
-				preparedStatement = connection.prepareStatement(queryString);
+			preparedStatement = connection.prepareStatement(queryString);
 
-				int i = 1;
-				preparedStatement.setLong(i++, idContenido);
-				preparedStatement.setLong(i++, idContenido);
+			int i = 1;
+			preparedStatement.setLong(i++, idContenido);
+			preparedStatement.setLong(i++, idContenido);
 
-				if(logger.isDebugEnabled()) {
-					logger.debug("QUERY= {}",preparedStatement);
-				}
-
-				preparedStatement.executeUpdate();
-
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-				throw new DataException(e);
-			} finally {
-				JDBCUtils.closeStatement(preparedStatement);
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
 			}
+
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
 	}
 
 

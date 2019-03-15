@@ -20,7 +20,7 @@ public interface UsuarioDAO {
 //			throws DataException;
 	
 
-	public List <Usuario> findAllUsers(Connection connection) 
+	public List <Usuario> findAllUsers(Connection connection, int startIndex, int count) 
 			throws DataException;
 
 

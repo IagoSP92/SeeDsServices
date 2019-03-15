@@ -236,6 +236,12 @@ public class TestContenidoService {
 			System.out.println("______________________________________________________________________________________");
 			
 			
+			todos = contenidoSvc.verTodos();
+			for(Contenido c : todos) {
+				System.out.println(c.toString());
+			}System.out.println("---------------------------------------------------------------");
+			System.out.println("______________________________________________________________________________________");
+			
 			} catch (DataException e) {
 				e.printStackTrace();
 			}

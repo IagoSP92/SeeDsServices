@@ -21,8 +21,10 @@ public interface ContenidoDAO {
 	public Contenido findByNombre(Connection connection, String nombreContenido) 
 			throws DataException;
 	
-	public List<Contenido> findByCriteria(Connection connection, ContenidoCriteria contenido)
+	public List<Contenido> findByCriteria(Connection connection, ContenidoCriteria contenido, int startIndex, int count)
 			throws DataException;
+
+
 	
 	
 	public List<Contenido> findAll(Connection connection) 

@@ -36,10 +36,10 @@ public class ContenidoServiceImpl implements ContenidoService {
 		if(idContenido != null) {
 
 			try {
-
-				Connection connection = ConnectionManager.getConnection();				
+				Connection connection = ConnectionManager.getConnection();
 				contenido = contenidoDao.findById(connection, idContenido);
-				JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection);			
+
 
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
@@ -91,13 +91,21 @@ public class ContenidoServiceImpl implements ContenidoService {
 		if(contenido != null) {
 
 			try {
+				long t1= System.currentTimeMillis();
 
 				Connection connection = ConnectionManager.getConnection();
+				long t2= System.currentTimeMillis();
 
 				List<Contenido> contenidos = new ArrayList<Contenido>();
-				contenidos = contenidoDao.findByCriteria(connection, contenido);
+				contenidos = contenidoDao.findByCriteria(connection, contenido, 1, 5);
+				long t3= System.currentTimeMillis();
 
 				JDBCUtils.closeConnection(connection);
+				long t4= System.currentTimeMillis();
+
+				if(logger.isDebugEnabled()) {
+					logger.debug ("TiempoAbrir= {} TiempoEjecutar= {} TiempoCerrarr= {}", (t2-t1), (t3-t2) , (t4-t3));
+				}
 
 				return contenidos;
 
