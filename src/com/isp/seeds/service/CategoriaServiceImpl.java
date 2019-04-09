@@ -102,9 +102,9 @@ public class CategoriaServiceImpl implements CategoriaService{
 	@Override
 	public List<Categoria> findAll() throws DataException {
 		
-		Cache <String , List<Categoria>> cacheListados =
-				CacheManager.getInstance().getCache(CacheNames.CATEGORIAS_LISTA, String.class, List.class);
-		List<Categoria> todas = cacheListados.get("ALL");
+//		Cache <String , List<Categoria>> cacheListados =
+//				CacheManager.getInstance().getCache(CacheNames.CATEGORIAS_LISTA, String.class, List.class);
+//		List<Categoria> todas = cacheListados.get("ALL");
 			// LOOOOOOGGEEERR
 		
 		try {

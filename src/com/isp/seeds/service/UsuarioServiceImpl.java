@@ -221,7 +221,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 
 	@Override
-	public List<Usuario> buscarTodos() throws DataException {
+	public List<Usuario> buscarTodos(int startIndex, int count, String idioma) throws DataException {
 
 		// LOGGER
 		
@@ -230,7 +230,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			Connection connection = ConnectionManager.getConnection();
 
 			List<Usuario> usuarios = new ArrayList<Usuario>();
-			usuarios = usuarioDao.findAllUsers(connection);
+			usuarios = usuarioDao.findAllUsers(connection, startIndex, count, idioma);
 
 			JDBCUtils.closeConnection(connection);
 

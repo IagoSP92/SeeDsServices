@@ -74,7 +74,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 
 	@Override
-	public List<Usuario> findAllUsers(Connection connection, int startIndex, int count) throws DataException {
+	public List<Usuario> findAllUsers(Connection connection, int startIndex, int count, String idioma) throws DataException {
 		
 		if(logger.isDebugEnabled()) {
 			logger.debug ("startIndex={} count={}", startIndex, count);

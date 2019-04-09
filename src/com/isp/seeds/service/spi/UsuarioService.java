@@ -32,7 +32,7 @@ public interface UsuarioService {
 	public Usuario buscarEmail (String email)
 			throws DataException;
 	
-	public List<Usuario> buscarTodos ()
+	public List<Usuario> buscarTodos (int startIndex, int count, String idioma) 
 			throws DataException;
 	
 	
