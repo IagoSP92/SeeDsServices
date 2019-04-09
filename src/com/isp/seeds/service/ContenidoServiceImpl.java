@@ -26,7 +26,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 	
 	@Override
-	public Contenido buscarId(Long idContenido) {
+	public Contenido buscarId(Long idContenido, String idioma) {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idContenido= {} ", idContenido);
@@ -37,9 +37,8 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				contenido = contenidoDao.findById(connection, idContenido);
-				JDBCUtils.closeConnection(connection);			
-
+				contenido = contenidoDao.findById(connection, idContenido, idioma);
+				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
@@ -54,7 +53,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 
 	@Override
-	public Contenido buscarNombre(String nombreContenido) {
+	public Contenido buscarNombre(String nombreContenido, int startIndex, int count, String idioma) {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("nombreContenido= {} ", nombreContenido);
@@ -66,7 +65,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();				
-				contenido = contenidoDao.findByNombre(connection, nombreContenido);
+				contenido = contenidoDao.findByNombre(connection, nombreContenido, startIndex, count, idioma);
 				JDBCUtils.closeConnection(connection);			
 
 			} catch (SQLException e) {
@@ -82,7 +81,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 	
 
 	@Override
-	public List<Contenido> buscarCriteria(ContenidoCriteria contenido) throws DataException {
+	public List<Contenido> buscarCriteria(ContenidoCriteria contenido, int startIndex, int count, String idioma) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("ContenidoCriteria= {} ", contenido);
@@ -97,7 +96,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 				long t2= System.currentTimeMillis();
 
 				List<Contenido> contenidos = new ArrayList<Contenido>();
-				contenidos = contenidoDao.findByCriteria(connection, contenido, 1, 5);
+				contenidos = contenidoDao.findByCriteria(connection, contenido, startIndex, count, idioma);
 				long t3= System.currentTimeMillis();
 
 				JDBCUtils.closeConnection(connection);
@@ -122,20 +121,19 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 
 	@Override
-	public List<Contenido> verTodos() {
+	public List<Contenido> verTodos(int startIndex, int count, String idioma) {
 		
 		// LOGGER
-
+		
+		List<Contenido> contenido = null;
 		try {
 
 			Connection connection = ConnectionManager.getConnection();
 
-			List<Contenido> contenido = new ArrayList<Contenido>();
-			contenido = contenidoDao.findAll(connection);
+			contenido = new ArrayList<Contenido>();
+			contenido = contenidoDao.findAll(connection, startIndex, count, idioma);
 
 			JDBCUtils.closeConnection(connection);
-
-			return contenido;
 
 
 		} catch (SQLException e) {
@@ -145,7 +143,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
-		return null;
+		return contenido;
 	}
 
 	
@@ -208,7 +206,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}
 	}
 
-	
+	/*
 	@Override
 	public Contenido cambiarNombre(Contenido contenido) throws DataException {
 
@@ -239,27 +237,28 @@ public class ContenidoServiceImpl implements ContenidoService {
 			}
 		}
 		return null;
-	}
+	}*/
 
 	
 	@Override
-	public void cambiarNombre(Long idContenido, String nuevo) throws DataException {
+	public Contenido cambiarNombre(Long idContenido, String nuevo, String idioma) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idContenido= {} Nuevo Nombre= {} ", idContenido, nuevo);
 		}
 
+		Contenido contenido = null;
 		if(idContenido != null && nuevo != null) {
 
 			try {
 
 				Connection connection = ConnectionManager.getConnection();
 
-				Contenido contenido = new Contenido();
-				contenido= contenidoDao.findById(connection, idContenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿? 
+				contenido = new Contenido();
+				contenido= contenidoDao.findById(connection, idContenido, idioma); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿? 
 				contenido.setNombre(nuevo);
 				contenidoDao.update(connection, contenido);
-
+				contenido= contenidoDao.findById(connection, idContenido, idioma);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -270,6 +269,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 				//JDBCUtils.closeConnection(connection);
 			}
 		}
+		return contenido;
 	}
 
 	

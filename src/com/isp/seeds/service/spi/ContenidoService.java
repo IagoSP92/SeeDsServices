@@ -11,17 +11,17 @@ import com.isp.seeds.service.criteria.ContenidoCriteria;
 public interface ContenidoService {
 	
 	
-	public Contenido buscarId (Long idContenido) 
+	public Contenido buscarId (Long idContenido, String idioma) 
 			throws DataException;
 	
-	public Contenido buscarNombre(String nombreContenido);
+	public Contenido buscarNombre(String nombreContenido, int startIndex, int count, String idioma);
 	
 
-	public List<Contenido> buscarCriteria(ContenidoCriteria contenido)
+	public List<Contenido> buscarCriteria(ContenidoCriteria contenido, int startIndex, int count, String idioma)
 			throws DataException;
 
 	
-	public List<Contenido> verTodos () 
+	public List<Contenido> verTodos (int startIndex, int count, String idioma) 
 			throws DataException;
 	
 	
@@ -32,10 +32,10 @@ public interface ContenidoService {
 	public void eliminarContenido (Long idContenido) 
 			throws DataException;
 	
-	public Contenido cambiarNombre (Contenido contenido)
-			throws DataException;
+	/*public Contenido cambiarNombre (Contenido contenido)
+			throws DataException;*/
 	
-	public void cambiarNombre (Long idContenido, String nuevo)
+	public Contenido cambiarNombre (Long idContenido, String nuevo, String idioma)
 			throws DataException;
 	
 	
