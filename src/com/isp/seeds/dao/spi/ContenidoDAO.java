@@ -30,7 +30,7 @@ public interface ContenidoDAO {
 	public List<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) 
 			throws DataException;
 	
-
+ 
 	Double getValoracion(Connection connection, Long idContenido)
 			throws DataException;
 	
