@@ -15,19 +15,19 @@ public interface ContenidoDAO {
 			throws DataException;	
 	
 	
-	public Contenido findById(Connection connection, Long idContenido) 
+	public Contenido findById(Connection connection, Long idContenido, String idioma) 
 			throws DataException;
 	
-	public Contenido findByNombre(Connection connection, String nombreContenido) 
+	public Contenido findByNombre(Connection connection, String nombreContenido, int startIndex, int count, String idioma) 
 			throws DataException;
 	
-	public List<Contenido> findByCriteria(Connection connection, ContenidoCriteria contenido, int startIndex, int count)
+	public List<Contenido> findByCriteria(Connection connection, ContenidoCriteria contenido, int startIndex, int count, String idioma)
 			throws DataException;
 
 
 	
 	
-	public List<Contenido> findAll(Connection connection) 
+	public List<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) 
 			throws DataException;
 	
 
