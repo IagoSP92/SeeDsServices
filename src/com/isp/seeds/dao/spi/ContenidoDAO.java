@@ -8,6 +8,7 @@ import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Etiqueta;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
+import com.isp.seeds.service.util.Results;
 
 public interface ContenidoDAO {
 	
@@ -21,13 +22,13 @@ public interface ContenidoDAO {
 	public Contenido findByNombre(Connection connection, String nombreContenido, int startIndex, int count, String idioma) 
 			throws DataException;
 	
-	public List<Contenido> findByCriteria(Connection connection, ContenidoCriteria contenido, int startIndex, int count, String idioma)
+	public Results<Contenido> findByCriteria(Connection connection, ContenidoCriteria contenido, int startIndex, int count, String idioma)
 			throws DataException;
 
 
 	
 	
-	public List<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) 
+	public Results<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) 
 			throws DataException;
 	
  

@@ -12,6 +12,7 @@ import com.isp.seeds.service.criteria.ContenidoCriteria;
 import com.isp.seeds.service.spi.CategoriaService;
 import com.isp.seeds.service.spi.ContenidoService;
 import com.isp.seeds.service.spi.EtiquetaService;
+import com.isp.seeds.service.util.Results;
 
 public class TestContenidoService {
 	
@@ -106,9 +107,8 @@ public class TestContenidoService {
 			
 			contenidoSvc.eliminarContenido(contenido3.getIdContenido());
 
-			List<Contenido> todos = new ArrayList<Contenido>();
-			todos = contenidoSvc.verTodos(5,1,"ESP");
-			for(Contenido c : todos) {
+			Results<Contenido> todos =  contenidoSvc.verTodos(5,1,"ESP");
+			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}
 			
@@ -131,7 +131,7 @@ public class TestContenidoService {
 			
 			
 			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
-			for(Contenido c : todos) {
+			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
 			contenidoCriteria= null;
@@ -150,7 +150,7 @@ public class TestContenidoService {
 			
 
 			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
-			for(Contenido c : todos) {
+			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
 			System.out.println("____________________________________________  Buscar buscarCriteriaTodo  al");
@@ -161,7 +161,7 @@ public class TestContenidoService {
 			
 			
 			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
-			for(Contenido c : todos) {
+			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
 			
@@ -192,7 +192,7 @@ public class TestContenidoService {
 			
 			
 			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
-			for(Contenido c : todos) {
+			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}System.out.println("----------------------------------------------"
 					+ "-----------------");
@@ -230,14 +230,14 @@ public class TestContenidoService {
 
 			
 			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
-			for(Contenido c : todos) {
+			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
 			System.out.println("______________________________________________________________________________________");
 			
 			
 			todos = contenidoSvc.verTodos(0, 10, "ESP");
-			for(Contenido c : todos) {
+			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
 			System.out.println("______________________________________________________________________________________");

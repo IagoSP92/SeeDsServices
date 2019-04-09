@@ -230,3 +230,501 @@
 2019-04-09 08:56:18.069 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@3e11f9e9[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@3e11f9e9[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>] startIndex=5 count=1
 2019-04-09 08:56:18.069 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C ORDER BY C.FECHA_ALTA 
 2019-04-09 08:56:18.069 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C ORDER BY C.FECHA_ALTA 
+2019-04-09 12:28:23.291 DEBUG ContenidoServiceImpl.crearContenido:154 - Contenido= com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=1]com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=1] 
+2019-04-09 12:28:23.291 DEBUG ContenidoServiceImpl.crearContenido:154 - Contenido= com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=1]com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=1] 
+2019-04-09 12:28:23.903 DEBUG ContenidoDAOImpl.create:542 - Contenido= com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=1]com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=1] 
+2019-04-09 12:28:23.903 DEBUG ContenidoDAOImpl.create:542 - Contenido= com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=1]com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=1] 
+2019-04-09 12:28:23.917 DEBUG ContenidoDAOImpl.create:570 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) VALUES ('Contenido1Persona', '2019-04-09', '2019-04-09', null, 1)
+2019-04-09 12:28:23.917 DEBUG ContenidoDAOImpl.create:570 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) VALUES ('Contenido1Persona', '2019-04-09', '2019-04-09', null, 1)
+2019-04-09 12:28:24.047 DEBUG ContenidoServiceImpl.crearContenido:154 - Contenido= com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=2]com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=2] 
+2019-04-09 12:28:24.047 DEBUG ContenidoServiceImpl.crearContenido:154 - Contenido= com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=2]com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=2] 
+2019-04-09 12:28:24.062 DEBUG ContenidoDAOImpl.create:542 - Contenido= com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=2]com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=2] 
+2019-04-09 12:28:24.062 DEBUG ContenidoDAOImpl.create:542 - Contenido= com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=2]com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=2] 
+2019-04-09 12:28:24.063 DEBUG ContenidoDAOImpl.create:570 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) VALUES ('Contenido2video', '2019-04-09', '2019-04-09', null, 2)
+2019-04-09 12:28:24.063 DEBUG ContenidoDAOImpl.create:570 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) VALUES ('Contenido2video', '2019-04-09', '2019-04-09', null, 2)
+2019-04-09 12:28:24.077 DEBUG ContenidoServiceImpl.crearContenido:154 - Contenido= com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=3]com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=3] 
+2019-04-09 12:28:24.077 DEBUG ContenidoServiceImpl.crearContenido:154 - Contenido= com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=3]com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=3] 
+2019-04-09 12:28:24.085 DEBUG ContenidoDAOImpl.create:542 - Contenido= com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=3]com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=3] 
+2019-04-09 12:28:24.085 DEBUG ContenidoDAOImpl.create:542 - Contenido= com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=3]com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:28:23 CEST 2019,fechaMod=Tue Apr 09 12:28:23 CEST 2019,autor=<null>,tipo=3] 
+2019-04-09 12:28:24.086 DEBUG ContenidoDAOImpl.create:570 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) VALUES ('Contenido3lista', '2019-04-09', '2019-04-09', null, 3)
+2019-04-09 12:28:24.086 DEBUG ContenidoDAOImpl.create:570 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) VALUES ('Contenido3lista', '2019-04-09', '2019-04-09', null, 3)
+2019-04-09 12:28:24.104 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 91 
+2019-04-09 12:28:24.104 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 91 
+2019-04-09 12:28:24.115 DEBUG ContenidoDAOImpl.findById:160 - Id= 91 
+2019-04-09 12:28:24.115 DEBUG ContenidoDAOImpl.findById:160 - Id= 91 
+2019-04-09 12:28:24.115 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 91 
+2019-04-09 12:28:24.115 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 91 
+2019-04-09 12:28:24.120 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 92 
+2019-04-09 12:28:24.120 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 92 
+2019-04-09 12:28:24.134 DEBUG ContenidoDAOImpl.findById:160 - Id= 92 
+2019-04-09 12:28:24.134 DEBUG ContenidoDAOImpl.findById:160 - Id= 92 
+2019-04-09 12:28:24.135 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 92 
+2019-04-09 12:28:24.135 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 92 
+2019-04-09 12:28:24.138 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 93 
+2019-04-09 12:28:24.138 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 93 
+2019-04-09 12:28:24.147 DEBUG ContenidoDAOImpl.findById:160 - Id= 93 
+2019-04-09 12:28:24.147 DEBUG ContenidoDAOImpl.findById:160 - Id= 93 
+2019-04-09 12:28:24.147 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 93 
+2019-04-09 12:28:24.147 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 93 
+2019-04-09 12:28:24.149 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 92 
+2019-04-09 12:28:24.149 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 92 
+2019-04-09 12:28:24.166 DEBUG ContenidoDAOImpl.findById:160 - Id= 92 
+2019-04-09 12:28:24.166 DEBUG ContenidoDAOImpl.findById:160 - Id= 92 
+2019-04-09 12:28:24.166 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 92 
+2019-04-09 12:28:24.166 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 92 
+2019-04-09 12:28:24.168 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 92 
+2019-04-09 12:28:24.168 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 92 
+2019-04-09 12:28:24.177 DEBUG ContenidoDAOImpl.findById:160 - Id= 92 
+2019-04-09 12:28:24.177 DEBUG ContenidoDAOImpl.findById:160 - Id= 92 
+2019-04-09 12:28:24.177 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 92 
+2019-04-09 12:28:24.177 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 92 
+2019-04-09 12:28:24.179 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 93 
+2019-04-09 12:28:24.179 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 93 
+2019-04-09 12:28:24.185 DEBUG ContenidoDAOImpl.findById:160 - Id= 93 
+2019-04-09 12:28:24.185 DEBUG ContenidoDAOImpl.findById:160 - Id= 93 
+2019-04-09 12:28:24.185 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 93 
+2019-04-09 12:28:24.185 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 93 
+2019-04-09 12:28:24.186 DEBUG ContenidoServiceImpl.cambiarNombre:247 - idContenido= 93 Nuevo Nombre= Contenido3lista___Nombre___Modificado 
+2019-04-09 12:28:24.186 DEBUG ContenidoServiceImpl.cambiarNombre:247 - idContenido= 93 Nuevo Nombre= Contenido3lista___Nombre___Modificado 
+2019-04-09 12:28:24.195 DEBUG ContenidoDAOImpl.findById:160 - Id= 93 
+2019-04-09 12:28:24.195 DEBUG ContenidoDAOImpl.findById:160 - Id= 93 
+2019-04-09 12:28:24.196 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 93 
+2019-04-09 12:28:24.196 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 93 
+2019-04-09 12:28:24.198 DEBUG ContenidoDAOImpl.update:604 - Contenido= com.isp.seeds.model.Contenido@6283d8b8[id=93,nombre=Contenido3lista___Nombre___Modificado,fechaAlta=2019-04-09,fechaMod=2019-04-09,autor=<null>,tipo=3]com.isp.seeds.model.Contenido@6283d8b8[id=93,nombre=Contenido3lista___Nombre___Modificado,fechaAlta=2019-04-09,fechaMod=2019-04-09,autor=<null>,tipo=3] 
+2019-04-09 12:28:24.198 DEBUG ContenidoDAOImpl.update:604 - Contenido= com.isp.seeds.model.Contenido@6283d8b8[id=93,nombre=Contenido3lista___Nombre___Modificado,fechaAlta=2019-04-09,fechaMod=2019-04-09,autor=<null>,tipo=3]com.isp.seeds.model.Contenido@6283d8b8[id=93,nombre=Contenido3lista___Nombre___Modificado,fechaAlta=2019-04-09,fechaMod=2019-04-09,autor=<null>,tipo=3] 
+2019-04-09 12:28:24.199 DEBUG ContenidoDAOImpl.update:665 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  UPDATE Contenido  SET  nombre = 'Contenido3lista___Nombre___Modificado'  ,  fecha_alta = '2019-04-09'  ,  fecha_mod = '2019-04-09'  ,  tipo = 3 WHERE id_contenido = 93
+2019-04-09 12:28:24.199 DEBUG ContenidoDAOImpl.update:665 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  UPDATE Contenido  SET  nombre = 'Contenido3lista___Nombre___Modificado'  ,  fecha_alta = '2019-04-09'  ,  fecha_mod = '2019-04-09'  ,  tipo = 3 WHERE id_contenido = 93
+2019-04-09 12:28:24.217 DEBUG ContenidoDAOImpl.findById:160 - Id= 93 
+2019-04-09 12:28:24.217 DEBUG ContenidoDAOImpl.findById:160 - Id= 93 
+2019-04-09 12:28:24.218 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 93 
+2019-04-09 12:28:24.218 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 93 
+2019-04-09 12:28:24.219 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 93 
+2019-04-09 12:28:24.219 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 93 
+2019-04-09 12:28:24.263 DEBUG ContenidoDAOImpl.findById:160 - Id= 93 
+2019-04-09 12:28:24.263 DEBUG ContenidoDAOImpl.findById:160 - Id= 93 
+2019-04-09 12:28:24.263 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 93 
+2019-04-09 12:28:24.263 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 93 
+2019-04-09 12:28:24.265 DEBUG CategoriaServiceImpl.findByNombre:78 - nombreCategoria= VIDEOCLIPS idioma= ESP 
+2019-04-09 12:28:24.265 DEBUG CategoriaServiceImpl.findByNombre:78 - nombreCategoria= VIDEOCLIPS idioma= ESP 
+2019-04-09 12:28:24.337 DEBUG ContenidoServiceImpl.asignarCategoria:280 - idContenido= 92 idCategoria= 1 
+2019-04-09 12:28:24.337 DEBUG ContenidoServiceImpl.asignarCategoria:280 - idContenido= 92 idCategoria= 1 
+2019-04-09 12:28:24.358 DEBUG ContenidoDAOImpl.agignarCategoria:866 - IdContenido= 92 IdCategoria= 1 
+2019-04-09 12:28:24.358 DEBUG ContenidoDAOImpl.agignarCategoria:866 - IdContenido= 92 IdCategoria= 1 
+2019-04-09 12:28:24.360 DEBUG ContenidoDAOImpl.agignarCategoria:884 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  INSERT INTO categoria_contenido (id_categoria, id_contenido)  VALUES (1, 92)
+2019-04-09 12:28:24.360 DEBUG ContenidoDAOImpl.agignarCategoria:884 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  INSERT INTO categoria_contenido (id_categoria, id_contenido)  VALUES (1, 92)
+2019-04-09 12:28:24.403 DEBUG ContenidoServiceImpl.verCategoria:388 - idContenido= 92 idioma= ESP 
+2019-04-09 12:28:24.403 DEBUG ContenidoServiceImpl.verCategoria:388 - idContenido= 92 idioma= ESP 
+2019-04-09 12:28:24.410 DEBUG ContenidoDAOImpl.verCategoria:1516 - idContenido= 92 idioma= ESP 
+2019-04-09 12:28:24.410 DEBUG ContenidoDAOImpl.verCategoria:1516 - idContenido= 92 idioma= ESP 
+2019-04-09 12:28:24.411 DEBUG ContenidoDAOImpl.verCategoria:1537 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA  FROM CATEGORIA C INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CATEGORIA = CC.ID_CATEGORIA)  INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA )  WHERE CC.ID_CONTENIDO = 92 AND CI.ID_IDIOMA = 'ESP'
+2019-04-09 12:28:24.411 DEBUG ContenidoDAOImpl.verCategoria:1537 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA  FROM CATEGORIA C INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CATEGORIA = CC.ID_CATEGORIA)  INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA )  WHERE CC.ID_CONTENIDO = 92 AND CI.ID_IDIOMA = 'ESP'
+2019-04-09 12:28:24.414 DEBUG CategoriaServiceImpl.findByNombre:78 - nombreCategoria= CORTOS idioma= ESP 
+2019-04-09 12:28:24.414 DEBUG CategoriaServiceImpl.findByNombre:78 - nombreCategoria= CORTOS idioma= ESP 
+2019-04-09 12:28:24.422 DEBUG ContenidoServiceImpl.modificarCategoria:334 - idContenido= 92 idCategoria= 3 
+2019-04-09 12:28:24.422 DEBUG ContenidoServiceImpl.modificarCategoria:334 - idContenido= 92 idCategoria= 3 
+2019-04-09 12:28:24.429 DEBUG ContenidoDAOImpl.modificarCategoria:911 - IdContenido= 92 IdCategoria= 3 
+2019-04-09 12:28:24.429 DEBUG ContenidoDAOImpl.modificarCategoria:911 - IdContenido= 92 IdCategoria= 3 
+2019-04-09 12:28:24.430 DEBUG ContenidoDAOImpl.modificarCategoria:941 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  UPDATE categoria_Contenido  SET  id_categoria = 3 WHERE id_contenido= 92
+2019-04-09 12:28:24.430 DEBUG ContenidoDAOImpl.modificarCategoria:941 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  UPDATE categoria_Contenido  SET  id_categoria = 3 WHERE id_contenido= 92
+2019-04-09 12:28:24.449 DEBUG ContenidoServiceImpl.verCategoria:388 - idContenido= 92 idioma= ESP 
+2019-04-09 12:28:24.449 DEBUG ContenidoServiceImpl.verCategoria:388 - idContenido= 92 idioma= ESP 
+2019-04-09 12:28:24.454 DEBUG ContenidoDAOImpl.verCategoria:1516 - idContenido= 92 idioma= ESP 
+2019-04-09 12:28:24.454 DEBUG ContenidoDAOImpl.verCategoria:1516 - idContenido= 92 idioma= ESP 
+2019-04-09 12:28:24.455 DEBUG ContenidoDAOImpl.verCategoria:1537 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA  FROM CATEGORIA C INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CATEGORIA = CC.ID_CATEGORIA)  INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA )  WHERE CC.ID_CONTENIDO = 92 AND CI.ID_IDIOMA = 'ESP'
+2019-04-09 12:28:24.455 DEBUG ContenidoDAOImpl.verCategoria:1537 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA  FROM CATEGORIA C INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CATEGORIA = CC.ID_CATEGORIA)  INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA )  WHERE CC.ID_CONTENIDO = 92 AND CI.ID_IDIOMA = 'ESP'
+2019-04-09 12:28:24.456 DEBUG EtiquetaServiceImpl.findByNombre:57 - nombreEtiqueta= Rock idioma= ESP 
+2019-04-09 12:28:24.456 DEBUG EtiquetaServiceImpl.findByNombre:57 - nombreEtiqueta= Rock idioma= ESP 
+2019-04-09 12:28:24.473 DEBUG ContenidoServiceImpl.asignarEtiqueta:307 - idContenido= 92 idEtiqueta= 9 
+2019-04-09 12:28:24.473 DEBUG ContenidoServiceImpl.asignarEtiqueta:307 - idContenido= 92 idEtiqueta= 9 
+2019-04-09 12:28:24.478 DEBUG ContenidoDAOImpl.asignarEtiqueta:973 - IdContenido= 92 idEtiqueta= 9 
+2019-04-09 12:28:24.478 DEBUG ContenidoDAOImpl.asignarEtiqueta:973 - IdContenido= 92 idEtiqueta= 9 
+2019-04-09 12:28:24.479 DEBUG ContenidoDAOImpl.asignarEtiqueta:991 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  INSERT INTO etiqueta_contenido (id_Etiqueta, id_contenido)  VALUES (9, 92)
+2019-04-09 12:28:24.479 DEBUG ContenidoDAOImpl.asignarEtiqueta:991 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  INSERT INTO etiqueta_contenido (id_Etiqueta, id_contenido)  VALUES (9, 92)
+2019-04-09 12:28:24.505 DEBUG EtiquetaServiceImpl.findByNombre:57 - nombreEtiqueta= Pop idioma= ESP 
+2019-04-09 12:28:24.505 DEBUG EtiquetaServiceImpl.findByNombre:57 - nombreEtiqueta= Pop idioma= ESP 
+2019-04-09 12:28:24.513 DEBUG ContenidoServiceImpl.asignarEtiqueta:307 - idContenido= 92 idEtiqueta= 8 
+2019-04-09 12:28:24.513 DEBUG ContenidoServiceImpl.asignarEtiqueta:307 - idContenido= 92 idEtiqueta= 8 
+2019-04-09 12:28:24.518 DEBUG ContenidoDAOImpl.asignarEtiqueta:973 - IdContenido= 92 idEtiqueta= 8 
+2019-04-09 12:28:24.518 DEBUG ContenidoDAOImpl.asignarEtiqueta:973 - IdContenido= 92 idEtiqueta= 8 
+2019-04-09 12:28:24.518 DEBUG ContenidoDAOImpl.asignarEtiqueta:991 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  INSERT INTO etiqueta_contenido (id_Etiqueta, id_contenido)  VALUES (8, 92)
+2019-04-09 12:28:24.518 DEBUG ContenidoDAOImpl.asignarEtiqueta:991 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  INSERT INTO etiqueta_contenido (id_Etiqueta, id_contenido)  VALUES (8, 92)
+2019-04-09 12:28:24.525 DEBUG ContenidoServiceImpl.verEtiquetas:416 - idContenido= 92 idioma= ESP 
+2019-04-09 12:28:24.525 DEBUG ContenidoServiceImpl.verEtiquetas:416 - idContenido= 92 idioma= ESP 
+2019-04-09 12:28:24.530 DEBUG ContenidoDAOImpl.verEtiquetas:1573 - idEtiqueta= 92 idioma= ESP 
+2019-04-09 12:28:24.530 DEBUG ContenidoDAOImpl.verEtiquetas:1573 - idEtiqueta= 92 idioma= ESP 
+2019-04-09 12:28:24.531 DEBUG ContenidoDAOImpl.verEtiquetas:1595 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT E.ID_ETIQUETA, EI.NOMBRE_ETIQUETA  FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC ON (E.ID_ETIQUETA = EC.ID_ETIQUETA)  INNER JOIN ETIQUETA_IDIOMA EI ON (E.ID_ETIQUETA = EI.ID_ETIQUETA )  WHERE EC.ID_CONTENIDO = 92 AND EI.ID_IDIOMA = 'ESP'
+2019-04-09 12:28:24.531 DEBUG ContenidoDAOImpl.verEtiquetas:1595 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT E.ID_ETIQUETA, EI.NOMBRE_ETIQUETA  FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC ON (E.ID_ETIQUETA = EC.ID_ETIQUETA)  INNER JOIN ETIQUETA_IDIOMA EI ON (E.ID_ETIQUETA = EI.ID_ETIQUETA )  WHERE EC.ID_CONTENIDO = 92 AND EI.ID_IDIOMA = 'ESP'
+2019-04-09 12:28:24.532 DEBUG EtiquetaServiceImpl.findByNombre:57 - nombreEtiqueta= Rock idioma= ESP 
+2019-04-09 12:28:24.532 DEBUG EtiquetaServiceImpl.findByNombre:57 - nombreEtiqueta= Rock idioma= ESP 
+2019-04-09 12:28:24.538 DEBUG ContenidoServiceImpl.eliminarEtiqueta:361 - idContenido= 92 idEtiqueta= 9 
+2019-04-09 12:28:24.538 DEBUG ContenidoServiceImpl.eliminarEtiqueta:361 - idContenido= 92 idEtiqueta= 9 
+2019-04-09 12:28:24.543 DEBUG ContenidoDAOImpl.eliminarEtiqueta:1018 - IdContenido= 92 idEtiqueta= 9 
+2019-04-09 12:28:24.543 DEBUG ContenidoDAOImpl.eliminarEtiqueta:1018 - IdContenido= 92 idEtiqueta= 9 
+2019-04-09 12:28:24.544 DEBUG ContenidoDAOImpl.eliminarEtiqueta:1035 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 92 and id_etiqueta = 9
+2019-04-09 12:28:24.544 DEBUG ContenidoDAOImpl.eliminarEtiqueta:1035 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 92 and id_etiqueta = 9
+2019-04-09 12:28:24.559 DEBUG ContenidoServiceImpl.verEtiquetas:416 - idContenido= 92 idioma= ESP 
+2019-04-09 12:28:24.559 DEBUG ContenidoServiceImpl.verEtiquetas:416 - idContenido= 92 idioma= ESP 
+2019-04-09 12:28:24.564 DEBUG ContenidoDAOImpl.verEtiquetas:1573 - idEtiqueta= 92 idioma= ESP 
+2019-04-09 12:28:24.564 DEBUG ContenidoDAOImpl.verEtiquetas:1573 - idEtiqueta= 92 idioma= ESP 
+2019-04-09 12:28:24.564 DEBUG ContenidoDAOImpl.verEtiquetas:1595 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT E.ID_ETIQUETA, EI.NOMBRE_ETIQUETA  FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC ON (E.ID_ETIQUETA = EC.ID_ETIQUETA)  INNER JOIN ETIQUETA_IDIOMA EI ON (E.ID_ETIQUETA = EI.ID_ETIQUETA )  WHERE EC.ID_CONTENIDO = 92 AND EI.ID_IDIOMA = 'ESP'
+2019-04-09 12:28:24.564 DEBUG ContenidoDAOImpl.verEtiquetas:1595 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT E.ID_ETIQUETA, EI.NOMBRE_ETIQUETA  FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC ON (E.ID_ETIQUETA = EC.ID_ETIQUETA)  INNER JOIN ETIQUETA_IDIOMA EI ON (E.ID_ETIQUETA = EI.ID_ETIQUETA )  WHERE EC.ID_CONTENIDO = 92 AND EI.ID_IDIOMA = 'ESP'
+2019-04-09 12:28:24.565 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 91 
+2019-04-09 12:28:24.565 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 91 
+2019-04-09 12:28:24.571 DEBUG ContenidoDAOImpl.findById:160 - Id= 91 
+2019-04-09 12:28:24.571 DEBUG ContenidoDAOImpl.findById:160 - Id= 91 
+2019-04-09 12:28:24.571 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 91 
+2019-04-09 12:28:24.571 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 91 
+2019-04-09 12:28:24.572 DEBUG ContenidoServiceImpl.eliminarContenido:185 - idContenido= 91 
+2019-04-09 12:28:24.572 DEBUG ContenidoServiceImpl.eliminarContenido:185 - idContenido= 91 
+2019-04-09 12:28:24.577 DEBUG ContenidoDAOImpl.exists:57 - Id= 91 
+2019-04-09 12:28:24.577 DEBUG ContenidoDAOImpl.exists:57 - Id= 91 
+2019-04-09 12:28:24.577 DEBUG ContenidoDAOImpl.exists:76 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT ID_CONTENIDO  FROM CONTENIDO  WHERE ID_CONTENIDO = 91 
+2019-04-09 12:28:24.577 DEBUG ContenidoDAOImpl.exists:76 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT ID_CONTENIDO  FROM CONTENIDO  WHERE ID_CONTENIDO = 91 
+2019-04-09 12:28:24.577 DEBUG ContenidoDAOImpl.delete:693 - Id= 91 
+2019-04-09 12:28:24.577 DEBUG ContenidoDAOImpl.delete:693 - Id= 91 
+2019-04-09 12:28:24.578 DEBUG ContenidoDAOImpl.deleteRelaciones:825 - Id= 91 
+2019-04-09 12:28:24.578 DEBUG ContenidoDAOImpl.deleteRelaciones:825 - Id= 91 
+2019-04-09 12:28:24.578 DEBUG ContenidoDAOImpl.deleteRelaciones:842 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Usuario_CONTENIDO WHERE USUARIO_ID_CONTENIDO = 91 OR CONTENIDO_ID_CONTENIDO = 91 
+2019-04-09 12:28:24.578 DEBUG ContenidoDAOImpl.deleteRelaciones:842 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Usuario_CONTENIDO WHERE USUARIO_ID_CONTENIDO = 91 OR CONTENIDO_ID_CONTENIDO = 91 
+2019-04-09 12:28:24.579 DEBUG ContenidoDAOImpl.deleteCategorias:787 - Id= 91 
+2019-04-09 12:28:24.579 DEBUG ContenidoDAOImpl.deleteCategorias:787 - Id= 91 
+2019-04-09 12:28:24.579 DEBUG ContenidoDAOImpl.deleteCategorias:803 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Categoria_CONTENIDO WHERE id_contenido = 91 
+2019-04-09 12:28:24.579 DEBUG ContenidoDAOImpl.deleteCategorias:803 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Categoria_CONTENIDO WHERE id_contenido = 91 
+2019-04-09 12:28:24.579 DEBUG ContenidoDAOImpl.deleteEtiquetas:749 - Id= 91 
+2019-04-09 12:28:24.579 DEBUG ContenidoDAOImpl.deleteEtiquetas:749 - Id= 91 
+2019-04-09 12:28:24.579 DEBUG ContenidoDAOImpl.deleteEtiquetas:765 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 91 
+2019-04-09 12:28:24.579 DEBUG ContenidoDAOImpl.deleteEtiquetas:765 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 91 
+2019-04-09 12:28:24.580 DEBUG ContenidoDAOImpl.deleteContenido:707 - Id= 91 
+2019-04-09 12:28:24.580 DEBUG ContenidoDAOImpl.deleteContenido:707 - Id= 91 
+2019-04-09 12:28:24.580 DEBUG ContenidoDAOImpl.deleteContenido:723 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM CONTENIDO WHERE id_contenido = 91 
+2019-04-09 12:28:24.580 DEBUG ContenidoDAOImpl.deleteContenido:723 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM CONTENIDO WHERE id_contenido = 91 
+2019-04-09 12:28:24.588 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 92 
+2019-04-09 12:28:24.588 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 92 
+2019-04-09 12:28:24.593 DEBUG ContenidoDAOImpl.findById:160 - Id= 92 
+2019-04-09 12:28:24.593 DEBUG ContenidoDAOImpl.findById:160 - Id= 92 
+2019-04-09 12:28:24.593 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 92 
+2019-04-09 12:28:24.593 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 92 
+2019-04-09 12:28:24.594 DEBUG ContenidoServiceImpl.eliminarContenido:185 - idContenido= 92 
+2019-04-09 12:28:24.594 DEBUG ContenidoServiceImpl.eliminarContenido:185 - idContenido= 92 
+2019-04-09 12:28:24.599 DEBUG ContenidoDAOImpl.exists:57 - Id= 92 
+2019-04-09 12:28:24.599 DEBUG ContenidoDAOImpl.exists:57 - Id= 92 
+2019-04-09 12:28:24.600 DEBUG ContenidoDAOImpl.exists:76 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT ID_CONTENIDO  FROM CONTENIDO  WHERE ID_CONTENIDO = 92 
+2019-04-09 12:28:24.600 DEBUG ContenidoDAOImpl.exists:76 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT ID_CONTENIDO  FROM CONTENIDO  WHERE ID_CONTENIDO = 92 
+2019-04-09 12:28:24.600 DEBUG ContenidoDAOImpl.delete:693 - Id= 92 
+2019-04-09 12:28:24.600 DEBUG ContenidoDAOImpl.delete:693 - Id= 92 
+2019-04-09 12:28:24.600 DEBUG ContenidoDAOImpl.deleteRelaciones:825 - Id= 92 
+2019-04-09 12:28:24.600 DEBUG ContenidoDAOImpl.deleteRelaciones:825 - Id= 92 
+2019-04-09 12:28:24.601 DEBUG ContenidoDAOImpl.deleteRelaciones:842 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Usuario_CONTENIDO WHERE USUARIO_ID_CONTENIDO = 92 OR CONTENIDO_ID_CONTENIDO = 92 
+2019-04-09 12:28:24.601 DEBUG ContenidoDAOImpl.deleteRelaciones:842 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Usuario_CONTENIDO WHERE USUARIO_ID_CONTENIDO = 92 OR CONTENIDO_ID_CONTENIDO = 92 
+2019-04-09 12:28:24.601 DEBUG ContenidoDAOImpl.deleteCategorias:787 - Id= 92 
+2019-04-09 12:28:24.601 DEBUG ContenidoDAOImpl.deleteCategorias:787 - Id= 92 
+2019-04-09 12:28:24.602 DEBUG ContenidoDAOImpl.deleteCategorias:803 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Categoria_CONTENIDO WHERE id_contenido = 92 
+2019-04-09 12:28:24.602 DEBUG ContenidoDAOImpl.deleteCategorias:803 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Categoria_CONTENIDO WHERE id_contenido = 92 
+2019-04-09 12:28:24.610 DEBUG ContenidoDAOImpl.deleteEtiquetas:749 - Id= 92 
+2019-04-09 12:28:24.610 DEBUG ContenidoDAOImpl.deleteEtiquetas:749 - Id= 92 
+2019-04-09 12:28:24.610 DEBUG ContenidoDAOImpl.deleteEtiquetas:765 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 92 
+2019-04-09 12:28:24.610 DEBUG ContenidoDAOImpl.deleteEtiquetas:765 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 92 
+2019-04-09 12:28:24.623 DEBUG ContenidoDAOImpl.deleteContenido:707 - Id= 92 
+2019-04-09 12:28:24.623 DEBUG ContenidoDAOImpl.deleteContenido:707 - Id= 92 
+2019-04-09 12:28:24.624 DEBUG ContenidoDAOImpl.deleteContenido:723 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM CONTENIDO WHERE id_contenido = 92 
+2019-04-09 12:28:24.624 DEBUG ContenidoDAOImpl.deleteContenido:723 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM CONTENIDO WHERE id_contenido = 92 
+2019-04-09 12:28:24.635 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 93 
+2019-04-09 12:28:24.635 DEBUG ContenidoServiceImpl.buscarId:32 - idContenido= 93 
+2019-04-09 12:28:24.641 DEBUG ContenidoDAOImpl.findById:160 - Id= 93 
+2019-04-09 12:28:24.641 DEBUG ContenidoDAOImpl.findById:160 - Id= 93 
+2019-04-09 12:28:24.642 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 93 
+2019-04-09 12:28:24.642 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 93 
+2019-04-09 12:28:24.643 DEBUG ContenidoServiceImpl.eliminarContenido:185 - idContenido= 93 
+2019-04-09 12:28:24.643 DEBUG ContenidoServiceImpl.eliminarContenido:185 - idContenido= 93 
+2019-04-09 12:28:24.648 DEBUG ContenidoDAOImpl.exists:57 - Id= 93 
+2019-04-09 12:28:24.648 DEBUG ContenidoDAOImpl.exists:57 - Id= 93 
+2019-04-09 12:28:24.648 DEBUG ContenidoDAOImpl.exists:76 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT ID_CONTENIDO  FROM CONTENIDO  WHERE ID_CONTENIDO = 93 
+2019-04-09 12:28:24.648 DEBUG ContenidoDAOImpl.exists:76 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT ID_CONTENIDO  FROM CONTENIDO  WHERE ID_CONTENIDO = 93 
+2019-04-09 12:28:24.649 DEBUG ContenidoDAOImpl.delete:693 - Id= 93 
+2019-04-09 12:28:24.649 DEBUG ContenidoDAOImpl.delete:693 - Id= 93 
+2019-04-09 12:28:24.649 DEBUG ContenidoDAOImpl.deleteRelaciones:825 - Id= 93 
+2019-04-09 12:28:24.649 DEBUG ContenidoDAOImpl.deleteRelaciones:825 - Id= 93 
+2019-04-09 12:28:24.649 DEBUG ContenidoDAOImpl.deleteRelaciones:842 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Usuario_CONTENIDO WHERE USUARIO_ID_CONTENIDO = 93 OR CONTENIDO_ID_CONTENIDO = 93 
+2019-04-09 12:28:24.649 DEBUG ContenidoDAOImpl.deleteRelaciones:842 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Usuario_CONTENIDO WHERE USUARIO_ID_CONTENIDO = 93 OR CONTENIDO_ID_CONTENIDO = 93 
+2019-04-09 12:28:24.650 DEBUG ContenidoDAOImpl.deleteCategorias:787 - Id= 93 
+2019-04-09 12:28:24.650 DEBUG ContenidoDAOImpl.deleteCategorias:787 - Id= 93 
+2019-04-09 12:28:24.650 DEBUG ContenidoDAOImpl.deleteCategorias:803 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Categoria_CONTENIDO WHERE id_contenido = 93 
+2019-04-09 12:28:24.650 DEBUG ContenidoDAOImpl.deleteCategorias:803 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Categoria_CONTENIDO WHERE id_contenido = 93 
+2019-04-09 12:28:24.651 DEBUG ContenidoDAOImpl.deleteEtiquetas:749 - Id= 93 
+2019-04-09 12:28:24.651 DEBUG ContenidoDAOImpl.deleteEtiquetas:749 - Id= 93 
+2019-04-09 12:28:24.651 DEBUG ContenidoDAOImpl.deleteEtiquetas:765 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 93 
+2019-04-09 12:28:24.651 DEBUG ContenidoDAOImpl.deleteEtiquetas:765 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 93 
+2019-04-09 12:28:24.651 DEBUG ContenidoDAOImpl.deleteContenido:707 - Id= 93 
+2019-04-09 12:28:24.651 DEBUG ContenidoDAOImpl.deleteContenido:707 - Id= 93 
+2019-04-09 12:28:24.651 DEBUG ContenidoDAOImpl.deleteContenido:723 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM CONTENIDO WHERE id_contenido = 93 
+2019-04-09 12:28:24.651 DEBUG ContenidoDAOImpl.deleteContenido:723 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM CONTENIDO WHERE id_contenido = 93 
+2019-04-09 12:28:24.674 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@1de5f259[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@1de5f259[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>] startIndex=5 count=1
+2019-04-09 12:28:24.674 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@1de5f259[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@1de5f259[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>] startIndex=5 count=1
+2019-04-09 12:28:24.674 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C ORDER BY C.FECHA_ALTA 
+2019-04-09 12:28:24.674 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:28.171 DEBUG ContenidoServiceImpl.crearContenido:142 - Contenido= com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=1]com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=1] 
+2019-04-09 12:46:28.171 DEBUG ContenidoServiceImpl.crearContenido:142 - Contenido= com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=1]com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=1] 
+2019-04-09 12:46:28.630 DEBUG ContenidoDAOImpl.create:542 - Contenido= com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=1]com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=1] 
+2019-04-09 12:46:28.630 DEBUG ContenidoDAOImpl.create:542 - Contenido= com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=1]com.isp.seeds.model.Contenido@727803de[id=<null>,nombre=Contenido1Persona,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=1] 
+2019-04-09 12:46:28.645 DEBUG ContenidoDAOImpl.create:570 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) VALUES ('Contenido1Persona', '2019-04-09', '2019-04-09', null, 1)
+2019-04-09 12:46:28.645 DEBUG ContenidoDAOImpl.create:570 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) VALUES ('Contenido1Persona', '2019-04-09', '2019-04-09', null, 1)
+2019-04-09 12:46:28.683 DEBUG ContenidoServiceImpl.crearContenido:142 - Contenido= com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=2]com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=2] 
+2019-04-09 12:46:28.683 DEBUG ContenidoServiceImpl.crearContenido:142 - Contenido= com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=2]com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=2] 
+2019-04-09 12:46:28.698 DEBUG ContenidoDAOImpl.create:542 - Contenido= com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=2]com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=2] 
+2019-04-09 12:46:28.698 DEBUG ContenidoDAOImpl.create:542 - Contenido= com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=2]com.isp.seeds.model.Contenido@3d6f0054[id=<null>,nombre=Contenido2video,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=2] 
+2019-04-09 12:46:28.699 DEBUG ContenidoDAOImpl.create:570 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) VALUES ('Contenido2video', '2019-04-09', '2019-04-09', null, 2)
+2019-04-09 12:46:28.699 DEBUG ContenidoDAOImpl.create:570 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) VALUES ('Contenido2video', '2019-04-09', '2019-04-09', null, 2)
+2019-04-09 12:46:28.716 DEBUG ContenidoServiceImpl.crearContenido:142 - Contenido= com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=3]com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=3] 
+2019-04-09 12:46:28.716 DEBUG ContenidoServiceImpl.crearContenido:142 - Contenido= com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=3]com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=3] 
+2019-04-09 12:46:28.725 DEBUG ContenidoDAOImpl.create:542 - Contenido= com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=3]com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=3] 
+2019-04-09 12:46:28.725 DEBUG ContenidoDAOImpl.create:542 - Contenido= com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=3]com.isp.seeds.model.Contenido@bd4dc25[id=<null>,nombre=Contenido3lista,fechaAlta=Tue Apr 09 12:46:28 CEST 2019,fechaMod=Tue Apr 09 12:46:28 CEST 2019,autor=<null>,tipo=3] 
+2019-04-09 12:46:28.726 DEBUG ContenidoDAOImpl.create:570 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) VALUES ('Contenido3lista', '2019-04-09', '2019-04-09', null, 3)
+2019-04-09 12:46:28.726 DEBUG ContenidoDAOImpl.create:570 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) VALUES ('Contenido3lista', '2019-04-09', '2019-04-09', null, 3)
+2019-04-09 12:46:28.733 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 94 
+2019-04-09 12:46:28.733 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 94 
+2019-04-09 12:46:28.741 DEBUG ContenidoDAOImpl.findById:160 - Id= 94 
+2019-04-09 12:46:28.741 DEBUG ContenidoDAOImpl.findById:160 - Id= 94 
+2019-04-09 12:46:28.741 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 94 
+2019-04-09 12:46:28.741 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 94 
+2019-04-09 12:46:28.762 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 95 
+2019-04-09 12:46:28.762 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 95 
+2019-04-09 12:46:28.769 DEBUG ContenidoDAOImpl.findById:160 - Id= 95 
+2019-04-09 12:46:28.769 DEBUG ContenidoDAOImpl.findById:160 - Id= 95 
+2019-04-09 12:46:28.770 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 95 
+2019-04-09 12:46:28.770 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 95 
+2019-04-09 12:46:28.771 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 96 
+2019-04-09 12:46:28.771 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 96 
+2019-04-09 12:46:28.778 DEBUG ContenidoDAOImpl.findById:160 - Id= 96 
+2019-04-09 12:46:28.778 DEBUG ContenidoDAOImpl.findById:160 - Id= 96 
+2019-04-09 12:46:28.778 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 96 
+2019-04-09 12:46:28.778 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 96 
+2019-04-09 12:46:28.779 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 95 
+2019-04-09 12:46:28.779 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 95 
+2019-04-09 12:46:28.786 DEBUG ContenidoDAOImpl.findById:160 - Id= 95 
+2019-04-09 12:46:28.786 DEBUG ContenidoDAOImpl.findById:160 - Id= 95 
+2019-04-09 12:46:28.786 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 95 
+2019-04-09 12:46:28.786 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 95 
+2019-04-09 12:46:28.787 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 95 
+2019-04-09 12:46:28.787 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 95 
+2019-04-09 12:46:28.794 DEBUG ContenidoDAOImpl.findById:160 - Id= 95 
+2019-04-09 12:46:28.794 DEBUG ContenidoDAOImpl.findById:160 - Id= 95 
+2019-04-09 12:46:28.794 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 95 
+2019-04-09 12:46:28.794 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 95 
+2019-04-09 12:46:28.796 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 96 
+2019-04-09 12:46:28.796 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 96 
+2019-04-09 12:46:28.804 DEBUG ContenidoDAOImpl.findById:160 - Id= 96 
+2019-04-09 12:46:28.804 DEBUG ContenidoDAOImpl.findById:160 - Id= 96 
+2019-04-09 12:46:28.804 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 96 
+2019-04-09 12:46:28.804 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 96 
+2019-04-09 12:46:28.806 DEBUG ContenidoServiceImpl.cambiarNombre:235 - idContenido= 96 Nuevo Nombre= Contenido3lista___Nombre___Modificado 
+2019-04-09 12:46:28.806 DEBUG ContenidoServiceImpl.cambiarNombre:235 - idContenido= 96 Nuevo Nombre= Contenido3lista___Nombre___Modificado 
+2019-04-09 12:46:28.816 DEBUG ContenidoDAOImpl.findById:160 - Id= 96 
+2019-04-09 12:46:28.816 DEBUG ContenidoDAOImpl.findById:160 - Id= 96 
+2019-04-09 12:46:28.816 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 96 
+2019-04-09 12:46:28.816 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 96 
+2019-04-09 12:46:28.817 DEBUG ContenidoDAOImpl.update:604 - Contenido= com.isp.seeds.model.Contenido@6283d8b8[id=96,nombre=Contenido3lista___Nombre___Modificado,fechaAlta=2019-04-09,fechaMod=2019-04-09,autor=<null>,tipo=3]com.isp.seeds.model.Contenido@6283d8b8[id=96,nombre=Contenido3lista___Nombre___Modificado,fechaAlta=2019-04-09,fechaMod=2019-04-09,autor=<null>,tipo=3] 
+2019-04-09 12:46:28.817 DEBUG ContenidoDAOImpl.update:604 - Contenido= com.isp.seeds.model.Contenido@6283d8b8[id=96,nombre=Contenido3lista___Nombre___Modificado,fechaAlta=2019-04-09,fechaMod=2019-04-09,autor=<null>,tipo=3]com.isp.seeds.model.Contenido@6283d8b8[id=96,nombre=Contenido3lista___Nombre___Modificado,fechaAlta=2019-04-09,fechaMod=2019-04-09,autor=<null>,tipo=3] 
+2019-04-09 12:46:28.818 DEBUG ContenidoDAOImpl.update:665 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  UPDATE Contenido  SET  nombre = 'Contenido3lista___Nombre___Modificado'  ,  fecha_alta = '2019-04-09'  ,  fecha_mod = '2019-04-09'  ,  tipo = 3 WHERE id_contenido = 96
+2019-04-09 12:46:28.818 DEBUG ContenidoDAOImpl.update:665 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  UPDATE Contenido  SET  nombre = 'Contenido3lista___Nombre___Modificado'  ,  fecha_alta = '2019-04-09'  ,  fecha_mod = '2019-04-09'  ,  tipo = 3 WHERE id_contenido = 96
+2019-04-09 12:46:28.832 DEBUG ContenidoDAOImpl.findById:160 - Id= 96 
+2019-04-09 12:46:28.832 DEBUG ContenidoDAOImpl.findById:160 - Id= 96 
+2019-04-09 12:46:28.832 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 96 
+2019-04-09 12:46:28.832 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 96 
+2019-04-09 12:46:28.833 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 96 
+2019-04-09 12:46:28.833 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 96 
+2019-04-09 12:46:28.847 DEBUG ContenidoDAOImpl.findById:160 - Id= 96 
+2019-04-09 12:46:28.847 DEBUG ContenidoDAOImpl.findById:160 - Id= 96 
+2019-04-09 12:46:28.848 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 96 
+2019-04-09 12:46:28.848 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 96 
+2019-04-09 12:46:28.849 DEBUG CategoriaServiceImpl.findByNombre:78 - nombreCategoria= VIDEOCLIPS idioma= ESP 
+2019-04-09 12:46:28.849 DEBUG CategoriaServiceImpl.findByNombre:78 - nombreCategoria= VIDEOCLIPS idioma= ESP 
+2019-04-09 12:46:28.861 DEBUG ContenidoServiceImpl.asignarCategoria:268 - idContenido= 95 idCategoria= 1 
+2019-04-09 12:46:28.861 DEBUG ContenidoServiceImpl.asignarCategoria:268 - idContenido= 95 idCategoria= 1 
+2019-04-09 12:46:28.867 DEBUG ContenidoDAOImpl.agignarCategoria:866 - IdContenido= 95 IdCategoria= 1 
+2019-04-09 12:46:28.867 DEBUG ContenidoDAOImpl.agignarCategoria:866 - IdContenido= 95 IdCategoria= 1 
+2019-04-09 12:46:28.867 DEBUG ContenidoDAOImpl.agignarCategoria:884 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  INSERT INTO categoria_contenido (id_categoria, id_contenido)  VALUES (1, 95)
+2019-04-09 12:46:28.867 DEBUG ContenidoDAOImpl.agignarCategoria:884 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  INSERT INTO categoria_contenido (id_categoria, id_contenido)  VALUES (1, 95)
+2019-04-09 12:46:28.893 DEBUG ContenidoServiceImpl.verCategoria:376 - idContenido= 95 idioma= ESP 
+2019-04-09 12:46:28.893 DEBUG ContenidoServiceImpl.verCategoria:376 - idContenido= 95 idioma= ESP 
+2019-04-09 12:46:28.899 DEBUG ContenidoDAOImpl.verCategoria:1516 - idContenido= 95 idioma= ESP 
+2019-04-09 12:46:28.899 DEBUG ContenidoDAOImpl.verCategoria:1516 - idContenido= 95 idioma= ESP 
+2019-04-09 12:46:28.899 DEBUG ContenidoDAOImpl.verCategoria:1537 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA  FROM CATEGORIA C INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CATEGORIA = CC.ID_CATEGORIA)  INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA )  WHERE CC.ID_CONTENIDO = 95 AND CI.ID_IDIOMA = 'ESP'
+2019-04-09 12:46:28.899 DEBUG ContenidoDAOImpl.verCategoria:1537 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA  FROM CATEGORIA C INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CATEGORIA = CC.ID_CATEGORIA)  INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA )  WHERE CC.ID_CONTENIDO = 95 AND CI.ID_IDIOMA = 'ESP'
+2019-04-09 12:46:28.901 DEBUG CategoriaServiceImpl.findByNombre:78 - nombreCategoria= CORTOS idioma= ESP 
+2019-04-09 12:46:28.901 DEBUG CategoriaServiceImpl.findByNombre:78 - nombreCategoria= CORTOS idioma= ESP 
+2019-04-09 12:46:28.909 DEBUG ContenidoServiceImpl.modificarCategoria:322 - idContenido= 95 idCategoria= 3 
+2019-04-09 12:46:28.909 DEBUG ContenidoServiceImpl.modificarCategoria:322 - idContenido= 95 idCategoria= 3 
+2019-04-09 12:46:28.917 DEBUG ContenidoDAOImpl.modificarCategoria:911 - IdContenido= 95 IdCategoria= 3 
+2019-04-09 12:46:28.917 DEBUG ContenidoDAOImpl.modificarCategoria:911 - IdContenido= 95 IdCategoria= 3 
+2019-04-09 12:46:28.918 DEBUG ContenidoDAOImpl.modificarCategoria:941 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  UPDATE categoria_Contenido  SET  id_categoria = 3 WHERE id_contenido= 95
+2019-04-09 12:46:28.918 DEBUG ContenidoDAOImpl.modificarCategoria:941 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  UPDATE categoria_Contenido  SET  id_categoria = 3 WHERE id_contenido= 95
+2019-04-09 12:46:28.927 DEBUG ContenidoServiceImpl.verCategoria:376 - idContenido= 95 idioma= ESP 
+2019-04-09 12:46:28.927 DEBUG ContenidoServiceImpl.verCategoria:376 - idContenido= 95 idioma= ESP 
+2019-04-09 12:46:28.933 DEBUG ContenidoDAOImpl.verCategoria:1516 - idContenido= 95 idioma= ESP 
+2019-04-09 12:46:28.933 DEBUG ContenidoDAOImpl.verCategoria:1516 - idContenido= 95 idioma= ESP 
+2019-04-09 12:46:28.933 DEBUG ContenidoDAOImpl.verCategoria:1537 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA  FROM CATEGORIA C INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CATEGORIA = CC.ID_CATEGORIA)  INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA )  WHERE CC.ID_CONTENIDO = 95 AND CI.ID_IDIOMA = 'ESP'
+2019-04-09 12:46:28.933 DEBUG ContenidoDAOImpl.verCategoria:1537 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA  FROM CATEGORIA C INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CATEGORIA = CC.ID_CATEGORIA)  INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA )  WHERE CC.ID_CONTENIDO = 95 AND CI.ID_IDIOMA = 'ESP'
+2019-04-09 12:46:28.934 DEBUG EtiquetaServiceImpl.findByNombre:57 - nombreEtiqueta= Rock idioma= ESP 
+2019-04-09 12:46:28.934 DEBUG EtiquetaServiceImpl.findByNombre:57 - nombreEtiqueta= Rock idioma= ESP 
+2019-04-09 12:46:28.941 DEBUG ContenidoServiceImpl.asignarEtiqueta:295 - idContenido= 95 idEtiqueta= 9 
+2019-04-09 12:46:28.941 DEBUG ContenidoServiceImpl.asignarEtiqueta:295 - idContenido= 95 idEtiqueta= 9 
+2019-04-09 12:46:28.947 DEBUG ContenidoDAOImpl.asignarEtiqueta:973 - IdContenido= 95 idEtiqueta= 9 
+2019-04-09 12:46:28.947 DEBUG ContenidoDAOImpl.asignarEtiqueta:973 - IdContenido= 95 idEtiqueta= 9 
+2019-04-09 12:46:28.947 DEBUG ContenidoDAOImpl.asignarEtiqueta:991 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  INSERT INTO etiqueta_contenido (id_Etiqueta, id_contenido)  VALUES (9, 95)
+2019-04-09 12:46:28.947 DEBUG ContenidoDAOImpl.asignarEtiqueta:991 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  INSERT INTO etiqueta_contenido (id_Etiqueta, id_contenido)  VALUES (9, 95)
+2019-04-09 12:46:28.961 DEBUG EtiquetaServiceImpl.findByNombre:57 - nombreEtiqueta= Pop idioma= ESP 
+2019-04-09 12:46:28.961 DEBUG EtiquetaServiceImpl.findByNombre:57 - nombreEtiqueta= Pop idioma= ESP 
+2019-04-09 12:46:28.967 DEBUG ContenidoServiceImpl.asignarEtiqueta:295 - idContenido= 95 idEtiqueta= 8 
+2019-04-09 12:46:28.967 DEBUG ContenidoServiceImpl.asignarEtiqueta:295 - idContenido= 95 idEtiqueta= 8 
+2019-04-09 12:46:28.974 DEBUG ContenidoDAOImpl.asignarEtiqueta:973 - IdContenido= 95 idEtiqueta= 8 
+2019-04-09 12:46:28.974 DEBUG ContenidoDAOImpl.asignarEtiqueta:973 - IdContenido= 95 idEtiqueta= 8 
+2019-04-09 12:46:28.974 DEBUG ContenidoDAOImpl.asignarEtiqueta:991 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  INSERT INTO etiqueta_contenido (id_Etiqueta, id_contenido)  VALUES (8, 95)
+2019-04-09 12:46:28.974 DEBUG ContenidoDAOImpl.asignarEtiqueta:991 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  INSERT INTO etiqueta_contenido (id_Etiqueta, id_contenido)  VALUES (8, 95)
+2019-04-09 12:46:28.989 DEBUG ContenidoServiceImpl.verEtiquetas:404 - idContenido= 95 idioma= ESP 
+2019-04-09 12:46:28.989 DEBUG ContenidoServiceImpl.verEtiquetas:404 - idContenido= 95 idioma= ESP 
+2019-04-09 12:46:28.994 DEBUG ContenidoDAOImpl.verEtiquetas:1573 - idEtiqueta= 95 idioma= ESP 
+2019-04-09 12:46:28.994 DEBUG ContenidoDAOImpl.verEtiquetas:1573 - idEtiqueta= 95 idioma= ESP 
+2019-04-09 12:46:28.995 DEBUG ContenidoDAOImpl.verEtiquetas:1595 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT E.ID_ETIQUETA, EI.NOMBRE_ETIQUETA  FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC ON (E.ID_ETIQUETA = EC.ID_ETIQUETA)  INNER JOIN ETIQUETA_IDIOMA EI ON (E.ID_ETIQUETA = EI.ID_ETIQUETA )  WHERE EC.ID_CONTENIDO = 95 AND EI.ID_IDIOMA = 'ESP'
+2019-04-09 12:46:28.995 DEBUG ContenidoDAOImpl.verEtiquetas:1595 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT E.ID_ETIQUETA, EI.NOMBRE_ETIQUETA  FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC ON (E.ID_ETIQUETA = EC.ID_ETIQUETA)  INNER JOIN ETIQUETA_IDIOMA EI ON (E.ID_ETIQUETA = EI.ID_ETIQUETA )  WHERE EC.ID_CONTENIDO = 95 AND EI.ID_IDIOMA = 'ESP'
+2019-04-09 12:46:28.996 DEBUG EtiquetaServiceImpl.findByNombre:57 - nombreEtiqueta= Rock idioma= ESP 
+2019-04-09 12:46:28.996 DEBUG EtiquetaServiceImpl.findByNombre:57 - nombreEtiqueta= Rock idioma= ESP 
+2019-04-09 12:46:29.003 DEBUG ContenidoServiceImpl.eliminarEtiqueta:349 - idContenido= 95 idEtiqueta= 9 
+2019-04-09 12:46:29.003 DEBUG ContenidoServiceImpl.eliminarEtiqueta:349 - idContenido= 95 idEtiqueta= 9 
+2019-04-09 12:46:29.008 DEBUG ContenidoDAOImpl.eliminarEtiqueta:1018 - IdContenido= 95 idEtiqueta= 9 
+2019-04-09 12:46:29.008 DEBUG ContenidoDAOImpl.eliminarEtiqueta:1018 - IdContenido= 95 idEtiqueta= 9 
+2019-04-09 12:46:29.008 DEBUG ContenidoDAOImpl.eliminarEtiqueta:1035 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 95 and id_etiqueta = 9
+2019-04-09 12:46:29.008 DEBUG ContenidoDAOImpl.eliminarEtiqueta:1035 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 95 and id_etiqueta = 9
+2019-04-09 12:46:29.021 DEBUG ContenidoServiceImpl.verEtiquetas:404 - idContenido= 95 idioma= ESP 
+2019-04-09 12:46:29.021 DEBUG ContenidoServiceImpl.verEtiquetas:404 - idContenido= 95 idioma= ESP 
+2019-04-09 12:46:29.026 DEBUG ContenidoDAOImpl.verEtiquetas:1573 - idEtiqueta= 95 idioma= ESP 
+2019-04-09 12:46:29.026 DEBUG ContenidoDAOImpl.verEtiquetas:1573 - idEtiqueta= 95 idioma= ESP 
+2019-04-09 12:46:29.027 DEBUG ContenidoDAOImpl.verEtiquetas:1595 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT E.ID_ETIQUETA, EI.NOMBRE_ETIQUETA  FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC ON (E.ID_ETIQUETA = EC.ID_ETIQUETA)  INNER JOIN ETIQUETA_IDIOMA EI ON (E.ID_ETIQUETA = EI.ID_ETIQUETA )  WHERE EC.ID_CONTENIDO = 95 AND EI.ID_IDIOMA = 'ESP'
+2019-04-09 12:46:29.027 DEBUG ContenidoDAOImpl.verEtiquetas:1595 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT E.ID_ETIQUETA, EI.NOMBRE_ETIQUETA  FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC ON (E.ID_ETIQUETA = EC.ID_ETIQUETA)  INNER JOIN ETIQUETA_IDIOMA EI ON (E.ID_ETIQUETA = EI.ID_ETIQUETA )  WHERE EC.ID_CONTENIDO = 95 AND EI.ID_IDIOMA = 'ESP'
+2019-04-09 12:46:29.027 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 94 
+2019-04-09 12:46:29.027 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 94 
+2019-04-09 12:46:29.033 DEBUG ContenidoDAOImpl.findById:160 - Id= 94 
+2019-04-09 12:46:29.033 DEBUG ContenidoDAOImpl.findById:160 - Id= 94 
+2019-04-09 12:46:29.033 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 94 
+2019-04-09 12:46:29.033 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 94 
+2019-04-09 12:46:29.034 DEBUG ContenidoServiceImpl.eliminarContenido:173 - idContenido= 94 
+2019-04-09 12:46:29.034 DEBUG ContenidoServiceImpl.eliminarContenido:173 - idContenido= 94 
+2019-04-09 12:46:29.040 DEBUG ContenidoDAOImpl.exists:57 - Id= 94 
+2019-04-09 12:46:29.040 DEBUG ContenidoDAOImpl.exists:57 - Id= 94 
+2019-04-09 12:46:29.041 DEBUG ContenidoDAOImpl.exists:76 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT ID_CONTENIDO  FROM CONTENIDO  WHERE ID_CONTENIDO = 94 
+2019-04-09 12:46:29.041 DEBUG ContenidoDAOImpl.exists:76 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT ID_CONTENIDO  FROM CONTENIDO  WHERE ID_CONTENIDO = 94 
+2019-04-09 12:46:29.041 DEBUG ContenidoDAOImpl.delete:693 - Id= 94 
+2019-04-09 12:46:29.041 DEBUG ContenidoDAOImpl.delete:693 - Id= 94 
+2019-04-09 12:46:29.041 DEBUG ContenidoDAOImpl.deleteRelaciones:825 - Id= 94 
+2019-04-09 12:46:29.041 DEBUG ContenidoDAOImpl.deleteRelaciones:825 - Id= 94 
+2019-04-09 12:46:29.042 DEBUG ContenidoDAOImpl.deleteRelaciones:842 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Usuario_CONTENIDO WHERE USUARIO_ID_CONTENIDO = 94 OR CONTENIDO_ID_CONTENIDO = 94 
+2019-04-09 12:46:29.042 DEBUG ContenidoDAOImpl.deleteRelaciones:842 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Usuario_CONTENIDO WHERE USUARIO_ID_CONTENIDO = 94 OR CONTENIDO_ID_CONTENIDO = 94 
+2019-04-09 12:46:29.043 DEBUG ContenidoDAOImpl.deleteCategorias:787 - Id= 94 
+2019-04-09 12:46:29.043 DEBUG ContenidoDAOImpl.deleteCategorias:787 - Id= 94 
+2019-04-09 12:46:29.043 DEBUG ContenidoDAOImpl.deleteCategorias:803 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Categoria_CONTENIDO WHERE id_contenido = 94 
+2019-04-09 12:46:29.043 DEBUG ContenidoDAOImpl.deleteCategorias:803 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Categoria_CONTENIDO WHERE id_contenido = 94 
+2019-04-09 12:46:29.044 DEBUG ContenidoDAOImpl.deleteEtiquetas:749 - Id= 94 
+2019-04-09 12:46:29.044 DEBUG ContenidoDAOImpl.deleteEtiquetas:749 - Id= 94 
+2019-04-09 12:46:29.044 DEBUG ContenidoDAOImpl.deleteEtiquetas:765 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 94 
+2019-04-09 12:46:29.044 DEBUG ContenidoDAOImpl.deleteEtiquetas:765 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 94 
+2019-04-09 12:46:29.044 DEBUG ContenidoDAOImpl.deleteContenido:707 - Id= 94 
+2019-04-09 12:46:29.044 DEBUG ContenidoDAOImpl.deleteContenido:707 - Id= 94 
+2019-04-09 12:46:29.044 DEBUG ContenidoDAOImpl.deleteContenido:723 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM CONTENIDO WHERE id_contenido = 94 
+2019-04-09 12:46:29.044 DEBUG ContenidoDAOImpl.deleteContenido:723 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM CONTENIDO WHERE id_contenido = 94 
+2019-04-09 12:46:29.059 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 95 
+2019-04-09 12:46:29.059 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 95 
+2019-04-09 12:46:29.064 DEBUG ContenidoDAOImpl.findById:160 - Id= 95 
+2019-04-09 12:46:29.064 DEBUG ContenidoDAOImpl.findById:160 - Id= 95 
+2019-04-09 12:46:29.065 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 95 
+2019-04-09 12:46:29.065 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 95 
+2019-04-09 12:46:29.066 DEBUG ContenidoServiceImpl.eliminarContenido:173 - idContenido= 95 
+2019-04-09 12:46:29.066 DEBUG ContenidoServiceImpl.eliminarContenido:173 - idContenido= 95 
+2019-04-09 12:46:29.071 DEBUG ContenidoDAOImpl.exists:57 - Id= 95 
+2019-04-09 12:46:29.071 DEBUG ContenidoDAOImpl.exists:57 - Id= 95 
+2019-04-09 12:46:29.072 DEBUG ContenidoDAOImpl.exists:76 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT ID_CONTENIDO  FROM CONTENIDO  WHERE ID_CONTENIDO = 95 
+2019-04-09 12:46:29.072 DEBUG ContenidoDAOImpl.exists:76 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT ID_CONTENIDO  FROM CONTENIDO  WHERE ID_CONTENIDO = 95 
+2019-04-09 12:46:29.072 DEBUG ContenidoDAOImpl.delete:693 - Id= 95 
+2019-04-09 12:46:29.072 DEBUG ContenidoDAOImpl.delete:693 - Id= 95 
+2019-04-09 12:46:29.072 DEBUG ContenidoDAOImpl.deleteRelaciones:825 - Id= 95 
+2019-04-09 12:46:29.072 DEBUG ContenidoDAOImpl.deleteRelaciones:825 - Id= 95 
+2019-04-09 12:46:29.073 DEBUG ContenidoDAOImpl.deleteRelaciones:842 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Usuario_CONTENIDO WHERE USUARIO_ID_CONTENIDO = 95 OR CONTENIDO_ID_CONTENIDO = 95 
+2019-04-09 12:46:29.073 DEBUG ContenidoDAOImpl.deleteRelaciones:842 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Usuario_CONTENIDO WHERE USUARIO_ID_CONTENIDO = 95 OR CONTENIDO_ID_CONTENIDO = 95 
+2019-04-09 12:46:29.073 DEBUG ContenidoDAOImpl.deleteCategorias:787 - Id= 95 
+2019-04-09 12:46:29.073 DEBUG ContenidoDAOImpl.deleteCategorias:787 - Id= 95 
+2019-04-09 12:46:29.073 DEBUG ContenidoDAOImpl.deleteCategorias:803 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Categoria_CONTENIDO WHERE id_contenido = 95 
+2019-04-09 12:46:29.073 DEBUG ContenidoDAOImpl.deleteCategorias:803 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Categoria_CONTENIDO WHERE id_contenido = 95 
+2019-04-09 12:46:29.082 DEBUG ContenidoDAOImpl.deleteEtiquetas:749 - Id= 95 
+2019-04-09 12:46:29.082 DEBUG ContenidoDAOImpl.deleteEtiquetas:749 - Id= 95 
+2019-04-09 12:46:29.082 DEBUG ContenidoDAOImpl.deleteEtiquetas:765 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 95 
+2019-04-09 12:46:29.082 DEBUG ContenidoDAOImpl.deleteEtiquetas:765 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 95 
+2019-04-09 12:46:29.089 DEBUG ContenidoDAOImpl.deleteContenido:707 - Id= 95 
+2019-04-09 12:46:29.089 DEBUG ContenidoDAOImpl.deleteContenido:707 - Id= 95 
+2019-04-09 12:46:29.089 DEBUG ContenidoDAOImpl.deleteContenido:723 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM CONTENIDO WHERE id_contenido = 95 
+2019-04-09 12:46:29.089 DEBUG ContenidoDAOImpl.deleteContenido:723 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM CONTENIDO WHERE id_contenido = 95 
+2019-04-09 12:46:29.108 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 96 
+2019-04-09 12:46:29.108 DEBUG ContenidoServiceImpl.buscarId:33 - idContenido= 96 
+2019-04-09 12:46:29.116 DEBUG ContenidoDAOImpl.findById:160 - Id= 96 
+2019-04-09 12:46:29.116 DEBUG ContenidoDAOImpl.findById:160 - Id= 96 
+2019-04-09 12:46:29.116 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 96 
+2019-04-09 12:46:29.116 DEBUG ContenidoDAOImpl.findById:179 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo FROM Contenido c  WHERE c.id_contenido = 96 
+2019-04-09 12:46:29.117 DEBUG ContenidoServiceImpl.eliminarContenido:173 - idContenido= 96 
+2019-04-09 12:46:29.117 DEBUG ContenidoServiceImpl.eliminarContenido:173 - idContenido= 96 
+2019-04-09 12:46:29.121 DEBUG ContenidoDAOImpl.exists:57 - Id= 96 
+2019-04-09 12:46:29.121 DEBUG ContenidoDAOImpl.exists:57 - Id= 96 
+2019-04-09 12:46:29.121 DEBUG ContenidoDAOImpl.exists:76 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT ID_CONTENIDO  FROM CONTENIDO  WHERE ID_CONTENIDO = 96 
+2019-04-09 12:46:29.121 DEBUG ContenidoDAOImpl.exists:76 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: SELECT ID_CONTENIDO  FROM CONTENIDO  WHERE ID_CONTENIDO = 96 
+2019-04-09 12:46:29.122 DEBUG ContenidoDAOImpl.delete:693 - Id= 96 
+2019-04-09 12:46:29.122 DEBUG ContenidoDAOImpl.delete:693 - Id= 96 
+2019-04-09 12:46:29.122 DEBUG ContenidoDAOImpl.deleteRelaciones:825 - Id= 96 
+2019-04-09 12:46:29.122 DEBUG ContenidoDAOImpl.deleteRelaciones:825 - Id= 96 
+2019-04-09 12:46:29.122 DEBUG ContenidoDAOImpl.deleteRelaciones:842 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Usuario_CONTENIDO WHERE USUARIO_ID_CONTENIDO = 96 OR CONTENIDO_ID_CONTENIDO = 96 
+2019-04-09 12:46:29.122 DEBUG ContenidoDAOImpl.deleteRelaciones:842 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Usuario_CONTENIDO WHERE USUARIO_ID_CONTENIDO = 96 OR CONTENIDO_ID_CONTENIDO = 96 
+2019-04-09 12:46:29.123 DEBUG ContenidoDAOImpl.deleteCategorias:787 - Id= 96 
+2019-04-09 12:46:29.123 DEBUG ContenidoDAOImpl.deleteCategorias:787 - Id= 96 
+2019-04-09 12:46:29.123 DEBUG ContenidoDAOImpl.deleteCategorias:803 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Categoria_CONTENIDO WHERE id_contenido = 96 
+2019-04-09 12:46:29.123 DEBUG ContenidoDAOImpl.deleteCategorias:803 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM Categoria_CONTENIDO WHERE id_contenido = 96 
+2019-04-09 12:46:29.123 DEBUG ContenidoDAOImpl.deleteEtiquetas:749 - Id= 96 
+2019-04-09 12:46:29.123 DEBUG ContenidoDAOImpl.deleteEtiquetas:749 - Id= 96 
+2019-04-09 12:46:29.124 DEBUG ContenidoDAOImpl.deleteEtiquetas:765 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 96 
+2019-04-09 12:46:29.124 DEBUG ContenidoDAOImpl.deleteEtiquetas:765 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM ETIQUETA_CONTENIDO WHERE id_contenido = 96 
+2019-04-09 12:46:29.124 DEBUG ContenidoDAOImpl.deleteContenido:707 - Id= 96 
+2019-04-09 12:46:29.124 DEBUG ContenidoDAOImpl.deleteContenido:707 - Id= 96 
+2019-04-09 12:46:29.124 DEBUG ContenidoDAOImpl.deleteContenido:723 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM CONTENIDO WHERE id_contenido = 96 
+2019-04-09 12:46:29.124 DEBUG ContenidoDAOImpl.deleteContenido:723 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement: DELETE FROM CONTENIDO WHERE id_contenido = 96 
+2019-04-09 12:46:29.143 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@1de5f259[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@1de5f259[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>] startIndex=5 count=1
+2019-04-09 12:46:29.143 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@1de5f259[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@1de5f259[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>] startIndex=5 count=1
+2019-04-09 12:46:29.144 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:29.144 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:29.146 DEBUG ContenidoServiceImpl.buscarCriteria:88 - ContenidoCriteria= com.isp.seeds.service.criteria.ContenidoCriteria@32502377[fechaAltaHasta=Tue Jan 16 12:46:29 CET 2001,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=Wed Jan 10 12:46:29 CET 2001,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@32502377[fechaAltaHasta=Tue Jan 16 12:46:29 CET 2001,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=Wed Jan 10 12:46:29 CET 2001,fechaMod=<null>,autor=<null>,tipo=<null>] 
+2019-04-09 12:46:29.146 DEBUG ContenidoServiceImpl.buscarCriteria:88 - ContenidoCriteria= com.isp.seeds.service.criteria.ContenidoCriteria@32502377[fechaAltaHasta=Tue Jan 16 12:46:29 CET 2001,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=Wed Jan 10 12:46:29 CET 2001,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@32502377[fechaAltaHasta=Tue Jan 16 12:46:29 CET 2001,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=Wed Jan 10 12:46:29 CET 2001,fechaMod=<null>,autor=<null>,tipo=<null>] 
+2019-04-09 12:46:29.151 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@32502377[fechaAltaHasta=Tue Jan 16 12:46:29 CET 2001,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=Wed Jan 10 12:46:29 CET 2001,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@32502377[fechaAltaHasta=Tue Jan 16 12:46:29 CET 2001,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=Wed Jan 10 12:46:29 CET 2001,fechaMod=<null>,autor=<null>,tipo=<null>] startIndex=0 count=10
+2019-04-09 12:46:29.151 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@32502377[fechaAltaHasta=Tue Jan 16 12:46:29 CET 2001,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=Wed Jan 10 12:46:29 CET 2001,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@32502377[fechaAltaHasta=Tue Jan 16 12:46:29 CET 2001,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=Wed Jan 10 12:46:29 CET 2001,fechaMod=<null>,autor=<null>,tipo=<null>] startIndex=0 count=10
+2019-04-09 12:46:29.151 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C WHERE  C.FECHA_ALTA > '2001-01-10'   AND  C.FECHA_ALTA < '2001-01-16'   ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:29.151 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C WHERE  C.FECHA_ALTA > '2001-01-10'   AND  C.FECHA_ALTA < '2001-01-16'   ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:29.153 DEBUG ContenidoServiceImpl.buscarCriteria:88 - ContenidoCriteria= com.isp.seeds.service.criteria.ContenidoCriteria@66f57048[fechaAltaHasta=<null>,fechaModHasta=Fri Feb 16 12:46:29 CET 2001,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=Wed Jan 10 12:46:29 CET 2001,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@66f57048[fechaAltaHasta=<null>,fechaModHasta=Fri Feb 16 12:46:29 CET 2001,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=Wed Jan 10 12:46:29 CET 2001,autor=<null>,tipo=<null>] 
+2019-04-09 12:46:29.153 DEBUG ContenidoServiceImpl.buscarCriteria:88 - ContenidoCriteria= com.isp.seeds.service.criteria.ContenidoCriteria@66f57048[fechaAltaHasta=<null>,fechaModHasta=Fri Feb 16 12:46:29 CET 2001,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=Wed Jan 10 12:46:29 CET 2001,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@66f57048[fechaAltaHasta=<null>,fechaModHasta=Fri Feb 16 12:46:29 CET 2001,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=Wed Jan 10 12:46:29 CET 2001,autor=<null>,tipo=<null>] 
+2019-04-09 12:46:29.162 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@66f57048[fechaAltaHasta=<null>,fechaModHasta=Fri Feb 16 12:46:29 CET 2001,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=Wed Jan 10 12:46:29 CET 2001,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@66f57048[fechaAltaHasta=<null>,fechaModHasta=Fri Feb 16 12:46:29 CET 2001,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=Wed Jan 10 12:46:29 CET 2001,autor=<null>,tipo=<null>] startIndex=0 count=10
+2019-04-09 12:46:29.162 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@66f57048[fechaAltaHasta=<null>,fechaModHasta=Fri Feb 16 12:46:29 CET 2001,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=Wed Jan 10 12:46:29 CET 2001,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@66f57048[fechaAltaHasta=<null>,fechaModHasta=Fri Feb 16 12:46:29 CET 2001,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=Wed Jan 10 12:46:29 CET 2001,autor=<null>,tipo=<null>] startIndex=0 count=10
+2019-04-09 12:46:29.163 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C WHERE  C.FECHA_MOD > '2001-01-10'   AND  C.FECHA_MOD < '2001-02-16'   ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:29.163 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C WHERE  C.FECHA_MOD > '2001-01-10'   AND  C.FECHA_MOD < '2001-02-16'   ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:29.164 DEBUG ContenidoServiceImpl.buscarCriteria:88 - ContenidoCriteria= com.isp.seeds.service.criteria.ContenidoCriteria@36916eb0[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@36916eb0[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>] 
+2019-04-09 12:46:29.164 DEBUG ContenidoServiceImpl.buscarCriteria:88 - ContenidoCriteria= com.isp.seeds.service.criteria.ContenidoCriteria@36916eb0[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@36916eb0[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>] 
+2019-04-09 12:46:29.173 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@36916eb0[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@36916eb0[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>] startIndex=0 count=10
+2019-04-09 12:46:29.173 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@36916eb0[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@36916eb0[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>] startIndex=0 count=10
+2019-04-09 12:46:29.174 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C WHERE  C.NOMBRE LIKE '%al%'  ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:29.174 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C WHERE  C.NOMBRE LIKE '%al%'  ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:29.186 DEBUG ContenidoServiceImpl.buscarCriteria:88 - ContenidoCriteria= com.isp.seeds.service.criteria.ContenidoCriteria@23c30a20[fechaAltaHasta=Mon Oct 11 12:46:29 CEST 2010,fechaModHasta=Mon Oct 11 12:46:29 CEST 2010,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2]com.isp.seeds.service.criteria.ContenidoCriteria@23c30a20[fechaAltaHasta=Mon Oct 11 12:46:29 CEST 2010,fechaModHasta=Mon Oct 11 12:46:29 CEST 2010,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2] 
+2019-04-09 12:46:29.186 DEBUG ContenidoServiceImpl.buscarCriteria:88 - ContenidoCriteria= com.isp.seeds.service.criteria.ContenidoCriteria@23c30a20[fechaAltaHasta=Mon Oct 11 12:46:29 CEST 2010,fechaModHasta=Mon Oct 11 12:46:29 CEST 2010,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2]com.isp.seeds.service.criteria.ContenidoCriteria@23c30a20[fechaAltaHasta=Mon Oct 11 12:46:29 CEST 2010,fechaModHasta=Mon Oct 11 12:46:29 CEST 2010,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2] 
+2019-04-09 12:46:29.191 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@23c30a20[fechaAltaHasta=Mon Oct 11 12:46:29 CEST 2010,fechaModHasta=Mon Oct 11 12:46:29 CEST 2010,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2]com.isp.seeds.service.criteria.ContenidoCriteria@23c30a20[fechaAltaHasta=Mon Oct 11 12:46:29 CEST 2010,fechaModHasta=Mon Oct 11 12:46:29 CEST 2010,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2] startIndex=0 count=10
+2019-04-09 12:46:29.191 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@23c30a20[fechaAltaHasta=Mon Oct 11 12:46:29 CEST 2010,fechaModHasta=Mon Oct 11 12:46:29 CEST 2010,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2]com.isp.seeds.service.criteria.ContenidoCriteria@23c30a20[fechaAltaHasta=Mon Oct 11 12:46:29 CEST 2010,fechaModHasta=Mon Oct 11 12:46:29 CEST 2010,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2] startIndex=0 count=10
+2019-04-09 12:46:29.192 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C WHERE  C.NOMBRE LIKE '%al%'  AND  C.FECHA_ALTA > '2010-10-09'   AND  C.FECHA_ALTA < '2010-10-11'   AND  C.FECHA_MOD > '2010-10-09'   AND  C.FECHA_MOD < '2010-10-11'   AND  C.AUTOR_ID_CONTENIDO LIKE '%7%'  AND  C.TIPO = 2  ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:29.192 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C WHERE  C.NOMBRE LIKE '%al%'  AND  C.FECHA_ALTA > '2010-10-09'   AND  C.FECHA_ALTA < '2010-10-11'   AND  C.FECHA_MOD > '2010-10-09'   AND  C.FECHA_MOD < '2010-10-11'   AND  C.AUTOR_ID_CONTENIDO LIKE '%7%'  AND  C.TIPO = 2  ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:29.194 DEBUG ContenidoServiceImpl.buscarCriteria:88 - ContenidoCriteria= com.isp.seeds.service.criteria.ContenidoCriteria@12aba8be[fechaAltaHasta=Tue Oct 12 12:46:29 CEST 2010,fechaModHasta=Tue Oct 12 12:46:29 CEST 2010,valoracionMin=5,valoracionMax=7,reproduccionesMin=16,reproduccionesMax=18,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2]com.isp.seeds.service.criteria.ContenidoCriteria@12aba8be[fechaAltaHasta=Tue Oct 12 12:46:29 CEST 2010,fechaModHasta=Tue Oct 12 12:46:29 CEST 2010,valoracionMin=5,valoracionMax=7,reproduccionesMin=16,reproduccionesMax=18,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2] 
+2019-04-09 12:46:29.194 DEBUG ContenidoServiceImpl.buscarCriteria:88 - ContenidoCriteria= com.isp.seeds.service.criteria.ContenidoCriteria@12aba8be[fechaAltaHasta=Tue Oct 12 12:46:29 CEST 2010,fechaModHasta=Tue Oct 12 12:46:29 CEST 2010,valoracionMin=5,valoracionMax=7,reproduccionesMin=16,reproduccionesMax=18,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2]com.isp.seeds.service.criteria.ContenidoCriteria@12aba8be[fechaAltaHasta=Tue Oct 12 12:46:29 CEST 2010,fechaModHasta=Tue Oct 12 12:46:29 CEST 2010,valoracionMin=5,valoracionMax=7,reproduccionesMin=16,reproduccionesMax=18,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2] 
+2019-04-09 12:46:29.199 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@12aba8be[fechaAltaHasta=Tue Oct 12 12:46:29 CEST 2010,fechaModHasta=Tue Oct 12 12:46:29 CEST 2010,valoracionMin=5,valoracionMax=7,reproduccionesMin=16,reproduccionesMax=18,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2]com.isp.seeds.service.criteria.ContenidoCriteria@12aba8be[fechaAltaHasta=Tue Oct 12 12:46:29 CEST 2010,fechaModHasta=Tue Oct 12 12:46:29 CEST 2010,valoracionMin=5,valoracionMax=7,reproduccionesMin=16,reproduccionesMax=18,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2] startIndex=0 count=10
+2019-04-09 12:46:29.199 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@12aba8be[fechaAltaHasta=Tue Oct 12 12:46:29 CEST 2010,fechaModHasta=Tue Oct 12 12:46:29 CEST 2010,valoracionMin=5,valoracionMax=7,reproduccionesMin=16,reproduccionesMax=18,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2]com.isp.seeds.service.criteria.ContenidoCriteria@12aba8be[fechaAltaHasta=Tue Oct 12 12:46:29 CEST 2010,fechaModHasta=Tue Oct 12 12:46:29 CEST 2010,valoracionMin=5,valoracionMax=7,reproduccionesMin=16,reproduccionesMax=18,id=<null>,nombre=al,fechaAlta=Sat Oct 09 12:46:29 CEST 2010,fechaMod=Sat Oct 09 12:46:29 CEST 2010,autor=7,tipo=2] startIndex=0 count=10
+2019-04-09 12:46:29.200 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C WHERE  C.NOMBRE LIKE '%al%'  AND  C.FECHA_ALTA > '2010-10-09'   AND  C.FECHA_ALTA < '2010-10-12'   AND  C.FECHA_MOD > '2010-10-09'   AND  C.FECHA_MOD < '2010-10-12'   AND  C.AUTOR_ID_CONTENIDO LIKE '%7%'  AND  C.TIPO = 2  ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:29.200 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C WHERE  C.NOMBRE LIKE '%al%'  AND  C.FECHA_ALTA > '2010-10-09'   AND  C.FECHA_ALTA < '2010-10-12'   AND  C.FECHA_MOD > '2010-10-09'   AND  C.FECHA_MOD < '2010-10-12'   AND  C.AUTOR_ID_CONTENIDO LIKE '%7%'  AND  C.TIPO = 2  ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:29.207 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@49049a04[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@49049a04[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>] startIndex=0 count=10
+2019-04-09 12:46:29.207 DEBUG ContenidoDAOImpl.findByCriteria:260 - Criteria= com.isp.seeds.service.criteria.ContenidoCriteria@49049a04[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>]com.isp.seeds.service.criteria.ContenidoCriteria@49049a04[fechaAltaHasta=<null>,fechaModHasta=<null>,valoracionMin=<null>,valoracionMax=<null>,reproduccionesMin=<null>,reproduccionesMax=<null>,id=<null>,nombre=<null>,fechaAlta=<null>,fechaMod=<null>,autor=<null>,tipo=<null>] startIndex=0 count=10
+2019-04-09 12:46:29.207 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C ORDER BY C.FECHA_ALTA 
+2019-04-09 12:46:29.207 DEBUG ContenidoDAOImpl.findByCriteria:342 - QUERY= com.mysql.cj.jdbc.ClientPreparedStatement:  SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO  FROM CONTENIDO C ORDER BY C.FECHA_ALTA 

@@ -18,6 +18,7 @@ import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Etiqueta;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
 import com.isp.seeds.service.spi.ContenidoService;
+import com.isp.seeds.service.util.Results;
 
 public class ContenidoServiceImpl implements ContenidoService {
 	
@@ -81,7 +82,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 	
 
 	@Override
-	public List<Contenido> buscarCriteria(ContenidoCriteria contenido, int startIndex, int count, String idioma) throws DataException {
+	public Results<Contenido> buscarCriteria(ContenidoCriteria contenido, int startIndex, int count, String idioma) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("ContenidoCriteria= {} ", contenido);
@@ -90,21 +91,10 @@ public class ContenidoServiceImpl implements ContenidoService {
 		if(contenido != null) {
 
 			try {
-				long t1= System.currentTimeMillis();
-
 				Connection connection = ConnectionManager.getConnection();
-				long t2= System.currentTimeMillis();
 
-				List<Contenido> contenidos = new ArrayList<Contenido>();
-				contenidos = contenidoDao.findByCriteria(connection, contenido, startIndex, count, idioma);
-				long t3= System.currentTimeMillis();
-
+				Results<Contenido> contenidos = contenidoDao.findByCriteria(connection, contenido, startIndex, count, idioma);
 				JDBCUtils.closeConnection(connection);
-				long t4= System.currentTimeMillis();
-
-				if(logger.isDebugEnabled()) {
-					logger.debug ("TiempoAbrir= {} TiempoEjecutar= {} TiempoCerrarr= {}", (t2-t1), (t3-t2) , (t4-t3));
-				}
 
 				return contenidos;
 
@@ -121,20 +111,18 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 
 	@Override
-	public List<Contenido> verTodos(int startIndex, int count, String idioma) {
+	public Results<Contenido> verTodos(int startIndex, int count, String idioma) {
 		
 		// LOGGER
 		
-		List<Contenido> contenido = null;
 		try {
 
 			Connection connection = ConnectionManager.getConnection();
 
-			contenido = new ArrayList<Contenido>();
-			contenido = contenidoDao.findAll(connection, startIndex, count, idioma);
+			Results<Contenido> contenido = contenidoDao.findAll(connection, startIndex, count, idioma);
 
 			JDBCUtils.closeConnection(connection);
-
+			return contenido;
 
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
@@ -143,7 +131,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 		}finally{
 			//JDBCUtils.closeConnection(connection);
 		}
-		return contenido;
+		return null;
 	}
 
 	

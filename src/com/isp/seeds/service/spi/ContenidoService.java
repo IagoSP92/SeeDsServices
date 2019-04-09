@@ -7,6 +7,7 @@ import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Etiqueta;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
+import com.isp.seeds.service.util.Results;
 
 public interface ContenidoService {
 	
@@ -17,11 +18,11 @@ public interface ContenidoService {
 	public Contenido buscarNombre(String nombreContenido, int startIndex, int count, String idioma);
 	
 
-	public List<Contenido> buscarCriteria(ContenidoCriteria contenido, int startIndex, int count, String idioma)
+	public Results<Contenido> buscarCriteria(ContenidoCriteria contenido, int startIndex, int count, String idioma)
 			throws DataException;
 
 	
-	public List<Contenido> verTodos (int startIndex, int count, String idioma) 
+	public Results<Contenido> verTodos (int startIndex, int count, String idioma) 
 			throws DataException;
 	
 	

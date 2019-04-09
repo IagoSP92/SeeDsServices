@@ -254,7 +254,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 
 	@Override
-	public List<Contenido> findByCriteria (Connection connection, ContenidoCriteria contenido, int startIndex, int count, String idioma) throws DataException {
+	public Results<Contenido> findByCriteria (Connection connection, ContenidoCriteria contenido, int startIndex, int count, String idioma) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Criteria= {} startIndex={} count={}", contenido, startIndex, count);
@@ -385,7 +385,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			int totalRows = JDBCUtils.getTotalRows(resultSet);
 			Results<Contenido> results = new Results<Contenido>(page, startIndex, totalRows);
-			return (List<Contenido>) results;
+			return results;
 
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
@@ -522,7 +522,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 * @return  Lista con todos los contenidos
 	 */
 	@Override
-	public List<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) throws DataException {
+	public Results<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) throws DataException {
 		ContenidoDAO dao= new ContenidoDAOImpl();
 		ContenidoCriteria contenido= new ContenidoCriteria();
 		return dao.findByCriteria(connection, contenido, startIndex, count, idioma);
