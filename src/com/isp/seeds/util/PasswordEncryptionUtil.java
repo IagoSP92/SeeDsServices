@@ -1,4 +1,4 @@
-package com.isp.seeds.Util;
+package com.isp.seeds.util;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
 

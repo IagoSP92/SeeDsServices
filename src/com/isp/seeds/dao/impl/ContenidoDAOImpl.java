@@ -24,6 +24,7 @@ import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Etiqueta;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
+import com.isp.seeds.service.util.Results;
 
 public class ContenidoDAOImpl implements ContenidoDAO {
 
@@ -153,7 +154,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 * @return Contenido : Contenido que corresponde con el ID recibido
 	 */
 	@Override
-	public Contenido findById(Connection connection, Long idContenido) throws DataException {
+	public Contenido findById(Connection connection, Long idContenido, String idioma) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Id= {} ", idContenido);
@@ -206,7 +207,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 * @return Contenido : Contenido que corresponde con el nombre recibido
 	 */
 	@Override
-	public Contenido findByNombre(Connection connection, String nombreContenido) throws DataException {
+	public Contenido findByNombre(Connection connection, String nombreContenido, int startIndex, int count, String idioma) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Nombre= {} ", nombreContenido);
@@ -253,7 +254,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 
 	@Override
-	public List<Contenido> findByCriteria (Connection connection, ContenidoCriteria contenido, int startIndex, int count) throws DataException {
+	public List<Contenido> findByCriteria (Connection connection, ContenidoCriteria contenido, int startIndex, int count, String idioma) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Criteria= {} startIndex={} count={}", contenido, startIndex, count);
@@ -343,7 +344,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			resultSet = preparedStatement.executeQuery();
 
-			List<Contenido> results = new ArrayList<Contenido>();    
+			List<Contenido> page = new ArrayList<Contenido>();    
 			Contenido e = null;
 
 			int currentCount = 0;
@@ -358,11 +359,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 								if (contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null) {
 									if(filtrarReproducciones(connection, contenido, e)) {
-										results.add(e);
+										page.add(e);
 										currentCount++;
 									}
 								} else {
-									results.add(e);
+									page.add(e);
 									currentCount++;
 								}
 							}
@@ -370,11 +371,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 							if (contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null) {
 								if(filtrarReproducciones(connection, contenido, e)) {
-									results.add(e);
+									page.add(e);
 									currentCount++;
 								}
 							} else {
-								results.add(e);
+								page.add(e);
 								currentCount++;
 							}
 						}          	
@@ -382,7 +383,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				}
 			}
 
-			return results;
+			int totalRows = JDBCUtils.getTotalRows(resultSet);
+			Results<Contenido> results = new Results<Contenido>(page, startIndex, totalRows);
+			return (List<Contenido>) results;
 
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
@@ -519,10 +522,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 * @return  Lista con todos los contenidos
 	 */
 	@Override
-	public List<Contenido> findAll(Connection connection) throws DataException {
+	public List<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) throws DataException {
 		ContenidoDAO dao= new ContenidoDAOImpl();
 		ContenidoCriteria contenido= new ContenidoCriteria();
-		return dao.findByCriteria(connection, contenido, 1, 5);
+		return dao.findByCriteria(connection, contenido, startIndex, count, idioma);
 	}
 
 
