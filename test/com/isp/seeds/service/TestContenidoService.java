@@ -52,21 +52,21 @@ public class TestContenidoService {
 			contenido3=contenidoSvc.crearContenido(contenido3);
 			System.out.println();
 			System.out.println("____________________________________________ Inicio buscarIdTest");
-			System.out.println(contenidoSvc.buscarId(contenido1.getIdContenido()).toString());
-			System.out.println(contenidoSvc.buscarId(contenido2.getIdContenido()).toString());
-			System.out.println(contenidoSvc.buscarId(contenido3.getIdContenido()).toString());
+			System.out.println(contenidoSvc.buscarId(contenido1.getIdContenido(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido2.getIdContenido(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido3.getIdContenido(), "ESP").toString());
 			System.out.println("____________________________________________    fin verContenidoTest");
 			System.out.println();System.out.println();
 			System.out.println("____________________________________________ Inicio modificarNombre1");
-			System.out.println(contenidoSvc.buscarId(contenido2.getIdContenido()).toString());
-			contenidoSvc.cambiarNombre(contenido2.getIdContenido(), "Contenido2NombreModificado");
-			System.out.println(contenidoSvc.buscarId(contenido2.getIdContenido()).toString());
+			System.out.println(contenidoSvc.buscarId(contenido2.getIdContenido(), "ESP").toString());
+			//contenidoSvc.cambiarNombre(contenido2.getIdContenido(), "Contenido2NombreModificado");
+			System.out.println(contenidoSvc.buscarId(contenido2.getIdContenido(), "ESP").toString());
 			System.out.println();
 			System.out.println("____________________________________________ Inicio modificarNombre2");
-			System.out.println(contenidoSvc.buscarId(contenido3.getIdContenido()).toString());
+			System.out.println(contenidoSvc.buscarId(contenido3.getIdContenido(), "ESP").toString());
 			contenido3.setNombre("Contenido3lista___Nombre___Modificado");
-			contenido3=contenidoSvc.cambiarNombre(contenido3);
-			System.out.println(contenidoSvc.buscarId(contenido3.getIdContenido()).toString());
+			contenido3=contenidoSvc.cambiarNombre(contenido3.getIdContenido(), contenido3.getNombre(), "ESP");
+			System.out.println(contenidoSvc.buscarId(contenido3.getIdContenido(), "ESP").toString());
 			System.out.println();
 			System.out.println("____________________________________________  Asignar categoria");
 			contenidoSvc.asignarCategoria(contenido2.getIdContenido(), categoriaSvc.findByNombre("VIDEOCLIPS", "ESP"));
@@ -96,18 +96,18 @@ public class TestContenidoService {
 			System.out.println();
 			System.out.println();
 			
-			System.out.println(contenidoSvc.buscarId(contenido1.getIdContenido()).toString());
+			System.out.println(contenidoSvc.buscarId(contenido1.getIdContenido(), "ESP").toString());
 			
 			contenidoSvc.eliminarContenido(contenido1.getIdContenido());
-			System.out.println(contenidoSvc.buscarId(contenido2.getIdContenido()).toString());
+			System.out.println(contenidoSvc.buscarId(contenido2.getIdContenido(), "ESP").toString());
 			
 			contenidoSvc.eliminarContenido(contenido2.getIdContenido());
-			System.out.println(contenidoSvc.buscarId(contenido3.getIdContenido()).toString());
+			System.out.println(contenidoSvc.buscarId(contenido3.getIdContenido(), "ESP").toString());
 			
 			contenidoSvc.eliminarContenido(contenido3.getIdContenido());
 
 			List<Contenido> todos = new ArrayList<Contenido>();
-			todos = contenidoSvc.verTodos();
+			todos = contenidoSvc.verTodos(5,1,"ESP");
 			for(Contenido c : todos) {
 				System.out.println(c.toString());
 			}
@@ -130,7 +130,7 @@ public class TestContenidoService {
 			contenidoCriteria.setFechaAltaHasta(date);
 			
 			
-			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
 			for(Contenido c : todos) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
@@ -149,7 +149,7 @@ public class TestContenidoService {
 			
 			
 
-			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
 			for(Contenido c : todos) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
@@ -160,7 +160,7 @@ public class TestContenidoService {
 			contenidoCriteria.setNombre("al");
 			
 			
-			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
 			for(Contenido c : todos) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
@@ -191,7 +191,7 @@ public class TestContenidoService {
 			contenidoCriteria.setTipo(2);
 			
 			
-			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
 			for(Contenido c : todos) {
 				System.out.println(c.toString());
 			}System.out.println("----------------------------------------------"
@@ -229,14 +229,14 @@ public class TestContenidoService {
 			contenidoCriteria.setReproduccionesMax(18);
 
 			
-			todos = contenidoSvc.buscarCriteria(contenidoCriteria);
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
 			for(Contenido c : todos) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
 			System.out.println("______________________________________________________________________________________");
 			
 			
-			todos = contenidoSvc.verTodos();
+			todos = contenidoSvc.verTodos(0, 10, "ESP");
 			for(Contenido c : todos) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
