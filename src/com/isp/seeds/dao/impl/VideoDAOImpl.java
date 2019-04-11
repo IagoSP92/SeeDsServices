@@ -33,7 +33,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 
 		try {          
 			String queryString = 
-					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
+					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo, "
 							+ " v.descripcion, v.reproducciones, v.url_video " + 
 							"FROM Video v INNER JOIN Contenido c ON (c.id_contenido = v.id_contenido ) " +
 							"WHERE v.id_contenido = ? ";
@@ -355,6 +355,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 				Date fechaAlta =  resultSet.getDate(i++);
 				Date fechaMod =  resultSet.getDate(i++);
 				Long autor = resultSet.getLong(i++);	
+				Integer tipo = resultSet.getInt(i++);
 				
 				String descripcion = resultSet.getString(i++);
 				Integer reproducciones = resultSet.getInt(i++);
@@ -366,6 +367,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 				v.setFechaAlta(fechaAlta);
 				v.setFechaMod(fechaMod);
 				v.setIdAutor(autor);
+				v.setTipo(tipo);
 
 				v.setDescripcion(descripcion);
 				v.setReproducciones(reproducciones);

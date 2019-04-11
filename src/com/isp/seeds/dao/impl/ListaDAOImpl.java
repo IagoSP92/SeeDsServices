@@ -38,7 +38,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 
 		try {          
 			String queryString = 
-					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
+					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo, "
 							+ " l.descripcion, l.publica " + 
 							"FROM Lista l INNER JOIN Contenido c ON (c.id_contenido = l.id_contenido ) " +
 							"WHERE l.id_contenido = ? ";
@@ -884,6 +884,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 				Date fechaAlta =  resultSet.getDate(i++);
 				Date fechaMod =  resultSet.getDate(i++);
 				Long autor = resultSet.getLong(i++);	
+				Integer tipo = resultSet.getInt(i++);	
 				
 				String descripcion = resultSet.getString(i++);
 				Boolean publica = resultSet.getBoolean(i++);
@@ -894,6 +895,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 				l.setFechaAlta(fechaAlta);
 				l.setFechaMod(fechaMod);
 				l.setIdAutor(autor);
+				l.setTipo(tipo);
 
 				l.setDescripcion(descripcion);
 				l.setPublica(publica);
