@@ -37,7 +37,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 		try {          
 			String queryString = 
-					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
+					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo"
 							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais, u.fecha_nac " + 
 							"FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) " +
 							"WHERE u.id_contenido = ? ";
@@ -459,6 +459,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		Date fechaAlta =  resultSet.getDate(i++);
 		Date fechaMod =  resultSet.getDate(i++);
 		Long autor = resultSet.getLong(i++);	
+		Integer tipo= resultSet.getInt(i++);	
 
 		String correo = resultSet.getString(i++);
 		String contrasena = resultSet.getString(i++);
@@ -477,6 +478,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		u.setFechaAlta(fechaAlta);
 		u.setFechaMod(fechaMod);
 		u.setIdAutor(null);
+		u.setTipo(tipo);
 
 		u.setEmail(correo);
 		u.setContrasena(contrasena);
