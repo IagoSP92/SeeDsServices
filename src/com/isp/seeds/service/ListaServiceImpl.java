@@ -65,7 +65,7 @@ public class ListaServiceImpl implements ListaService {
 
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				listaDao.delete(connection, lista.getIdContenido());
+				listaDao.delete(connection, lista.getId());
 				JDBCUtils.closeConnection(connection);
 			}
 			catch (SQLException e) { 

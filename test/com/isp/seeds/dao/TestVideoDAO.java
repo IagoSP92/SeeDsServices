@@ -38,14 +38,14 @@ public class TestVideoDAO {
 		System.out.println(video2.toString());
 		System.out.println("INSERTADO IMPRIMIDO");
 		System.out.println("BUSCAMOS EL RECIEN INSERTADO");
-		System.out.println(dao.findById(conexion, video2.getIdContenido()));
+		System.out.println(dao.findById(conexion, video2.getId()));
 		System.out.println("AHI QUEDA, AHORA EDITAMOS");
 		System.out.println("modificar");
 		video2.setDescripcion("he cambiaadoo la descripcion");
 		video2.setReproducciones(666);
 		video2.setUrl("hecambiadolaurl.mp4");
 		dao.update(conexion, video2);
-		System.out.println(dao.findById(conexion, video2.getIdContenido()));
+		System.out.println(dao.findById(conexion, video2.getId()));
 		
 		System.out.println("1 - BUSCAMOS ALL:");
 		List<Video> lista = dao.findAllVideos(conexion);
@@ -53,7 +53,7 @@ public class TestVideoDAO {
 		for(Video u: lista){System.out.println(u.toString());}
 		System.out.println("3 - FIN DE LA IMPRESION");
 		System.out.println("BORRAMOS");
-		dao.delete(conexion, video2.getIdContenido());
+		dao.delete(conexion, video2.getId());
 		System.out.println("MOSTRALL");
 		lista = dao.findAllVideos(conexion);
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");

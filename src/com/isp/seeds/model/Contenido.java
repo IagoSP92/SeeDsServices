@@ -20,7 +20,7 @@ public class Contenido extends AbstractValueObject {
 			return false;
 		}
 		Contenido c = (Contenido) o;
-		if (id !=null && c.getIdContenido()!=null && id==c.getIdContenido()) {
+		if (id !=null && c.getId()!=null && id==c.getId()) {
 			return true;
 		}
 		return false;
@@ -61,11 +61,11 @@ public class Contenido extends AbstractValueObject {
 
 	}
 
-	public Long getIdContenido() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setIdContenido(Long idContenido) {
+	public void setId(Long idContenido) {
 		this.id = idContenido;
 	}
 

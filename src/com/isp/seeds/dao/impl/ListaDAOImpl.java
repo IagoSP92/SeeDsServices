@@ -220,7 +220,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 									Statement.RETURN_GENERATED_KEYS);
 
 			int i = 1;    
-			preparedStatement.setLong(i++, lista.getIdContenido());
+			preparedStatement.setLong(i++, lista.getId());
 			preparedStatement.setLong(i++, lista.getIdAutor());
 			preparedStatement.setString(i++, lista.getDescripcion());
 			preparedStatement.setBoolean(i++, lista.getPublica());
@@ -282,7 +282,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			if (lista.getPublica()!=null)
 				preparedStatement.setBoolean(i++,lista.getPublica());
 			
-			preparedStatement.setLong(i++, lista.getIdContenido());
+			preparedStatement.setLong(i++, lista.getId());
 
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);
@@ -291,12 +291,12 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			int updatedRows = preparedStatement.executeUpdate();
 
 			if (updatedRows == 0) {
-				throw new InstanceNotFoundException(lista.getIdContenido(), Lista.class.getName()); //Esto ultimo pa mostrar o nome da clase??
+				throw new InstanceNotFoundException(lista.getId(), Lista.class.getName()); //Esto ultimo pa mostrar o nome da clase??
 			}
 
 			if (updatedRows > 1) {
 				throw new SQLException("Duplicate row for id = '" + 
-						lista.getIdContenido() + "' in table 'Lista'");
+						lista.getId() + "' in table 'Lista'");
 			}     
 			
 		} catch (SQLException e) {
@@ -889,7 +889,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 				Boolean publica = resultSet.getBoolean(i++);
 			
 				Lista l = new Lista();
-				l.setIdContenido(idContenido);
+				l.setId(idContenido);
 				l.setNombre(nombre);
 				l.setFechaAlta(fechaAlta);
 				l.setFechaMod(fechaMod);

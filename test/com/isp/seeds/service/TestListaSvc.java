@@ -62,7 +62,7 @@ public class TestListaSvc {
 		Video videoA = new Video();
 		videoA.setFechaAlta(new Date());
 		videoA.setFechaMod(new Date());
-		videoA.setIdAutor(userUno.getIdContenido());
+		videoA.setIdAutor(userUno.getId());
 		videoA.setNombre("videoA");
 		videoA.setTipo(2);
 		videoA.setUrl("urlideo.avi");
@@ -73,7 +73,7 @@ public class TestListaSvc {
 		Video videoB = new Video();
 		videoB.setFechaAlta(new Date());
 		videoB.setFechaMod(new Date());
-		videoB.setIdAutor(userUno.getIdContenido());
+		videoB.setIdAutor(userUno.getId());
 		videoB.setNombre("videoB");
 		videoB.setTipo(2);
 		videoB.setUrl("urlideo.avi");
@@ -84,7 +84,7 @@ public class TestListaSvc {
 		Video videoC = new Video();
 		videoC.setFechaAlta(new Date());
 		videoC.setFechaMod(new Date());
-		videoC.setIdAutor(userDos.getIdContenido());
+		videoC.setIdAutor(userDos.getId());
 		videoC.setNombre("videoC");
 		videoC.setTipo(2);
 		videoC.setUrl("urlideo.avi");
@@ -95,53 +95,53 @@ public class TestListaSvc {
 		Lista listaPrimera = new Lista();
 		listaPrimera.setFechaAlta(new Date());
 		listaPrimera.setFechaMod(new Date());
-		listaPrimera.setIdAutor(userUno.getIdContenido());
+		listaPrimera.setIdAutor(userUno.getId());
 		listaPrimera.setNombre("listaPrimera");
 		listaPrimera.setDescripcion("descripcionLista");
 		listaPrimera.setTipo(3);
 		listaPrimera.setPublica(true);
 		
 		try {listaPrimera = listaSvc.crearLista(listaPrimera);}catch(DataException e) {logger.warn(e.getMessage(), e);};
-		try {System.out.println(listaSvc.buscarId(listaPrimera.getIdContenido()).toString()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
+		try {System.out.println(listaSvc.buscarId(listaPrimera.getId()).toString()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
 		
 		listaPrimera.setDescripcion("descripcionListaModificada");
 		listaPrimera.setNombre("listaPrimeraModificada");
 		
 		try {listaSvc.editarLista(listaPrimera);}catch(DataException e) {logger.warn(e.getMessage(), e);};
-		try {System.out.println(listaSvc.buscarId(listaPrimera.getIdContenido()).toString()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
+		try {System.out.println(listaSvc.buscarId(listaPrimera.getId()).toString()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
 		
 		try {
-		listaSvc.meterVideo(listaPrimera.getIdContenido(), videoA.getIdContenido(), 1);
-		listaSvc.meterVideo(listaPrimera.getIdContenido(), videoB.getIdContenido(), 2);
-		listaSvc.meterVideo(listaPrimera.getIdContenido(), videoC.getIdContenido(), 3);
+		listaSvc.meterVideo(listaPrimera.getId(), videoA.getId(), 1);
+		listaSvc.meterVideo(listaPrimera.getId(), videoB.getId(), 2);
+		listaSvc.meterVideo(listaPrimera.getId(), videoC.getId(), 3);
 		}catch(DataException e) {logger.warn(e.getMessage(), e);};
 		
 		List<Video> contenidoLista = null;
 		
 		contenidoLista = new ArrayList<Video>();
-		try { contenidoLista = listaSvc.verVideosLista(listaPrimera.getIdContenido()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
+		try { contenidoLista = listaSvc.verVideosLista(listaPrimera.getId()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
 		for(Video v:contenidoLista) {
 			System.out.println(v.toString());
 		}
 		
 		try {
-			listaSvc.sacarVideo(listaPrimera.getIdContenido(), videoC.getIdContenido());
-			listaSvc.sacarVideo(listaPrimera.getIdContenido(), videoB.getIdContenido());
-			listaSvc.sacarVideo(listaPrimera.getIdContenido(), videoA.getIdContenido());
+			listaSvc.sacarVideo(listaPrimera.getId(), videoC.getId());
+			listaSvc.sacarVideo(listaPrimera.getId(), videoB.getId());
+			listaSvc.sacarVideo(listaPrimera.getId(), videoA.getId());
 		}catch(DataException e) {logger.warn(e.getMessage(), e);};
 		
 		contenidoLista = new ArrayList<Video>();
-		try { contenidoLista = listaSvc.verVideosLista(listaPrimera.getIdContenido()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
+		try { contenidoLista = listaSvc.verVideosLista(listaPrimera.getId()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
 		for(Video v:contenidoLista) {
 			System.out.println(v.toString());
 		}
 		
-		try { videoSvc.eliminarVideo(videoA.getIdContenido()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
-		try { videoSvc.eliminarVideo(videoB.getIdContenido()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
-		try { videoSvc.eliminarVideo(videoC.getIdContenido()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
+		try { videoSvc.eliminarVideo(videoA.getId()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
+		try { videoSvc.eliminarVideo(videoB.getId()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
+		try { videoSvc.eliminarVideo(videoC.getId()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
 		
-		try { usuarioSvc.eliminarCuenta(userUno.getIdContenido()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
-		try { usuarioSvc.eliminarCuenta(userDos.getIdContenido()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
+		try { usuarioSvc.eliminarCuenta(userUno.getId()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
+		try { usuarioSvc.eliminarCuenta(userDos.getId()); }catch(DataException e) {logger.warn(e.getMessage(), e);};
 			
 
 	}

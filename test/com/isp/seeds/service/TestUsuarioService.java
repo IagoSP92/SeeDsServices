@@ -22,7 +22,7 @@ public class TestUsuarioService {
 			List<Usuario> lista = new ArrayList<Usuario>();
 
 			System.out.println("____________________________TODOS__________");
-			lista= usuarioSvc.buscarTodos();
+			lista= usuarioSvc.buscarTodos(0, 100, "ESP");
 			for(Usuario u: lista) {
 				System.out.println(u.toString());
 			}System.out.println("________________________________________________ FIN TODOS");
@@ -62,16 +62,16 @@ public class TestUsuarioService {
 
 			System.out.println();
 			System.out.println("____________________________TODOS__________");
-			lista= usuarioSvc.buscarTodos();
+			lista= usuarioSvc.buscarTodos(0, 100, "ESP");
 			for(Usuario u: lista) {
 				System.out.println(u.toString());
 			}System.out.println("________________________________________________ FIN TODOS");
 
-			usuarioSvc.eliminarCuenta(user.getIdContenido());
+			usuarioSvc.eliminarCuenta(user.getId());
 
 			System.out.println();
 			System.out.println("____________________________TODOS__________");
-			lista= usuarioSvc.buscarTodos();
+			lista= usuarioSvc.buscarTodos(0, 100, "ESP");
 			for(Usuario u: lista) {
 				System.out.println(u.toString());
 			}System.out.println("________________________________________________ FIN TODOS");
@@ -103,13 +103,13 @@ public class TestUsuarioService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			System.out.println(usuarioNuevo.getIdContenido());
+			System.out.println(usuarioNuevo.getId());
 
 			usuarioNuevo = usuarioSvc.crearCuenta(usuarioNuevo);
-			System.out.println(usuarioNuevo.getIdContenido());
+			System.out.println(usuarioNuevo.getId());
 
 			System.out.println(usuarioNuevo.toString());
-			usuarioNuevo = usuarioSvc.buscarId(usuarioNuevo.getIdContenido());
+			usuarioNuevo = usuarioSvc.buscarId(usuarioNuevo.getId());
 			System.out.println(usuarioNuevo.toString());
 
 			System.out.println("____________________________   modificar");
@@ -129,7 +129,7 @@ public class TestUsuarioService {
 			}
 			
 			usuarioSvc.editarPerfil(usuarioNuevo);
-			usuarioNuevo = usuarioSvc.buscarId(usuarioNuevo.getIdContenido());
+			usuarioNuevo = usuarioSvc.buscarId(usuarioNuevo.getId());
 			System.out.println(usuarioNuevo.toString());
 			//System.out.println("____________________________________________");
 

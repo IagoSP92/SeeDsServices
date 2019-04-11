@@ -37,12 +37,12 @@ public class TestCrono {
 		
 		List<Contenido> todos = new ArrayList<Contenido>();
 
-		todos = contenidoSvc.buscarCriteria(contenidoCriteria);
-		todos = contenidoSvc.buscarCriteria(contenidoCriteria);
-		todos = contenidoSvc.buscarCriteria(contenidoCriteria);
-		todos = contenidoSvc.buscarCriteria(contenidoCriteria);
+		todos = (List<Contenido>) contenidoSvc.buscarCriteria(contenidoCriteria, 0, 100, "ESP");
+		todos = (List<Contenido>) contenidoSvc.buscarCriteria(contenidoCriteria, 0, 100, "ESP");
+		todos = (List<Contenido>) contenidoSvc.buscarCriteria(contenidoCriteria, 0, 100, "ESP");
+		todos = (List<Contenido>) contenidoSvc.buscarCriteria(contenidoCriteria, 0, 100, "ESP");
 
-		todos = contenidoSvc.buscarCriteria(contenidoCriteria);
+		todos = (List<Contenido>) contenidoSvc.buscarCriteria(contenidoCriteria, 0, 100, "ESP");
 
 		
 //		for(Contenido c : todos) {

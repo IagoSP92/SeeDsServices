@@ -113,7 +113,7 @@ public class TestUsuarioDAO {
 		System.out.println(jamele2.toString());
 		System.out.println("INSERTADO IMPRIMIDO");
 		System.out.println("BUSCAMOS EL RECIEN INSERTADO");
-		System.out.println(dao.findById(conexion, jamele2.getIdContenido()));
+		System.out.println(dao.findById(conexion, jamele2.getId()));
 		System.out.println("AHI QUEDA, AHORA EDITAMOS");
 		
 		System.out.println("modificar");
@@ -126,18 +126,18 @@ public class TestUsuarioDAO {
 		jamele2.setTipo(1);
 		
 		dao.update(conexion, jamele2);
-		System.out.println(dao.findById(conexion, jamele2.getIdContenido()));
+		System.out.println(dao.findById(conexion, jamele2.getId()));
 		
 		
 		System.out.println("1 - BUSCAMOS ALL:");
-		List<Usuario> lista = dao.findAllUsers(conexion);
+		List<Usuario> lista = dao.findAllUsers(conexion,0,100, "ESP");
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");
 		for(Usuario u: lista){System.out.println(u.toString());}
 		System.out.println("3 - FIN DE LA IMPRESION");
 		System.out.println("BORRAMOS");
-		dao.delete(conexion, jamele2.getIdContenido());
+		dao.delete(conexion, jamele2.getId());
 		System.out.println("MOSTRALL");
-		lista = dao.findAllUsers(conexion);
+		lista = dao.findAllUsers(conexion,0,100, "ESP");
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");
 		for(Usuario u: lista){System.out.println(u.toString());}
 

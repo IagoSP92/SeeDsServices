@@ -7,8 +7,8 @@ public class ObjectCreationTest {
 		Usuario user1 = new Usuario();
 		Usuario user2 = new Usuario();
 
-		user1.setIdContenido(1l);
-		user2.setIdContenido(2l);
+		user1.setId(1l);
+		user2.setId(2l);
 
 		user1.setNombre("user1");
 		user2.setNombre("user2");
@@ -38,8 +38,8 @@ public class ObjectCreationTest {
 		Video video1 = new Video();
 		Video video2 = new Video();
 
-		video1.setIdContenido(1l);
-		video2.setIdContenido(2l);
+		video1.setId(1l);
+		video2.setId(2l);
 
 		video1.setNombre("video1");
 		video2.setNombre("video2");

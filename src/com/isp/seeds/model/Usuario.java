@@ -31,7 +31,7 @@ public class Usuario extends Contenido implements Comparable<Usuario> {
 //	}
 	
 	public String toString() {
-		String cadena= "\nUSUARIO: "+getNombre()+" - "+ getIdContenido()+"  - "+getFechaAlta()+" - "+getFechaMod()+" - "+getFechaNac()+"\n ";
+		String cadena= "\nUSUARIO: "+getNombre()+" - "+ getId()+"  - "+getFechaAlta()+" - "+getFechaMod()+" - "+getFechaNac()+"\n ";
 		cadena+= getNombreReal()+" - "+ getApellidos()+" - "+getEmail()+" - "+getContrasena()+"\n";
 		cadena+= getAvatarUrl()+" - "+getDescripcion()+" - "+ getPais()+"\n";
 	return cadena;

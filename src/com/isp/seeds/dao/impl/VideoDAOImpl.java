@@ -204,7 +204,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 			ContenidoDAO daoc = new ContenidoDAOImpl();
 			
 			Contenido c= daoc.create(connection, video);
-			video.setIdContenido(c.getIdContenido());
+			video.setId(c.getId());
 
 
 			String queryString = "INSERT INTO Video (ID_CONTENIDO, USUARIO_ID_CONTENIDO, DESCRIPCION, reproducciones, url_video ) "
@@ -214,7 +214,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 									Statement.RETURN_GENERATED_KEYS);
 			
 			int i = 1;    
-			preparedStatement.setLong(i++, video.getIdContenido());
+			preparedStatement.setLong(i++, video.getId());
 			preparedStatement.setLong(i++, video.getIdAutor());
 			preparedStatement.setString(i++, video.getDescripcion());
 			preparedStatement.setInt(i++,0);
@@ -284,19 +284,19 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 				preparedStatement.setString(i++,video.getUrl());
 
 			
-			preparedStatement.setLong(i++, video.getIdContenido());
+			preparedStatement.setLong(i++, video.getId());
 
 			int updatedRows = preparedStatement.executeUpdate();
 
 			if (updatedRows == 0) {
-				logger.debug("Video con id= {} no encontrado.", video.getIdContenido() );
-				throw new InstanceNotFoundException(video.getIdContenido(), Video.class.getName()); //Esto ultimo pa mostrar o nome da clase??
+				logger.debug("Video con id= {} no encontrado.", video.getId() );
+				throw new InstanceNotFoundException(video.getId(), Video.class.getName()); //Esto ultimo pa mostrar o nome da clase??
 			}
 
 			if (updatedRows > 1) {
-				logger.debug("Video con id= {} duplicado.", video.getIdContenido() );
+				logger.debug("Video con id= {} duplicado.", video.getId() );
 				throw new SQLException("Duplicate row for id = '" + 
-						video.getIdContenido() + "' in table 'Video'");
+						video.getId() + "' in table 'Video'");
 			}     
 			
 		} catch (SQLException e) {
@@ -361,7 +361,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 				String url = resultSet.getString(i++);
 			
 				Video v = new Video();
-				v.setIdContenido(idContenido);
+				v.setId(idContenido);
 				v.setNombre(nombre);
 				v.setFechaAlta(fechaAlta);
 				v.setFechaMod(fechaMod);

@@ -147,7 +147,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			preparedStatement = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
 
 			int i = 1;    
-			preparedStatement.setLong(i++, nuevoUsuario.getIdContenido());
+			preparedStatement.setLong(i++, nuevoUsuario.getId());
 			preparedStatement.setString(i++, nuevoUsuario.getEmail());
 			preparedStatement.setString(i++, PasswordEncryptionUtil.encryptPassword(nuevoUsuario.getContrasena()));
 			preparedStatement.setString(i++, nuevoUsuario.getDescripcion());
@@ -275,7 +275,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			if (usuario.getFechaNac()!=null) 
 				preparedStatement.setDate(i++, new java.sql.Date(usuario.getFechaNac().getTime()));
 
-			preparedStatement.setLong(i++, usuario.getIdContenido());
+			preparedStatement.setLong(i++, usuario.getId());
 
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);
@@ -284,14 +284,14 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			int updatedRows = preparedStatement.executeUpdate();
 
 			if (updatedRows == 0) {
-				logger.debug("No se ha podido eliminar el usuario con id{} de la tabla USUARIO", usuario.getIdContenido());
-				throw new InstanceNotFoundException(usuario.getIdContenido(), Usuario.class.getName());
+				logger.debug("No se ha podido eliminar el usuario con id{} de la tabla USUARIO", usuario.getId());
+				throw new InstanceNotFoundException(usuario.getId(), Usuario.class.getName());
 			}
 
 			if (updatedRows > 1) {
-				logger.debug("Filas duplicadas para id={} en tabla USUARIO", usuario.getIdContenido());
+				logger.debug("Filas duplicadas para id={} en tabla USUARIO", usuario.getId());
 				throw new SQLException("Duplicate row for id = '" + 
-						usuario.getIdContenido() + "' in table 'USUARIO'");
+						usuario.getId() + "' in table 'USUARIO'");
 			}
 
 		} catch (SQLException e) {
@@ -472,7 +472,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		Date fechaNac =  resultSet.getDate(i++);
 
 		Usuario u = new Usuario();
-		u.setIdContenido(idContenido);
+		u.setId(idContenido);
 		u.setNombre(nombre);
 		u.setFechaAlta(fechaAlta);
 		u.setFechaMod(fechaMod);

@@ -53,59 +53,59 @@ public class TestContenidoService {
 			contenido3=contenidoSvc.crearContenido(contenido3);
 			System.out.println();
 			System.out.println("____________________________________________ Inicio buscarIdTest");
-			System.out.println(contenidoSvc.buscarId(contenido1.getIdContenido(), "ESP").toString());
-			System.out.println(contenidoSvc.buscarId(contenido2.getIdContenido(), "ESP").toString());
-			System.out.println(contenidoSvc.buscarId(contenido3.getIdContenido(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido1.getId(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido2.getId(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido3.getId(), "ESP").toString());
 			System.out.println("____________________________________________    fin verContenidoTest");
 			System.out.println();System.out.println();
 			System.out.println("____________________________________________ Inicio modificarNombre1");
-			System.out.println(contenidoSvc.buscarId(contenido2.getIdContenido(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido2.getId(), "ESP").toString());
 			//contenidoSvc.cambiarNombre(contenido2.getIdContenido(), "Contenido2NombreModificado");
-			System.out.println(contenidoSvc.buscarId(contenido2.getIdContenido(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido2.getId(), "ESP").toString());
 			System.out.println();
 			System.out.println("____________________________________________ Inicio modificarNombre2");
-			System.out.println(contenidoSvc.buscarId(contenido3.getIdContenido(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido3.getId(), "ESP").toString());
 			contenido3.setNombre("Contenido3lista___Nombre___Modificado");
-			contenido3=contenidoSvc.cambiarNombre(contenido3.getIdContenido(), contenido3.getNombre(), "ESP");
-			System.out.println(contenidoSvc.buscarId(contenido3.getIdContenido(), "ESP").toString());
+			contenido3=contenidoSvc.cambiarNombre(contenido3.getId(), contenido3.getNombre(), "ESP");
+			System.out.println(contenidoSvc.buscarId(contenido3.getId(), "ESP").toString());
 			System.out.println();
 			System.out.println("____________________________________________  Asignar categoria");
-			contenidoSvc.asignarCategoria(contenido2.getIdContenido(), categoriaSvc.findByNombre("VIDEOCLIPS", "ESP"));
-			System.out.println( contenidoSvc.verCategoria(contenido2.getIdContenido(), "ESP")  );
+			contenidoSvc.asignarCategoria(contenido2.getId(), categoriaSvc.findByNombre("VIDEOCLIPS", "ESP"));
+			System.out.println( contenidoSvc.verCategoria(contenido2.getId(), "ESP")  );
 			System.out.println();
 			System.out.println("____________________________________________  Modificar categoria");
-			contenidoSvc.modificarCategoria(contenido2.getIdContenido(), categoriaSvc.findByNombre("CORTOS", "ESP"));
-			System.out.println( contenidoSvc.verCategoria(contenido2.getIdContenido(), "ESP")  );
+			contenidoSvc.modificarCategoria(contenido2.getId(), categoriaSvc.findByNombre("CORTOS", "ESP"));
+			System.out.println( contenidoSvc.verCategoria(contenido2.getId(), "ESP")  );
 			System.out.println();System.out.println();
 			
 			System.out.println("____________________________________________  Asignar etiqueta");
-			contenidoSvc.asignarEtiqueta(contenido2.getIdContenido(), etiquetaSvc.findByNombre("Rock", "ESP").getIdEtiqueta());
-			contenidoSvc.asignarEtiqueta(contenido2.getIdContenido(), etiquetaSvc.findByNombre("Pop", "ESP").getIdEtiqueta());
+			contenidoSvc.asignarEtiqueta(contenido2.getId(), etiquetaSvc.findByNombre("Rock", "ESP").getIdEtiqueta());
+			contenidoSvc.asignarEtiqueta(contenido2.getId(), etiquetaSvc.findByNombre("Pop", "ESP").getIdEtiqueta());
 			List<Etiqueta> etiquetas = new ArrayList<Etiqueta>();
-			etiquetas=contenidoSvc.verEtiquetas(contenido2.getIdContenido(), "ESP");
+			etiquetas=contenidoSvc.verEtiquetas(contenido2.getId(), "ESP");
 			for(Etiqueta e: etiquetas) {
 				System.out.println(e.toString());
 			}
 			System.out.println();
 			System.out.println("____________________________________________  Eliminar etiqueta");
-			contenidoSvc.eliminarEtiqueta(contenido2.getIdContenido(), etiquetaSvc.findByNombre("Rock", "ESP").getIdEtiqueta());
+			contenidoSvc.eliminarEtiqueta(contenido2.getId(), etiquetaSvc.findByNombre("Rock", "ESP").getIdEtiqueta());
 			etiquetas = new ArrayList<Etiqueta>();
-			etiquetas=contenidoSvc.verEtiquetas(contenido2.getIdContenido(), "ESP");
+			etiquetas=contenidoSvc.verEtiquetas(contenido2.getId(), "ESP");
 			for(Etiqueta e: etiquetas) {
 				System.out.println(e.toString());
 			}
 			System.out.println();
 			System.out.println();
 			
-			System.out.println(contenidoSvc.buscarId(contenido1.getIdContenido(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido1.getId(), "ESP").toString());
 			
-			contenidoSvc.eliminarContenido(contenido1.getIdContenido());
-			System.out.println(contenidoSvc.buscarId(contenido2.getIdContenido(), "ESP").toString());
+			contenidoSvc.eliminarContenido(contenido1.getId());
+			System.out.println(contenidoSvc.buscarId(contenido2.getId(), "ESP").toString());
 			
-			contenidoSvc.eliminarContenido(contenido2.getIdContenido());
-			System.out.println(contenidoSvc.buscarId(contenido3.getIdContenido(), "ESP").toString());
+			contenidoSvc.eliminarContenido(contenido2.getId());
+			System.out.println(contenidoSvc.buscarId(contenido3.getId(), "ESP").toString());
 			
-			contenidoSvc.eliminarContenido(contenido3.getIdContenido());
+			contenidoSvc.eliminarContenido(contenido3.getId());
 
 			Results<Contenido> todos =  contenidoSvc.verTodos(5,1,"ESP");
 			for(Contenido c : todos.getPage()) {

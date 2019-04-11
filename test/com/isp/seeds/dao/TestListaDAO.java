@@ -36,14 +36,14 @@ public class TestListaDAO {
 		System.out.println(lista2.toString());
 		System.out.println("INSERTADO IMPRIMIDO");
 		System.out.println("BUSCAMOS EL RECIEN INSERTADO");
-		System.out.println(dao.findById(conexion, lista2.getIdContenido()));
+		System.out.println(dao.findById(conexion, lista2.getId()));
 		System.out.println("AHI QUEDA, AHORA EDITAMOS");
 		System.out.println("modificar");
 		lista2.setDescripcion("he cambiaadoo la descripcion");
 		lista2.setPublica(false);
 		lista2.setTipo(3);
 		dao.update(conexion, lista2);
-		System.out.println(dao.findById(conexion, lista2.getIdContenido()));
+		System.out.println(dao.findById(conexion, lista2.getId()));
 		
 		System.out.println("1 - BUSCAMOS ALL:");
 		List<Lista> lista = dao.findAllListas(conexion);
@@ -51,7 +51,7 @@ public class TestListaDAO {
 		for(Lista u: lista){System.out.println(u.toString());}
 		System.out.println("3 - FIN DE LA IMPRESION");
 		System.out.println("BORRAMOS");
-		dao.delete(conexion, lista2.getIdContenido());
+		dao.delete(conexion, lista2.getId());
 		System.out.println("MOSTRALL");
 		lista = dao.findAllListas(conexion);
 		System.out.println("2 - IMPRIMIMOS RESULTADOS BUSQUEDAll:");
