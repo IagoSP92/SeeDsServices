@@ -37,7 +37,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 		try {          
 			String queryString = 
-					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo,"
+					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo, "
 							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais, u.fecha_nac " + 
 							"FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) " +
 							"WHERE u.id_contenido = ? ";
@@ -87,7 +87,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		try {
 			
 			queryString = new StringBuilder(
-					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
+					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo, "
 							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais , u.fecha_nac " + 
 					" FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) ORDER BY c.fecha_alta ");
 
@@ -359,7 +359,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 		try {          
 			String queryString = 
-					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido,"
+					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo, "
 							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais, u.fecha_nac " + 
 							"FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) " +
 							"WHERE u.email = ? ";
