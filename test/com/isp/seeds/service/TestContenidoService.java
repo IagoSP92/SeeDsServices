@@ -223,8 +223,8 @@ public class TestContenidoService {
 			contenidoCriteria.setIdAutor(7l);
 			contenidoCriteria.setTipo(2);
 			
-			contenidoCriteria.setValoracionMin(5);
-			contenidoCriteria.setValoracionMax(7);
+			contenidoCriteria.setValoracionMin(5d);
+			contenidoCriteria.setValoracionMax(7d);
 			
 			contenidoCriteria.setReproduccionesMin(16);
 			contenidoCriteria.setReproduccionesMax(18);

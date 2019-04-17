@@ -34,14 +34,15 @@ public class TestBusqueda {
 			contenido1.setFechaAlta(new Date());
 			contenido1.setFechaMod(new Date());
 			contenido1.setIdAutor(null);
-			contenido1.setNombre("Contenido1Persona");
+			contenido1.setNombre("Contenido1PersonabUS");
 			contenido1.setTipo(1);
 			
 			contenido2.setFechaAlta(new Date());
 			contenido2.setFechaMod(new Date());
-			contenido2.setIdAutor(null);
-			contenido2.setNombre("Contenido2video");
+			contenido2.setIdAutor(2l);
+			contenido2.setNombre("Contenido2videobUS");
 			contenido2.setTipo(2);
+			contenido2.setUrl("/urls");
 			//videoSvc.
 			contenido2.setReproducciones(50);
 			contenido2.setValoracion(5d);// ESTO É DE PRUEBA PA BUSCAR, NON SE SACA ASI
@@ -49,8 +50,8 @@ public class TestBusqueda {
 			
 			contenido3.setFechaAlta(new Date());
 			contenido3.setFechaMod(new Date());
-			contenido3.setIdAutor(null);
-			contenido3.setNombre("Contenido3lista");
+			contenido3.setIdAutor(2l);
+			contenido3.setNombre("Contenido3listabUS");
 			contenido3.setTipo(3);
 			
 			System.out.println("____________________________________________ Insertamos 1 ");
@@ -68,21 +69,26 @@ public class TestBusqueda {
 			System.out.println();System.out.println();
 			
 			ContenidoCriteria cc = new ContenidoCriteria();
-			//cc.setNombre("Contenido2video");
-			cc.setReproduccionesMax(51);
-			cc.setReproduccionesMin(49);
+			cc.setNombre("ari");
+			//cc.setReproduccionesMax(51);
+			//cc.setReproduccionesMin(0);
 			
-			List<Contenido> page = new ArrayList<Contenido>();    
+			//cc.setValoracionMin(0.0d);
+			//cc.setValoracionMax(10.0d);
+
+			
+			cc.setAceptarLista(false);
+			cc.setAceptarUsuario(false);
+			cc.setAceptarVideo(true);
+			
 			Results<Contenido> resultados = null;
 			
-			resultados= contenidoSvc.buscarCriteria(cc, 0, 50, idioma);
+			resultados = contenidoSvc.buscarCriteria(cc, 1, 50, idioma);
 			
-			System.out.println(resultados.getTotal());
-			for(Contenido v:resultados.getPage()) {
-				System.out.println(v.toString());
-				//System.out.println("reps: "+((Video) v).getReproducciones());
-			}
-			
+			for(Contenido c : resultados.getPage()) {
+				System.out.println("CONTENIDO: "+c.getNombre());
+			}System.out.println("---------------------------------------------------------------");
+			System.out.println("______________________________________________________________________________________");			
 			
 			
 			} catch (DataException e) {

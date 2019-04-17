@@ -10,19 +10,21 @@ import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Usuario;
 import com.isp.seeds.service.spi.UsuarioService;
+import com.isp.seeds.util.PasswordEncryptionUtil;
 
 public class TestUsuarioService {
 
 	public static void main(String[] args) {
 
 		UsuarioService usuarioSvc =  new UsuarioServiceImpl();
+		String idioma = "ES";
 		
 		try {
 			
 			List<Usuario> lista = new ArrayList<Usuario>();
 
 			System.out.println("____________________________TODOS__________");
-			lista= usuarioSvc.buscarTodos(0, 100, "ESP");
+			lista= usuarioSvc.buscarTodos(0, 100, idioma);
 			for(Usuario u: lista) {
 				System.out.println(u.toString());
 			}System.out.println("________________________________________________ FIN TODOS");
@@ -62,7 +64,7 @@ public class TestUsuarioService {
 
 			System.out.println();
 			System.out.println("____________________________TODOS__________");
-			lista= usuarioSvc.buscarTodos(0, 100, "ESP");
+			lista= usuarioSvc.buscarTodos(0, 100, idioma);
 			for(Usuario u: lista) {
 				System.out.println(u.toString());
 			}System.out.println("________________________________________________ FIN TODOS");
@@ -71,7 +73,7 @@ public class TestUsuarioService {
 
 			System.out.println();
 			System.out.println("____________________________TODOS__________");
-			lista= usuarioSvc.buscarTodos(0, 100, "ESP");
+			lista= usuarioSvc.buscarTodos(0, 100, idioma);
 			for(Usuario u: lista) {
 				System.out.println(u.toString());
 			}System.out.println("________________________________________________ FIN TODOS");
@@ -94,7 +96,7 @@ public class TestUsuarioService {
 			usuarioNuevo.setApellidos("apellidos");
 			usuarioNuevo.setFechaNac(new Date());
 			usuarioNuevo.setEmail("email");
-			usuarioNuevo.setContrasena("contrasena");
+			usuarioNuevo.setContrasena(PasswordEncryptionUtil.encryptPassword("contrasena"));
 			
 			try {
 				Connection connection = ConnectionManager.getConnection();

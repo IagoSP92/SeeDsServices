@@ -6,11 +6,15 @@ import com.isp.seeds.model.Contenido;
 
 public class ContenidoCriteria extends Contenido {
 	
+	private Boolean aceptarUsuario = null;
+	private Boolean aceptarVideo = null;
+	private Boolean aceptarLista = null;
+	
 	private Date fechaAltaHasta = null;
 	private Date fechaModHasta = null;
 	
-	private Integer valoracionMin = null;
-	private Integer valoracionMax = null;
+	private Double valoracionMin = null;
+	private Double valoracionMax = null;
 	
 	private Integer reproduccionesMin = null;
 	private Integer reproduccionesMax = null;
@@ -18,6 +22,30 @@ public class ContenidoCriteria extends Contenido {
 	
 	public ContenidoCriteria () {
 		
+	}
+
+	public Boolean getAceptarUsuario() {
+		return aceptarUsuario;
+	}
+
+	public void setAceptarUsuario(Boolean aceptarUsuario) {
+		this.aceptarUsuario = aceptarUsuario;
+	}
+
+	public Boolean getAceptarVideo() {
+		return aceptarVideo;
+	}
+
+	public void setAceptarVideo(Boolean aceptarVideo) {
+		this.aceptarVideo = aceptarVideo;
+	}
+
+	public Boolean getAceptarLista() {
+		return aceptarLista;
+	}
+
+	public void setAceptarLista(Boolean aceptarLista) {
+		this.aceptarLista = aceptarLista;
 	}
 
 	public Date getFechaAltaHasta() {
@@ -37,19 +65,19 @@ public class ContenidoCriteria extends Contenido {
 	}
 	
 
-	public Integer getValoracionMin() {
+	public Double getValoracionMin() {
 		return valoracionMin;
 	}
 
-	public void setValoracionMin(Integer valoracion) {
+	public void setValoracionMin(Double valoracion) {
 		this.valoracionMin = valoracion;
 	}
 	
-	public Integer getValoracionMax() {
+	public Double getValoracionMax() {
 		return valoracionMax;
 	}
 
-	public void setValoracionMax(Integer valoracion) {
+	public void setValoracionMax(Double valoracion) {
 		this.valoracionMax = valoracion;
 	}
 

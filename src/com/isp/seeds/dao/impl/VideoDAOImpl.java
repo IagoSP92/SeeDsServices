@@ -228,7 +228,9 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 				logger.debug("No se ha podido insertar en tabla VIDEO");
 				throw new SQLException("Can not add row to table 'Video'");
 			}
-
+			
+			// crear tabla 
+			
 			return video;
 
 		} catch (SQLException e) {

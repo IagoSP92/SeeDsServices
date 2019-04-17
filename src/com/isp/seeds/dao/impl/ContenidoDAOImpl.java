@@ -267,7 +267,20 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		try {
 			queryString = new StringBuilder(
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO " + 
-					" FROM CONTENIDO C");
+					" FROM CONTENIDO C ");
+			
+			if (contenido.getAceptarUsuario()) { queryString.append(" INNER JOIN USUARIO U ON (C.ID_CONTENIDO = U.ID_CONTENIDO) ");}
+			if (contenido.getAceptarLista()) { queryString.append(" INNER JOIN LISTA L ON (C.ID_CONTENIDO = L.ID_CONTENIDO) ");}
+			if (contenido.getAceptarVideo()) { queryString.append(" INNER JOIN VIDEO V ON (C.ID_CONTENIDO = V.ID_CONTENIDO) ");}
+			
+//			if(!contenido.getAceptarUsuario() && ( contenido.getValoracionMin()!=null || contenido.getValoracionMax()!=null 
+//					|| contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null)) {
+//				queryString.append(" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) ");
+//				
+//				if(!contenido.getAceptarLista()) {
+//					queryString.append(" INNER JOIN VIDEO V ON (C.ID_CONTENIDO = V.ID_CONTENIDO) ");
+//				}
+//			}
 
 			boolean first = true;
 
@@ -275,6 +288,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				addClause(queryString, first, " C.ID_CONTENIDO LIKE ? ");
 				first = false;
 			}
+			
 			if (contenido.getNombre()!=null) {
 				addClause(queryString, first, " C.NOMBRE LIKE ? ");
 				first = false;
@@ -300,7 +314,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				first = false;
 			}
 
-
 			if (contenido.getIdAutor()!=null) {
 				addClause(queryString, first, " C.AUTOR_ID_CONTENIDO LIKE ? ");
 				first = false;
@@ -309,6 +322,31 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			if (contenido.getTipo()!=null) {
 				addClause(queryString, first, " C.TIPO = ? ");
 				first = false;
+			}
+			
+			queryString.append(" GROUP BY C.ID_CONTENIDO ");
+			
+			boolean firstHaving = true;
+			if(!contenido.getAceptarUsuario()) {
+				
+				if(contenido.getValoracionMin()!=null) {
+					addHaving(queryString, firstHaving, "  AVG(UC.VALORACION) >= ? ");
+					firstHaving=false;
+				}
+				if(contenido.getValoracionMax()!=null) {
+					addHaving(queryString, firstHaving, "  AVG(UC.VALORACION) <= ? ");
+					firstHaving=false;
+				}				
+				if(!contenido.getAceptarLista()) {
+					if(contenido.getReproduccionesMin()!=null) {
+						addHaving(queryString, firstHaving, "  AVG(V.REPRODUCCIONES) >= ? ");
+						firstHaving=false;
+					}
+					if(contenido.getReproduccionesMax()!=null) {
+						addHaving(queryString, firstHaving, "  AVG(V.REPRODUCCIONES) <= ? ");
+						firstHaving=false;
+					}
+				}
 			}
 			
 			queryString.append(" ORDER BY C.FECHA_ALTA ");
@@ -337,6 +375,24 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				preparedStatement.setString(i++, "%" + contenido.getIdAutor() + "%");
 			if (contenido.getTipo()!=null) 
 				preparedStatement.setInt(i++, contenido.getTipo());
+			
+			if(!contenido.getAceptarUsuario()) {
+				
+				if(contenido.getValoracionMin()!=null) {
+					preparedStatement.setDouble(i++, contenido.getValoracionMin());
+				}
+				if(contenido.getValoracionMax()!=null) {
+					preparedStatement.setDouble(i++, contenido.getValoracionMax());
+				}				
+				if(!contenido.getAceptarLista()) {
+					if(contenido.getReproduccionesMin()!=null) {
+						preparedStatement.setInt(i++, contenido.getReproduccionesMin());
+					}
+					if(contenido.getReproduccionesMax()!=null) {
+						preparedStatement.setInt(i++, contenido.getReproduccionesMax());
+					}
+				}
+			}			
 
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);
@@ -350,37 +406,12 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			int currentCount = 0;
 
 			if ((startIndex >=1) && resultSet.absolute(startIndex)) {
-				if(resultSet.next()) {
-					do {
-						e = loadNext(connection, resultSet);
-						if (contenido.getValoracionMin()!=null || contenido.getValoracionMax()!=null) {
+				do {
+					e = loadNext(connection, resultSet);
+					page.add(e);
+					currentCount++;
 
-							if(filtrarValoracion(connection, contenido, e)) {
-
-								if (contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null) {
-									if(filtrarReproducciones(connection, contenido, e)) {
-										page.add(e);
-										currentCount++;
-									}
-								} else {
-									page.add(e);
-									currentCount++;
-								}
-							}
-						} else {
-
-							if (contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null) {
-								if(filtrarReproducciones(connection, contenido, e)) {
-									page.add(e);
-									currentCount++;
-								}
-							} else {
-								page.add(e);
-								currentCount++;
-							}
-						}          	
-					} while ((currentCount < count) &&  resultSet.next()) ;
-				}
+				} while ((currentCount < count) &&  resultSet.next()) ;
 			}
 
 			int totalRows = JDBCUtils.getTotalRows(resultSet);
@@ -398,70 +429,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 
-	}
-
-	private Boolean filtrarValoracion (Connection connection, ContenidoCriteria contenido, Contenido esteContenido) 
-			throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("Criteria= {} Contenido= {} ", contenido, esteContenido);
-		}
-
-		Boolean valido = true;
-
-		try {			
-
-			if (contenido.getValoracionMax()!=null) {
-				if(getValoracion(connection, esteContenido.getId()) !=null){
-					if(contenido.getValoracionMax() < getValoracion(connection, esteContenido.getId()) ) {
-						valido = false;
-					}else {
-						valido=false;
-					}
-				}
-			}
-
-			if (contenido.getValoracionMin()!=null) {
-				if(getValoracion(connection, esteContenido.getId()) !=null){
-					if(contenido.getValoracionMin() < getValoracion(connection, esteContenido.getId()) ) {
-						valido = false;
-					}else {
-						valido=false;
-					}
-				}
-			} 
-
-			return valido;
-
-		}  catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-			throw new DataException(e);
-		}
-
-	}
-
-	private Boolean filtrarReproducciones (Connection connection, ContenidoCriteria contenido, Contenido esteContenido) 
-			throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("Criteria= {} Contenido= {} ", contenido, esteContenido);
-		}
-
-		videoDao = new VideoDAOImpl();
-
-		Boolean valido = true;
-
-		if (contenido.getReproduccionesMax()!=null) {
-			if(contenido.getReproduccionesMax() < videoDao.getReproducciones(connection, esteContenido.getId())) {
-				valido = false;
-			}
-		}
-		if (contenido.getReproduccionesMin()!=null) {
-			if(contenido.getReproduccionesMin() > videoDao.getReproducciones(connection, esteContenido.getId()) ) {
-				valido = false;
-			}
-		}
-		return valido;
 	}
 
 
@@ -525,6 +492,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	public Results<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) throws DataException {
 		ContenidoDAO dao= new ContenidoDAOImpl();
 		ContenidoCriteria contenido= new ContenidoCriteria();
+		contenido.setAceptarLista(true);
+		contenido.setAceptarVideo(true);
+		contenido.setAceptarUsuario(true);
 		return dao.findByCriteria(connection, contenido, startIndex, count, idioma);
 	}
 
@@ -1657,6 +1627,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 	private void addUpdate(StringBuilder queryString, boolean first, String clause) {
 		queryString.append(first? " SET ": " , ").append(clause);
+	}
+	
+	private void addHaving(StringBuilder queryString, boolean first, String clause) {
+		queryString.append(first?" HAVING ": " AND ").append(clause);
 	}
 
 }
