@@ -1,8 +1,9 @@
 package com.isp.seeds.service.util;
 
+import java.util.Iterator;
 import java.util.List;
 
-public class Results<T> {
+public class Results<T> implements Iterable{
 	
 	private List<T> page = null;
 	private int startIndex = 0;
@@ -36,6 +37,12 @@ public class Results<T> {
 
 	public void setTotal(int total) {
 		this.total = total;
+	}
+
+	@Override
+	public Iterator iterator() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

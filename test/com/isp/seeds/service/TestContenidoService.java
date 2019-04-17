@@ -21,6 +21,7 @@ public class TestContenidoService {
 		ContenidoService contenidoSvc = new ContenidoServiceImpl();
 		CategoriaService categoriaSvc = new CategoriaServiceImpl();
 		EtiquetaService etiquetaSvc = new EtiquetaServiceImpl();
+		String idioma = "ES";
 
 		
 		Contenido contenido1 =new Contenido();
@@ -53,61 +54,61 @@ public class TestContenidoService {
 			contenido3=contenidoSvc.crearContenido(contenido3);
 			System.out.println();
 			System.out.println("____________________________________________ Inicio buscarIdTest");
-			System.out.println(contenidoSvc.buscarId(contenido1.getId(), "ESP").toString());
-			System.out.println(contenidoSvc.buscarId(contenido2.getId(), "ESP").toString());
-			System.out.println(contenidoSvc.buscarId(contenido3.getId(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido1.getId(), "ES").toString());
+			System.out.println(contenidoSvc.buscarId(contenido2.getId(), "ES").toString());
+			System.out.println(contenidoSvc.buscarId(contenido3.getId(), "ES").toString());
 			System.out.println("____________________________________________    fin verContenidoTest");
 			System.out.println();System.out.println();
 			System.out.println("____________________________________________ Inicio modificarNombre1");
-			System.out.println(contenidoSvc.buscarId(contenido2.getId(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido2.getId(), "ES").toString());
 			//contenidoSvc.cambiarNombre(contenido2.getIdContenido(), "Contenido2NombreModificado");
-			System.out.println(contenidoSvc.buscarId(contenido2.getId(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido2.getId(), "ES").toString());
 			System.out.println();
 			System.out.println("____________________________________________ Inicio modificarNombre2");
-			System.out.println(contenidoSvc.buscarId(contenido3.getId(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido3.getId(), "ES").toString());
 			contenido3.setNombre("Contenido3lista___Nombre___Modificado");
-			contenido3=contenidoSvc.cambiarNombre(contenido3.getId(), contenido3.getNombre(), "ESP");
-			System.out.println(contenidoSvc.buscarId(contenido3.getId(), "ESP").toString());
+			contenido3=contenidoSvc.cambiarNombre(contenido3.getId(), contenido3.getNombre(), "ES");
+			System.out.println(contenidoSvc.buscarId(contenido3.getId(), idioma).toString());
 			System.out.println();
 			System.out.println("____________________________________________  Asignar categoria");
-			contenidoSvc.asignarCategoria(contenido2.getId(), categoriaSvc.findByNombre("VIDEOCLIPS", "ESP"));
-			System.out.println( contenidoSvc.verCategoria(contenido2.getId(), "ESP")  );
+			contenidoSvc.asignarCategoria(contenido2.getId(), categoriaSvc.findByNombre("VIDEOCLIPS", "ES"));
+			System.out.println( contenidoSvc.verCategoria(contenido2.getId(), idioma)  );
 			System.out.println();
 			System.out.println("____________________________________________  Modificar categoria");
-			contenidoSvc.modificarCategoria(contenido2.getId(), categoriaSvc.findByNombre("CORTOS", "ESP"));
-			System.out.println( contenidoSvc.verCategoria(contenido2.getId(), "ESP")  );
+			contenidoSvc.modificarCategoria(contenido2.getId(), categoriaSvc.findByNombre("CORTOS", "ES"));
+			System.out.println( contenidoSvc.verCategoria(contenido2.getId(), idioma)  );
 			System.out.println();System.out.println();
 			
 			System.out.println("____________________________________________  Asignar etiqueta");
-			contenidoSvc.asignarEtiqueta(contenido2.getId(), etiquetaSvc.findByNombre("Rock", "ESP").getIdEtiqueta());
-			contenidoSvc.asignarEtiqueta(contenido2.getId(), etiquetaSvc.findByNombre("Pop", "ESP").getIdEtiqueta());
+			contenidoSvc.asignarEtiqueta(contenido2.getId(), etiquetaSvc.findByNombre("Rock", idioma).getIdEtiqueta());
+			contenidoSvc.asignarEtiqueta(contenido2.getId(), etiquetaSvc.findByNombre("Pop", idioma).getIdEtiqueta());
 			List<Etiqueta> etiquetas = new ArrayList<Etiqueta>();
-			etiquetas=contenidoSvc.verEtiquetas(contenido2.getId(), "ESP");
+			etiquetas=contenidoSvc.verEtiquetas(contenido2.getId(), "ES");
 			for(Etiqueta e: etiquetas) {
 				System.out.println(e.toString());
 			}
 			System.out.println();
 			System.out.println("____________________________________________  Eliminar etiqueta");
-			contenidoSvc.eliminarEtiqueta(contenido2.getId(), etiquetaSvc.findByNombre("Rock", "ESP").getIdEtiqueta());
+			contenidoSvc.eliminarEtiqueta(contenido2.getId(), etiquetaSvc.findByNombre("Rock", "ES").getIdEtiqueta());
 			etiquetas = new ArrayList<Etiqueta>();
-			etiquetas=contenidoSvc.verEtiquetas(contenido2.getId(), "ESP");
+			etiquetas=contenidoSvc.verEtiquetas(contenido2.getId(), "ES");
 			for(Etiqueta e: etiquetas) {
 				System.out.println(e.toString());
 			}
 			System.out.println();
 			System.out.println();
 			
-			System.out.println(contenidoSvc.buscarId(contenido1.getId(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido1.getId(), idioma).toString());
 			
 			contenidoSvc.eliminarContenido(contenido1.getId());
-			System.out.println(contenidoSvc.buscarId(contenido2.getId(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido2.getId(), idioma).toString());
 			
 			contenidoSvc.eliminarContenido(contenido2.getId());
-			System.out.println(contenidoSvc.buscarId(contenido3.getId(), "ESP").toString());
+			System.out.println(contenidoSvc.buscarId(contenido3.getId(), idioma).toString());
 			
 			contenidoSvc.eliminarContenido(contenido3.getId());
 
-			Results<Contenido> todos =  contenidoSvc.verTodos(5,1,"ESP");
+			Results<Contenido> todos =  contenidoSvc.verTodos(5,1,idioma);
 			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}
@@ -130,7 +131,7 @@ public class TestContenidoService {
 			contenidoCriteria.setFechaAltaHasta(date);
 			
 			
-			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, idioma);
 			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
@@ -149,7 +150,7 @@ public class TestContenidoService {
 			
 			
 
-			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, idioma);
 			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
@@ -160,7 +161,7 @@ public class TestContenidoService {
 			contenidoCriteria.setNombre("al");
 			
 			
-			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, idioma);
 			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
@@ -191,7 +192,7 @@ public class TestContenidoService {
 			contenidoCriteria.setTipo(2);
 			
 			
-			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, idioma);
 			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}System.out.println("----------------------------------------------"
@@ -229,14 +230,14 @@ public class TestContenidoService {
 			contenidoCriteria.setReproduccionesMax(18);
 
 			
-			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, "ESP");
+			todos = contenidoSvc.buscarCriteria(contenidoCriteria, 0, 10, idioma);
 			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");
 			System.out.println("______________________________________________________________________________________");
 			
 			
-			todos = contenidoSvc.verTodos(0, 10, "ESP");
+			todos = contenidoSvc.verTodos(0, 10, idioma);
 			for(Contenido c : todos.getPage()) {
 				System.out.println(c.toString());
 			}System.out.println("---------------------------------------------------------------");

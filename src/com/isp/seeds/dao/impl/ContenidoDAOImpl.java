@@ -367,7 +367,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 									currentCount++;
 								}
 							}
-						}else {
+						} else {
 
 							if (contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null) {
 								if(filtrarReproducciones(connection, contenido, e)) {

@@ -26,7 +26,7 @@ public interface VideoDAO {
 	public List<Video> findAllVideos(Connection connection) 
 			throws DataException;
 	
-	public Integer getReproducciones (Connection connection, Long idVideo) 
+	public Integer getReproducciones (Connection connection, Long idVideo)  // AÑADIR SUMAR 1?
 			throws DataException;
 
 	

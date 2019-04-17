@@ -14,15 +14,10 @@ public interface UsuarioDAO {
 			throws DataException;
 	
 	public Usuario findByEmail(Connection connection, String email) 
-			throws DataException;
-	
-//	public List <Usuario> findByCriteria(Connection connection, UsuarioCriteria usuario) 
-//			throws DataException;
-	
+			throws DataException;	
 
 	public List <Usuario> findAllUsers(Connection connection, int startIndex, int count, String idioma) 
 			throws DataException;
-
 
 	
 	public Usuario create (Connection connection, Usuario usuario) 
