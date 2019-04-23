@@ -814,55 +814,55 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 //	}
 	
 	
-	@Override
-	public List<Lista> findByAutor(Connection connection, Long idAutor) throws DataException {
-		
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idAutor= {} ", idAutor);
-		}		
-
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		StringBuilder queryString = null;
-
-		try {
-			queryString = new StringBuilder(
-					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, "
-							+ " V.DESCRIPCION, V.REPRODUCCIONES, V.URL_VIDEO  " + 
-					" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "+
-					" WHERE C.AUTOR_ID_CONTENIDO = ? ");
-
-			preparedStatement = connection.prepareStatement(queryString.toString(),
-					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			
-			preparedStatement.setLong(1, idAutor);
-
-			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",preparedStatement);
-			}			
-			resultSet = preparedStatement.executeQuery();
-
-			List<Lista> results = new ArrayList<Lista>(); 
-
-			Lista lista = null;
-
-			while (resultSet.next()) {
-				lista = loadNext(connection, resultSet);
-				results.add(lista);               	
-			} 
-			return results;
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-			throw new DataException(e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-			throw new DataException(e);
-		}  finally {
-			JDBCUtils.closeResultSet(resultSet);
-			JDBCUtils.closeStatement(preparedStatement);
-		}
-	}
+//	@Override
+//	public List<Lista> findByAutor(Connection connection, Long idAutor) throws DataException {
+//		
+//		if(logger.isDebugEnabled()) {
+//			logger.debug ("idAutor= {} ", idAutor);
+//		}		
+//
+//		PreparedStatement preparedStatement = null;
+//		ResultSet resultSet = null;
+//		StringBuilder queryString = null;
+//
+//		try {
+//			queryString = new StringBuilder(
+//					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, "
+//							+ " V.DESCRIPCION, V.REPRODUCCIONES, V.URL_VIDEO  " + 
+//					" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "+
+//					" WHERE C.AUTOR_ID_CONTENIDO = ? ");
+//
+//			preparedStatement = connection.prepareStatement(queryString.toString(),
+//					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+//			
+//			preparedStatement.setLong(1, idAutor);
+//
+//			if(logger.isDebugEnabled()) {
+//				logger.debug("QUERY= {}",preparedStatement);
+//			}			
+//			resultSet = preparedStatement.executeQuery();
+//
+//			List<Lista> results = new ArrayList<Lista>(); 
+//
+//			Lista lista = null;
+//
+//			while (resultSet.next()) {
+//				lista = loadNext(connection, resultSet);
+//				results.add(lista);               	
+//			} 
+//			return results;
+//
+//		} catch (SQLException e) {
+//			logger.warn(e.getMessage(), e);
+//			throw new DataException(e);
+//		} catch (DataException e) {
+//			logger.warn(e.getMessage(), e);
+//			throw new DataException(e);
+//		}  finally {
+//			JDBCUtils.closeResultSet(resultSet);
+//			JDBCUtils.closeStatement(preparedStatement);
+//		}
+//	}
 
 //	@Override
 //	public List<Lista> findByCategoria(Connection connection, Long idCategoria) throws DataException {
