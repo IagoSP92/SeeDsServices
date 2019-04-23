@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,20 +33,22 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 		ResultSet resultSet = null;
 
 		try {          
-			String queryString = 
+			StringBuilder queryString = new StringBuilder(
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
 							+", V.DESCRIPCION, V.URL_VIDEO "
 							+", UC.SIGUIENDO, UC.DENUNCIADO, UC.GUARDADO "
 							+" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "
-							+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.ID_CONTENIDO) "
-															+" AND (UC.USUARIO_ID_CONTENIDO= ? ) "
-							+" WHERE V.ID_CONTENIDO = ? ";
+							+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) ");
+			if(idSesion!=null) { queryString.append(" AND (UC.USUARIO_ID_CONTENIDO= ? ) ");}
+			queryString.append(" WHERE V.ID_CONTENIDO = ? ");
 			
-			preparedStatement = connection.prepareStatement(queryString,
+			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			int i = 1;
-			preparedStatement.setLong(i++, idSesion);
+			if(idSesion!=null) {
+				preparedStatement.setLong(i++, idSesion);
+			}			
 			preparedStatement.setLong(i++, idVideo);
  
 			if(logger.isDebugEnabled()) {
@@ -83,9 +86,10 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 		try {
 			queryString = new StringBuilder(
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
-					+" V.DESCRIPCION, V.URL_VIDEO "
+							+", V.DESCRIPCION, V.URL_VIDEO "
 					+" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "
 					+" INNER JOIN VIDEO_LISTA VL ON (VL.VIDEO_ID_CONTENIDO = V.ID_CONTENIDO ) "
+					+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO ) "
 					+" WHERE VL.LISTA_ID_CONTENIDO = ? ORDER BY VL.POSICION ");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
@@ -291,10 +295,6 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 				
 				String descripcion = resultSet.getString(i++);
 				String url = resultSet.getString(i++);
-				
-				Boolean siguiendo = resultSet.getBoolean(i++);
-				Boolean denunciado = resultSet.getBoolean(i++);
-				Boolean guardado = resultSet.getBoolean(i++);
 			
 				Video v = new Video();
 				v.setId(idContenido);
@@ -308,11 +308,23 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 
 				v.setDescripcion(descripcion);
 				v.setUrl(url);
+				if(resultSet.next()) {
+					Boolean siguiendo = resultSet.getBoolean(i++);
+					Boolean denunciado = resultSet.getBoolean(i++);
+					Boolean guardado = resultSet.getBoolean(i++);		
+					v.setSiguiendo(siguiendo);
+					v.setDenunciado(denunciado);
+					v.setGuardado(guardado);					
+				}
 				
-				v.setSiguiendo(siguiendo);
-				v.setDenunciado(denunciado);
-				v.setGuardado(guardado);
-
+//				if(resultSet.getObject(i)!=null) {
+//					Boolean siguiendo = resultSet.getBoolean(i++);
+//					Boolean denunciado = resultSet.getBoolean(i++);
+//					Boolean guardado = resultSet.getBoolean(i++);		
+//					v.setSiguiendo(siguiendo);
+//					v.setDenunciado(denunciado);
+//					v.setGuardado(guardado);			
+//				}
 				return v;
 			}
 

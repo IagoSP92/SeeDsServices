@@ -16,7 +16,7 @@ public interface ContenidoDAO {
 			throws DataException;	
 	
 	
-	public Contenido findById(Connection connection, Long idContenido, String idioma) 
+	public Contenido findById(Connection connection, Long idContenido) 
 			throws DataException;
 	
 	public Contenido findByNombre(Connection connection, String nombreContenido, int startIndex, int count, String idioma) 

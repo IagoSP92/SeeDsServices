@@ -12,7 +12,7 @@ import com.isp.seeds.service.util.Results;
 public interface ContenidoService {
 	
 	
-	public Contenido buscarId (Long idContenido, String idioma) 
+	public Contenido buscarId (Long idContenido) 
 			throws DataException;
 	
 	public Contenido buscarNombre(String nombreContenido, int startIndex, int count, String idioma);

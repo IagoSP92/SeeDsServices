@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,20 +38,22 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 		ResultSet resultSet = null;
 
 		try {          
-			String queryString = 
+			StringBuilder queryString = new StringBuilder(
 					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
 					+", L.DESCRIPCION, L.PUBLICA "
 					+", UC.SIGUIENDO, UC.DENUNCIADO, UC.GUARDADO "
 					+" FROM LISTA L INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = L.ID_CONTENIDO ) "
-					+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) "
-													+" AND (UC.USUARIO_ID_CONTENIDO= ? ) "
-					+" WHERE L.ID_CONTENIDO = ? ";
+					+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) ");
+					if(idSesion!=null) { queryString.append(" AND (UC.USUARIO_ID_CONTENIDO= ? ) ");}
+					queryString.append(" WHERE L.ID_CONTENIDO = ? ");
 			
-			preparedStatement = connection.prepareStatement(queryString,
+			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			int i = 1;
-			preparedStatement.setLong(i++, idSesion);
+			if(idSesion!=null) {
+				preparedStatement.setLong(i++, idSesion);
+			}	
 			preparedStatement.setLong(i++, idLista);
  
 			if(logger.isDebugEnabled()) {
@@ -662,13 +665,11 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 				Date fechaMod =  resultSet.getDate(i++);
 				Long autor = resultSet.getLong(i++);	
 				Integer tipo = resultSet.getInt(i++);	
+				Integer reproducciones = resultSet.getInt(i++);
+				Double valoracion = resultSet.getDouble(i++);
 				
 				String descripcion = resultSet.getString(i++);
 				Boolean publica = resultSet.getBoolean(i++);
-				
-				Boolean siguiendo = resultSet.getBoolean(i++);
-				Boolean denunciado = resultSet.getBoolean(i++);
-				Boolean guardado = resultSet.getBoolean(i++);
 			
 				Lista l = new Lista();
 				l.setId(idContenido);
@@ -677,14 +678,20 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 				l.setFechaMod(fechaMod);
 				l.setAutor(autor);
 				l.setTipo(tipo);
+				l.setReproducciones(reproducciones);
+				l.setValoracion(valoracion);
 
 				l.setDescripcion(descripcion);
 				l.setPublica(publica);
 				
-				l.setSiguiendo(siguiendo);
-				l.setDenunciado(denunciado);
-				l.setGuardado(guardado);
-
+				if(resultSet.getObject(i)!=null) {
+					Boolean siguiendo = resultSet.getBoolean(i++);
+					Boolean denunciado = resultSet.getBoolean(i++);
+					Boolean guardado = resultSet.getBoolean(i++);		
+					l.setSiguiendo(siguiendo);
+					l.setDenunciado(denunciado);
+					l.setGuardado(guardado);			
+				}
 				return l;
 			}
 

@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,20 +37,22 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		ResultSet resultSet = null;
 
 		try {          
-			String queryString =
+			StringBuilder queryString =new StringBuilder(
 					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
-					+", U.DESCRIPCION, U.PUBLICA "
+					+ ", U.EMAIL, U.CONTRASENA, U.DESCRIPCION, U.URL_AVATAR, U.NOMBRE_REAL, U.APELLIDOS, U.ID_PAIS, U.FECHA_NAC "
 					+", UC.SIGUIENDO, UC.DENUNCIADO, UC.GUARDADO "
 					+" FROM USUARIO U INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = U.ID_CONTENIDO ) "
-					+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) "
-													+" AND (UC.USUARIO_ID_CONTENIDO= ? ) "
-					+" WHERE U.ID_CONTENIDO = ? ";
+					+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) ");
+					if(idSesion!=null) { queryString.append(" AND (UC.USUARIO_ID_CONTENIDO= ? ) ");}
+					queryString.append(" WHERE U.ID_CONTENIDO = ? ");
 
-			preparedStatement = connection.prepareStatement(queryString,
+			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
 			int i = 1;
-			preparedStatement.setLong(i++, idSesion);
+			if(idSesion!=null) {
+				preparedStatement.setLong(i++, idSesion);
+			}			
 			preparedStatement.setLong(i++, idUsuario);
 
 			if(logger.isDebugEnabled()) {
@@ -91,6 +94,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
 							+ ", U.EMAIL, U.CONTRASENA, U.DESCRIPCION, U.URL_AVATAR, U.NOMBRE_REAL, U.APELLIDOS, U.ID_PAIS, U.FECHA_NAC "
 							+" FROM USUARIO U INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = U.ID_CONTENIDO ) "
+							+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO)"
 							+" WHERE U.EMAIL = ? ";
 
 			preparedStatement = connection.prepareStatement(queryString,

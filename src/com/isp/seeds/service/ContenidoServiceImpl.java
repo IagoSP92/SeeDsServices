@@ -27,7 +27,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 	
 	@Override
-	public Contenido buscarId(Long idContenido, String idioma) {
+	public Contenido buscarId(Long idContenido) {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idContenido= {} ", idContenido);
@@ -38,7 +38,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				contenido = contenidoDao.findById(connection, idContenido, idioma);
+				contenido = contenidoDao.findById(connection, idContenido);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -243,10 +243,10 @@ public class ContenidoServiceImpl implements ContenidoService {
 				Connection connection = ConnectionManager.getConnection();
 
 				contenido = new Contenido();
-				contenido= contenidoDao.findById(connection, idContenido, idioma); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿? 
+				contenido= contenidoDao.findById(connection, idContenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿? 
 				contenido.setNombre(nuevo);
 				contenidoDao.update(connection, contenido);
-				contenido= contenidoDao.findById(connection, idContenido, idioma);
+				contenido= contenidoDao.findById(connection, idContenido);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {

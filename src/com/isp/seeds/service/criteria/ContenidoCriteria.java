@@ -8,8 +8,7 @@ public class ContenidoCriteria extends Contenido {
 	
 	private Boolean aceptarUsuario = null;
 	private Boolean aceptarVideo = null;
-	private Boolean aceptarLista = null;
-	
+	private Boolean aceptarLista = null;	
 	
 	// Se utiliza como "Fecha Desde" la fecha de la clase contenido:
 	private Date fechaAltaHasta = null;
