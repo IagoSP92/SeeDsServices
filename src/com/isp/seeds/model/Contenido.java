@@ -12,6 +12,12 @@ public class Contenido extends AbstractValueObject {
 	private Date fechaMod = null;
 	private Long autor = null;
 	private Integer tipo = null;
+	private Double valoracion = null;
+	private Integer reproducciones = null;
+	
+	private Boolean siguiendo = null;
+	private Boolean denunciado = null;
+	private Boolean guardado = null;
 	
 	@Override
 	public boolean equals (Object o) {
@@ -38,24 +44,6 @@ public class Contenido extends AbstractValueObject {
 	public String toString() {
 		return super.toString() + ToStringBuilder.reflectionToString(this);
 	}
-	
-//	public String toString() {
-//		StringBuilder cadena = new StringBuilder();
-//		cadena.append("|CONTENIDO::ID:");
-//		cadena.append(id);
-//		cadena.append(" Nombre:");
-//		cadena.append(nombre);
-//		cadena.append(" F.Alta:");
-//		cadena.append(fechaAlta);
-//		cadena.append(" F.Mod:");
-//		cadena.append(fechaMod);
-//		cadena.append(" Autor:");
-//		cadena.append(autor);
-//		cadena.append(" Tipo:");
-//		cadena.append(tipo);
-//		cadena.append("||");
-//		return cadena.toString();
-//	}
 
 	public Contenido() {
 
@@ -94,11 +82,11 @@ public class Contenido extends AbstractValueObject {
 		this.fechaMod = fechaMod;
 	}
 
-	public Long getIdAutor() {
+	public Long getAutor() {
 		return autor;
 	}
 
-	public void setIdAutor(Long idAutor) {
+	public void setAutor(Long idAutor) {
 		this.autor = idAutor;
 	}
 
@@ -108,6 +96,46 @@ public class Contenido extends AbstractValueObject {
 
 	public void setTipo(Integer tipo) {
 		this.tipo = tipo;
+	}
+
+	public Double getValoracion() {
+		return valoracion;
+	}
+
+	public void setValoracion(Double valoracion) {
+		this.valoracion = valoracion;
+	}
+
+	public Integer getReproducciones() {
+		return reproducciones;
+	}
+
+	public void setReproducciones(Integer reproducciones) {
+		this.reproducciones = reproducciones;
+	}
+
+	public Boolean getSiguiendo() {
+		return siguiendo;
+	}
+
+	public void setSiguiendo(Boolean siguiendo) {
+		this.siguiendo = siguiendo;
+	}
+
+	public Boolean getDenunciado() {
+		return denunciado;
+	}
+
+	public void setDenunciado(Boolean denunciado) {
+		this.denunciado = denunciado;
+	}
+
+	public Boolean getGuardado() {
+		return guardado;
+	}
+
+	public void setGuardado(Boolean guardado) {
+		this.guardado = guardado;
 	}
 
 

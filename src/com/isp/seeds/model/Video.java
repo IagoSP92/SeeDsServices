@@ -6,23 +6,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Video extends Contenido  implements Comparable<Video> {
 
-
 	private String descripcion = null;
-	private Integer reproducciones = null;
 	private String url = null;
-	private Double valoracion = null;
 
 	private Categoria categoria= null;
 	private List<Etiqueta> etiquetas = null;
-
 	private List<String> comentarios= null;
-
-
 
 	public String toString() {
 		return super.toString() + ToStringBuilder.reflectionToString(this);
 	}
-
 
 	@Override
 	public int compareTo(Video v) {
@@ -30,7 +23,6 @@ public class Video extends Contenido  implements Comparable<Video> {
 	}
 
 	public Video () {
-
 	}
 
 	public String getDescripcion() {
@@ -41,14 +33,6 @@ public class Video extends Contenido  implements Comparable<Video> {
 		this.descripcion = descripcion;
 	}
 
-	public Integer getReproducciones() {
-		return reproducciones;
-	}
-
-	public void setReproducciones(Integer reproducciones) {
-		this.reproducciones = reproducciones;
-	}
-
 	public String getUrl() {
 		return url;
 	}
@@ -56,15 +40,6 @@ public class Video extends Contenido  implements Comparable<Video> {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
-	public Double getValoracion() {
-		return valoracion;
-	}
-
-	public void setValoracion(Double valoracion) {
-		this.valoracion = valoracion;
-	}
-
 
 	public Categoria getCategoria() {
 		return categoria;

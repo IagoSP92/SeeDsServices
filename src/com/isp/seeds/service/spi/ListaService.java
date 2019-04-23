@@ -1,10 +1,9 @@
 package com.isp.seeds.service.spi;
 
-import java.util.List;
-
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Lista;
 import com.isp.seeds.model.Video;
+import com.isp.seeds.service.util.Results;
 
 public interface ListaService {
 	
@@ -12,8 +11,7 @@ public interface ListaService {
 			throws DataException;
 	
 	public void eliminarLista (Lista lista) 
-			throws DataException;
-	
+			throws DataException;	
 	
 	public void editarLista (Lista lista)
 			throws DataException;
@@ -22,21 +20,20 @@ public interface ListaService {
 			throws DataException;
 	
 	public void sacarVideo (Long idLista, Long idVideo)
-			throws DataException;
-	
+			throws DataException;	
 
-	public Lista buscarId (Long idLista)
+	public Lista buscarId (Long idSesion, Long idLista)
 			throws DataException;
 	
-	public List<Lista> buscarTodas ()
-			throws DataException;
+//	public List<Lista> buscarTodas ()
+//			throws DataException;
 	
-	public List<Lista> buscarPorAutor (Long idAutor)
-			throws DataException;
+//	public List<Lista> buscarPorAutor (Long idAutor)
+//			throws DataException;
 	
-	public List<Lista> buscarPorCategoria (Long idCategoria)
-			throws DataException;
+//	public List<Lista> buscarPorCategoria (Long idCategoria)
+//			throws DataException;
 	
-	public List<Video> verVideosLista (Long idLista)
+	public Results<Video> verVideosLista (Long idLista, int startIndex, int count)
 			throws DataException;
 }

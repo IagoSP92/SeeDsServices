@@ -93,7 +93,7 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public Video buscarId(Long idVideo) throws DataException {
+	public Video buscarId(Long idSesion, Long idVideo) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idVideo= {} ", idVideo);
@@ -104,7 +104,7 @@ public class VideoServiceImpl implements VideoService {
 
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				video = videoDao.findById(connection, idVideo);
+				video = videoDao.findById(connection,idSesion, idVideo);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -118,76 +118,76 @@ public class VideoServiceImpl implements VideoService {
 		return video;
 	}
 
-	@Override
-	public List<Video> buscarTodos() throws DataException {
-		
-		//LOGGER
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			List<Video> videos = new ArrayList<Video>();
-			videos = videoDao.findAllVideos(connection);
-			JDBCUtils.closeConnection(connection);
-			return videos;
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
-		}
-		return null;
-	}
+//	@Override
+//	public List<Video> buscarTodos() throws DataException {
+//		
+//		//LOGGER
+//		
+//		try {
+//			Connection connection = ConnectionManager.getConnection();
+//			List<Video> videos = new ArrayList<Video>();
+//			videos = videoDao.findAllVideos(connection);
+//			JDBCUtils.closeConnection(connection);
+//			return videos;
+//		} catch (SQLException e) {
+//			logger.warn(e.getMessage(), e);
+//		} catch (DataException e) {
+//			logger.warn(e.getMessage(), e);
+//		}finally{
+//			//JDBCUtils.closeConnection(connection);
+//		}
+//		return null;
+//	}
 
-	@Override
-	public List<Video> buscarPorAutor(Long idAutor) throws DataException {
+//	@Override
+//	public List<Video> buscarPorAutor(Long idAutor) throws DataException {
+//
+//		if(logger.isDebugEnabled()) {
+//			logger.debug ("idAutor= {} ", idAutor);
+//		}
+//
+//		if(idAutor != null) {
+//
+//			try {
+//				Connection connection = ConnectionManager.getConnection();
+//				List<Video> videos = new ArrayList<Video>();
+//				videos = videoDao.findByAutor(connection, idAutor);
+//				JDBCUtils.closeConnection(connection);
+//				return videos;
+//			} catch (SQLException e) {
+//				logger.warn(e.getMessage(), e);
+//			} catch (DataException e) {
+//				logger.warn(e.getMessage(), e);
+//			}finally{
+//				//JDBCUtils.closeConnection(connection);
+//			}
+//		}
+//		return null;
+//	}
 
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idAutor= {} ", idAutor);
-		}
-
-		if(idAutor != null) {
-
-			try {
-				Connection connection = ConnectionManager.getConnection();
-				List<Video> videos = new ArrayList<Video>();
-				videos = videoDao.findByAutor(connection, idAutor);
-				JDBCUtils.closeConnection(connection);
-				return videos;
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-			} catch (DataException e) {
-				logger.warn(e.getMessage(), e);
-			}finally{
-				//JDBCUtils.closeConnection(connection);
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public List<Video> buscarPorCategoria(Long idCategoria) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idCategoria= {} ", idCategoria);
-		}
-
-		if (idCategoria!=null) {
-			try {
-				Connection connection = ConnectionManager.getConnection();
-				List<Video> videos = new ArrayList<Video>();
-				videos = videoDao.findByCategoria(connection, idCategoria);
-				JDBCUtils.closeConnection(connection);
-				return videos;
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-			} catch (DataException e) {
-				logger.warn(e.getMessage(), e);
-			}finally{
-				//JDBCUtils.closeConnection(connection);
-			}
-		}
-		return null;
-	}
+//	@Override
+//	public List<Video> buscarPorCategoria(Long idCategoria) throws DataException {
+//
+//		if(logger.isDebugEnabled()) {
+//			logger.debug ("idCategoria= {} ", idCategoria);
+//		}
+//
+//		if (idCategoria!=null) {
+//			try {
+//				Connection connection = ConnectionManager.getConnection();
+//				List<Video> videos = new ArrayList<Video>();
+//				videos = videoDao.findByCategoria(connection, idCategoria);
+//				JDBCUtils.closeConnection(connection);
+//				return videos;
+//			} catch (SQLException e) {
+//				logger.warn(e.getMessage(), e);
+//			} catch (DataException e) {
+//				logger.warn(e.getMessage(), e);
+//			}finally{
+//				//JDBCUtils.closeConnection(connection);
+//			}
+//		}
+//		return null;
+//	}
 
 }

@@ -89,7 +89,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 		}
-
 		return exist;
 	}
 
@@ -257,7 +256,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	public Results<Contenido> findByCriteria (Connection connection, ContenidoCriteria contenido, int startIndex, int count, String idioma) throws DataException {
 
 		if(logger.isDebugEnabled()) {
-			logger.debug ("Criteria= {} startIndex={} count={}", contenido, startIndex, count);
+			logger.debug ("Criteria= {} startIndex={} count={} lang={}", contenido, startIndex, count, idioma);
 		}
 
 		PreparedStatement preparedStatement = null;
@@ -266,26 +265,19 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		try {
 			queryString = new StringBuilder(
-					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO " + 
-					" FROM CONTENIDO C ");
+					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) " + 
+					" FROM CONTENIDO C INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.ID_CONTENIDO) ");
 			
+			//Al anexionar las tablas solo si es uno de los tipos buscados se soluciona el filtrado por tipo:
 			if (contenido.getAceptarUsuario()) { queryString.append(" INNER JOIN USUARIO U ON (C.ID_CONTENIDO = U.ID_CONTENIDO) ");}
 			if (contenido.getAceptarLista()) { queryString.append(" INNER JOIN LISTA L ON (C.ID_CONTENIDO = L.ID_CONTENIDO) ");}
 			if (contenido.getAceptarVideo()) { queryString.append(" INNER JOIN VIDEO V ON (C.ID_CONTENIDO = V.ID_CONTENIDO) ");}
-			
-//			if(!contenido.getAceptarUsuario() && ( contenido.getValoracionMin()!=null || contenido.getValoracionMax()!=null 
-//					|| contenido.getReproduccionesMin()!=null || contenido.getReproduccionesMax()!=null)) {
-//				queryString.append(" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) ");
-//				
-//				if(!contenido.getAceptarLista()) {
-//					queryString.append(" INNER JOIN VIDEO V ON (C.ID_CONTENIDO = V.ID_CONTENIDO) ");
-//				}
-//			}
+			if (contenido.getCategoria()!=null) { queryString.append(" INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CONTENIDO = CC.ID_CONTENIDO) ");}			
 
 			boolean first = true;
 
 			if (contenido.getId()!=null) {
-				addClause(queryString, first, " C.ID_CONTENIDO LIKE ? ");
+				addClause(queryString, first, " C.ID_CONTENIDO = ? ");
 				first = false;
 			}
 			
@@ -295,27 +287,27 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 
 			if (contenido.getFechaAlta()!=null) {
-				addClause(queryString, first, " C.FECHA_ALTA > ?  ");
+				addClause(queryString, first, " C.FECHA_ALTA >= ?  ");
 				first = false;
 			}
 
 			if (contenido.getFechaAltaHasta()!=null) {
-				addClause(queryString, first, " C.FECHA_ALTA < ?  ");
+				addClause(queryString, first, " C.FECHA_ALTA <= ?  ");
 				first = false;
 			}
 
 			if (contenido.getFechaMod()!=null) {
-				addClause(queryString, first, " C.FECHA_MOD > ?  ");
+				addClause(queryString, first, " C.FECHA_MOD >= ?  ");
 				first = false;
 			}
 
 			if (contenido.getFechaModHasta()!=null) {
-				addClause(queryString, first, " C.FECHA_MOD < ?  ");
+				addClause(queryString, first, " C.FECHA_MOD <= ?  ");
 				first = false;
 			}
 
-			if (contenido.getIdAutor()!=null) {
-				addClause(queryString, first, " C.AUTOR_ID_CONTENIDO LIKE ? ");
+			if (contenido.getAutor()!=null) {
+				addClause(queryString, first, " C.AUTOR_ID_CONTENIDO = ? ");
 				first = false;
 			}
 
@@ -324,29 +316,33 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				first = false;
 			}
 			
+			if (contenido.getCategoria()!=null) {
+				addClause(queryString, first, " CC.ID_CATEGORIA = ? ");
+				first = false;
+			}
+			
 			queryString.append(" GROUP BY C.ID_CONTENIDO ");
 			
 			boolean firstHaving = true;
-			if(!contenido.getAceptarUsuario()) {
-				
-				if(contenido.getValoracionMin()!=null) {
-					addHaving(queryString, firstHaving, "  AVG(UC.VALORACION) >= ? ");
-					firstHaving=false;
-				}
-				if(contenido.getValoracionMax()!=null) {
-					addHaving(queryString, firstHaving, "  AVG(UC.VALORACION) <= ? ");
-					firstHaving=false;
-				}				
-				if(!contenido.getAceptarLista()) {
-					if(contenido.getReproduccionesMin()!=null) {
-						addHaving(queryString, firstHaving, "  AVG(V.REPRODUCCIONES) >= ? ");
-						firstHaving=false;
-					}
-					if(contenido.getReproduccionesMax()!=null) {
-						addHaving(queryString, firstHaving, "  AVG(V.REPRODUCCIONES) <= ? ");
-						firstHaving=false;
-					}
-				}
+			
+			if(contenido.getValoracionMin()!=null) {
+				addHaving(queryString, firstHaving, "  AVG(UC.VALORACION) >= ? ");
+				firstHaving=false;
+			}
+			
+			if(contenido.getValoracionMax()!=null) {
+				addHaving(queryString, firstHaving, "  AVG(UC.VALORACION) <= ? ");
+				firstHaving=false;
+			}
+			
+			if(contenido.getReproduccionesMin()!=null) {
+				addHaving(queryString, firstHaving, "  C.REPRODUCCIONES >= ? ");
+				firstHaving=false;
+			}
+			
+			if(contenido.getReproduccionesMax()!=null) {
+				addHaving(queryString, firstHaving, "  C.REPRODUCCIONES <= ? ");
+				firstHaving=false;
 			}
 			
 			queryString.append(" ORDER BY C.FECHA_ALTA ");
@@ -360,7 +356,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			if (contenido.getNombre()!=null)
 				preparedStatement.setString(i++, "%" + contenido.getNombre() + "%");
 
-
+			// Se utiliza como "Fecha Desde" la fecha de la clase contenido:
 			if (contenido.getFechaAlta()!=null) 
 				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAlta().getTime()));
 			if (contenido.getFechaAltaHasta()!=null) 
@@ -371,28 +367,27 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				preparedStatement.setDate(i++,  new java.sql.Date(contenido.getFechaModHasta().getTime()));
 
 
-			if (contenido.getIdAutor()!=null) 
-				preparedStatement.setString(i++, "%" + contenido.getIdAutor() + "%");
+			if (contenido.getAutor()!=null) 
+				preparedStatement.setString(i++, "%" + contenido.getAutor() + "%");
 			if (contenido.getTipo()!=null) 
 				preparedStatement.setInt(i++, contenido.getTipo());
 			
-			if(!contenido.getAceptarUsuario()) {
-				
-				if(contenido.getValoracionMin()!=null) {
-					preparedStatement.setDouble(i++, contenido.getValoracionMin());
-				}
-				if(contenido.getValoracionMax()!=null) {
-					preparedStatement.setDouble(i++, contenido.getValoracionMax());
-				}				
-				if(!contenido.getAceptarLista()) {
-					if(contenido.getReproduccionesMin()!=null) {
-						preparedStatement.setInt(i++, contenido.getReproduccionesMin());
-					}
-					if(contenido.getReproduccionesMax()!=null) {
-						preparedStatement.setInt(i++, contenido.getReproduccionesMax());
-					}
-				}
-			}			
+			if(contenido.getValoracionMin()!=null) {
+				preparedStatement.setDouble(i++, contenido.getValoracionMin());
+			}
+			if(contenido.getValoracionMax()!=null) {
+				preparedStatement.setDouble(i++, contenido.getValoracionMax());
+			}
+			if(contenido.getReproduccionesMin()!=null) {
+				preparedStatement.setInt(i++, contenido.getReproduccionesMin());
+			}
+			if(contenido.getReproduccionesMax()!=null) {
+				preparedStatement.setInt(i++, contenido.getReproduccionesMax());
+			}
+			
+			if(contenido.getCategoria()!=null) {
+				preparedStatement.setLong(i++, contenido.getCategoria());
+			}
 
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);
@@ -421,14 +416,13 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
-		} catch (DataException de) {
-			logger.warn(de.getMessage(), de);
-			throw new DataException(de);
+		} catch (DataException e) {
+			logger.warn(e.getMessage(), e);
+			throw new DataException(e);
 		}  finally {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 		}
-
 	}
 
 
@@ -472,9 +466,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
-		} catch (DataException de) {
-			logger.warn(de.getMessage(), de);
-			throw new DataException(de);
+		} catch (DataException e) {
+			logger.warn(e.getMessage(), e);
+			throw new DataException(e);
 		}  finally {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
@@ -517,8 +511,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		try {
 			// Creamos el preparedstatement
-			String queryString = "INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo) "
-					+ "VALUES (?, ?, ?, ?, ?)";
+			String queryString = "INSERT INTO contenido (nombre, fecha_alta, fecha_mod, autor_id_contenido, tipo, reproducciones) "
+					+ " VALUES (?, ?, ?, ?, ?, ?) ";
 
 			preparedStatement = connection.prepareStatement(queryString,
 					Statement.RETURN_GENERATED_KEYS);
@@ -528,13 +522,15 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setString(i++, c.getNombre());
 			preparedStatement.setDate(i++, new java.sql.Date(c.getFechaAlta().getTime()));
 			preparedStatement.setDate(i++, new java.sql.Date(c.getFechaMod().getTime()));
-			if(c.getIdAutor() == null) { // INSERTAR USUARIOS: AUTOR=NULL
+			if(c.getAutor() == null) { // INSERTAR USUARIOS: AUTOR=NULL
 				preparedStatement.setNull(i++, Types.NULL);
 			}
 			else {  // INSERTAR VIDEOS Y LISTAS
-				preparedStatement.setLong(i++, c.getIdAutor());
+				preparedStatement.setLong(i++, c.getAutor());
 			}
 			preparedStatement.setInt(i++, c.getTipo());
+			preparedStatement.setInt(i++,0); //Al crear un contenido las reproducciones siempre serán 0
+			//preparedStatement.setInt(i++, c.getReproducciones());
 
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);
@@ -599,7 +595,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				first = false;
 			}
 
-			if (contenido.getIdAutor()!=null) {
+			if (contenido.getAutor()!=null) {
 				addUpdate(queryString, first, " autor_id_contenido = ? ");
 				first = false;
 			}
@@ -608,6 +604,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				addUpdate(queryString, first, " tipo = ? ");
 				first = false;
 			}
+			
+			if (contenido.getReproducciones()!=null) {
+				addUpdate(queryString, first, " reproducciones = ? ");
+				first = false;
+			}			
 
 			queryString.append("WHERE id_contenido = ?");
 			preparedStatement = connection.prepareStatement(queryString.toString());
@@ -616,17 +617,20 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			if (contenido.getNombre()!=null)
 				preparedStatement.setString(i++,contenido.getNombre());
 
-			if (contenido.getFechaAlta()!=null)
-				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAlta().getTime()));
+//			if (contenido.getFechaAlta()!=null)
+//				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAlta().getTime()));
 
 			if (contenido.getFechaMod()!=null)
 				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaMod().getTime()));
 
-			if (contenido.getIdAutor()!=null)
-				preparedStatement.setLong(i++,contenido.getIdAutor());
+			if (contenido.getAutor()!=null)
+				preparedStatement.setLong(i++,contenido.getAutor());
 
 			if (contenido.getTipo()!=null)
 				preparedStatement.setLong(i++,contenido.getTipo());
+			
+			if (contenido.getReproducciones()!=null)
+				preparedStatement.setInt(i++,contenido.getTipo());
 
 
 			preparedStatement.setLong(i++, contenido.getId());
@@ -1591,7 +1595,49 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
+	
+	
+	public Results<String> cargarComentarios(Connection connection, Long idContenido, int startIndex, int count) throws DataException {
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
 
+		try {
+			queryString = new StringBuilder(
+					"SELECT COMENTARIO FROM USUARIO_CONTENIDO "
+					+" WHERE ID_CONTENIDO = ? ");
+
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			preparedStatement.setLong(1, idContenido);
+
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
+			resultSet = preparedStatement.executeQuery();
+			
+			List<String> page = new ArrayList<String>();
+			int currentCount = 0;
+			if ((startIndex >=1) && resultSet.absolute(startIndex)) {
+				do {
+					page.add(resultSet.getString(1));
+					currentCount++;
+				} while ((currentCount < count) &&  resultSet.next()) ;
+			}
+			int totalRows = JDBCUtils.getTotalRows(resultSet);
+			Results<String> results = new Results<String>(page, startIndex, totalRows);
+			return results;
+
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		return null;
+	}
 
 	private Contenido loadNext(Connection connection, ResultSet resultSet)
 			throws SQLException, DataException {
@@ -1609,14 +1655,18 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			autor = resultSet.getLong(i++);
 		}
 		Integer tipo = resultSet.getInt(i++);
+		Integer reproducciones = resultSet.getInt(i++);
+		Double valoracion = resultSet.getDouble(i++);
 
 		Contenido c = new Contenido();
 		c.setId(idContenido);
 		c.setNombre(nombre);
 		c.setFechaAlta(fechaAlta);
 		c.setFechaMod(fechaMod);
-		c.setIdAutor(autor);
+		c.setAutor(autor);
 		c.setTipo(tipo);
+		c.setReproducciones(reproducciones);
+		c.setValoracion(valoracion);
 
 		return c;
 	}

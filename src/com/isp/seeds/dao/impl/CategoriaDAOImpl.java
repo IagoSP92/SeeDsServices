@@ -23,21 +23,20 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 			throws SQLException {
 
 		Categoria c = new Categoria();
-		int i=1;
-		
+		int i=1;		
 		Long id = resultSet.getLong(i++);
 		String nombre = resultSet.getString(i++);
-
 		c = new Categoria();
-
 		c.setNombreCategoria(nombre);
 		c.setIdCategoria(id);
-
 		return c;		
 	}
 	
 	public Boolean exists (Connection connection, Long idCategoria) 
 			throws DataException {
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idCategoria= {} ", idCategoria);
+		}
 		boolean exist = false;
 
 		PreparedStatement preparedStatement = null;
@@ -46,14 +45,16 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		try {
 
 			String queryString = 
-					"SELECT ID_CATEGORIA " + 
-							" FROM CATEGORIA " +
-							" WHERE ID_CATEGORIA = ? ";
+					" SELECT ID_CATEGORIA FROM CATEGORIA WHERE ID_CATEGORIA = ? ";
 
 			preparedStatement = connection.prepareStatement(queryString);
 
 			int i = 1;
 			preparedStatement.setLong(i++, idCategoria);
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
@@ -61,7 +62,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -74,37 +75,32 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 
 	public Categoria findById(Connection connection, Long id, String idioma)
 			throws DataException {
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idCategoria= {} idioma={}", id, idioma);
+		}
 
 		Categoria c = null;
-
-		//Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try {
-			//connection = ConnectionManager.getConnection();
-
 			String sql;
-			sql =  "SELECT c.ID_CATEGORIA, ci.NOMBRE_CATEGORIA "
-					+"FROM CATEGORIA C inner join categoria_idioma ci on (c.ID_CATEGORIA = ci.id_categoria)"
-					+"WHERE c.ID_CATEGORIA = ? AND CI.ID_IDIOMA = ?";
+			sql =  "SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA "
+					+" FROM CATEGORIA C INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA) "
+					+" WHERE C.ID_CATEGORIA = ? AND CI.ID_IDIOMA = ? ";
 
-			// Preparar a query
-			System.out.println("Creating statement...");
 			preparedStatement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
-			// Establece os parámetros
 			int i = 1;
 			preparedStatement.setLong(i++, id);
 			preparedStatement.setString(i++, idioma);
-
-
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
 			resultSet = preparedStatement.executeQuery();			
-			//STEP 5: Extract data from result set			
 
 			if (resultSet.next()) {
 				c  = loadNext(resultSet);
-				System.out.println("Cargado "+ c);
-
 			} else {
 				throw new DataException("Non se encontrou a categoria "+id);
 			}
@@ -112,13 +108,12 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 				throw new DataException("Categoria "+id+" duplicado");
 			}
 
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new DataException(ex);
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+			throw new DataException(e);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
-			//JDBCUtils.closeConnection(connection);
 		}  	
 
 		return c;
@@ -126,43 +121,43 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 
 
 	@Override
-	public List<Categoria> findAll(Connection connection) throws DataException {
+	public List<Categoria> findAll(Connection connection, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idioma={}", idioma);
+		}
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
 		try {
-
-			// Create "preparedStatement"       
 			String queryString = 
-					"SELECT c.id_Categoria, ci.nombre_Categoria " + 
-					"FROM Categoria c inner join categoria_idioma ci on (c.ID_CATEGORIA = ci.id_categoria) " +
-					"ORDER BY ci.id_categoria, ci.nombre_Categoria asc ";
+					"SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA "
+					+" FROM CATEGORIA C INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA) "
+					+" ORDER BY C.ID_CATEGORIA ";
 
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
-			// Execute query.
-			System.out.println(preparedStatement.toString());
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
 			resultSet = preparedStatement.executeQuery();
 			
-			// Recupera la pagina de resultados
 			List<Categoria> results = new ArrayList<Categoria>();                        
 			Categoria categoria = null;
-			int currentCount = 0;
 						
 			if (resultSet.next()) {
 				do {
 					categoria = loadNext(resultSet);
 					results.add(categoria);  
-					currentCount++;                	
 				} while (resultSet.next()) ;
 			}
 			
 			return results;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);
@@ -173,29 +168,29 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 
 	@Override
 	public Long findByNombre(Connection connection, String nombreCategoria, String idioma) throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("nombreCategoria= {} idioma={}", nombreCategoria, idioma);
+		}
 
 		Long idCategoria = null;
-
-		//Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try {
-			//connection = ConnectionManager.getConnection();
-
 			String sql;
 			sql =  "SELECT ID_CATEGORIA "
 					+" FROM CATEGORIA_IDIOMA"
 					+" WHERE NOMBRE_CATEGORIA = ? AND ID_IDIOMA = ? ";
 
-			// Preparar a query
-			System.out.println("Creating statement...");
 			preparedStatement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
-			// Establece os parámetros
 			int i = 1;
 			preparedStatement.setString(i++, nombreCategoria);
 			preparedStatement.setString(i++, idioma);
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
 			resultSet = preparedStatement.executeQuery();			
 
 			if (resultSet.next()) {
@@ -209,15 +204,13 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 				throw new DataException("Categoria "+nombreCategoria+" duplicado");
 			}
 
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new DataException(ex);
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+			throw new DataException(e);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
-			//JDBCUtils.closeConnection(connection);
-		}  	
-
+		}
 		return idCategoria;
 	}
 

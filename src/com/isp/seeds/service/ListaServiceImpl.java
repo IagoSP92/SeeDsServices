@@ -15,9 +15,11 @@ import com.isp.seeds.dao.spi.ListaDAO;
 import com.isp.seeds.dao.spi.VideoDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Lista;
 import com.isp.seeds.model.Video;
 import com.isp.seeds.service.spi.ListaService;
+import com.isp.seeds.service.util.Results;
 
 public class ListaServiceImpl implements ListaService {
 
@@ -149,10 +151,10 @@ public class ListaServiceImpl implements ListaService {
 
 	
 	@Override
-	public Lista buscarId(Long idLista) throws DataException {
+	public Lista buscarId(Long idSesion, Long idLista) throws DataException {
 
 		if(logger.isDebugEnabled()) {
-			logger.debug ("idLista= {} ", idLista);
+			logger.debug ("idSesion={} idLista= {} ",idSesion, idLista);
 		}
 
 		Lista lista = null;
@@ -160,7 +162,7 @@ public class ListaServiceImpl implements ListaService {
 			
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				lista = listaDao.findById(connection, idLista);
+				lista = listaDao.findById(connection, idSesion, idLista);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -175,82 +177,82 @@ public class ListaServiceImpl implements ListaService {
 	}
 
 
-	@Override
-	public List<Lista> buscarTodas() throws DataException {
-		
-		//LOGGER
-		
-		try {
-			Connection connection = ConnectionManager.getConnection();
-			List<Lista> listas = new ArrayList<Lista>();
-			listas = listaDao.findAllListas(connection);
-			JDBCUtils.closeConnection(connection);
-			return listas;
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
-		}
-		return null;
-	}
+//	@Override
+//	public List<Lista> buscarTodas() throws DataException {
+//		
+//		//LOGGER
+//		
+//		try {
+//			Connection connection = ConnectionManager.getConnection();
+//			List<Lista> listas = new ArrayList<Lista>();
+//			listas = listaDao.findAllListas(connection);
+//			JDBCUtils.closeConnection(connection);
+//			return listas;
+//		} catch (SQLException e) {
+//			logger.warn(e.getMessage(), e);
+//		} catch (DataException e) {
+//			logger.warn(e.getMessage(), e);
+//		}finally{
+//			//JDBCUtils.closeConnection(connection);
+//		}
+//		return null;
+//	}
 	
 
-	@Override
-	public List<Lista> buscarPorAutor(Long idAutor) throws DataException {
+//	@Override
+//	public List<Lista> buscarPorAutor(Long idAutor) throws DataException {
+//
+//		if(logger.isDebugEnabled()) {
+//			logger.debug ("idAutor= {} ", idAutor);
+//		}
+//
+//		if(idAutor != null) {
+//			try {
+//				Connection connection = ConnectionManager.getConnection();
+//				List<Lista> listas = new ArrayList<Lista>();
+//				listas = listaDao.findByAutor (connection, idAutor);
+//				JDBCUtils.closeConnection(connection);
+//				return listas;
+//			} catch (SQLException e) {
+//				logger.warn(e.getMessage(), e);
+//			} catch (DataException e) {
+//				logger.warn(e.getMessage(), e);
+//			}finally{
+//				//JDBCUtils.closeConnection(connection);
+//			}
+//		}
+//		return null;
+//	}
 
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idAutor= {} ", idAutor);
-		}
 
-		if(idAutor != null) {
-			try {
-				Connection connection = ConnectionManager.getConnection();
-				List<Lista> listas = new ArrayList<Lista>();
-				listas = listaDao.findByAutor (connection, idAutor);
-				JDBCUtils.closeConnection(connection);
-				return listas;
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-			} catch (DataException e) {
-				logger.warn(e.getMessage(), e);
-			}finally{
-				//JDBCUtils.closeConnection(connection);
-			}
-		}
-		return null;
-	}
-
-
-	@Override
-	public List<Lista> buscarPorCategoria(Long idCategoria) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idCategoria= {} ", idCategoria);
-		}
-
-		if(idCategoria != null) {
-			try {
-				Connection connection = ConnectionManager.getConnection();
-				List<Lista> listas = new ArrayList<Lista>();
-				listas = listaDao.findByCategoria (connection, idCategoria);
-				JDBCUtils.closeConnection(connection);
-				return listas;
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-			} catch (DataException e) {
-				logger.warn(e.getMessage(), e);
-			}finally{
-				//JDBCUtils.closeConnection(connection);
-			}
-		}
-		return null;
-	}
+//	@Override
+//	public List<Lista> buscarPorCategoria(Long idCategoria) throws DataException {
+//
+//		if(logger.isDebugEnabled()) {
+//			logger.debug ("idCategoria= {} ", idCategoria);
+//		}
+//
+//		if(idCategoria != null) {
+//			try {
+//				Connection connection = ConnectionManager.getConnection();
+//				List<Lista> listas = new ArrayList<Lista>();
+//				listas = listaDao.findByCategoria (connection, idCategoria);
+//				JDBCUtils.closeConnection(connection);
+//				return listas;
+//			} catch (SQLException e) {
+//				logger.warn(e.getMessage(), e);
+//			} catch (DataException e) {
+//				logger.warn(e.getMessage(), e);
+//			}finally{
+//				//JDBCUtils.closeConnection(connection);
+//			}
+//		}
+//		return null;
+//	}
 
 	
 	@Override
-	public List<Video> verVideosLista(Long idLista) throws DataException {
+	public Results<Video> verVideosLista(Long idLista, int startIndex, int count) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idLista= {} ", idLista);
@@ -259,8 +261,7 @@ public class ListaServiceImpl implements ListaService {
 		if(idLista != null) {
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				List<Video> videos = new ArrayList<Video>();
-				videos = videoDao.verVideosLista (connection, idLista);
+				Results<Video> videos = videoDao.verVideosLista (connection, idLista, startIndex, count);
 				JDBCUtils.closeConnection(connection);
 				return videos;
 			} catch (SQLException e) {

@@ -18,26 +18,26 @@ import com.isp.seeds.model.Pais;
 public class PaisDAOImpl implements PaisDAO{
 	
 	private static Logger logger = LogManager.getLogger(PaisDAOImpl.class);
-
 	
 	private Pais loadNext (ResultSet resultSet) throws SQLException {
 		
 		Pais p = new Pais();
-		int i=1;
-		
+		int i=1;		
 		String id = resultSet.getString(i++);
-		String nombre = resultSet.getString(i++);
-		
+		String nombre = resultSet.getString(i++);		
 		p = new Pais();
 		p.setNombrePais(nombre);
-		p.setIdPais(id);
-		
+		p.setIdPais(id);		
 		return p;		
 	}
 
 	@Override
 	public Pais findById(Connection connection, String idPais, String idioma)
 			throws DataException {
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idPais= {} idioma={}", idPais, idioma);
+		}
 
 		Pais p = null;
 		PreparedStatement preparedStatement = null;
@@ -54,6 +54,9 @@ public class PaisDAOImpl implements PaisDAO{
 			preparedStatement.setString(i++, idPais);
 			preparedStatement.setString(i++, idioma);
 
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
 			resultSet = preparedStatement.executeQuery();						
 
 			if (resultSet.next()) {
@@ -66,9 +69,9 @@ public class PaisDAOImpl implements PaisDAO{
 				throw new DataException("Pais "+idPais+" duplicado");
 			}
 			
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			throw new DataException(ex);
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+			throw new DataException(e);
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
@@ -95,6 +98,9 @@ public class PaisDAOImpl implements PaisDAO{
 			
 			preparedStatement.setString(1, idioma);
 			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
 			resultSet = preparedStatement.executeQuery();
 			
 			List<Pais> results = new ArrayList<Pais>();                        
@@ -109,6 +115,7 @@ public class PaisDAOImpl implements PaisDAO{
 			return results;
 
 		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeResultSet(resultSet);

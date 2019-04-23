@@ -194,18 +194,17 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public Usuario buscarId(Long idUsuario) throws DataException {
+	public Usuario buscarId(Long idSesion, Long idUsuario) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idUsuario= {} ", idUsuario);
 		}
 		
 		Usuario usuario = null;
-		if(idUsuario != null) {
-			
+		if(idUsuario != null) {			
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				usuario = usuarioDao.findById(connection, idUsuario);
+				usuario = usuarioDao.findById(connection, idSesion, idUsuario);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -220,31 +219,31 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 
-	@Override
-	public List<Usuario> buscarTodos(int startIndex, int count, String idioma) throws DataException {
-
-		// LOGGER
-		
-		try {
-
-			Connection connection = ConnectionManager.getConnection();
-
-			List<Usuario> usuarios = new ArrayList<Usuario>();
-			usuarios = usuarioDao.findAllUsers(connection, startIndex, count, idioma);
-
-			JDBCUtils.closeConnection(connection);
-
-			return usuarios;
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
-		}
-		return null;
-	}
+//	@Override
+//	public List<Usuario> buscarTodos(int startIndex, int count, String idioma) throws DataException {
+//
+//		// LOGGER
+//		
+//		try {
+//
+//			Connection connection = ConnectionManager.getConnection();
+//
+//			List<Usuario> usuarios = new ArrayList<Usuario>();
+//			usuarios = usuarioDao.findAllUsers(connection, startIndex, count, idioma);
+//
+//			JDBCUtils.closeConnection(connection);
+//
+//			return usuarios;
+//
+//		} catch (SQLException e) {
+//			logger.warn(e.getMessage(), e);
+//		} catch (DataException e) {
+//			logger.warn(e.getMessage(), e);
+//		}finally{
+//			//JDBCUtils.closeConnection(connection);
+//		}
+//		return null;
+//	}
 
 
 }

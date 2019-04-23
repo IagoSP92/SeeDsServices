@@ -12,14 +12,13 @@ public class Lista extends Contenido {
 	private List<Etiqueta> etiquetas = null;
 
 	private List<String> comentarios= null;
-	private List<Video> videos= null; /*??????????? ORDEN*/
+	private List<Video> videos= null;
 
 	public String toString() {
 		return super.toString() + ToStringBuilder.reflectionToString(this);
 	}
 
 	public Lista() {
-
 	}
 
 	public String getDescripcion() {

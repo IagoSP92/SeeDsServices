@@ -7,18 +7,13 @@ import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Usuario;
 import com.isp.seeds.service.criteria.UsuarioCriteria;
 
-public interface UsuarioDAO {
+public interface UsuarioDAO {	
 	
-	
-	public Usuario findById(Connection connection, Long idUsuario) 
+	public Usuario findById(Connection connection, Long idSesion, Long idUsuario) 
 			throws DataException;
 	
 	public Usuario findByEmail(Connection connection, String email) 
-			throws DataException;	
-
-	public List <Usuario> findAllUsers(Connection connection, int startIndex, int count, String idioma) 
 			throws DataException;
-
 	
 	public Usuario create (Connection connection, Usuario usuario) 
 			throws DataException;
@@ -32,5 +27,6 @@ public interface UsuarioDAO {
 	public Boolean verificarContrasena(Connection connection, String email, String contrasena)
 			throws DataException;
 	
-
+//	public List <Usuario> findAllUsers(Connection connection, int startIndex, int count, String idioma) 
+//			throws DataException;
 }

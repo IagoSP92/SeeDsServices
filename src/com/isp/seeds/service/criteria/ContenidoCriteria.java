@@ -10,6 +10,8 @@ public class ContenidoCriteria extends Contenido {
 	private Boolean aceptarVideo = null;
 	private Boolean aceptarLista = null;
 	
+	
+	// Se utiliza como "Fecha Desde" la fecha de la clase contenido:
 	private Date fechaAltaHasta = null;
 	private Date fechaModHasta = null;
 	
@@ -18,6 +20,8 @@ public class ContenidoCriteria extends Contenido {
 	
 	private Integer reproduccionesMin = null;
 	private Integer reproduccionesMax = null;
+	
+	private Long categoria = null;
 
 	
 	public ContenidoCriteria () {
@@ -96,6 +100,14 @@ public class ContenidoCriteria extends Contenido {
 
 	public void setReproduccionesMax(Integer reproducciones) {
 		this.reproduccionesMax = reproducciones;
+	}
+
+	public Long getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Long categoria) {
+		this.categoria = categoria;
 	}
 
 

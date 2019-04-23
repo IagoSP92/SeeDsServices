@@ -26,7 +26,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 
 	@Override
-	public Usuario findById(Connection connection, Long idUsuario) throws DataException {
+	public Usuario findById(Connection connection, Long idSesion, Long idUsuario) throws DataException {
 		
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idUsuario= {} ", idUsuario);
@@ -36,33 +36,36 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		ResultSet resultSet = null;
 
 		try {          
-			String queryString = 
-					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo, "
-							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais, u.fecha_nac " + 
-							"FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) " +
-							"WHERE u.id_contenido = ? ";
+			String queryString =
+					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
+					+", U.DESCRIPCION, U.PUBLICA "
+					+", UC.SIGUIENDO, UC.DENUNCIADO, UC.GUARDADO "
+					+" FROM USUARIO U INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = U.ID_CONTENIDO ) "
+					+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) "
+													+" AND (UC.USUARIO_ID_CONTENIDO= ? ) "
+					+" WHERE U.ID_CONTENIDO = ? ";
 
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
-			int i = 1;                
+			int i = 1;
+			preparedStatement.setLong(i++, idSesion);
 			preparedStatement.setLong(i++, idUsuario);
 
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);
-			}
-			
+			}			
 			resultSet = preparedStatement.executeQuery();
 
-			Usuario e = null;
+			Usuario usuario = null;
 
 			if (resultSet.next()) {
-				e = loadNext(connection, resultSet);				
+				usuario = loadNext(connection, resultSet);				
 			} else {
 				logger.debug("Usuario con id= {} no encontrado.", idUsuario );
 				throw new DataException("\nUser with id " +idUsuario+ "not found\n");
 			}
-			return e;
+			return usuario;
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
@@ -70,61 +73,99 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 		}
-	}
-
+	}	
+	
 
 	@Override
-	public List<Usuario> findAllUsers(Connection connection, int startIndex, int count, String idioma) throws DataException {
-		
-		if(logger.isDebugEnabled()) {
-			logger.debug ("startIndex={} count={}", startIndex, count);
-		}
+	public Usuario findByEmail(Connection connection, String email)
+			throws DataException {
 
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Email= {} ", email);
+		}		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		StringBuilder queryString = null;
 
-		try {
-			
-			queryString = new StringBuilder(
-					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo, "
-							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais , u.fecha_nac " + 
-					" FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) ORDER BY c.fecha_alta ");
+		try {          
+			String queryString = 
+					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
+							+ ", U.EMAIL, U.CONTRASENA, U.DESCRIPCION, U.URL_AVATAR, U.NOMBRE_REAL, U.APELLIDOS, U.ID_PAIS, U.FECHA_NAC "
+							+" FROM USUARIO U INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = U.ID_CONTENIDO ) "
+							+" WHERE U.EMAIL = ? ";
 
-			preparedStatement = connection.prepareStatement(queryString.toString(),
+			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			
+
+			int i = 1;                
+			preparedStatement.setString(i++, email);
+
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);
-			}
-			
+			}			
 			resultSet = preparedStatement.executeQuery();
 
-			List<Usuario> results = new ArrayList<Usuario>();
+			Usuario usuario = null;
 
-			Usuario e = null;
-			int currentCount=0;
-
-			while (startIndex<0 && resultSet.absolute(startIndex)) {
-				do {
-					while (resultSet.next()) {
-						e = loadNext(connection, resultSet);
-						results.add(e);
-					}
-				} while ((currentCount < count) &&  resultSet.next());
+			if (resultSet.next()) {
+				usuario = loadNext(connection, resultSet);				
+			} else {
+				logger.debug("Usuario con email:{} no encontrado", email);
+				throw new DataException("\nUser with email: " +email+ "not found\n");
 			}
-			return results;
+			return usuario;
 
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-			throw new DataException(e);
-		}  finally {
+		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
+		}		
+	}
+	
+
+	@Override
+	public Boolean verificarContrasena(Connection connection, String email, String contrasena)
+			throws DataException {
+
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Email= {} Contrasena={} ", email, contrasena==null);
 		}
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {          
+			String queryString = "SELECT contrasena FROM Usuario WHERE email = ? ";
+
+			preparedStatement = connection.prepareStatement(queryString,
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+
+			int i = 1;                
+			preparedStatement.setString(i++, email);
+
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}			
+			resultSet = preparedStatement.executeQuery();
+
+			String contrasenaGuardada = null;
+
+			if (resultSet.next()) {
+				contrasenaGuardada = resultSet.getString(1);				
+			} else {
+				logger.debug("Usuario con email:{} no encontrado", email);
+				throw new DataException("\nUser with email: " +email+ "not found\n");
+			}
+
+			return PasswordEncryptionUtil.checkPassword(contrasena, contrasenaGuardada);
+
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+			throw new DataException(e);
+		} finally {            
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}		
 	}
 
 
@@ -342,108 +383,6 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
-
-	}
-
-
-	@Override
-	public Usuario findByEmail(Connection connection, String email)
-			throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("Email= {} ", email);
-		}
-		
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-
-		try {          
-			String queryString = 
-					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo, "
-							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais, u.fecha_nac " + 
-							"FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) " +
-							"WHERE u.email = ? ";
-
-			preparedStatement = connection.prepareStatement(queryString,
-					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
-			int i = 1;                
-			preparedStatement.setString(i++, email);
-
-			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",preparedStatement);
-			}
-			
-			resultSet = preparedStatement.executeQuery();
-
-			Usuario e = null;
-
-			if (resultSet.next()) {
-				e = loadNext(connection, resultSet);				
-			} else {
-				logger.debug("Usuario con email:{} no encontrado", email);
-				throw new DataException("\nUser with email: " +email+ "not found\n");
-			}
-
-			return e;
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-			throw new DataException(e);
-		} finally {            
-			JDBCUtils.closeResultSet(resultSet);
-			JDBCUtils.closeStatement(preparedStatement);
-		}		
-	}
-
-	@Override
-	public Boolean verificarContrasena(Connection connection, String email, String contrasena)
-			throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("Email= {} Contrasena={} ", email, contrasena==null);
-		}
-		
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		try {          
-			String queryString = "SELECT contrasena FROM Usuario WHERE email = ? ";
-
-			preparedStatement = connection.prepareStatement(queryString,
-					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
-			int i = 1;                
-			preparedStatement.setString(i++, email);
-
-			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",preparedStatement);
-			}
-			
-			resultSet = preparedStatement.executeQuery();
-
-			String contrasenaGuardada = null;
-
-			if (resultSet.next()) {
-				contrasenaGuardada = resultSet.getString(1);				
-			} else {
-				logger.debug("Usuario con email:{} no encontrado", email);
-				throw new DataException("\nUser with email: " +email+ "not found\n");
-			}
-
-			return PasswordEncryptionUtil.checkPassword(contrasena, contrasenaGuardada);
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-			throw new DataException(e);
-		} finally {            
-			JDBCUtils.closeResultSet(resultSet);
-			JDBCUtils.closeStatement(preparedStatement);
-		}		
-	}
-
-
-	private void addClause(StringBuilder queryString, boolean first, String clause) {
-		queryString.append(first?" WHERE ": " AND ").append(clause);
 	}
 
 	private void addUpdate(StringBuilder queryString, boolean first, String clause) {
@@ -458,7 +397,6 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		String nombre = resultSet.getString(i++);
 		Date fechaAlta =  resultSet.getDate(i++);
 		Date fechaMod =  resultSet.getDate(i++);
-		Long autor = resultSet.getLong(i++);	
 		Integer tipo= resultSet.getInt(i++);	
 
 		String correo = resultSet.getString(i++);
@@ -468,7 +406,6 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		String nombreReal = resultSet.getString(i++);	                
 		String apellido = resultSet.getString(i++);
 
-
 		String pais = resultSet.getString(i++);
 		Date fechaNac =  resultSet.getDate(i++);
 
@@ -477,7 +414,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		u.setNombre(nombre);
 		u.setFechaAlta(fechaAlta);
 		u.setFechaMod(fechaMod);
-		u.setIdAutor(null);
+		u.setAutor(null);
 		u.setTipo(tipo);
 
 		u.setEmail(correo);
@@ -488,10 +425,71 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		u.setApellidos(apellido);
 		u.setPais(pais);
 		u.setFechaNac(fechaNac);
-
+		
+		if(resultSet.getObject(i)!=null) {
+			Boolean siguiendo = resultSet.getBoolean(i++);
+			Boolean denunciado = resultSet.getBoolean(i++);
+			Boolean guardado = resultSet.getBoolean(i++);		
+			u.setSiguiendo(siguiendo);
+			u.setDenunciado(denunciado);
+			u.setGuardado(guardado);			
+		}
 		return u;
 	}
+	
 
-
+//	@Override
+//	public List<Usuario> findAllUsers(Connection connection, int startIndex, int count, String idioma) throws DataException {
+//		
+//		if(logger.isDebugEnabled()) {
+//			logger.debug ("startIndex={} count={}", startIndex, count);
+//		}
+//
+//		PreparedStatement preparedStatement = null;
+//		ResultSet resultSet = null;
+//		StringBuilder queryString = null;
+//
+//		try {
+//			
+//			queryString = new StringBuilder(
+//					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo, "
+//							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais , u.fecha_nac " + 
+//					" FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) ORDER BY c.fecha_alta ");
+//
+//			preparedStatement = connection.prepareStatement(queryString.toString(),
+//					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+//			
+//			if(logger.isDebugEnabled()) {
+//				logger.debug("QUERY= {}",preparedStatement);
+//			}			
+//			resultSet = preparedStatement.executeQuery();
+//
+//			List<Usuario> results = new ArrayList<Usuario>();
+//
+//			Usuario e = null;
+//			int currentCount=0;
+//
+//			while (startIndex<0 && resultSet.absolute(startIndex)) {
+//				do {
+//					while (resultSet.next()) {
+//						e = loadNext(connection, resultSet);
+//						results.add(e);
+//					}
+//				} while ((currentCount < count) &&  resultSet.next());
+//			}
+//			return results;
+//
+//		} catch (SQLException e) {
+//			logger.warn(e.getMessage(), e);
+//			throw new DataException(e);
+//		} catch (DataException e) {
+//			logger.warn(e.getMessage(), e);
+//			throw new DataException(e);
+//		}  finally {
+//			JDBCUtils.closeResultSet(resultSet);
+//			JDBCUtils.closeStatement(preparedStatement);
+//		}
+//	}
+	
 }
 	

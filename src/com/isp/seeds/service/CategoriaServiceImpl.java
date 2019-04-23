@@ -70,37 +70,37 @@ public class CategoriaServiceImpl implements CategoriaService{
 		}
 	}
 
+//	
+//	@Override
+//	public Long findByNombre(String nombreCategoria, String idioma) throws DataException {
+//
+//		if(logger.isDebugEnabled()) {
+//			logger.debug ("nombreCategoria= {} idioma= {} ", nombreCategoria, idioma);
+//		}
+//
+//		Long idCategoria = null;
+//		if(nombreCategoria != null) {
+//
+//			try {
+//
+//				Connection connection = ConnectionManager.getConnection();				
+//				idCategoria = categoriaDao.findByNombre(connection, nombreCategoria, idioma);
+//				JDBCUtils.closeConnection(connection);
+//
+//			} catch (SQLException e) {
+//				logger.warn(e.getMessage(), e);
+//			} catch (DataException e) {
+//				logger.warn(e.getMessage(), e);
+//			}finally{
+//				//JDBCUtils.closeConnection(connection);
+//			}
+//		}
+//		return idCategoria;
+//	}
+
 	
 	@Override
-	public Long findByNombre(String nombreCategoria, String idioma) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("nombreCategoria= {} idioma= {} ", nombreCategoria, idioma);
-		}
-
-		Long idCategoria = null;
-		if(nombreCategoria != null) {
-
-			try {
-
-				Connection connection = ConnectionManager.getConnection();				
-				idCategoria = categoriaDao.findByNombre(connection, nombreCategoria, idioma);
-				JDBCUtils.closeConnection(connection);
-
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-			} catch (DataException e) {
-				logger.warn(e.getMessage(), e);
-			}finally{
-				//JDBCUtils.closeConnection(connection);
-			}
-		}
-		return idCategoria;
-	}
-
-	
-	@Override
-	public List<Categoria> findAll() throws DataException {
+	public List<Categoria> findAll(String idioma) throws DataException {
 		
 //		Cache <String , List<Categoria>> cacheListados =
 //				CacheManager.getInstance().getCache(CacheNames.CATEGORIAS_LISTA, String.class, List.class);
@@ -110,7 +110,7 @@ public class CategoriaServiceImpl implements CategoriaService{
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			List<Categoria> categorias = new ArrayList<Categoria>();
-			categorias = categoriaDao.findAll(connection);
+			categorias = categoriaDao.findAll(connection, idioma);
 
 			JDBCUtils.closeConnection(connection);
 			return categorias;

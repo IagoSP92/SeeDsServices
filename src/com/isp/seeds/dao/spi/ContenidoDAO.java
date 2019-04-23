@@ -23,32 +23,23 @@ public interface ContenidoDAO {
 			throws DataException;
 	
 	public Results<Contenido> findByCriteria(Connection connection, ContenidoCriteria contenido, int startIndex, int count, String idioma)
-			throws DataException;
-
-
-	
+			throws DataException;	
 	
 	public Results<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) 
-			throws DataException;
-	
+			throws DataException;	
  
-	Double getValoracion(Connection connection, Long idContenido)
-			throws DataException;
-	
-	
+	public Double getValoracion(Connection connection, Long idContenido)
+			throws DataException;	
 	
 	public Contenido create (Connection connection, Contenido contenido)
 			throws DataException;
 	
 	public void update (Connection connection, Contenido contenido)
-			throws DataException;
-	
+			throws DataException;	
 	
 	public void delete (Connection connection, Long idContenido) 
-			throws DataException;
-	
-	
-	
+			throws DataException;	
+		
 	public void agignarCategoria (Connection connection, Long idContenido, Long idCategoria)
 			throws DataException;
 	
@@ -59,23 +50,19 @@ public interface ContenidoDAO {
 			throws DataException;
 	
 	public void eliminarEtiqueta (Connection connection, Long idContenido, Long idEtiqueta)
-			throws DataException;
-	
+			throws DataException;	
 	
 	public Boolean comprobarExistenciaRelacion(Connection connection, Long idUsuario, Long idContenido) 
 			throws DataException;
 	
 	public void crearRelacion(Connection connection, Long idUsuario, Long idContenido) 
-			throws DataException;
-	
-	
+			throws DataException;	
 	
 	public Categoria verCategoria (Connection connection, Long id, String idioma) 
 			throws DataException;
 	
 	public List<Etiqueta> verEtiquetas (Connection connection, Long id, String idioma) 
-			throws DataException;
-	
+			throws DataException;	
 	
 	
 	
@@ -93,8 +80,8 @@ public interface ContenidoDAO {
 	
 	public void comentarContenido (Connection connection, Long idUsuario, Long idContenido, String comentario)
 			throws DataException;
-	/*
 	
+	/*	
 	public List<Contenido> verSeguidos (Connection connection, Long id) 
 			throws DataException;
 	
@@ -105,16 +92,11 @@ public interface ContenidoDAO {
 			throws DataException;
 	
 	public List<Contenido> verGuardados (Connection connection, Long id) 
-			throws DataException;
-	
-	public List<Contenido> verComentados (Connection connection, Long id) 
-			throws DataException;
-	
-	
+			throws DataException;	
 	*/
-
-
-
+	
+	public Results<String> cargarComentarios (Connection connection, Long idContenido, int startIndex, int count)
+			throws DataException;
 	
 	
 }

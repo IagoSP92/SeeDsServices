@@ -1,8 +1,6 @@
 package com.isp.seeds.service.spi;
 
 
-import java.util.List;
-
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Usuario;
 
@@ -26,14 +24,14 @@ public interface UsuarioService {
 	public void recuperarContraseña (String email)
 			throws DataException;
 	
-	public Usuario buscarId (Long idUsuario)
+	public Usuario buscarId (Long idSesion, Long idUsuario)
 			throws DataException;
 
 	public Usuario buscarEmail (String email)
 			throws DataException;
 	
-	public List<Usuario> buscarTodos (int startIndex, int count, String idioma) 
-			throws DataException;
+//	public List<Usuario> buscarTodos (int startIndex, int count, String idioma) 
+//			throws DataException;
 	
 	
 	
