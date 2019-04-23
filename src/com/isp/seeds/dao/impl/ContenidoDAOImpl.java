@@ -23,6 +23,7 @@ import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Etiqueta;
+import com.isp.seeds.model.Lista;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
 import com.isp.seeds.service.util.Results;
 
@@ -1780,6 +1781,5 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	private void addHaving(StringBuilder queryString, boolean first, String clause) {
 		queryString.append(first?" HAVING ": " AND ").append(clause);
 	}
-
 
 }
