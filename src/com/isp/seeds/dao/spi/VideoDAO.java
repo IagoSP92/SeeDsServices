@@ -28,7 +28,7 @@ public interface VideoDAO {
 			throws DataException;
 	
 
-	Results<Contenido> cargarGuardados(Connection connection, Long idSesion, Long idContenido, int startIndex,
+	Results<Contenido> cargarGuardados(Connection connection, Long idSesion, int startIndex,
 			int count) throws DataException;
 	
 //	public List<Video> findByAutor(Connection connection, Long idAutor) 

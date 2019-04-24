@@ -499,7 +499,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 	
 	
 	@Override
-	public Results<Contenido> cargarGuardados(Connection connection, Long idSesion, Long idContenido, int startIndex, int count)
+	public Results<Contenido> cargarGuardados(Connection connection, Long idSesion, int startIndex, int count)
 			throws DataException {
 		
 		PreparedStatement preparedStatement = null;
@@ -517,7 +517,6 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
 			preparedStatement.setLong(1, idSesion);
-			preparedStatement.setLong(1, idContenido);
 
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);

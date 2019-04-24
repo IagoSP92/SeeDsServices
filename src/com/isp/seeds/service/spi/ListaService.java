@@ -38,6 +38,6 @@ public interface ListaService {
 	public Results<Video> verVideosLista (Long idLista, int startIndex, int count)
 			throws DataException;
 	
-	public Results<Contenido> cargarGuardados(Long idSesion, Long idContenido, int startIndex,
+	public Results<Contenido> cargarGuardados(Long idSesion, int startIndex,
 			int count) throws DataException;
 }

@@ -193,17 +193,17 @@ public class VideoServiceImpl implements VideoService {
 //	}
 	
 	@Override
-	public Results<Contenido> cargarGuardados(Long idSesion, Long idContenido, int startIndex, int count) throws DataException {
+	public Results<Contenido> cargarGuardados(Long idSesion,  int startIndex, int count) throws DataException {
 		if(logger.isDebugEnabled()) {
-			logger.debug ("idContenido= {} ", idContenido);
+			logger.debug ("idSesion= {} ", idSesion);
 		}
 
-		if(idContenido != null) {
+		if(idSesion != null) {
 
 			try {
 				Connection connection = ConnectionManager.getConnection();
 
-				Results<Contenido> contenidos = videoDao.cargarGuardados(connection, idSesion, idContenido, startIndex, count);
+				Results<Contenido> contenidos = videoDao.cargarGuardados(connection, idSesion, startIndex, count);
 				JDBCUtils.closeConnection(connection);
 
 				return contenidos;

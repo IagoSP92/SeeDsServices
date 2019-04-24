@@ -393,7 +393,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		queryString.append(first? " SET ": " , ").append(clause);
 	}
 
-	private Usuario loadNext(Connection connection, ResultSet resultSet)
+	protected static Usuario loadNext(Connection connection, ResultSet resultSet)
 			throws SQLException, DataException {
 		int i = 1;
 		

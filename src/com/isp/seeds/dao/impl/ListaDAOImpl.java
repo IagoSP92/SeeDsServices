@@ -929,7 +929,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 //		}
 //	}
 	@Override
-	public Results<Contenido> cargarGuardados(Connection connection, Long idSesion, Long idContenido, int startIndex, int count)
+	public Results<Contenido> cargarGuardados(Connection connection, Long idSesion, int startIndex, int count)
 			throws DataException {
 		
 		PreparedStatement preparedStatement = null;
@@ -947,7 +947,6 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
 			preparedStatement.setLong(1, idSesion);
-			preparedStatement.setLong(1, idContenido);
 
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);
