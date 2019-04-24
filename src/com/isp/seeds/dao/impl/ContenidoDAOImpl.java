@@ -273,8 +273,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			if (contenido.getAceptarUsuario()!=null && contenido.getAceptarUsuario()) { queryString.append(" INNER JOIN USUARIO U ON (C.ID_CONTENIDO = U.ID_CONTENIDO) ");}
 			if (contenido.getAceptarLista()!=null && contenido.getAceptarLista()) { queryString.append(" INNER JOIN LISTA L ON (C.ID_CONTENIDO = L.ID_CONTENIDO) ");}
 			if (contenido.getAceptarVideo()!=null && contenido.getAceptarVideo()) { queryString.append(" INNER JOIN VIDEO V ON (C.ID_CONTENIDO = V.ID_CONTENIDO) ");}
-			System.out.println("GET_CATEGORIA->"+contenido.getCategoria());
-			if (contenido.getCategoria()!=null) { queryString.append(" INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CONTENIDO = CC.ID_CONTENIDO) ");}			
+
+			if (contenido.getCategoria()!=null) { queryString.append(" INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CONTENIDO = CC.ID_CONTENIDO) AND (CC.ID_CATEGORIA = ? )");}			
 
 			boolean first = true;
 
@@ -388,6 +388,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 			
 			if(contenido.getCategoria()!=null) {
+				preparedStatement.setLong(i++, contenido.getCategoria());
 				preparedStatement.setLong(i++, contenido.getCategoria());
 			}
 
