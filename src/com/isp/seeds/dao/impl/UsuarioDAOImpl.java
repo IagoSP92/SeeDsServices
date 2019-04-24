@@ -40,7 +40,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			StringBuilder queryString =new StringBuilder(
 					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
 					+ ", U.EMAIL, U.CONTRASENA, U.DESCRIPCION, U.URL_AVATAR, U.NOMBRE_REAL, U.APELLIDOS, U.ID_PAIS, U.FECHA_NAC "
-					+", UC.SIGUIENDO, UC.DENUNCIADO, UC.GUARDADO "
+					+", UC.SIGUIENDO, UC.DENUNCIADO "
 					+" FROM USUARIO U INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = U.ID_CONTENIDO ) "
 					+" LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) ");
 					if(idSesion!=null) { queryString.append(" AND (UC.USUARIO_ID_CONTENIDO= ? ) ");}
@@ -436,13 +436,11 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		u.setPais(pais);
 		u.setFechaNac(fechaNac);		
 		
-		if(resultSet.next()) {
+		if(i<resultSet.getMetaData().getColumnCount()) {
 			Boolean siguiendo = resultSet.getBoolean(i++);
-			Boolean denunciado = resultSet.getBoolean(i++);
-			Boolean guardado = resultSet.getBoolean(i++);		
+			String denunciado = resultSet.getString(i++);
 			u.setSiguiendo(siguiendo);
 			u.setDenunciado(denunciado);
-			u.setGuardado(guardado);					
 		}
 
 		return u;

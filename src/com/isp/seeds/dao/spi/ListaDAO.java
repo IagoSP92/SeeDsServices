@@ -5,9 +5,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Lista;
 import com.isp.seeds.model.Video;
 import com.isp.seeds.service.criteria.ListaCriteria;
+import com.isp.seeds.service.util.Results;
 
 public interface ListaDAO {
 	
@@ -29,6 +31,9 @@ public interface ListaDAO {
 	
 	public void deleteFromList (Connection connection, Long idLista, Long idVideo)
 			throws DataException, SQLException;
+
+	Results<Contenido> cargarGuardados(Connection connection, Long idSesion, Long idContenido, int startIndex,
+			int count) throws DataException;
 
 	
 //	public List <Lista>  findByAutor (Connection connection, Long idAutor) 

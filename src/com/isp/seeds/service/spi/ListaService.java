@@ -1,6 +1,7 @@
 package com.isp.seeds.service.spi;
 
 import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Lista;
 import com.isp.seeds.model.Video;
 import com.isp.seeds.service.util.Results;
@@ -36,4 +37,7 @@ public interface ListaService {
 	
 	public Results<Video> verVideosLista (Long idLista, int startIndex, int count)
 			throws DataException;
+	
+	Results<Contenido> cargarGuardados(Long idSesion, Long idContenido, int startIndex,
+			int count) throws DataException;
 }

@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import com.isp.seeds.Exceptions.InstanceNotFoundException;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.spi.VideoDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.dao.utils.Utils;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Video;
 import com.isp.seeds.service.util.Results;
@@ -36,7 +36,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 			StringBuilder queryString = new StringBuilder(
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
 							+", V.DESCRIPCION, V.URL_VIDEO "
-							+", UC.SIGUIENDO, UC.DENUNCIADO, UC.GUARDADO "
+							+", UC.DENUNCIADO, UC.GUARDADO, UC.VALORACION, UC.COMENTARIO "
 							+" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "
 							+" LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) ");
 			if(idSesion!=null) { queryString.append(" AND (UC.USUARIO_ID_CONTENIDO= ? ) ");}
@@ -90,7 +90,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 					+" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "
 					+" INNER JOIN VIDEO_LISTA VL ON (VL.VIDEO_ID_CONTENIDO = V.ID_CONTENIDO ) "
 					+" LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO ) "
-					+" WHERE VL.LISTA_ID_CONTENIDO = ? ORDER BY VL.POSICION ");
+					+" WHERE VL.LISTA_ID_CONTENIDO = ? GROUP BY VL.VIDEO_ID_CONTENIDO ORDER BY VL.POSICION ");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -278,7 +278,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 		queryString.append(first? " SET ": " , ").append(clause);
 	}
 	
-	private Video loadNext(Connection connection, ResultSet resultSet)
+	protected static Video loadNext(Connection connection, ResultSet resultSet)
 			throws SQLException, DataException {
 
 				int i = 1;
@@ -306,23 +306,18 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 
 				v.setDescripcion(descripcion);
 				v.setUrl(url);
-				if(resultSet.next()) {
-					Boolean siguiendo = resultSet.getBoolean(i++);
-					Boolean denunciado = resultSet.getBoolean(i++);
-					Boolean guardado = resultSet.getBoolean(i++);		
-					v.setSiguiendo(siguiendo);
-					v.setDenunciado(denunciado);
-					v.setGuardado(guardado);					
-				}
 				
-//				if(resultSet.getObject(i)!=null) {
-//					Boolean siguiendo = resultSet.getBoolean(i++);
-//					Boolean denunciado = resultSet.getBoolean(i++);
-//					Boolean guardado = resultSet.getBoolean(i++);		
-//					v.setSiguiendo(siguiendo);
-//					v.setDenunciado(denunciado);
-//					v.setGuardado(guardado);			
-//				}
+				if(i<resultSet.getMetaData().getColumnCount()) {
+					String denunciado = resultSet.getString(i++);
+					Boolean guardado = resultSet.getBoolean(i++);
+					Double valorado = resultSet.getDouble(i++);
+					String comentado = resultSet.getString(i++);					
+					v.setDenunciado(denunciado);
+					v.setGuardado(guardado);	
+					v.setValorado(valorado);
+					v.setComentado(comentado);					
+					v.setComentarios(Utils.cargarComentarios(connection, idContenido));
+				}				
 				return v;
 			}
 
@@ -491,6 +486,56 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 			}
 			int totalRows = JDBCUtils.getTotalRows(resultSet);
 			Results<String> results = new Results<String>(page, startIndex, totalRows);
+			return results;
+
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		return null;
+	}
+	
+	
+	@Override
+	public Results<Contenido> cargarGuardados(Connection connection, Long idSesion, Long idContenido, int startIndex, int count)
+			throws DataException {
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
+					+" FROM CONTENIDO C INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) "
+							+" AND (UC.USUARIO_ID_CONTENIDO= ? ) "
+					+" WHERE UC.USUARIO_ID_CONTENIDO = ? AND UC.GUARDADO= 'TRUE' ");
+
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			preparedStatement.setLong(1, idSesion);
+			preparedStatement.setLong(1, idContenido);
+
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
+			resultSet = preparedStatement.executeQuery();
+			
+			Contenido contenido = new Contenido();
+			List<Contenido> page = new ArrayList<Contenido>();
+			int currentCount = 0;
+			if ((startIndex >=1) && resultSet.absolute(startIndex)) {
+				do {
+					contenido = ContenidoDAOImpl.loadNext(connection, resultSet);
+					page.add(contenido);
+					currentCount++;
+				} while ((currentCount < count) &&  resultSet.next()) ;
+			}
+			int totalRows = JDBCUtils.getTotalRows(resultSet);
+			Results<Contenido> results = new Results<Contenido>(page, startIndex, totalRows);
 			return results;
 
 		} catch (SQLException e) {

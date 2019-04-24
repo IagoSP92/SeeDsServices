@@ -268,12 +268,11 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			queryString = new StringBuilder(
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) " + 
 					" FROM CONTENIDO C LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) ");
-			
 			//Al anexionar las tablas solo si es uno de los tipos buscados se soluciona el filtrado por tipo:
 			if (contenido.getAceptarUsuario()!=null && contenido.getAceptarUsuario()) { queryString.append(" INNER JOIN USUARIO U ON (C.ID_CONTENIDO = U.ID_CONTENIDO) ");}
 			if (contenido.getAceptarLista()!=null && contenido.getAceptarLista()) { queryString.append(" INNER JOIN LISTA L ON (C.ID_CONTENIDO = L.ID_CONTENIDO) ");}
 			if (contenido.getAceptarVideo()!=null && contenido.getAceptarVideo()) { queryString.append(" INNER JOIN VIDEO V ON (C.ID_CONTENIDO = V.ID_CONTENIDO) ");}
-
+			
 			if (contenido.getCategoria()!=null) { queryString.append(" INNER JOIN CATEGORIA_CONTENIDO CC ON (C.ID_CONTENIDO = CC.ID_CONTENIDO) AND (CC.ID_CATEGORIA = ? )");}			
 
 			boolean first = true;
@@ -1599,7 +1598,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 	
-	
+	/*
 	public Results<String> cargarComentarios(Connection connection, Long idContenido, int startIndex, int count) throws DataException {
 		
 		PreparedStatement preparedStatement = null;
@@ -1641,7 +1640,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 		return null;
 	}
-	
+	*/
 	
 
 	@Override
@@ -1740,7 +1739,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	}
 	
 
-	private Contenido loadNext(Connection connection, ResultSet resultSet)
+	protected static Contenido loadNext(Connection connection, ResultSet resultSet)
 			throws SQLException, DataException {
 
 		int i = 1;

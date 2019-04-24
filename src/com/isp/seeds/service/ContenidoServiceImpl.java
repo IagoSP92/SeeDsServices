@@ -609,6 +609,62 @@ public class ContenidoServiceImpl implements ContenidoService {
 	}
 
 
+	@Override
+	public Results<Contenido> cargarSeguidos(Long idContenido, int startIndex, int count) throws DataException {
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idContenido= {} ", idContenido);
+		}
+
+		if(idContenido != null) {
+
+			try {
+				Connection connection = ConnectionManager.getConnection();
+
+				Results<Contenido> contenidos = contenidoDao.cargarSeguidos(connection, idContenido, startIndex, count);
+				JDBCUtils.closeConnection(connection);
+
+				return contenidos;
+
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
+		}
+		return null;
+	}
+
+
+	@Override
+	public Results<Contenido> cargarGuardados(Long idContenido, int startIndex, int count) throws DataException {
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idContenido= {} ", idContenido);
+		}
+
+		if(idContenido != null) {
+
+			try {
+				Connection connection = ConnectionManager.getConnection();
+
+				Results<Contenido> contenidos = contenidoDao.cargarGuardados(connection, idContenido, startIndex, count);
+				JDBCUtils.closeConnection(connection);
+
+				return contenidos;
+
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
+		}
+		return null;
+	}
+
+
 
 
 

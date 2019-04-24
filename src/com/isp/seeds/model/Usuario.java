@@ -26,25 +26,16 @@ public class Usuario extends Contenido implements Comparable<Usuario> {
 	private List<Lista> listasGuardadas = null;
 
 
-//	public String toString() {//?????????????????????
-//		return /*super.toString() + */ToStringBuilder.reflectionToString(this);
-//	}
-	
 	public String toString() {
-		String cadena= "\nUSUARIO: "+getNombre()+" - "+ getId()+"  - "+getFechaAlta()+" - "+getFechaMod()+" - "+getFechaNac()+"\n ";
-		cadena+= getNombreReal()+" - "+ getApellidos()+" - "+getEmail()+" - "+getContrasena()+"\n";
-		cadena+= getAvatarUrl()+" - "+getDescripcion()+" - "+ getPais()+"\n";
-	return cadena;
-}
+		return super.toString() +ToStringBuilder.reflectionToString(this);
+	}
 
 	@Override
 	public int compareTo(Usuario u) {
-		return this.getNombreReal().compareTo( u.getNombreReal() );
+		return this.getEmail().compareTo( u.getEmail() );
 	}
 
-
 	public Usuario () {
-
 	}
 
 

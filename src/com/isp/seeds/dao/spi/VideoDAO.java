@@ -3,6 +3,7 @@ package com.isp.seeds.dao.spi;
 import java.sql.Connection;
 
 import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Video;
 import com.isp.seeds.service.util.Results;
 
@@ -23,6 +24,12 @@ public interface VideoDAO {
 	public void delete (Connection connection, Long idVideo) 
 			throws DataException;
 	
+	public Results<Contenido> cargarSeguidos (Connection connection, Long idContenido, int startIndex, int count)
+			throws DataException;
+	
+
+	Results<Contenido> cargarGuardados(Connection connection, Long idSesion, Long idContenido, int startIndex,
+			int count) throws DataException;
 	
 //	public List<Video> findByAutor(Connection connection, Long idAutor) 
 //			throws DataException;

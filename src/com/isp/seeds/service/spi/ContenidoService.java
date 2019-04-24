@@ -1,5 +1,6 @@
 package com.isp.seeds.service.spi;
 
+import java.sql.Connection;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
@@ -82,6 +83,10 @@ public interface ContenidoService {
 	public void borrarComentario (Long idUsuario, Long idContenido)
 			throws DataException;
 
-
+	public Results<Contenido> cargarSeguidos (Long idContenido, int startIndex, int count)
+			throws DataException;
+	
+	public Results<Contenido> cargarGuardados (Long idContenido, int startIndex, int count)
+			throws DataException;
 	
 }

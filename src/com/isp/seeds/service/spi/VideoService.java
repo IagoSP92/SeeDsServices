@@ -1,7 +1,9 @@
 package com.isp.seeds.service.spi;
 
 import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Video;
+import com.isp.seeds.service.util.Results;
 
 public interface VideoService {
 	
@@ -16,6 +18,9 @@ public interface VideoService {
 
 	public Video buscarId (Long idSesion, Long idVideo)
 			throws DataException;
+	
+	Results<Contenido> cargarGuardados(Long idSesion, Long idContenido, int startIndex,
+			int count) throws DataException;
 	
 //	public List<Video> buscarTodos ()
 //			throws DataException;

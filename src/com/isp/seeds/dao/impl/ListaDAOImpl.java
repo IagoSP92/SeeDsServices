@@ -18,9 +18,11 @@ import com.isp.seeds.Exceptions.InstanceNotFoundException;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.spi.ListaDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.dao.utils.Utils;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Lista;
 import com.isp.seeds.model.Video;
+import com.isp.seeds.service.util.Results;
 
 public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 	
@@ -41,7 +43,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			StringBuilder queryString = new StringBuilder(
 					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
 					+", L.DESCRIPCION, L.PUBLICA "
-					+", UC.SIGUIENDO, UC.DENUNCIADO, UC.GUARDADO "
+					+", UC.SIGUIENDO, UC.DENUNCIADO, UC.GUARDADO, UC.VALORACION, UC.COMENTARIO "
 					+" FROM LISTA L INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = L.ID_CONTENIDO ) "
 					+" LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) ");
 					if(idSesion!=null) { queryString.append(" AND (UC.USUARIO_ID_CONTENIDO= ? ) ");}
@@ -655,7 +657,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 		queryString.append(first? " SET ": " , ").append(clause);
 	}
 	
-	private Lista loadNext(Connection connection, ResultSet resultSet)
+	protected static Lista loadNext(Connection connection, ResultSet resultSet)
 			throws SQLException, DataException {
 
 				int i = 1;
@@ -684,13 +686,18 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 				l.setDescripcion(descripcion);
 				l.setPublica(publica);
 				
-				if(resultSet.next()) {
+				if(i<resultSet.getMetaData().getColumnCount()) {
 					Boolean siguiendo = resultSet.getBoolean(i++);
-					Boolean denunciado = resultSet.getBoolean(i++);
-					Boolean guardado = resultSet.getBoolean(i++);		
-					l.setSiguiendo(siguiendo);
+					String denunciado = resultSet.getString(i++);
+					Boolean guardado = resultSet.getBoolean(i++);
+					Double valorado = resultSet.getDouble(i++);
+					String comentado = resultSet.getString(i++);					
 					l.setDenunciado(denunciado);
-					l.setGuardado(guardado);					
+					l.setGuardado(guardado);	
+					l.setValorado(valorado);
+					l.setComentado(comentado);
+					l.setSiguiendo(siguiendo);
+					l.setComentarios(Utils.cargarComentarios(connection, idContenido));
 				}
 				return l;
 			}
@@ -921,6 +928,53 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 //			JDBCUtils.closeStatement(preparedStatement);
 //		}
 //	}
-	
+	@Override
+	public Results<Contenido> cargarGuardados(Connection connection, Long idSesion, Long idContenido, int startIndex, int count)
+			throws DataException {
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
+					+" FROM CONTENIDO C INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) "
+							+" AND (UC.USUARIO_ID_CONTENIDO= ? ) "
+					+" WHERE UC.USUARIO_ID_CONTENIDO = ? AND UC.GUARDADO= 'TRUE' ");
+
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			preparedStatement.setLong(1, idSesion);
+			preparedStatement.setLong(1, idContenido);
+
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
+			resultSet = preparedStatement.executeQuery();
+			
+			Contenido contenido = new Contenido();
+			List<Contenido> page = new ArrayList<Contenido>();
+			int currentCount = 0;
+			if ((startIndex >=1) && resultSet.absolute(startIndex)) {
+				do {
+					contenido = ContenidoDAOImpl.loadNext(connection, resultSet);
+					page.add(contenido);
+					currentCount++;
+				} while ((currentCount < count) &&  resultSet.next()) ;
+			}
+			int totalRows = JDBCUtils.getTotalRows(resultSet);
+			Results<Contenido> results = new Results<Contenido>(page, startIndex, totalRows);
+			return results;
+
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		return null;
+	}
 
 }

@@ -94,9 +94,9 @@ public interface ContenidoDAO {
 	public List<Contenido> verGuardados (Connection connection, Long id) 
 			throws DataException;	
 	*/
-	
-	public Results<String> cargarComentarios (Connection connection, Long idContenido, int startIndex, int count)
-			throws DataException;
+//	
+//	public Results<String> cargarComentarios (Connection connection, Long idContenido, int startIndex, int count)
+//			throws DataException;
 	
 	public Results<Contenido> cargarSeguidos (Connection connection, Long idContenido, int startIndex, int count)
 			throws DataException;

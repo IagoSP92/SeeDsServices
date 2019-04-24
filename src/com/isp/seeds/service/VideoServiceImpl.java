@@ -13,8 +13,10 @@ import com.isp.seeds.dao.impl.VideoDAOImpl;
 import com.isp.seeds.dao.spi.VideoDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Video;
 import com.isp.seeds.service.spi.VideoService;
+import com.isp.seeds.service.util.Results;
 
 public class VideoServiceImpl implements VideoService {
 
@@ -189,5 +191,32 @@ public class VideoServiceImpl implements VideoService {
 //		}
 //		return null;
 //	}
+	
+	@Override
+	public Results<Contenido> cargarGuardados(Long idSesion, Long idContenido, int startIndex, int count) throws DataException {
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idContenido= {} ", idContenido);
+		}
+
+		if(idContenido != null) {
+
+			try {
+				Connection connection = ConnectionManager.getConnection();
+
+				Results<Contenido> contenidos = videoDao.cargarGuardados(connection, idSesion, idContenido, startIndex, count);
+				JDBCUtils.closeConnection(connection);
+
+				return contenidos;
+
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
+		}
+		return null;
+	}
 
 }
