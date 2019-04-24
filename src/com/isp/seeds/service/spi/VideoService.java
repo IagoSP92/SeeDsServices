@@ -19,8 +19,8 @@ public interface VideoService {
 	public Video buscarId (Long idSesion, Long idVideo)
 			throws DataException;
 	
-	public Results<Contenido> cargarGuardados(Long idSesion, Long idContenido, int startIndex,
-			int count) throws DataException;
+	public Results<Contenido> cargarGuardados (Long idSesion, Long idContenido, int startIndex, int count)
+			throws DataException;
 	
 //	public List<Video> buscarTodos ()
 //			throws DataException;
