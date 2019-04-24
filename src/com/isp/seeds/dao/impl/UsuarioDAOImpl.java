@@ -42,7 +42,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 					+ ", U.EMAIL, U.CONTRASENA, U.DESCRIPCION, U.URL_AVATAR, U.NOMBRE_REAL, U.APELLIDOS, U.ID_PAIS, U.FECHA_NAC "
 					+", UC.SIGUIENDO, UC.DENUNCIADO, UC.GUARDADO "
 					+" FROM USUARIO U INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = U.ID_CONTENIDO ) "
-					+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) ");
+					+" LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) ");
 					if(idSesion!=null) { queryString.append(" AND (UC.USUARIO_ID_CONTENIDO= ? ) ");}
 					queryString.append(" WHERE U.ID_CONTENIDO = ? ");
 
@@ -94,7 +94,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 					"SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
 							+ ", U.EMAIL, U.CONTRASENA, U.DESCRIPCION, U.URL_AVATAR, U.NOMBRE_REAL, U.APELLIDOS, U.ID_PAIS, U.FECHA_NAC "
 							+" FROM USUARIO U INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = U.ID_CONTENIDO ) "
-							+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO)"
+							+" LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO)"
 							+" WHERE U.EMAIL = ? ";
 
 			preparedStatement = connection.prepareStatement(queryString,
@@ -395,21 +395,24 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 	private Usuario loadNext(Connection connection, ResultSet resultSet)
 			throws SQLException, DataException {
-
 		int i = 1;
+		
 		Long idContenido = resultSet.getLong(i++);
 		String nombre = resultSet.getString(i++);
 		Date fechaAlta =  resultSet.getDate(i++);
 		Date fechaMod =  resultSet.getDate(i++);
-		Integer tipo= resultSet.getInt(i++);	
+		Integer tipo= resultSet.getInt(i++);
 
+		Integer reproducciones = resultSet.getInt(i++);
+		Double valoracion = resultSet.getDouble(i++);
+		
 		String correo = resultSet.getString(i++);
+
 		String contrasena = resultSet.getString(i++);
 		String descripcion = resultSet.getString(i++);
 		String avatar = resultSet.getString(i++);
-		String nombreReal = resultSet.getString(i++);	                
+		String nombreReal = resultSet.getString(i++);
 		String apellido = resultSet.getString(i++);
-
 		String pais = resultSet.getString(i++);
 		Date fechaNac =  resultSet.getDate(i++);
 
@@ -419,7 +422,10 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		u.setFechaAlta(fechaAlta);
 		u.setFechaMod(fechaMod);
 		u.setAutor(null);
-		u.setTipo(tipo);
+		u.setTipo(tipo);		
+		
+		u.setReproducciones(reproducciones);
+		u.setValoracion(valoracion);
 
 		u.setEmail(correo);
 		u.setContrasena(contrasena);
@@ -428,16 +434,17 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		u.setNombreReal(nombreReal);
 		u.setApellidos(apellido);
 		u.setPais(pais);
-		u.setFechaNac(fechaNac);
+		u.setFechaNac(fechaNac);		
 		
-		if(resultSet.getObject(i)!=null) {
+		if(resultSet.next()) {
 			Boolean siguiendo = resultSet.getBoolean(i++);
 			Boolean denunciado = resultSet.getBoolean(i++);
 			Boolean guardado = resultSet.getBoolean(i++);		
 			u.setSiguiendo(siguiendo);
 			u.setDenunciado(denunciado);
-			u.setGuardado(guardado);			
+			u.setGuardado(guardado);					
 		}
+
 		return u;
 	}
 	

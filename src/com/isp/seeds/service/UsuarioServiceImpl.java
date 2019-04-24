@@ -32,35 +32,33 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	}
 
-	public Usuario crearCuenta (Usuario u) {
+	public Usuario crearCuenta (Usuario u) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Usuario= {} ", u);
 		}
+		
+		Connection connection = null;
+		boolean commit = false;
 
 		if(u != null) {
 			try {
-				Connection connection = ConnectionManager.getConnection();
-				u = usuarioDao.create(connection, u);
-				JDBCUtils.closeConnection(connection);
+				connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(false);
+				u = usuarioDao.create(connection, u);				
+				commit=true;
+				return u;
 			}
 			catch (SQLException e) { 
 				logger.warn(e.getMessage(), e);
 			}
 			catch (Exception e) {  
 				logger.warn(e.getMessage(), e);
+			}finally {
+				JDBCUtils.closeConnection(connection, commit);
 			}
-		}
-
-		// EN SERVICIO :
-		//		private List<Video> videosSubidos= null;
-		//		private List<Lista> listasSubidas= null;
-		//		private List<Usuario> usuariosSeguidos= null;
-		//		private List<Lista> listasSeguidas= null;
-		//		private List<Video> videosGuardados = null;
-		//		private List<Lista> listasGuardadas = null;
-
-		return u;
+		}			
+		return null;
 	}
 
 	public void eliminarCuenta (Long idUsuario) {

@@ -43,7 +43,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 					+", L.DESCRIPCION, L.PUBLICA "
 					+", UC.SIGUIENDO, UC.DENUNCIADO, UC.GUARDADO "
 					+" FROM LISTA L INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = L.ID_CONTENIDO ) "
-					+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) ");
+					+" LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) ");
 					if(idSesion!=null) { queryString.append(" AND (UC.USUARIO_ID_CONTENIDO= ? ) ");}
 					queryString.append(" WHERE L.ID_CONTENIDO = ? ");
 			
@@ -684,13 +684,13 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 				l.setDescripcion(descripcion);
 				l.setPublica(publica);
 				
-				if(resultSet.getObject(i)!=null) {
+				if(resultSet.next()) {
 					Boolean siguiendo = resultSet.getBoolean(i++);
 					Boolean denunciado = resultSet.getBoolean(i++);
 					Boolean guardado = resultSet.getBoolean(i++);		
 					l.setSiguiendo(siguiendo);
 					l.setDenunciado(denunciado);
-					l.setGuardado(guardado);			
+					l.setGuardado(guardado);					
 				}
 				return l;
 			}

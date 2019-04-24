@@ -163,10 +163,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
-		try {          
+		try { 
 			String queryString = 
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
-							+" FROM  CONTENIDO C INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) "
+							+" FROM  CONTENIDO C LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) "
 							+" WHERE C.ID_CONTENIDO = ? ";
 
 			preparedStatement = connection.prepareStatement(queryString,
@@ -267,7 +267,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		try {
 			queryString = new StringBuilder(
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) " + 
-					" FROM CONTENIDO C INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) ");
+					" FROM CONTENIDO C LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) ");
 			
 			//Al anexionar las tablas solo si es uno de los tipos buscados se soluciona el filtrado por tipo:
 			if (contenido.getAceptarUsuario()!=null && contenido.getAceptarUsuario()) { queryString.append(" INNER JOIN USUARIO U ON (C.ID_CONTENIDO = U.ID_CONTENIDO) ");}
@@ -1654,7 +1654,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		try {
 			queryString = new StringBuilder(
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
-					+" FROM CONTENIDO C INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) "
+					+" FROM CONTENIDO C LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) "
 					/*		+" AND (UC.USUARIO_ID_CONTENIDO= ? ) "*/
 					+" WHERE UC.USUARIO_ID_CONTENIDO = ? AND UC.SIGUIENDO= 'TRUE' ");
 
@@ -1702,7 +1702,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		try {
 			queryString = new StringBuilder(
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
-					+" FROM CONTENIDO C INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) "
+					+" FROM CONTENIDO C LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) "
 					/*		+" AND (UC.USUARIO_ID_CONTENIDO= ? ) "*/
 					+" WHERE UC.USUARIO_ID_CONTENIDO = ? AND UC.GUARDADO= 'TRUE' ");
 

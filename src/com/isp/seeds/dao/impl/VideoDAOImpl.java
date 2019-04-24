@@ -38,7 +38,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 							+", V.DESCRIPCION, V.URL_VIDEO "
 							+", UC.SIGUIENDO, UC.DENUNCIADO, UC.GUARDADO "
 							+" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "
-							+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) ");
+							+" LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO=UC.CONTENIDO_ID_CONTENIDO) ");
 			if(idSesion!=null) { queryString.append(" AND (UC.USUARIO_ID_CONTENIDO= ? ) ");}
 			queryString.append(" WHERE V.ID_CONTENIDO = ? ");
 			
@@ -89,7 +89,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 							+", V.DESCRIPCION, V.URL_VIDEO "
 					+" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "
 					+" INNER JOIN VIDEO_LISTA VL ON (VL.VIDEO_ID_CONTENIDO = V.ID_CONTENIDO ) "
-					+" INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO ) "
+					+" LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO ) "
 					+" WHERE VL.LISTA_ID_CONTENIDO = ? ORDER BY VL.POSICION ");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
@@ -160,9 +160,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 			preparedStatement.setLong(i++, video.getAutor());
 			preparedStatement.setString(i++, video.getDescripcion());
 			preparedStatement.setString(i++, video.getUrl());	
-			
-			System.out.println(preparedStatement.toString());
-
+		
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);
 			}
