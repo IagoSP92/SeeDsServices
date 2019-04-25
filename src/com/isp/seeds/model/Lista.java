@@ -11,7 +11,7 @@ public class Lista extends Contenido {
 	private Categoria categoria= null;
 	private List<Etiqueta> etiquetas = null;
 
-	private List<String> comentarios= null;
+	private List<Comentario> comentarios= null;
 	private List<Video> videos= null;
 
 	public String toString() {
@@ -53,11 +53,11 @@ public class Lista extends Contenido {
 		this.etiquetas = etiquetas;
 	}
 
-	public List<String> getComentarios() {
+	public List<Comentario> getComentarios() {
 		return comentarios;
 	}
 
-	public void setComentarios(List<String> comentarios) {
+	public void setComentarios(List<Comentario> comentarios) {
 		this.comentarios = comentarios;
 	}
 

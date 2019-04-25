@@ -11,7 +11,7 @@ public class Video extends Contenido  implements Comparable<Video> {
 
 	private Categoria categoria= null;
 	private List<Etiqueta> etiquetas = null;
-	private List<String> comentarios= null;
+	private List<Comentario> comentarios= null;
 
 	public String toString() {
 		return super.toString() + ToStringBuilder.reflectionToString(this);
@@ -61,12 +61,12 @@ public class Video extends Contenido  implements Comparable<Video> {
 	}
 
 
-	public List<String> getComentarios() {
+	public List<Comentario> getComentarios() {
 		return comentarios;
 	}
 
 
-	public void setComentarios(List<String> comentarios) {
+	public void setComentarios(List<Comentario> comentarios) {
 		this.comentarios = comentarios;
 	}
 }

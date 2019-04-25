@@ -941,12 +941,68 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
 					+" FROM CONTENIDO C INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) "
 							+" AND (UC.USUARIO_ID_CONTENIDO= ? ) "
-					+" WHERE UC.USUARIO_ID_CONTENIDO = ? AND UC.GUARDADO= 'TRUE' ");
+					+" INNER JOIN LISTA L ON (L.ID_CONTENIDO=C.ID_CONTENIDO)"
+					+" WHERE UC.USUARIO_ID_CONTENIDO = ? AND UC.GUARDADO= TRUE "
+					+" GROUP BY UC.CONTENIDO_ID_CONTENIDO");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
-			preparedStatement.setLong(1, idSesion);
+			int i=1;
+			preparedStatement.setLong(i++, idSesion);
+			preparedStatement.setLong(i++, idSesion);
+
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
+			resultSet = preparedStatement.executeQuery();
+			
+			Contenido contenido = new Contenido();
+			List<Contenido> page = new ArrayList<Contenido>();
+			int currentCount = 0;
+			if ((startIndex >=1) && resultSet.absolute(startIndex)) {
+				do {
+					contenido = ContenidoDAOImpl.loadNext(connection, resultSet);
+					page.add(contenido);
+					currentCount++;
+				} while ((currentCount < count) &&  resultSet.next()) ;
+			}
+			int totalRows = JDBCUtils.getTotalRows(resultSet);
+			Results<Contenido> results = new Results<Contenido>(page, startIndex, totalRows);
+			return results;
+
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		return null;
+	}
+	
+	@Override
+	public Results<Contenido> cargarSeguidos(Connection connection, Long idSesion, int startIndex, int count)
+			throws DataException {
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
+					+" FROM CONTENIDO C INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) "
+							+" AND (UC.USUARIO_ID_CONTENIDO= ? ) "
+					+" INNER JOIN LISTA L ON (L.ID_CONTENIDO=C.ID_CONTENIDO)"
+					+" WHERE UC.USUARIO_ID_CONTENIDO = ? AND UC.SIGUIENDO= TRUE "
+					+" GROUP BY UC.CONTENIDO_ID_CONTENIDO");
+
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			int i=1;
+			preparedStatement.setLong(i++, idSesion);
+			preparedStatement.setLong(i++, idSesion);
 
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);

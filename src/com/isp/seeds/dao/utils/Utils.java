@@ -11,13 +11,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.model.Comentario;
 
 public class Utils {
 	
 	private static Logger logger = LogManager.getLogger(Utils.class);
 
 	
-	public static List<String> cargarComentarios(Connection connection, Long idContenido) throws DataException {
+	public static List<Comentario> cargarComentarios(Connection connection, Long idContenido) throws DataException {
 		
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
@@ -25,7 +26,8 @@ public class Utils {
 
 		try {
 			queryString = new StringBuilder(
-					"SELECT COMENTARIO FROM USUARIO_CONTENIDO "
+					"SELECT UC.COMENTARIO, C.NOMBRE FROM USUARIO_CONTENIDO UC "
+					+" INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = UC.USUARIO_ID_CONTENIDO)"
 					+" WHERE CONTENIDO_ID_CONTENIDO = ? ");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
@@ -38,10 +40,17 @@ public class Utils {
 			}
 			resultSet = preparedStatement.executeQuery();
 			
-			List<String> comentarios = new ArrayList<String>();
+			List<Comentario> comentarios = new ArrayList<Comentario>();
+			Comentario comentario =null;
+			int i=1;
 			if (resultSet.next()) {
 				do {
-					comentarios.add(resultSet.getString(1)); 
+					comentario = new Comentario();
+					i=1;
+					comentario.setTexto(resultSet.getString(i++));
+					comentario.setAutor(resultSet.getString(i++));
+					
+					comentarios.add(comentario); 
 				} while (resultSet.next()) ;
 			}
 			return comentarios;

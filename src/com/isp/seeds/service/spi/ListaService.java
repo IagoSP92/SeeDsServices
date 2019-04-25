@@ -40,4 +40,7 @@ public interface ListaService {
 	
 	public Results<Contenido> cargarGuardados(Long idSesion, int startIndex,
 			int count) throws DataException;
+	
+	public Results<Contenido> cargarSeguidos(Long idSesion, int startIndex,
+			int count) throws DataException;
 }

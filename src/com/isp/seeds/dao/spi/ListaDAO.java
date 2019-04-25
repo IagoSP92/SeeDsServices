@@ -32,7 +32,10 @@ public interface ListaDAO {
 	public void deleteFromList (Connection connection, Long idLista, Long idVideo)
 			throws DataException, SQLException;
 
-	Results<Contenido> cargarGuardados(Connection connection, Long idSesion, int startIndex,
+	public Results<Contenido> cargarGuardados(Connection connection, Long idSesion, int startIndex,
+			int count) throws DataException;
+	
+	public Results<Contenido> cargarSeguidos(Connection connection, Long idSesion, int startIndex,
 			int count) throws DataException;
 
 	

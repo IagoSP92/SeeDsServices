@@ -13,8 +13,10 @@ import com.isp.seeds.dao.impl.UsuarioDAOImpl;
 import com.isp.seeds.dao.spi.UsuarioDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Usuario;
 import com.isp.seeds.service.spi.UsuarioService;
+import com.isp.seeds.service.util.Results;
 
 public class UsuarioServiceImpl implements UsuarioService {
 
@@ -214,6 +216,33 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuario;
 	}
 
+	
+	@Override
+	public Results<Contenido> cargarSeguidos(Long idSesion, int startIndex, int count) throws DataException {
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idSesion= {} ", idSesion);
+		}
+
+		if(idSesion != null) {
+
+			try {
+				Connection connection = ConnectionManager.getConnection();
+
+				Results<Contenido> contenidos = usuarioDao.cargarSeguidos(connection, idSesion, startIndex, count);
+				JDBCUtils.closeConnection(connection);
+
+				return contenidos;
+
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
+		}
+		return null;
+	}
 
 //	@Override
 //	public List<Usuario> buscarTodos(int startIndex, int count, String idioma) throws DataException {

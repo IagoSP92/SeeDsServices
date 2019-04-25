@@ -511,12 +511,16 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
 					+" FROM CONTENIDO C INNER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) "
 							+" AND (UC.USUARIO_ID_CONTENIDO= ? ) "
-					+" WHERE UC.USUARIO_ID_CONTENIDO = ? AND UC.GUARDADO= 'TRUE' ");
+					+" INNER JOIN VIDEO V ON (V.ID_CONTENIDO=C.ID_CONTENIDO)"
+					+" WHERE UC.USUARIO_ID_CONTENIDO = ? AND UC.GUARDADO= TRUE "
+					+" GROUP BY UC.CONTENIDO_ID_CONTENIDO");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
-			preparedStatement.setLong(1, idSesion);
+			int i=1;
+			preparedStatement.setLong(i++, idSesion);
+			preparedStatement.setLong(i++, idSesion);
 
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);

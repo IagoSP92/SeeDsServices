@@ -303,6 +303,33 @@ public class ListaServiceImpl implements ListaService {
 		}
 		return null;
 	}
+	
+	@Override
+	public Results<Contenido> cargarSeguidos(Long idSesion, int startIndex, int count) throws DataException {
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idSesion= {} ", idSesion);
+		}
+
+		if(idSesion != null) {
+
+			try {
+				Connection connection = ConnectionManager.getConnection();
+
+				Results<Contenido> contenidos = listaDao.cargarSeguidos(connection, idSesion, startIndex, count);
+				JDBCUtils.closeConnection(connection);
+
+				return contenidos;
+
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
+		}
+		return null;
+	}
 
 
 }

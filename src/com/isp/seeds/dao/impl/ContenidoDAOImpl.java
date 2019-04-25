@@ -353,7 +353,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			int i = 1;
 			if (contenido.getId()!=null)
-				preparedStatement.setString(i++, "%" + contenido.getId() + "%");
+				preparedStatement.setLong(i++, contenido.getId());
 			if (contenido.getNombre()!=null)
 				preparedStatement.setString(i++, "%" + contenido.getNombre() + "%");
 
@@ -369,7 +369,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 
 			if (contenido.getAutor()!=null) 
-				preparedStatement.setString(i++, "%" + contenido.getAutor() + "%");
+				preparedStatement.setLong(i++,  contenido.getAutor() );
 			if (contenido.getTipo()!=null) 
 				preparedStatement.setInt(i++, contenido.getTipo());
 			
