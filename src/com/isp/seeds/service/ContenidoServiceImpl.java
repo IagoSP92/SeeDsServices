@@ -467,6 +467,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(true);
 				contenidoDao.denunciarContenido(connection, idUsuario, idContenido, denunciado);
 				JDBCUtils.closeConnection(connection);
 
@@ -493,6 +494,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(true);
 				contenidoDao.denunciarContenido(connection, idUsuario, idContenido, null);
 				JDBCUtils.closeConnection(connection);			
 
@@ -519,6 +521,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(true);
 				contenidoDao.valorarContenido(connection, idUsuario, idContenido, valoracion);
 				JDBCUtils.closeConnection(connection);			
 
@@ -545,6 +548,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(true);
 				contenidoDao.guardarContenido(connection, idUsuario, idContenido, guardado);
 				JDBCUtils.closeConnection(connection);
 
@@ -571,6 +575,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(true);
 				contenidoDao.comentarContenido(connection, idUsuario, idContenido, comentario);
 				JDBCUtils.closeConnection(connection);
 
@@ -596,6 +601,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(true);
 				contenidoDao.comentarContenido(connection, idUsuario, idContenido, null);
 				JDBCUtils.closeConnection(connection);			
 
