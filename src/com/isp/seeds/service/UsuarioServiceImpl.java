@@ -27,9 +27,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public void recuperarContraseña(String email) throws DataException {
-
-
-
 	}
 
 	public Usuario crearCuenta (Usuario u) throws DataException {
@@ -98,12 +95,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 				if(usuarioDao.verificarContrasena(connection, email, contrasena)) {
 					usuario = usuarioDao.findByEmail(connection, email);
+					
 				}
-				
-				JDBCUtils.closeConnection(connection);
 				if (usuario==null) {
 					throw new DataException("Contraseña incorrecta");
-				}
+				}				
+				JDBCUtils.closeConnection(connection);
+				
 			}
 			catch (SQLException e) {  
 				logger.warn(e.getMessage(), e);

@@ -440,6 +440,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(true);
 				contenidoDao.seguirContenido(connection, idUsuario, idContenido, siguiendo);
 				JDBCUtils.closeConnection(connection);
 
