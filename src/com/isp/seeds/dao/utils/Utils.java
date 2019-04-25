@@ -26,7 +26,7 @@ public class Utils {
 		try {
 			queryString = new StringBuilder(
 					"SELECT COMENTARIO FROM USUARIO_CONTENIDO "
-					+" WHERE ID_CONTENIDO = ? ");
+					+" WHERE CONTENIDO_ID_CONTENIDO = ? ");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -39,10 +39,11 @@ public class Utils {
 			resultSet = preparedStatement.executeQuery();
 			
 			List<String> comentarios = new ArrayList<String>();
-			do {
-				comentarios.add(resultSet.getString(1));
-			} while (resultSet.next()) ;
-			
+			if (resultSet.next()) {
+				do {
+					comentarios.add(resultSet.getString(1)); 
+				} while (resultSet.next()) ;
+			}
 			return comentarios;
 
 		} catch (SQLException e) {

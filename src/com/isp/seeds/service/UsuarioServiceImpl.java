@@ -99,7 +99,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				if(usuarioDao.verificarContrasena(connection, email, contrasena)) {
 					usuario = usuarioDao.findByEmail(connection, email);
 				}
-
+				
 				JDBCUtils.closeConnection(connection);
 				if (usuario==null) {
 					throw new DataException("Contraseña incorrecta");

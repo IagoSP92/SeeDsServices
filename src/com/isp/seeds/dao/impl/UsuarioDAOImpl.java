@@ -158,7 +158,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 				contrasenaGuardada = resultSet.getString(1);				
 			} else {
 				logger.debug("Usuario con email:{} no encontrado", email);
-				throw new DataException("\nUser with email: " +email+ "not found\n");
+				throw new DataException("\nUser with email: " +email+ "not found \n");
 			}
 
 			return PasswordEncryptionUtil.checkPassword(contrasena, contrasenaGuardada);
