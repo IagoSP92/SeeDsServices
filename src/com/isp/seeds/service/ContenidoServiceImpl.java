@@ -671,8 +671,4 @@ public class ContenidoServiceImpl implements ContenidoService {
 		return null;
 	}
 
-
-
-
-
 }
