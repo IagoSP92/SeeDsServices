@@ -60,6 +60,33 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return null;
 	}
 
+	@Override
+	public void editarPerfil(Usuario usuario) throws DataException {
+
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Usuario= {} ", usuario);
+		}
+		Connection connection = null;
+		boolean commit = false;
+		if(usuario!=null) {
+			try {
+				connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(false);
+				usuarioDao.update(connection, usuario);
+				
+				commit=true;
+			}
+			catch (SQLException e) {  
+				logger.warn(e.getMessage(), e);
+			}
+			catch (Exception e) {  
+				logger.warn(e.getMessage(), e);
+			} finally {
+				JDBCUtils.closeConnection(connection);
+			}
+		}
+	}
+
 	public void eliminarCuenta (Long idUsuario) {
 
 		if(logger.isDebugEnabled()) {
@@ -117,27 +144,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 
 
-	@Override
-	public void editarPerfil(Usuario usuario) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("Usuario= {} ", usuario);
-		}
-		
-		if(usuario!=null) {
-			try {
-				Connection connection = ConnectionManager.getConnection();
-				usuarioDao.update(connection, usuario);
-				JDBCUtils.closeConnection(connection);
-			}
-			catch (SQLException e) {  
-				logger.warn(e.getMessage(), e);
-			}
-			catch (Exception e) {  
-				e.printStackTrace();
-			}
-		}
-	}
 
 	@Override
 	public void cambiarContraseña(String email, String contrasena) throws DataException {
