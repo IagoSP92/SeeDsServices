@@ -1,6 +1,5 @@
 package com.isp.seeds.service.spi;
 
-import java.sql.Connection;
 import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
