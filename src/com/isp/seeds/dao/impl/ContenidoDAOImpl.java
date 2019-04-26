@@ -587,10 +587,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				first = false;
 			}
 
-			if (contenido.getFechaAlta()!=null) {
-				addUpdate(queryString, first, " fecha_alta = ? ");
-				first = false;
-			}
+//			if (contenido.getFechaAlta()!=null) {
+//				addUpdate(queryString, first, " fecha_alta = ? ");
+//				first = false;
+//			}
 
 			if (contenido.getFechaMod()!=null) {
 				addUpdate(queryString, first, " fecha_mod = ? ");
