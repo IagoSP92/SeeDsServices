@@ -69,12 +69,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 		Connection connection = null;
 		boolean commit = false;
 		if(usuario!=null) {
-			try {
+			try {				
 				connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(false);
-				usuarioDao.update(connection, usuario);
-				
+				usuarioDao.update(connection, usuario);				
 				commit=true;
+				
 			}
 			catch (SQLException e) {  
 				logger.warn(e.getMessage(), e);
@@ -82,7 +82,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			catch (Exception e) {  
 				logger.warn(e.getMessage(), e);
 			} finally {
-				JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}

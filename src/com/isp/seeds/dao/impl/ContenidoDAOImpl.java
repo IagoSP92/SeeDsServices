@@ -587,10 +587,10 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				first = false;
 			}
 
-//			if (contenido.getFechaAlta()!=null) {
-//				addUpdate(queryString, first, " fecha_alta = ? ");
-//				first = false;
-//			}
+			if (contenido.getFechaAlta()!=null) {
+				addUpdate(queryString, first, " fecha_alta = ? ");
+				first = false;
+			}
 
 			if (contenido.getFechaMod()!=null) {
 				addUpdate(queryString, first, " fecha_mod = ? ");
@@ -619,8 +619,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			if (contenido.getNombre()!=null)
 				preparedStatement.setString(i++,contenido.getNombre());
 
-//			if (contenido.getFechaAlta()!=null)
-//				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAlta().getTime()));
+			if (contenido.getFechaAlta()!=null)
+				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAlta().getTime()));
 
 			if (contenido.getFechaMod()!=null)
 				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaMod().getTime()));

@@ -78,18 +78,23 @@ public class VideoServiceImpl implements VideoService {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Video= {} ", video);
 		}
+		Connection connection = null;
+		boolean commit = false;
 
 		if(video !=null) {
 			try {
-				Connection connection = ConnectionManager.getConnection();
+				connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(false);
 				videoDao.update(connection, video);
-				JDBCUtils.closeConnection(connection);
+				commit=true;				
 			}
 			catch (SQLException e) {  
 				logger.warn(e.getMessage(), e);
 			}
 			catch (Exception e) {  
 				logger.warn(e.getMessage(), e);
+			} finally {
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}

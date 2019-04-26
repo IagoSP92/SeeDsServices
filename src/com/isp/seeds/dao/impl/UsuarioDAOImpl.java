@@ -259,10 +259,10 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 				first = false;
 			}
 
-			if (usuario.getContrasena()!=null) {
-				addUpdate(queryString, first, " contrasena = ? ");
-				first = false;
-			}
+//			if (usuario.getContrasena()!=null) {
+//				addUpdate(queryString, first, " contrasena = ? ");
+//				first = false;
+//			}
 
 			if (usuario.getDescripcion()!=null) {
 				addUpdate(queryString, first, " descripcion = ? ");
@@ -302,8 +302,8 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			if (usuario.getEmail()!=null)
 				preparedStatement.setString(i++,usuario.getEmail());
 
-			if (usuario.getContrasena()!=null)
-				preparedStatement.setString(i++, PasswordEncryptionUtil.encryptPassword(usuario.getContrasena()) );
+//			if (usuario.getContrasena()!=null)
+//				preparedStatement.setString(i++, PasswordEncryptionUtil.encryptPassword(usuario.getContrasena()) );
 
 			if (usuario.getDescripcion()!=null)
 				preparedStatement.setString(i++,usuario.getDescripcion());
