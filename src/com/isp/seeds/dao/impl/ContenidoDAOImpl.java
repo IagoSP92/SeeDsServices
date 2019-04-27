@@ -429,40 +429,37 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 
 	@Override
-	public Double getValoracion (Connection connection, Long idContenido) 
+	public Integer getValoracion (Connection connection, Long idSesion, Long idContenido) 
 			throws DataException {
 
 		if(logger.isDebugEnabled()) {
-			logger.debug ("Id= {} ", idContenido);
+			logger.debug ("IdSesion= {} IdContenido={}", idSesion,  idContenido);
 		}
-
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		Double valor = null;
+		Integer valor = null;
 		String queryString = null;
 		try {
-			queryString = " SELECT AVG(VALORACION) FROM USUARIO_CONTENIDO WHERE CONTENIDO_ID_CONTENIDO = ? ";
+			queryString = " SELECT VALORACION FROM USUARIO_CONTENIDO WHERE USUARIO_ID_CONTENIDO = ? AND CONTENIDO_ID_CONTENIDO = ? ";
 
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
-			int i = 1;                
+			int i = 1;
+			preparedStatement.setLong(i++, idSesion);
 			preparedStatement.setLong(i++, idContenido);
 
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);
 			}
-
 			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
 				if(resultSet.getObject(1) != null) {
-					valor = resultSet.getDouble(1);
+					valor = resultSet.getInt(1);
 				}
 			} else {
 				throw new DataException("\nValoracion del contenido " +idContenido+ " no encontrada \n");
 			}
-
 			return valor;
 
 		} catch (SQLException e) {
@@ -475,7 +472,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 		}
-
 	}
 
 

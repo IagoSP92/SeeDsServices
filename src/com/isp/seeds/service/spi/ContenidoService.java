@@ -15,6 +15,9 @@ public interface ContenidoService {
 	public Contenido buscarId (Long idContenido) 
 			throws DataException;
 	
+	public Integer getValoracion (Long idSesion, Long idContenido) 
+			throws DataException;
+	
 	public Contenido buscarNombre(String nombreContenido, int startIndex, int count, String idioma);
 	
 
@@ -24,9 +27,7 @@ public interface ContenidoService {
 	
 	public Results<Contenido> verTodos (int startIndex, int count, String idioma) 
 			throws DataException;
-	
-	
-	
+		
 	public Contenido crearContenido (Contenido contenido) 
 			throws DataException;
 	

@@ -28,7 +28,7 @@ public interface ContenidoDAO {
 	public Results<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) 
 			throws DataException;	
  
-	public Double getValoracion(Connection connection, Long idContenido)
+	public Integer getValoracion(Connection connection,Long idSesion, Long idContenido)
 			throws DataException;	
 	
 	public Contenido create (Connection connection, Contenido contenido)

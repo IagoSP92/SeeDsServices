@@ -28,7 +28,7 @@ public class Utils {
 			queryString = new StringBuilder(
 					"SELECT UC.COMENTARIO, C.NOMBRE FROM USUARIO_CONTENIDO UC "
 					+" INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = UC.USUARIO_ID_CONTENIDO)"
-					+" WHERE CONTENIDO_ID_CONTENIDO = ? ");
+					+" WHERE CONTENIDO_ID_CONTENIDO = ? AND UC.COMENTARIO != 'Null'");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);

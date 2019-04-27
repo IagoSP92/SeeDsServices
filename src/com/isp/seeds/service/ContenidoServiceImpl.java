@@ -671,4 +671,27 @@ public class ContenidoServiceImpl implements ContenidoService {
 		return null;
 	}
 
+
+	@Override
+	public Integer getValoracion(Long idSesion, Long idContenido) throws DataException {
+		if(logger.isDebugEnabled()) {
+			logger.debug (" dSesion={} idContenido= {} ", idSesion, idContenido);
+		}
+		Connection connection = null;
+		Integer valoracion = null;
+		if(idContenido!=null && idSesion!=null) {
+			try {
+				connection = ConnectionManager.getConnection();
+				valoracion = contenidoDao.getValoracion(connection, idSesion, idContenido);
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				JDBCUtils.closeConnection(connection);
+			}
+		}
+		return valoracion;
+	}
+
 }
