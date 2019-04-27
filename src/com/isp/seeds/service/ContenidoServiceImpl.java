@@ -35,7 +35,6 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 		Contenido contenido = null;
 		if(idContenido != null) {
-
 			try {
 				Connection connection = ConnectionManager.getConnection();
 				contenido = contenidoDao.findById(connection, idContenido);

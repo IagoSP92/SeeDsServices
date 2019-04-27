@@ -20,6 +20,7 @@ import com.isp.seeds.model.Lista;
 import com.isp.seeds.model.Video;
 import com.isp.seeds.service.spi.ListaService;
 import com.isp.seeds.service.util.Results;
+import com.isp.seeds.service.util.ServiceUtils;
 
 public class ListaServiceImpl implements ListaService {
 
@@ -38,22 +39,27 @@ public class ListaServiceImpl implements ListaService {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Lista= {} ", lista);
 		}
-
+		Connection connection = null;
+		Boolean commit = false;
 		if(lista != null) {
-
 			try {
-				Connection connection = ConnectionManager.getConnection();
+				connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(false);
 				lista = listaDao.create(connection, lista);
-				JDBCUtils.closeConnection(connection);
+				ServiceUtils.contenidoDao.agignarCategoria(connection, lista.getId(), lista.getCategoria().getIdCategoria());
+				commit=true;
+				return lista;
 			}
 			catch (SQLException e) { 
 				logger.warn(e.getMessage(), e);
 			}
 			catch (Exception e) {  
 				logger.warn(e.getMessage(), e);
+			} finally {
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
-		return lista;
+		return null;
 	}
 
 	@Override

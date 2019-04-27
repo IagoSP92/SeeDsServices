@@ -7,21 +7,11 @@ public class Categoria extends AbstractValueObject{
 	private Long idCategoria=null;
 	private String nombreCategoria=null;
 
-	/*public String toString() {
-		return super.toString() + ToStringBuilder.reflectionToString(this);
-	}*/
-	
 	public String toString() {
-		StringBuilder cadena = new StringBuilder();
-		cadena.append("Categoria - ID: ");
-		cadena.append(idCategoria);
-		cadena.append("   Nombre: ");
-		cadena.append(nombreCategoria);
-		return cadena.toString();
+		return super.toString() + ToStringBuilder.reflectionToString(this);
 	}
 
 	public Categoria() {
-
 	}
 
 	public Long getIdCategoria() {
@@ -38,5 +28,9 @@ public class Categoria extends AbstractValueObject{
 
 	public void setNombreCategoria(String nombreCategoria) {
 		this.nombreCategoria = nombreCategoria;
+	}
+	
+	public Categoria getCategoria() {
+		return this;
 	}
 }

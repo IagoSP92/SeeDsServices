@@ -2,8 +2,6 @@ package com.isp.seeds.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,10 +15,12 @@ import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Video;
 import com.isp.seeds.service.spi.VideoService;
 import com.isp.seeds.service.util.Results;
+import com.isp.seeds.service.util.ServiceUtils;
 
 public class VideoServiceImpl implements VideoService {
 
 	private static Logger logger = LogManager.getLogger(VideoServiceImpl.class);
+	
 	VideoDAO videoDao= null;
 
 	public VideoServiceImpl () {
@@ -33,21 +33,27 @@ public class VideoServiceImpl implements VideoService {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Video= {}", video);
 		}
-		
+		Connection connection =null;
+		Boolean commit = false;		
 		if(video !=null) {
 			try {
-				Connection connection = ConnectionManager.getConnection();
+				connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(false);
 				video = videoDao.create(connection, video);
-				JDBCUtils.closeConnection(connection);
+				ServiceUtils.contenidoDao.agignarCategoria(connection, video.getId(), video.getCategoria().getIdCategoria());
+				commit=true;
+				return video;
 			}
 			catch (SQLException e) { 
 				logger.warn(e.getMessage(), e);
 			}
 			catch (Exception e) {  
 				logger.warn(e.getMessage(), e);
+			} finally {
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
-		return video;
+		return null;
 	}
 
 	@Override
