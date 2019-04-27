@@ -34,5 +34,9 @@ public class Pais extends AbstractValueObject {
 	public void setNombrePais(String nombrePais) {
 		this.nombrePais = nombrePais;
 	}
+	
+	public Pais getPais() {
+		return this;
+	}
 
 }
