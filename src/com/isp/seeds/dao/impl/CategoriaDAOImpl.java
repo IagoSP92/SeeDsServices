@@ -134,10 +134,14 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 			String queryString = 
 					"SELECT C.ID_CATEGORIA, CI.NOMBRE_CATEGORIA "
 					+" FROM CATEGORIA C INNER JOIN CATEGORIA_IDIOMA CI ON (C.ID_CATEGORIA = CI.ID_CATEGORIA) "
+					+" WHERE CI.ID_IDIOMA = ? "
 					+" ORDER BY C.ID_CATEGORIA ";
 
 			preparedStatement = connection.prepareStatement(queryString,
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			int i = 1;
+			preparedStatement.setString(i++, idioma);
 			
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);
