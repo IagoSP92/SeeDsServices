@@ -19,59 +19,6 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 	
 	private static Logger logger = LogManager.getLogger(CategoriaDAOImpl.class);
 	
-	private Categoria loadNext (ResultSet resultSet)
-			throws SQLException {
-
-		Categoria c = new Categoria();
-		int i=1;		
-		Long id = resultSet.getLong(i++);
-		String nombre = resultSet.getString(i++);
-		c = new Categoria();
-		c.setNombreCategoria(nombre);
-		c.setIdCategoria(id);
-		return c;		
-	}
-	
-	public Boolean exists (Connection connection, Long idCategoria) 
-			throws DataException {
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idCategoria= {} ", idCategoria);
-		}
-		boolean exist = false;
-
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-
-		try {
-
-			String queryString = 
-					" SELECT ID_CATEGORIA FROM CATEGORIA WHERE ID_CATEGORIA = ? ";
-
-			preparedStatement = connection.prepareStatement(queryString);
-
-			int i = 1;
-			preparedStatement.setLong(i++, idCategoria);
-			
-			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",preparedStatement);
-			}
-			resultSet = preparedStatement.executeQuery();
-
-			if (resultSet.next()) {
-				exist = true;
-			}
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-			throw new DataException(e);
-		} finally {
-			JDBCUtils.closeResultSet(resultSet);
-			JDBCUtils.closeStatement(preparedStatement);
-		}
-
-		return exist;
-	}
-
 
 	public Categoria findById(Connection connection, Long id, String idioma)
 			throws DataException {
@@ -114,8 +61,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		} finally {            
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
-		}  	
-
+		}
 		return c;
 	}
 
@@ -126,7 +72,6 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idioma={}", idioma);
 		}
-
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 
@@ -156,8 +101,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 					categoria = loadNext(resultSet);
 					results.add(categoria);  
 				} while (resultSet.next()) ;
-			}
-			
+			}			
 			return results;
 
 		} catch (SQLException e) {
@@ -168,9 +112,64 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
+	
+	
+	
+	public Boolean exists (Connection connection, Long idCategoria) 
+			throws DataException {
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idCategoria= {} ", idCategoria);
+		}
+		boolean exist = false;
+
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+
+		try {
+
+			String queryString = 
+					" SELECT ID_CATEGORIA FROM CATEGORIA WHERE ID_CATEGORIA = ? ";
+
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, idCategoria);
+			
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
+			resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				exist = true;
+			}
+
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		return exist;
+	}
+	
+	
+	private Categoria loadNext (ResultSet resultSet)
+			throws SQLException {
+
+		Categoria c = new Categoria();
+		int i=1;		
+		Long id = resultSet.getLong(i++);
+		String nombre = resultSet.getString(i++);
+		c = new Categoria();
+		c.setNombreCategoria(nombre);
+		c.setIdCategoria(id);
+		return c;		
+	}
 
 
-	@Override
+	/*@Override
 	public Long findByNombre(Connection connection, String nombreCategoria, String idioma) throws DataException {
 		
 		if(logger.isDebugEnabled()) {
@@ -216,6 +215,6 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 		return idCategoria;
-	}
+	}*/
 
 }

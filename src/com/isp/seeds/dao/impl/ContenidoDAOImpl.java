@@ -15,29 +15,26 @@ import org.apache.logging.log4j.Logger;
 
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.Exceptions.InstanceNotFoundException;
-import com.isp.seeds.dao.spi.CategoriaDAO;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.spi.EtiquetaDAO;
-import com.isp.seeds.dao.spi.VideoDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Etiqueta;
-import com.isp.seeds.model.Lista;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
 import com.isp.seeds.service.util.Results;
 
 public class ContenidoDAOImpl implements ContenidoDAO {
 
-	private CategoriaDAO categoriaDao = null;
+	//private CategoriaDAO categoriaDao = null;
 	private EtiquetaDAO etiquetaDao = null;
-	private VideoDAO videoDao = null;         // ESTO AQUI DA STACK OVERFLOW ERROR (EXCEPTION)
+	//private VideoDAO videoDao = null;         // ESTO AQUI DA STACK OVERFLOW ERROR (EXCEPTION)
 
 	private static Logger logger = LogManager.getLogger(ContenidoDAOImpl.class);
 
 
 	public ContenidoDAOImpl () {
-		categoriaDao = new CategoriaDAOImpl();
+		//categoriaDao = new CategoriaDAOImpl();
 		etiquetaDao = new EtiquetaDAOImpl();
 		//videoDao = new VideoDAOImpl();
 
@@ -60,7 +57,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-
 		try {
 
 			String queryString = 

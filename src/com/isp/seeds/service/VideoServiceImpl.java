@@ -7,18 +7,31 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.dao.impl.ContenidoDAOImpl;
+import com.isp.seeds.dao.impl.VideoDAOImpl;
+import com.isp.seeds.dao.spi.ContenidoDAO;
+import com.isp.seeds.dao.spi.VideoDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
-import com.isp.seeds.dao.utils.SingleDAO;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Video;
 import com.isp.seeds.service.spi.VideoService;
 import com.isp.seeds.service.util.Results;
-import com.isp.seeds.service.util.ServiceUtils;
 
 public class VideoServiceImpl implements VideoService {
 
 	private static Logger logger = LogManager.getLogger(VideoServiceImpl.class);
+	
+	private VideoDAO videoDao = null;
+	private ContenidoDAO contenidoDao = null;
+	
+	public VideoServiceImpl() {
+		
+		videoDao = new VideoDAOImpl();
+		contenidoDao = new ContenidoDAOImpl();		
+	}
+	
+	
 
 	@Override
 	public Video crearVideo(Video video) throws DataException {
@@ -27,13 +40,15 @@ public class VideoServiceImpl implements VideoService {
 			logger.debug ("Video= {}", video);
 		}
 		Connection connection =null;
-		Boolean commit = false;		
+		Boolean commit = false;
+		
 		if(video !=null) {
 			try {
 				connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(false);
-				video = SingleDAO.videoDao.create(connection, video);
-				ServiceUtils.contenidoDao.agignarCategoria(connection, video.getId(), video.getCategoria().getIdCategoria());
+				
+				video = videoDao.create(connection, video);
+				contenidoDao.agignarCategoria(connection, video.getId(), video.getCategoria().getIdCategoria());
 				commit=true;
 				return video;
 			}
@@ -48,6 +63,7 @@ public class VideoServiceImpl implements VideoService {
 		}
 		return null;
 	}
+	
 
 	@Override
 	public void eliminarVideo(Long idVideo) throws DataException {
@@ -55,28 +71,33 @@ public class VideoServiceImpl implements VideoService {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idVideo= {} ", idVideo);
 		}
+		
+		Connection connection = null;
 
 		if(idVideo !=null) {
 			try {
-				Connection connection = ConnectionManager.getConnection();
-				SingleDAO.videoDao.delete(connection, idVideo);
-				JDBCUtils.closeConnection(connection);
+				connection = ConnectionManager.getConnection();
+				videoDao.delete(connection, idVideo);				
 			}
 			catch (SQLException e) { 
 				logger.warn(e.getMessage(), e);
 			}
 			catch (Exception e) { 
 				logger.warn(e.getMessage(), e);
+			} finally {
+				JDBCUtils.closeConnection(connection);
 			}
 		}
 	}
 
+	
 	@Override
 	public void editarVideo(Video video) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Video= {} ", video);
 		}
+		
 		Connection connection = null;
 		boolean commit = false;
 
@@ -84,7 +105,7 @@ public class VideoServiceImpl implements VideoService {
 			try {
 				connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(false);
-				SingleDAO.videoDao.update(connection, video);
+				videoDao.update(connection, video);
 				commit=true;				
 			}
 			catch (SQLException e) {  
@@ -97,6 +118,7 @@ public class VideoServiceImpl implements VideoService {
 			}
 		}
 	}
+	
 
 	@Override
 	public Video buscarId(Long idSesion, Long idVideo) throws DataException {
@@ -104,112 +126,39 @@ public class VideoServiceImpl implements VideoService {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idVideo= {} ", idVideo);
 		}
-
+		
+		Connection connection = null;
 		Video video = null;
+		
 		if(idVideo!=null) {
-
 			try {
-				Connection connection = ConnectionManager.getConnection();
-				video = SingleDAO.videoDao.findById(connection,idSesion, idVideo);
-				JDBCUtils.closeConnection(connection);
+				connection = ConnectionManager.getConnection();
+				video = videoDao.findById(connection,idSesion, idVideo);				
 
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				//JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection);
 			}
 		}
 		return video;
 	}
 
-//	@Override
-//	public List<Video> buscarTodos() throws DataException {
-//		
-//		//LOGGER
-//		
-//		try {
-//			Connection connection = ConnectionManager.getConnection();
-//			List<Video> videos = new ArrayList<Video>();
-//			videos = videoDao.findAllVideos(connection);
-//			JDBCUtils.closeConnection(connection);
-//			return videos;
-//		} catch (SQLException e) {
-//			logger.warn(e.getMessage(), e);
-//		} catch (DataException e) {
-//			logger.warn(e.getMessage(), e);
-//		}finally{
-//			//JDBCUtils.closeConnection(connection);
-//		}
-//		return null;
-//	}
-
-//	@Override
-//	public List<Video> buscarPorAutor(Long idAutor) throws DataException {
-//
-//		if(logger.isDebugEnabled()) {
-//			logger.debug ("idAutor= {} ", idAutor);
-//		}
-//
-//		if(idAutor != null) {
-//
-//			try {
-//				Connection connection = ConnectionManager.getConnection();
-//				List<Video> videos = new ArrayList<Video>();
-//				videos = videoDao.findByAutor(connection, idAutor);
-//				JDBCUtils.closeConnection(connection);
-//				return videos;
-//			} catch (SQLException e) {
-//				logger.warn(e.getMessage(), e);
-//			} catch (DataException e) {
-//				logger.warn(e.getMessage(), e);
-//			}finally{
-//				//JDBCUtils.closeConnection(connection);
-//			}
-//		}
-//		return null;
-//	}
-
-//	@Override
-//	public List<Video> buscarPorCategoria(Long idCategoria) throws DataException {
-//
-//		if(logger.isDebugEnabled()) {
-//			logger.debug ("idCategoria= {} ", idCategoria);
-//		}
-//
-//		if (idCategoria!=null) {
-//			try {
-//				Connection connection = ConnectionManager.getConnection();
-//				List<Video> videos = new ArrayList<Video>();
-//				videos = videoDao.findByCategoria(connection, idCategoria);
-//				JDBCUtils.closeConnection(connection);
-//				return videos;
-//			} catch (SQLException e) {
-//				logger.warn(e.getMessage(), e);
-//			} catch (DataException e) {
-//				logger.warn(e.getMessage(), e);
-//			}finally{
-//				//JDBCUtils.closeConnection(connection);
-//			}
-//		}
-//		return null;
-//	}
 	
 	@Override
 	public Results<Contenido> cargarGuardados(Long idSesion,  int startIndex, int count) throws DataException {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idSesion= {} ", idSesion);
 		}
+		
+		Connection connection =null;
 
 		if(idSesion != null) {
-
 			try {
-				Connection connection = ConnectionManager.getConnection();
-
-				Results<Contenido> contenidos = SingleDAO.videoDao.cargarGuardados(connection, idSesion, startIndex, count);
-				JDBCUtils.closeConnection(connection);
-
+				connection = ConnectionManager.getConnection();
+				Results<Contenido> contenidos = videoDao.cargarGuardados(connection, idSesion, startIndex, count);
 				return contenidos;
 
 			} catch (SQLException e) {
@@ -217,7 +166,7 @@ public class VideoServiceImpl implements VideoService {
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				//JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection);
 			}
 		}
 		return null;

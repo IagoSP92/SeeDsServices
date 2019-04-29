@@ -1,12 +1,10 @@
 package com.isp.seeds.dao.spi;
 
 import java.sql.Connection;
-import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Usuario;
-import com.isp.seeds.service.criteria.UsuarioCriteria;
 import com.isp.seeds.service.util.Results;
 
 public interface UsuarioDAO {	

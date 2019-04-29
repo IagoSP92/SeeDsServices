@@ -18,7 +18,7 @@ public interface ContenidoService {
 	public Double getValoracion (Long idContenido) 
 			throws DataException;
 	
-	public Contenido buscarNombre(String nombreContenido, int startIndex, int count, String idioma);
+	//public Contenido buscarNombre(String nombreContenido, int startIndex, int count, String idioma);
 	
 	public void update (Contenido contenido)
 			throws DataException;	
@@ -28,11 +28,11 @@ public interface ContenidoService {
 			throws DataException;
 
 	
-	public Results<Contenido> verTodos (int startIndex, int count, String idioma) 
-			throws DataException;
+//	public Results<Contenido> verTodos (int startIndex, int count, String idioma) 
+//			throws DataException;
 		
-	public Contenido crearContenido (Contenido contenido) 
-			throws DataException;
+//	public Contenido crearContenido (Contenido contenido) 
+//			throws DataException;
 	
 	public void eliminarContenido (Long idContenido) 
 			throws DataException;
@@ -40,28 +40,28 @@ public interface ContenidoService {
 	/*public Contenido cambiarNombre (Contenido contenido)
 			throws DataException;*/
 	
-	public Contenido cambiarNombre (Long idContenido, String nuevo, String idioma)
-			throws DataException;
+//	public Contenido cambiarNombre (Long idContenido, String nuevo, String idioma)
+//			throws DataException;
 	
 	
 	
 	public void asignarCategoria (Long idContenido, Long idCategoria)
 			throws DataException;
 	
-	public void asignarEtiqueta (Long idContenido, Long idEtiqueta)
-			throws DataException;
+//	public void asignarEtiqueta (Long idContenido, Long idEtiqueta)
+//			throws DataException;
 	
 	public void modificarCategoria (Long idContenido, Long idCategoria)
 			throws DataException;
 	
-	public void eliminarEtiqueta (Long idContenido, Long idEtiqueta)
-			throws DataException;
+//	public void eliminarEtiqueta (Long idContenido, Long idEtiqueta)
+//			throws DataException;
 	
 	public Categoria verCategoria (Long id, String idioma) 
 			throws DataException;
 	
-	public List<Etiqueta> verEtiquetas (Long id, String idioma) 
-			throws DataException;
+//	public List<Etiqueta> verEtiquetas (Long id, String idioma) 
+//			throws DataException;
 	
 	
 	
