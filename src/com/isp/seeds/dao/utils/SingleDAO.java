@@ -23,6 +23,7 @@ public class SingleDAO {
 	public static PaisDAO paisDao = null;
 	
 	static {
+		
 		contenidoDao = new ContenidoDAOImpl();
 		videoDao = new VideoDAOImpl();
 		listaDao = new ListaDAOImpl();

@@ -28,6 +28,11 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 	private static Logger logger = LogManager.getLogger(ListaDAOImpl.class);
 
 
+	public ListaDAOImpl() {	
+		
+	}
+	
+
 	@Override
 	public Lista findById(Connection connection, Long idSesion, Long idLista) throws DataException {
 		
@@ -136,7 +141,9 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Lista= {} ", lista);
 		}
+		
 		SingleDAO.contenidoDao.update(connection, lista);
+		
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
 		try {
@@ -1033,6 +1040,52 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 		return null;
+	}
+
+
+	@Override
+	public void redefinirIncluidos(Connection connection, Long idLista, List<Long> listIdVideo) throws DataException {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private void borrarIncluidos (Connection connection, Long idLista) throws DataException {
+		PreparedStatement preparedStatement = null;
+		
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idLista= {} ", idLista);
+		}
+
+		try {
+			String queryString =	
+					  "DELETE FROM VIDEO_LISTA " 
+					+ "WHERE LISTA_ID_CONTENIDO = ? ";
+			
+			preparedStatement = connection.prepareStatement(queryString);
+
+			int i = 1;
+			preparedStatement.setLong(i++, idLista);
+
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
+			
+			int removedRows = preparedStatement.executeUpdate();
+
+			if (removedRows == 0) {
+				throw new SQLException("Can not delete row in table 'Lista'");
+			}
+			
+			ContenidoDAO daoc = new ContenidoDAOImpl();
+			daoc.delete(connection, idLista);			
+
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+			throw new DataException(e);
+		} finally {
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		
 	}
 
 }

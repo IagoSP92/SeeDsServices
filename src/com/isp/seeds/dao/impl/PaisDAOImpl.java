@@ -19,8 +19,7 @@ public class PaisDAOImpl implements PaisDAO{
 	
 	private static Logger logger = LogManager.getLogger(PaisDAOImpl.class);
 	
-	private Pais loadNext (ResultSet resultSet) throws SQLException {
-		
+	private Pais loadNext (ResultSet resultSet) throws SQLException {		
 		Pais p = new Pais();
 		int i=1;		
 		String id = resultSet.getString(i++);

@@ -99,8 +99,7 @@ public class ListaServiceImpl implements ListaService {
 			}
 			catch (SQLException e) {  
 				logger.warn(e.getMessage(), e);
-			}
-			catch (Exception e) {  
+			} finally {  
 				JDBCUtils.closeConnection(connection, commit);
 			}
 		}

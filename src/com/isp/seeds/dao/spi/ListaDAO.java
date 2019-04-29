@@ -37,6 +37,8 @@ public interface ListaDAO {
 	
 	public Results<Contenido> cargarSeguidos(Connection connection, Long idSesion, int startIndex,
 			int count) throws DataException;
+	
+	public void redefinirIncluidos(Connection connection, Long idLista, List<Long> listIdVideo) throws DataException;
 
 	
 //	public List <Lista>  findByAutor (Connection connection, Long idAutor) 
