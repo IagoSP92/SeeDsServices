@@ -308,7 +308,7 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 				v.setUrl(url);
 				
 				if(i<resultSet.getMetaData().getColumnCount()) {
-					String denunciado = resultSet.getString(i++);
+					Boolean denunciado = resultSet.getBoolean(i++);
 					Boolean guardado = resultSet.getBoolean(i++);
 					Double valorado = resultSet.getDouble(i++);
 					String comentado = resultSet.getString(i++);					

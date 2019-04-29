@@ -13,6 +13,8 @@ import com.isp.seeds.dao.impl.ContenidoDAOImpl;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.dao.utils.SingleDAO;
+import com.isp.seeds.dao.utils.Utils;
 import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Etiqueta;
@@ -23,7 +25,6 @@ import com.isp.seeds.service.util.Results;
 public class ContenidoServiceImpl implements ContenidoService {
 	
 	private static Logger logger = LogManager.getLogger(ContenidoServiceImpl.class);
-	private static ContenidoDAO contenidoDao = new ContenidoDAOImpl();
 
 	
 	@Override
@@ -37,7 +38,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 		if(idContenido != null) {
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				contenido = contenidoDao.findById(connection, idContenido);
+				contenido = SingleDAO.contenidoDao.findById(connection, idContenido);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -65,7 +66,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();				
-				contenido = contenidoDao.findByNombre(connection, nombreContenido, startIndex, count, idioma);
+				contenido = SingleDAO.contenidoDao.findByNombre(connection, nombreContenido, startIndex, count, idioma);
 				JDBCUtils.closeConnection(connection);			
 
 			} catch (SQLException e) {
@@ -92,7 +93,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 				Connection connection = ConnectionManager.getConnection();
 
-				Results<Contenido> contenidos = contenidoDao.findByCriteria(connection, contenido, startIndex, count, idioma);
+				Results<Contenido> contenidos = SingleDAO.contenidoDao.findByCriteria(connection, contenido, startIndex, count, idioma);
 				JDBCUtils.closeConnection(connection);
 
 				return contenidos;
@@ -118,7 +119,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 			Connection connection = ConnectionManager.getConnection();
 
-			Results<Contenido> contenido = contenidoDao.findAll(connection, startIndex, count, idioma);
+			Results<Contenido> contenido = SingleDAO.contenidoDao.findAll(connection, startIndex, count, idioma);
 
 			JDBCUtils.closeConnection(connection);
 			return contenido;
@@ -147,7 +148,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 				Connection connection = ConnectionManager.getConnection();
 
-				contenidoDao.create(connection, contenido);
+				SingleDAO.contenidoDao.create(connection, contenido);
 
 				JDBCUtils.closeConnection(connection);
 
@@ -178,8 +179,8 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 				Connection connection = ConnectionManager.getConnection();
 
-				if (contenidoDao.exists(connection, idContenido)) {
-					contenidoDao.delete(connection, idContenido);				}
+				if (SingleDAO.contenidoDao.exists(connection, idContenido)) {
+					SingleDAO.contenidoDao.delete(connection, idContenido);				}
 
 				JDBCUtils.closeConnection(connection);
 
@@ -242,10 +243,10 @@ public class ContenidoServiceImpl implements ContenidoService {
 				Connection connection = ConnectionManager.getConnection();
 
 				contenido = new Contenido();
-				contenido= contenidoDao.findById(connection, idContenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿? 
+				contenido= SingleDAO.contenidoDao.findById(connection, idContenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿? 
 				contenido.setNombre(nuevo);
-				contenidoDao.update(connection, contenido);
-				contenido= contenidoDao.findById(connection, idContenido);
+				SingleDAO.contenidoDao.update(connection, contenido);
+				contenido= SingleDAO.contenidoDao.findById(connection, idContenido);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -272,7 +273,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();
-				contenidoDao.agignarCategoria(connection, idContenido, idCategoria);
+				SingleDAO.contenidoDao.agignarCategoria(connection, idContenido, idCategoria);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -299,7 +300,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();
-				contenidoDao.asignarEtiqueta(connection, idContenido, idEtiqueta);
+				SingleDAO.contenidoDao.asignarEtiqueta(connection, idContenido, idEtiqueta);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -326,7 +327,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();
-				contenidoDao.modificarCategoria(connection, idContenido, idCategoria);
+				SingleDAO.contenidoDao.modificarCategoria(connection, idContenido, idCategoria);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -353,7 +354,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();
-				contenidoDao.eliminarEtiqueta(connection, idContenido, idEtiqueta);
+				SingleDAO.contenidoDao.eliminarEtiqueta(connection, idContenido, idEtiqueta);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -381,7 +382,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 
 				Connection connection = ConnectionManager.getConnection();				
-				categoria = contenidoDao.verCategoria(connection, idContenido, idioma);
+				categoria = SingleDAO.contenidoDao.verCategoria(connection, idContenido, idioma);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -410,7 +411,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 				Connection connection = ConnectionManager.getConnection();
 
 				List<Etiqueta> etiquetas= new ArrayList<Etiqueta>();
-				etiquetas = contenidoDao.verEtiquetas(connection, idContenido, idioma);
+				etiquetas = SingleDAO.contenidoDao.verEtiquetas(connection, idContenido, idioma);
 
 				JDBCUtils.closeConnection(connection);
 				return etiquetas;
@@ -440,7 +441,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 				Connection connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(true);
-				contenidoDao.seguirContenido(connection, idUsuario, idContenido, siguiendo);
+				SingleDAO.contenidoDao.seguirContenido(connection, idUsuario, idContenido, siguiendo);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -455,7 +456,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 	
 	@Override
-	public void denunciarContenido(Long idUsuario, Long idContenido, String denunciado) throws DataException {
+	public void denunciarContenido(Long idUsuario, Long idContenido, Boolean denunciado) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idUsuario= {} idContenido= {} denunciado= {} ", idUsuario, idContenido, denunciado);
@@ -467,7 +468,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 				Connection connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(true);
-				contenidoDao.denunciarContenido(connection, idUsuario, idContenido, denunciado);
+				SingleDAO.contenidoDao.denunciarContenido(connection, idUsuario, idContenido, denunciado);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -482,7 +483,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 
 	@Override
-	public void cancelarDenuncia(Long idUsuario, Long idContenido) throws DataException {
+	public void cancelarDenuncia(Long idUsuario, Long idContenido, Boolean denunciado) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idUsuario= {} idContenido= {} ", idUsuario, idContenido);
@@ -494,7 +495,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 				Connection connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(true);
-				contenidoDao.denunciarContenido(connection, idUsuario, idContenido, null);
+				SingleDAO.contenidoDao.denunciarContenido(connection, idUsuario, idContenido, false);
 				JDBCUtils.closeConnection(connection);			
 
 			} catch (SQLException e) {
@@ -521,7 +522,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 				Connection connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(true);
-				contenidoDao.valorarContenido(connection, idUsuario, idContenido, valoracion);
+				SingleDAO.contenidoDao.valorarContenido(connection, idUsuario, idContenido, valoracion);
 				JDBCUtils.closeConnection(connection);			
 
 			} catch (SQLException e) {
@@ -548,7 +549,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 				Connection connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(true);
-				contenidoDao.guardarContenido(connection, idUsuario, idContenido, guardado);
+				SingleDAO.contenidoDao.guardarContenido(connection, idUsuario, idContenido, guardado);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -575,7 +576,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 				Connection connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(true);
-				contenidoDao.comentarContenido(connection, idUsuario, idContenido, comentario);
+				SingleDAO.contenidoDao.comentarContenido(connection, idUsuario, idContenido, comentario);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -601,7 +602,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 				Connection connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(true);
-				contenidoDao.comentarContenido(connection, idUsuario, idContenido, null);
+				SingleDAO.contenidoDao.comentarContenido(connection, idUsuario, idContenido, null);
 				JDBCUtils.closeConnection(connection);			
 
 			} catch (SQLException e) {
@@ -626,7 +627,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 				Connection connection = ConnectionManager.getConnection();
 
-				Results<Contenido> contenidos = contenidoDao.cargarSeguidos(connection, idContenido, startIndex, count);
+				Results<Contenido> contenidos = SingleDAO.contenidoDao.cargarSeguidos(connection, idContenido, startIndex, count);
 				JDBCUtils.closeConnection(connection);
 
 				return contenidos;
@@ -654,7 +655,7 @@ public class ContenidoServiceImpl implements ContenidoService {
 			try {
 				Connection connection = ConnectionManager.getConnection();
 
-				Results<Contenido> contenidos = contenidoDao.cargarGuardados(connection, idContenido, startIndex, count);
+				Results<Contenido> contenidos = SingleDAO.contenidoDao.cargarGuardados(connection, idContenido, startIndex, count);
 				JDBCUtils.closeConnection(connection);
 
 				return contenidos;
@@ -672,16 +673,16 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 
 	@Override
-	public Integer getValoracion(Long idSesion, Long idContenido) throws DataException {
+	public Double getValoracion(Long idContenido) throws DataException {
 		if(logger.isDebugEnabled()) {
-			logger.debug (" dSesion={} idContenido= {} ", idSesion, idContenido);
+			logger.debug ("idContenido= {} ", idContenido);
 		}
 		Connection connection = null;
-		Integer valoracion = null;
-		if(idContenido!=null && idSesion!=null) {
+		Double valoracion = null;
+		if(idContenido!=null) {
 			try {
 				connection = ConnectionManager.getConnection();
-				valoracion = contenidoDao.getValoracion(connection, idSesion, idContenido);
+				valoracion = SingleDAO.contenidoDao.getValoracion(connection, idContenido);
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
@@ -691,6 +692,36 @@ public class ContenidoServiceImpl implements ContenidoService {
 			}
 		}
 		return valoracion;
+	}
+
+
+
+	@Override
+	public void update(Contenido contenido) throws DataException {
+
+		if(logger.isDebugEnabled()) {
+			logger.debug ("Contenido= {} ", contenido);
+		}
+
+		if(contenido != null) {
+
+			try {
+
+				Connection connection = ConnectionManager.getConnection();
+
+				SingleDAO.contenidoDao.update(connection, contenido);
+
+				JDBCUtils.closeConnection(connection);
+
+
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				//JDBCUtils.closeConnection(connection);
+			}
+		}
 	}
 
 }

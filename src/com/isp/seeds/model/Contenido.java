@@ -16,7 +16,7 @@ public class Contenido extends AbstractValueObject {
 	private Integer reproducciones = null;
 	
 	private Boolean siguiendo = null;
-	private String denunciado = null;
+	private Boolean denunciado = null;
 	private Boolean guardado = null;
 	private String comentado = null;
 	private Double valorado = null;
@@ -124,11 +124,11 @@ public class Contenido extends AbstractValueObject {
 		this.siguiendo = siguiendo;
 	}
 
-	public String getDenunciado() {
+	public Boolean getDenunciado() {
 		return denunciado;
 	}
 
-	public void setDenunciado(String denunciado) {
+	public void setDenunciado(Boolean denunciado) {
 		this.denunciado = denunciado;
 	}
 

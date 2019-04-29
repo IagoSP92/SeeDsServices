@@ -7,10 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.isp.seeds.Exceptions.DataException;
-import com.isp.seeds.dao.impl.VideoDAOImpl;
-import com.isp.seeds.dao.spi.VideoDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.dao.utils.SingleDAO;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Video;
 import com.isp.seeds.service.spi.VideoService;
@@ -20,12 +19,6 @@ import com.isp.seeds.service.util.ServiceUtils;
 public class VideoServiceImpl implements VideoService {
 
 	private static Logger logger = LogManager.getLogger(VideoServiceImpl.class);
-	
-	VideoDAO videoDao= null;
-
-	public VideoServiceImpl () {
-		videoDao = new VideoDAOImpl();
-	}
 
 	@Override
 	public Video crearVideo(Video video) throws DataException {
@@ -39,7 +32,7 @@ public class VideoServiceImpl implements VideoService {
 			try {
 				connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(false);
-				video = videoDao.create(connection, video);
+				video = SingleDAO.videoDao.create(connection, video);
 				ServiceUtils.contenidoDao.agignarCategoria(connection, video.getId(), video.getCategoria().getIdCategoria());
 				commit=true;
 				return video;
@@ -66,7 +59,7 @@ public class VideoServiceImpl implements VideoService {
 		if(idVideo !=null) {
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				videoDao.delete(connection, idVideo);
+				SingleDAO.videoDao.delete(connection, idVideo);
 				JDBCUtils.closeConnection(connection);
 			}
 			catch (SQLException e) { 
@@ -91,7 +84,7 @@ public class VideoServiceImpl implements VideoService {
 			try {
 				connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(false);
-				videoDao.update(connection, video);
+				SingleDAO.videoDao.update(connection, video);
 				commit=true;				
 			}
 			catch (SQLException e) {  
@@ -117,7 +110,7 @@ public class VideoServiceImpl implements VideoService {
 
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				video = videoDao.findById(connection,idSesion, idVideo);
+				video = SingleDAO.videoDao.findById(connection,idSesion, idVideo);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -214,7 +207,7 @@ public class VideoServiceImpl implements VideoService {
 			try {
 				Connection connection = ConnectionManager.getConnection();
 
-				Results<Contenido> contenidos = videoDao.cargarGuardados(connection, idSesion, startIndex, count);
+				Results<Contenido> contenidos = SingleDAO.videoDao.cargarGuardados(connection, idSesion, startIndex, count);
 				JDBCUtils.closeConnection(connection);
 
 				return contenidos;
@@ -229,5 +222,6 @@ public class VideoServiceImpl implements VideoService {
 		}
 		return null;
 	}
+	
 
 }

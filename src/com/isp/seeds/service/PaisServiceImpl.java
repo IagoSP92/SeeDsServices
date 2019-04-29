@@ -13,14 +13,13 @@ import com.isp.seeds.dao.impl.PaisDAOImpl;
 import com.isp.seeds.dao.spi.PaisDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.dao.utils.SingleDAO;
 import com.isp.seeds.model.Pais;
 import com.isp.seeds.service.spi.PaisService;
 
 public class PaisServiceImpl implements PaisService{
 	
 	private static Logger logger = LogManager.getLogger(CategoriaServiceImpl.class);
-	private static PaisDAO paisDao = new PaisDAOImpl();
-
 
 	@Override
 	public Pais findById(String idPais, String idioma) throws DataException {
@@ -35,7 +34,7 @@ public class PaisServiceImpl implements PaisService{
 			try {
 
 				Connection connection = ConnectionManager.getConnection();
-				pais = paisDao.findById(connection, idPais, idioma);
+				pais = SingleDAO.paisDao.findById(connection, idPais, idioma);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -58,7 +57,7 @@ public class PaisServiceImpl implements PaisService{
 		try {
 			Connection connection = ConnectionManager.getConnection();
 			List<Pais> paises = new ArrayList<Pais>();
-			paises = paisDao.findAll(connection, idioma);
+			paises = SingleDAO.paisDao.findAll(connection, idioma);
 
 			JDBCUtils.closeConnection(connection);
 			return paises;

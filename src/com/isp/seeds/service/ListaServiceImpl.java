@@ -15,6 +15,7 @@ import com.isp.seeds.dao.spi.ListaDAO;
 import com.isp.seeds.dao.spi.VideoDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.dao.utils.SingleDAO;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Lista;
 import com.isp.seeds.model.Video;
@@ -25,13 +26,7 @@ import com.isp.seeds.service.util.ServiceUtils;
 public class ListaServiceImpl implements ListaService {
 
 	private static Logger logger = LogManager.getLogger(ListaServiceImpl.class);
-	ListaDAO listaDao= null;
-	VideoDAO videoDao= null;
 
-	public ListaServiceImpl () {
-		listaDao = new ListaDAOImpl();
-		videoDao = new VideoDAOImpl();
-	}
 
 	@Override
 	public Lista crearLista(Lista lista) throws DataException {
@@ -45,7 +40,7 @@ public class ListaServiceImpl implements ListaService {
 			try {
 				connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(false);
-				lista = listaDao.create(connection, lista);
+				lista = SingleDAO.listaDao.create(connection, lista);
 				ServiceUtils.contenidoDao.agignarCategoria(connection, lista.getId(), lista.getCategoria().getIdCategoria());
 				commit=true;
 				return lista;
@@ -73,7 +68,7 @@ public class ListaServiceImpl implements ListaService {
 
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				listaDao.delete(connection, lista.getId());
+				SingleDAO.listaDao.delete(connection, lista.getId());
 				JDBCUtils.closeConnection(connection);
 			}
 			catch (SQLException e) { 
@@ -93,40 +88,47 @@ public class ListaServiceImpl implements ListaService {
 		}
 
 		if(lista != null) {
+			Connection connection =null;
+			Boolean commit = false;
 
 			try {
-				Connection connection = ConnectionManager.getConnection();
-				listaDao.update(connection, lista);
-				JDBCUtils.closeConnection(connection);
+				connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(false);
+				SingleDAO.listaDao.update(connection, lista);		
+				commit=true;
 			}
 			catch (SQLException e) {  
 				logger.warn(e.getMessage(), e);
 			}
 			catch (Exception e) {  
-				logger.warn(e.getMessage(), e);
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}
 
 	@Override
-	public void meterVideo(Long idLista, Long idVideo, Integer posicion) throws DataException {    // PODRIA INSERTAR AL FINAL SI POSICION ES NULL
+	public void meterVideo(Long idLista, Long idVideo, Integer posicion) throws DataException {
 
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idLista= {} idVideo= {} posicion= {}", idLista, idVideo, posicion);
 		}
 
 		if(idLista!=null && idVideo!=null  && posicion!=null) {
-			
+			Connection connection = null;
+			Boolean commit= false;
 			try {
-				Connection connection = ConnectionManager.getConnection();
-				listaDao.insertInList(connection, idLista, idVideo, posicion);
-				JDBCUtils.closeConnection(connection);
+				connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(false);
+				SingleDAO.listaDao.insertInList(connection, idLista, idVideo, posicion);
+				commit=true;
 			}
 			catch (SQLException e) {  
 				logger.warn(e.getMessage(), e);
 			}
 			catch (Exception e) {  
 				logger.warn(e.getMessage(), e);
+			} finally {
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}
@@ -143,7 +145,7 @@ public class ListaServiceImpl implements ListaService {
 			
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				listaDao.deleteFromList(connection, idLista, idVideo);
+				SingleDAO.listaDao.deleteFromList(connection, idLista, idVideo);
 				JDBCUtils.closeConnection(connection);
 			}
 			catch (SQLException e) {  
@@ -168,7 +170,7 @@ public class ListaServiceImpl implements ListaService {
 			
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				lista = listaDao.findById(connection, idSesion, idLista);
+				lista = SingleDAO.listaDao.findById(connection, idSesion, idLista);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -267,7 +269,7 @@ public class ListaServiceImpl implements ListaService {
 		if(idLista != null) {
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				Results<Video> videos = videoDao.verVideosLista (connection, idLista, startIndex, count);
+				Results<Video> videos = SingleDAO.videoDao.verVideosLista (connection, idLista, startIndex, count);
 				JDBCUtils.closeConnection(connection);
 				return videos;
 			} catch (SQLException e) {
@@ -294,7 +296,7 @@ public class ListaServiceImpl implements ListaService {
 			try {
 				Connection connection = ConnectionManager.getConnection();
 
-				Results<Contenido> contenidos = listaDao.cargarGuardados(connection, idSesion, startIndex, count);
+				Results<Contenido> contenidos = SingleDAO.listaDao.cargarGuardados(connection, idSesion, startIndex, count);
 				JDBCUtils.closeConnection(connection);
 
 				return contenidos;
@@ -321,7 +323,7 @@ public class ListaServiceImpl implements ListaService {
 			try {
 				Connection connection = ConnectionManager.getConnection();
 
-				Results<Contenido> contenidos = listaDao.cargarSeguidos(connection, idSesion, startIndex, count);
+				Results<Contenido> contenidos = SingleDAO.listaDao.cargarSeguidos(connection, idSesion, startIndex, count);
 				JDBCUtils.closeConnection(connection);
 
 				return contenidos;

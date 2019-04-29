@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +17,10 @@ import com.isp.seeds.Exceptions.InstanceNotFoundException;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.spi.ListaDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.dao.utils.SingleDAO;
 import com.isp.seeds.dao.utils.Utils;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Lista;
-import com.isp.seeds.model.Video;
 import com.isp.seeds.service.util.Results;
 
 public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
@@ -137,7 +136,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Lista= {} ", lista);
 		}
-
+		SingleDAO.contenidoDao.update(connection, lista);
 		PreparedStatement preparedStatement = null;
 		StringBuilder queryString = null;
 		try {
@@ -183,7 +182,9 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 			if (updatedRows > 1) {
 				throw new SQLException("Duplicate row for id = '" + 
 						lista.getId() + "' in table 'Lista'");
-			}     
+			}
+			
+			
 			
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
@@ -238,7 +239,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 
 	
 	@Override
-	public void insertInList (Connection connection, Long idLista, Long idVideo, int posicion)
+	public void insertInList (Connection connection, Long idLista, Long idVideo, Integer posicion)
 			throws DataException, SQLException {
 		
 		if(logger.isDebugEnabled()) {
@@ -248,7 +249,9 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 		if (!esEnLista(connection, idLista, idVideo)) {
 			
 			int ultima = ultimaPosicion(connection, idLista);
-			
+			if(posicion==null) {
+				posicion=ultima+1;
+			}
 			if(posicion > ultima) {
 				insertarEnPosicion(connection, idLista, idVideo, ultima+1);
 			}
@@ -688,7 +691,7 @@ public class ListaDAOImpl extends ContenidoDAOImpl implements ListaDAO {
 				
 				if(i<resultSet.getMetaData().getColumnCount()) {
 					Boolean siguiendo = resultSet.getBoolean(i++);
-					String denunciado = resultSet.getString(i++);
+					Boolean denunciado = resultSet.getBoolean(i++);
 					Boolean guardado = resultSet.getBoolean(i++);
 					Double valorado = resultSet.getDouble(i++);
 					String comentado = resultSet.getString(i++);					

@@ -15,10 +15,13 @@ public interface ContenidoService {
 	public Contenido buscarId (Long idContenido) 
 			throws DataException;
 	
-	public Integer getValoracion (Long idSesion, Long idContenido) 
+	public Double getValoracion (Long idContenido) 
 			throws DataException;
 	
 	public Contenido buscarNombre(String nombreContenido, int startIndex, int count, String idioma);
+	
+	public void update (Contenido contenido)
+			throws DataException;	
 	
 
 	public Results<Contenido> buscarCriteria(ContenidoCriteria contenido, int startIndex, int count, String idioma)
@@ -65,10 +68,10 @@ public interface ContenidoService {
 	public void seguirContenido (Long idUsuario, Long idContenido, Boolean siguiendo)
 			throws DataException;
 	
-	public void denunciarContenido (Long idUsuario, Long idContenido, String denunciado)
+	public void denunciarContenido (Long idUsuario, Long idContenido, Boolean denunciado)
 			throws DataException;
 	
-	public void cancelarDenuncia (Long idUsuario, Long idContenido)
+	public void cancelarDenuncia (Long idUsuario, Long idContenido, Boolean denunciado)
 			throws DataException;
 	
 	public void valorarContenido (Long idUsuario, Long idContenido, Integer valoracion)

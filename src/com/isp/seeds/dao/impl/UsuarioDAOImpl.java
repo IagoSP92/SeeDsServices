@@ -492,7 +492,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 		
 		if(i<resultSet.getMetaData().getColumnCount()) {
 			Boolean siguiendo = resultSet.getBoolean(i++);
-			String denunciado = resultSet.getString(i++);
+			Boolean denunciado = resultSet.getBoolean(i++);
 			u.setSiguiendo(siguiendo);
 			u.setDenunciado(denunciado);
 		}

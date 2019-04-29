@@ -13,6 +13,7 @@ import com.isp.seeds.dao.impl.UsuarioDAOImpl;
 import com.isp.seeds.dao.spi.UsuarioDAO;
 import com.isp.seeds.dao.utils.ConnectionManager;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.dao.utils.SingleDAO;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Usuario;
 import com.isp.seeds.service.spi.UsuarioService;
@@ -21,11 +22,6 @@ import com.isp.seeds.service.util.Results;
 public class UsuarioServiceImpl implements UsuarioService {
 
 	private static Logger logger = LogManager.getLogger(UsuarioServiceImpl.class);
-	UsuarioDAO usuarioDao= null;
-
-	public UsuarioServiceImpl () {
-		usuarioDao = new UsuarioDAOImpl();
-	}
 
 	@Override
 	public void recuperarContraseña(String email) throws DataException {
@@ -44,7 +40,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			try {
 				connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(false);
-				u = usuarioDao.create(connection, u);				
+				u = SingleDAO.usuarioDao.create(connection, u);				
 				commit=true;
 				return u;
 			}
@@ -72,7 +68,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			try {				
 				connection = ConnectionManager.getConnection();
 				connection.setAutoCommit(false);
-				usuarioDao.update(connection, usuario);				
+				SingleDAO.usuarioDao.update(connection, usuario);				
 				commit=true;
 				
 			}
@@ -96,7 +92,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if(idUsuario!=null) {
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				usuarioDao.delete(connection, idUsuario);
+				SingleDAO.usuarioDao.delete(connection, idUsuario);
 				JDBCUtils.closeConnection(connection);
 			}
 			catch (SQLException e) { 
@@ -115,35 +111,28 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("email= {} contrasena= {} ", email, contrasena==null);
 		}
-
+		Connection connection = null;
 		Usuario usuario = null;
 		if(email!=null && contrasena!=null) {
 			
 			try {
-				Connection connection = ConnectionManager.getConnection();
-
-				if(usuarioDao.verificarContrasena(connection, email, contrasena)) {
-					usuario = usuarioDao.findByEmail(connection, email);
-					
+				connection = ConnectionManager.getConnection();
+				if(SingleDAO.usuarioDao.verificarContrasena(connection, email, contrasena)) {
+					usuario = SingleDAO.usuarioDao.findByEmail(connection, email);					
 				}
-				if (usuario==null) {
-					throw new DataException("Contraseña incorrecta");
-				}				
-				JDBCUtils.closeConnection(connection);
-				
 			}
 			catch (SQLException e) {  
 				logger.warn(e.getMessage(), e);
 			}
 			catch (Exception e) {  
 				logger.warn(e.getMessage(), e);
+			} finally {
+				JDBCUtils.closeConnection(connection);
 			}
 		}
 		return usuario;
 	}
-
-
-
+	
 
 	@Override
 	public void cambiarContraseña(String email, String contrasena) throws DataException {
@@ -157,7 +146,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 				Connection connection = ConnectionManager.getConnection();
 				Usuario usuario = buscarEmail(email);
 				usuario.setContrasena(contrasena);
-				usuarioDao.update(connection, usuario);
+				SingleDAO.usuarioDao.update(connection, usuario);
 				JDBCUtils.closeConnection(connection);
 			}
 			catch (SQLException e) {  
@@ -183,7 +172,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				usuario = usuarioDao.findByEmail(connection, email);
+				usuario = SingleDAO.usuarioDao.findByEmail(connection, email);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -208,7 +197,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if(idUsuario != null) {			
 			try {
 				Connection connection = ConnectionManager.getConnection();
-				usuario = usuarioDao.findById(connection, idSesion, idUsuario);
+				usuario = SingleDAO.usuarioDao.findById(connection, idSesion, idUsuario);
 				JDBCUtils.closeConnection(connection);
 
 			} catch (SQLException e) {
@@ -234,7 +223,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			try {
 				Connection connection = ConnectionManager.getConnection();
 
-				Results<Contenido> contenidos = usuarioDao.cargarSeguidos(connection, idSesion, startIndex, count);
+				Results<Contenido> contenidos = SingleDAO.usuarioDao.cargarSeguidos(connection, idSesion, startIndex, count);
 				JDBCUtils.closeConnection(connection);
 
 				return contenidos;

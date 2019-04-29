@@ -26,7 +26,7 @@ public interface ListaDAO {
 	public void delete (Connection connection, Long idLista) 
 			throws DataException;	
 	
-	public void insertInList (Connection connection, Long idLista, Long idVideo, int posicion)
+	public void insertInList (Connection connection, Long idLista, Long idVideo, Integer posicion)
 			throws DataException, SQLException;
 	
 	public void deleteFromList (Connection connection, Long idLista, Long idVideo)

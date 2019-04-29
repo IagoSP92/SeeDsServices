@@ -429,23 +429,23 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 
 	@Override
-	public Integer getValoracion (Connection connection, Long idSesion, Long idContenido) 
+	public Double getValoracion (Connection connection, Long idContenido)  
 			throws DataException {
 
 		if(logger.isDebugEnabled()) {
-			logger.debug ("IdSesion= {} IdContenido={}", idSesion,  idContenido);
+			logger.debug ("IdContenido={}", idContenido);
 		}
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		Integer valor = null;
-		String queryString = null;
+		Double valor = null;
+		
 		try {
-			queryString = " SELECT VALORACION FROM USUARIO_CONTENIDO WHERE USUARIO_ID_CONTENIDO = ? AND CONTENIDO_ID_CONTENIDO = ? ";
+			String queryString = " SELECT AVG(VALORACION) FROM USUARIO_CONTENIDO WHERE CONTENIDO_ID_CONTENIDO = ? ";
 
-			preparedStatement = connection.prepareStatement(queryString,
+			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			int i = 1;
-			preparedStatement.setLong(i++, idSesion);
+			
 			preparedStatement.setLong(i++, idContenido);
 
 			if(logger.isDebugEnabled()) {
@@ -455,7 +455,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 			if (resultSet.next()) {
 				if(resultSet.getObject(1) != null) {
-					valor = resultSet.getInt(1);
+					valor = resultSet.getDouble(1);
 				}
 			} else {
 				throw new DataException("\nValoracion del contenido " +idContenido+ " no encontrada \n");
@@ -583,11 +583,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				first = false;
 			}
 
-			if (contenido.getFechaAlta()!=null) {
-				addUpdate(queryString, first, " fecha_alta = ? ");
-				first = false;
-			}
-
 			if (contenido.getFechaMod()!=null) {
 				addUpdate(queryString, first, " fecha_mod = ? ");
 				first = false;
@@ -615,9 +610,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			if (contenido.getNombre()!=null)
 				preparedStatement.setString(i++,contenido.getNombre());
 
-			if (contenido.getFechaAlta()!=null)
-				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaAlta().getTime()));
-
 			if (contenido.getFechaMod()!=null)
 				preparedStatement.setDate(i++, new java.sql.Date(contenido.getFechaMod().getTime()));
 
@@ -628,7 +620,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 				preparedStatement.setLong(i++,contenido.getTipo());
 			
 			if (contenido.getReproducciones()!=null)
-				preparedStatement.setInt(i++,contenido.getTipo());
+				preparedStatement.setInt(i++,contenido.getReproducciones());
 
 
 			preparedStatement.setLong(i++, contenido.getId());
@@ -1107,7 +1099,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement.setLong(i++, idContenido);
 
 			preparedStatement.setBoolean(i++, false);
-			preparedStatement.setNull(i++, Types.NULL);
+			preparedStatement.setBoolean(i++, false);
 			preparedStatement.setInt(i++, 0);
 			preparedStatement.setBoolean(i++, false);
 			preparedStatement.setNull(i++, Types.NULL);
@@ -1206,7 +1198,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 * @param denunciado - String
 	 */
 	@Override
-	public void denunciarContenido(Connection connection, Long idUsuario, Long idContenido, String denunciado)
+	public void denunciarContenido(Connection connection, Long idUsuario, Long idContenido, Boolean denunciado)
 			throws DataException {
 
 		if(logger.isDebugEnabled()) {
@@ -1234,11 +1226,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			preparedStatement = connection.prepareStatement(queryString.toString());
 
 			int i = 1;
-			if(denunciado == null) {
-				preparedStatement.setNull(i++, Types.NULL);
-			} else {
-				preparedStatement.setString(i++, denunciado );
-			}
+
+			preparedStatement.setBoolean(i++, denunciado);
+
 			preparedStatement.setLong(i++, idUsuario );
 			preparedStatement.setLong(i++, idContenido );
 

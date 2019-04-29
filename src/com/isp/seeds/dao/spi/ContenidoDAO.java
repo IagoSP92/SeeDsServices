@@ -28,7 +28,7 @@ public interface ContenidoDAO {
 	public Results<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) 
 			throws DataException;	
  
-	public Integer getValoracion(Connection connection,Long idSesion, Long idContenido)
+	public Double getValoracion(Connection connection, Long idContenido)
 			throws DataException;	
 	
 	public Contenido create (Connection connection, Contenido contenido)
@@ -69,7 +69,7 @@ public interface ContenidoDAO {
 	public void seguirContenido (Connection connection, Long idUsuario, Long idContenido, Boolean siguiendo)
 			throws DataException;
 	
-	public void denunciarContenido (Connection connection, Long idUsuario, Long idContenido, String denunciado)
+	public void denunciarContenido (Connection connection, Long idUsuario, Long idContenido, Boolean denunciado)
 			throws DataException;
 	
 	public void valorarContenido (Connection connection, Long idUsuario, Long idContenido, Integer valoracion)
