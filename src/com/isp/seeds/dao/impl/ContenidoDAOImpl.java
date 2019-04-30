@@ -1724,6 +1724,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	protected static Contenido loadNext(Connection connection, ResultSet resultSet)
 			throws SQLException, DataException {
 
+		Contenido c = new Contenido();
 		int i = 1;
 		Long idContenido = resultSet.getLong(i++);
 		String nombre = resultSet.getString(i++);
@@ -1732,15 +1733,16 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		Long autor = null;
 		if(resultSet.getObject(i)==null) {
 			autor = (Long) resultSet.getObject(i++);
-
 		} else {
 			autor = resultSet.getLong(i++);
 		}
 		Integer tipo = resultSet.getInt(i++);
 		Integer reproducciones = resultSet.getInt(i++);
-		Double valoracion = resultSet.getDouble(i++);
+		Double valoracion =null;
+		if(i<resultSet.getMetaData().getColumnCount()) {
+			valoracion = resultSet.getDouble(i++);	
+		}
 
-		Contenido c = new Contenido();
 		c.setId(idContenido);
 		c.setNombre(nombre);
 		c.setFechaAlta(fechaAlta);
@@ -1774,9 +1776,9 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		try {
 			queryString = new StringBuilder(
-					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
+					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES "
 					+" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "
-					+" WHERE C.AUTOR_ID_CONTENIDO = ? GROUP C.ID_CONTENIDO ORDER BY C.FECHA_MOD ");
+					+" WHERE C.AUTOR_ID_CONTENIDO = ? GROUP BY C.ID_CONTENIDO ORDER BY C.FECHA_MOD ");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -1788,16 +1790,17 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			}
 			resultSet = preparedStatement.executeQuery();
 			
-			List<Contenido> results = new ArrayList<Contenido>();    
-			Contenido video = null;
-
+			List<Contenido> results = new ArrayList<Contenido>();                        
+			Contenido contenido = null;
+						
 			if (resultSet.next()) {
 				do {
-					video = ContenidoDAOImpl.loadNext(connection, resultSet);
-					results.add(video);  
+					contenido = loadNext(connection, resultSet);
+					results.add(contenido);  
 				} while (resultSet.next()) ;
 			}			
 			return results;
+
 
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
