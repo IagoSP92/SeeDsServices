@@ -18,17 +18,7 @@ import com.isp.seeds.model.Pais;
 public class PaisDAOImpl implements PaisDAO{
 	
 	private static Logger logger = LogManager.getLogger(PaisDAOImpl.class);
-	
-	private Pais loadNext (ResultSet resultSet) throws SQLException {		
-		Pais p = new Pais();
-		int i=1;		
-		String id = resultSet.getString(i++);
-		String nombre = resultSet.getString(i++);		
-		p = new Pais();
-		p.setNombrePais(nombre);
-		p.setIdPais(id);		
-		return p;		
-	}
+
 
 	@Override
 	public Pais findById(Connection connection, String idPais, String idioma)
@@ -62,10 +52,10 @@ public class PaisDAOImpl implements PaisDAO{
 				p  = loadNext(resultSet);				
 			}
 			else {
-				throw new DataException("Non se encontrou o pais "+idPais);
+				throw new DataException("Country with id="+idPais+" not found");
 			}
 			if (resultSet.next()) {
-				throw new DataException("Pais "+idPais+" duplicado");
+				throw new DataException("Country with id="+idPais+" duplicated");
 			}
 			
 		} catch (SQLException e) {
@@ -120,6 +110,19 @@ public class PaisDAOImpl implements PaisDAO{
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 		}
+	}
+	
+	
+	
+	private Pais loadNext (ResultSet resultSet) throws SQLException {		
+		Pais p = new Pais();
+		int i=1;		
+		String id = resultSet.getString(i++);
+		String nombre = resultSet.getString(i++);		
+		p = new Pais();
+		p.setNombrePais(nombre);
+		p.setIdPais(id);		
+		return p;		
 	}
 
 }

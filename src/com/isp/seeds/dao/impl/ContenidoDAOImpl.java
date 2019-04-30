@@ -16,29 +16,16 @@ import org.apache.logging.log4j.Logger;
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.Exceptions.InstanceNotFoundException;
 import com.isp.seeds.dao.spi.ContenidoDAO;
-import com.isp.seeds.dao.spi.EtiquetaDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
 import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
-import com.isp.seeds.model.Etiqueta;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
 import com.isp.seeds.service.util.Results;
 
 public class ContenidoDAOImpl implements ContenidoDAO {
-
-	//private CategoriaDAO categoriaDao = null;
-	private EtiquetaDAO etiquetaDao = null;
-	//private VideoDAO videoDao = null;         // ESTO AQUI DA STACK OVERFLOW ERROR (EXCEPTION)
-
+	
 	private static Logger logger = LogManager.getLogger(ContenidoDAOImpl.class);
 
-
-	public ContenidoDAOImpl () {
-		//categoriaDao = new CategoriaDAOImpl();
-		etiquetaDao = new EtiquetaDAOImpl();
-		//videoDao = new VideoDAOImpl();
-
-	}
 
 	/**
 	 * Comprueba si Existe algún contenido con el ID que recibe.
@@ -60,9 +47,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		try {
 
 			String queryString = 
-					"SELECT ID_CONTENIDO " + 
-							" FROM CONTENIDO " +
-							" WHERE ID_CONTENIDO = ? ";
+					"SELECT ID_CONTENIDO FROM CONTENIDO WHERE ID_CONTENIDO = ? ";
 
 			preparedStatement = connection.prepareStatement(queryString);
 
@@ -195,58 +180,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}	
 	}
 
-
-	/**
-	 * Devuelve el contenido que tiene EXACTEMENTE el nombre recibido como parametro.
-	 * @param connection - Connection
-	 * @param nombreContenido - String
-	 * @return Contenido : Contenido que corresponde con el nombre recibido
-	 *//*
-	@Override
-	public Contenido findByNombre(Connection connection, String nombreContenido, int startIndex, int count, String idioma) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("Nombre= {} ", nombreContenido);
-		}
-
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-
-		try {          
-			String queryString = 
-					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo"+
-							" FROM Contenido c " +
-							" WHERE c.nombre = ? ";
-
-			preparedStatement = connection.prepareStatement(queryString,
-					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
-			int i = 1;                
-			preparedStatement.setString(i++, nombreContenido);
-
-			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",preparedStatement);
-			}
-
-			resultSet = preparedStatement.executeQuery();
-
-			Contenido contenido = null;
-
-			if (resultSet.next()) {
-				contenido = loadNext(connection, resultSet);				
-			} else {
-				throw new DataException("\nContenido with id " +nombreContenido+ "not found\n");
-			}
-			return contenido;
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-			throw new DataException(e);
-		} finally {            
-			JDBCUtils.closeResultSet(resultSet);
-			JDBCUtils.closeStatement(preparedStatement);
-		}	
-	}*/
 
 
 	@Override
@@ -471,11 +404,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	}
 
 
-	/**
-	 * Devuelve todos los contenidos.
-	 * @param connection - Connection
-	 * @return  Lista con todos los contenidos
-	 */
+	
 	@Override
 	public Results<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) throws DataException {
 		ContenidoDAO dao= new ContenidoDAOImpl();
@@ -655,7 +584,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 
 		deleteRelaciones(connection, id);
 		deleteCategorias(connection, id);
-		deleteEtiquetas(connection, id);
 		deleteContenido(connection, id);
 	}
 
@@ -697,43 +625,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 
-
-	/**
-	 * Desvincula un Contenido de todas sus Etiquetas
-	 * @param connection - Connection
-	 * @param idContenido - Long
-	 */
-	public void deleteEtiquetas(Connection connection, Long idContenido) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("Id= {} ", idContenido);
-		}
-
-		PreparedStatement preparedStatement = null;
-
-		try {
-			String queryString =	
-					"DELETE FROM ETIQUETA_CONTENIDO " 
-							+ "WHERE id_contenido = ? ";
-
-			preparedStatement = connection.prepareStatement(queryString);
-
-			int i = 1;
-			preparedStatement.setLong(i++, idContenido);
-
-			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",preparedStatement);
-			}
-
-			preparedStatement.executeUpdate();
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-			throw new DataException(e);
-		} finally {
-			JDBCUtils.closeStatement(preparedStatement);
-		}
-	}
 
 
 	/**
@@ -857,6 +748,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
+	
 
 	/**
 	 * Desvincula un Contenido de una Categoria y lo vincula con otra.
@@ -915,95 +807,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
 			throw new DataException(e);    
-		} finally {
-			JDBCUtils.closeStatement(preparedStatement);
-		}
-	}
-
-	/**
-	 * Vincula un contenido a una Etiqueta
-	 * @param connection - Connection
-	 * @param idContenido - Long
-	 * @param idEtiqueta - Long
-	 */
-	@Override
-	public void asignarEtiqueta(Connection connection, Long idContenido, Long idEtiqueta) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("IdContenido= {} idEtiqueta= {} ", idContenido, idEtiqueta);
-		}
-
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-
-		try {
-
-			String queryString = " INSERT INTO etiqueta_contenido (id_Etiqueta, id_contenido) "
-					+ " VALUES (?, ?)";
-
-			preparedStatement = connection.prepareStatement(queryString);
-
-			int i = 1;
-			preparedStatement.setLong(i++, idEtiqueta);
-			preparedStatement.setLong(i++, idContenido);
-
-			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",preparedStatement);
-			}
-
-			int insertedRows = preparedStatement.executeUpdate();
-
-			if (insertedRows == 0) {
-				throw new SQLException("No se ha podido asignar la etiqueta");
-			}
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-			throw new DataException(e);
-		} finally {
-			JDBCUtils.closeResultSet(resultSet);
-			JDBCUtils.closeStatement(preparedStatement);
-		}
-	}
-
-	/**
-	 * Desvincula un contenido de una Etiqueta
-	 * @param connection - Connection
-	 * @param idContenido - Long
-	 * @param idEtiqueta - Long
-	 */
-	@Override
-	public void eliminarEtiqueta(Connection connection, Long idContenido, Long idEtiqueta) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("IdContenido= {} idEtiqueta= {} ", idContenido, idEtiqueta);
-		}
-
-		PreparedStatement preparedStatement = null;
-
-		try {
-			String queryString =	
-					"DELETE FROM ETIQUETA_CONTENIDO " 
-							+ "WHERE id_contenido = ? and id_etiqueta = ?";
-
-			preparedStatement = connection.prepareStatement(queryString);
-
-			int i = 1;
-			preparedStatement.setLong(i++, idContenido);
-			preparedStatement.setLong(i++, idEtiqueta);
-
-			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",preparedStatement);
-			}
-
-			int removedRows = preparedStatement.executeUpdate();
-
-			if (removedRows == 0) {
-				throw new DataException("Exception: No se ha eliminado la etiqueta");
-			}
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-			throw new DataException(e);
 		} finally {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
@@ -1118,6 +921,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 	}
 
+	
 	/**
 	 * Modifica la relacion SEGUIR entre un Usuario y un Contenido (Usuario o Lista).
 	 * False para dejar de seguir. True para empezar a seguir.
@@ -1516,113 +1320,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}	
 	}
 
-	/**
-	 * Recupera las Etiquetas asignadas a un Contenido
-	 * 
-	 * @param connection - Connection
-	 * @param idContenido - Long
-	 * @param idioma - String ( ESP: Castellano ; ENG: Inglés)
-	 * @return Lista de Etiquetas
-	 */
-	@Override
-	public List<Etiqueta> verEtiquetas(Connection connection, Long idEtiqueta, String idioma) throws DataException {
 
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idEtiqueta= {} idioma= {} ", idEtiqueta, idioma);
-		}
-
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		StringBuilder queryString = null;
-
-		try {
-			queryString = new StringBuilder(
-					" SELECT E.ID_ETIQUETA, EI.NOMBRE_ETIQUETA " + 
-							" FROM ETIQUETA E INNER JOIN ETIQUETA_CONTENIDO EC ON (E.ID_ETIQUETA = EC.ID_ETIQUETA) " +
-							" INNER JOIN ETIQUETA_IDIOMA EI ON (E.ID_ETIQUETA = EI.ID_ETIQUETA ) " +
-					" WHERE EC.ID_CONTENIDO = ? AND EI.ID_IDIOMA = ?");
-
-			preparedStatement = connection.prepareStatement(queryString.toString(),
-					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-
-			int i = 1;
-			preparedStatement.setLong(i++, idEtiqueta );
-			preparedStatement.setString(i++, idioma );
-
-			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",preparedStatement);
-			}
-
-			resultSet = preparedStatement.executeQuery();
-
-			List<Etiqueta> results = new ArrayList<Etiqueta>();    
-
-			Etiqueta e = null;
-			//int currentCount = 0;
-
-			//if ((startIndex >=1) && resultSet.absolute(startIndex)) {
-			if(resultSet.next()) {
-				do {
-					e = etiquetaDao.loadNext(resultSet);
-					results.add(e);               	
-					//currentCount++;                	
-				} while (/*(currentCount < count) && */ resultSet.next()) ;
-			}
-
-			return results;
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-			throw new DataException(e);
-		} finally {
-			JDBCUtils.closeResultSet(resultSet);
-			JDBCUtils.closeStatement(preparedStatement);
-		}
-	}
-	
-	/*
-	public Results<String> cargarComentarios(Connection connection, Long idContenido, int startIndex, int count) throws DataException {
-		
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		StringBuilder queryString = null;
-
-		try {
-			queryString = new StringBuilder(
-					"SELECT COMENTARIO FROM USUARIO_CONTENIDO "
-					+" WHERE ID_CONTENIDO = ? ");
-
-			preparedStatement = connection.prepareStatement(queryString.toString(),
-					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			
-			preparedStatement.setLong(1, idContenido);
-
-			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",preparedStatement);
-			}
-			resultSet = preparedStatement.executeQuery();
-			
-			List<String> page = new ArrayList<String>();
-			int currentCount = 0;
-			if ((startIndex >=1) && resultSet.absolute(startIndex)) {
-				do {
-					page.add(resultSet.getString(1));
-					currentCount++;
-				} while ((currentCount < count) &&  resultSet.next()) ;
-			}
-			int totalRows = JDBCUtils.getTotalRows(resultSet);
-			Results<String> results = new Results<String>(page, startIndex, totalRows);
-			return results;
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} finally {
-			JDBCUtils.closeResultSet(resultSet);
-			JDBCUtils.closeStatement(preparedStatement);
-		}
-		return null;
-	}
-	*/
 	
 
 	@Override
@@ -1672,6 +1370,8 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		return null;
 	}
 
+	
+	
 	@Override
 	public Results<Contenido> cargarGuardados(Connection connection, Long idContenido, int startIndex, int count)
 			throws DataException {
@@ -1684,7 +1384,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			queryString = new StringBuilder(
 					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
 					+" FROM CONTENIDO C LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO) "
-					/*		+" AND (UC.USUARIO_ID_CONTENIDO= ? ) "*/
 					+" WHERE UC.USUARIO_ID_CONTENIDO = ? AND UC.GUARDADO= 'TRUE' ");
 
 			preparedStatement = connection.prepareStatement(queryString.toString(),
@@ -1719,6 +1418,58 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		}
 		return null;
 	}
+	
+	
+
+	@Override
+	public List<Contenido> verVideosAutor(Connection connection, Long idAutor) throws DataException {
+		
+		PreparedStatement preparedStatement = null; 
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES "
+					+" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "
+					+" WHERE C.AUTOR_ID_CONTENIDO = ? GROUP BY C.ID_CONTENIDO ORDER BY C.FECHA_MOD ");
+
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			preparedStatement.setLong(1, idAutor);
+
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
+			resultSet = preparedStatement.executeQuery();
+			
+			List<Contenido> results = new ArrayList<Contenido>();                        
+			Contenido contenido = null;
+						
+			if (resultSet.next()) {
+				do {
+					contenido = loadNext(connection, resultSet);
+					results.add(contenido);  
+				} while (resultSet.next()) ;
+			}			
+			return results;
+
+
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+		} catch (DataException e) {
+			logger.warn(e.getMessage(), e);
+		}  finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		return null;
+	}
+
+	
+	
+	
 	
 
 	protected static Contenido loadNext(Connection connection, ResultSet resultSet)
@@ -1767,50 +1518,6 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 		queryString.append(first?" HAVING ": " AND ").append(clause);
 	}
 
-	@Override
-	public List<Contenido> verVideosAutor(Connection connection, Long idAutor) throws DataException {
-		
-		PreparedStatement preparedStatement = null; 
-		ResultSet resultSet = null;
-		StringBuilder queryString = null;
 
-		try {
-			queryString = new StringBuilder(
-					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES "
-					+" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "
-					+" WHERE C.AUTOR_ID_CONTENIDO = ? GROUP BY C.ID_CONTENIDO ORDER BY C.FECHA_MOD ");
-
-			preparedStatement = connection.prepareStatement(queryString.toString(),
-					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			
-			preparedStatement.setLong(1, idAutor);
-
-			if(logger.isDebugEnabled()) {
-				logger.debug("QUERY= {}",preparedStatement);
-			}
-			resultSet = preparedStatement.executeQuery();
-			
-			List<Contenido> results = new ArrayList<Contenido>();                        
-			Contenido contenido = null;
-						
-			if (resultSet.next()) {
-				do {
-					contenido = loadNext(connection, resultSet);
-					results.add(contenido);  
-				} while (resultSet.next()) ;
-			}			
-			return results;
-
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}  finally {
-			JDBCUtils.closeResultSet(resultSet);
-			JDBCUtils.closeStatement(preparedStatement);
-		}
-		return null;
-	}
 
 }

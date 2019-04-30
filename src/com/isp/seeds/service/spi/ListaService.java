@@ -39,14 +39,5 @@ public interface ListaService {
 	
 	public Results<Contenido> cargarSeguidos(Long idSesion, int startIndex,
 			int count) throws DataException;
-	
-	
-	
-	/* FUNCTIONES DE UTILIDAD NO UTILIZADAS ACTUALMENTE  */
-	
-	public void meterVideo (Long idLista, Long idVideo, Integer posicion)
-			throws DataException;
-	
-	public void sacarVideo (Long idLista, Long idVideo)
-			throws DataException;	
+
 }

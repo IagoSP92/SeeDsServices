@@ -9,7 +9,6 @@ public class Lista extends Contenido {
 	private String descripcion = null;
 	private Boolean publica = null;
 	private Categoria categoria= null;
-	private List<Etiqueta> etiquetas = null;
 
 	private List<Comentario> comentarios= null;
 	private List<Video> videos= null;
@@ -45,13 +44,6 @@ public class Lista extends Contenido {
 		this.categoria = categoria;
 	}
 
-	public List<Etiqueta> getEtiquetas() {
-		return etiquetas;
-	}
-
-	public void setEtiquetas(List<Etiqueta> etiquetas) {
-		this.etiquetas = etiquetas;
-	}
 
 	public List<Comentario> getComentarios() {
 		return comentarios;

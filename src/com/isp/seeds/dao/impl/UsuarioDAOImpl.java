@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -217,14 +216,6 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 			return nuevoUsuario;
 
-			// EN SERVICIO INICIALIZAMOS :
-			//			private List<Video> videosSubidos= null;
-			//			private List<Lista> listasSubidas= null;
-			//			private List<Usuario> usuariosSeguidos= null;
-			//			private List<Lista> listasSeguidas= null;
-			//			private List<Video> videosGuardados = null;
-			//			private List<Lista> listasGuardadas = null;
-
 		} catch (SQLException e) {
 			logger.warn(e.getMessage(), e);
 			throw new DataException(e);
@@ -258,11 +249,6 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 				addUpdate(queryString, first, " email = ? ");
 				first = false;
 			}
-
-//			if (usuario.getContrasena()!=null) {
-//				addUpdate(queryString, first, " contrasena = ? ");
-//				first = false;
-//			}
 
 			if (usuario.getDescripcion()!=null) {
 				addUpdate(queryString, first, " descripcion = ? ");
@@ -301,9 +287,6 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			int i = 1;
 			if (usuario.getEmail()!=null)
 				preparedStatement.setString(i++,usuario.getEmail());
-
-//			if (usuario.getContrasena()!=null)
-//				preparedStatement.setString(i++, PasswordEncryptionUtil.encryptPassword(usuario.getContrasena()) );
 
 			if (usuario.getDescripcion()!=null)
 				preparedStatement.setString(i++,usuario.getDescripcion());
@@ -362,8 +345,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 
 		try {
 			String queryString =	
-					"DELETE FROM Usuario " 
-							+ "WHERE id_contenido = ? ";
+					"DELETE FROM Usuario WHERE id_contenido = ? ";
 
 			preparedStatement = connection.prepareStatement(queryString);
 
@@ -377,8 +359,8 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			int removedRows = preparedStatement.executeUpdate();
 
 			if (removedRows == 0) {
-				logger.debug("No se ha podido eliminar el usuario con id{} de la tabla USUARIO", idUsuario);
-				throw new SQLException("Can not delete row in table 'Usuario'");
+				logger.debug("User with id={} can not be deleted from table USUARIO", idUsuario);
+				throw new SQLException("Can not delete row in table 'USUARIO'");
 			}
 
 			super.delete(connection, idUsuario);	
@@ -390,6 +372,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			JDBCUtils.closeStatement(preparedStatement);
 		}
 	}
+	
 	
 	@Override
 	public Results<Contenido> cargarSeguidos(Connection connection, Long idSesion, int startIndex, int count)
@@ -423,6 +406,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 			Contenido contenido = new Contenido();
 			List<Contenido> page = new ArrayList<Contenido>();
 			int currentCount = 0;
+			
 			if ((startIndex >=1) && resultSet.absolute(startIndex)) {
 				do {
 					contenido = ContenidoDAOImpl.loadNext(connection, resultSet);
@@ -430,6 +414,7 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 					currentCount++;
 				} while ((currentCount < count) &&  resultSet.next()) ;
 			}
+			
 			int totalRows = JDBCUtils.getTotalRows(resultSet);
 			Results<Contenido> results = new Results<Contenido>(page, startIndex, totalRows);
 			return results;
@@ -501,58 +486,6 @@ public class UsuarioDAOImpl extends ContenidoDAOImpl implements UsuarioDAO {
 	}
 	
 
-//	@Override
-//	public List<Usuario> findAllUsers(Connection connection, int startIndex, int count, String idioma) throws DataException {
-//		
-//		if(logger.isDebugEnabled()) {
-//			logger.debug ("startIndex={} count={}", startIndex, count);
-//		}
-//
-//		PreparedStatement preparedStatement = null;
-//		ResultSet resultSet = null;
-//		StringBuilder queryString = null;
-//
-//		try {
-//			
-//			queryString = new StringBuilder(
-//					"SELECT c.id_contenido, c.nombre, c.fecha_alta, c.fecha_mod, c.autor_id_contenido, c.tipo, "
-//							+ " u.email, u.contrasena, u.descripcion, u.url_avatar, u.nombre_real, u.apellidos, u.id_pais , u.fecha_nac " + 
-//					" FROM Usuario u INNER JOIN Contenido c ON (c.id_contenido = u.id_contenido ) ORDER BY c.fecha_alta ");
-//
-//			preparedStatement = connection.prepareStatement(queryString.toString(),
-//					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-//			
-//			if(logger.isDebugEnabled()) {
-//				logger.debug("QUERY= {}",preparedStatement);
-//			}			
-//			resultSet = preparedStatement.executeQuery();
-//
-//			List<Usuario> results = new ArrayList<Usuario>();
-//
-//			Usuario e = null;
-//			int currentCount=0;
-//
-//			while (startIndex<0 && resultSet.absolute(startIndex)) {
-//				do {
-//					while (resultSet.next()) {
-//						e = loadNext(connection, resultSet);
-//						results.add(e);
-//					}
-//				} while ((currentCount < count) &&  resultSet.next());
-//			}
-//			return results;
-//
-//		} catch (SQLException e) {
-//			logger.warn(e.getMessage(), e);
-//			throw new DataException(e);
-//		} catch (DataException e) {
-//			logger.warn(e.getMessage(), e);
-//			throw new DataException(e);
-//		}  finally {
-//			JDBCUtils.closeResultSet(resultSet);
-//			JDBCUtils.closeStatement(preparedStatement);
-//		}
-//	}
 	
 }
 	

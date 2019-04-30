@@ -28,12 +28,13 @@ public class ListaServiceImpl implements ListaService {
 	
 	private ContenidoDAO contenidoDao = null;
 	private ListaDAO listaDao = null;
+	private VideoDAO videoDao = null;
 	
 	public ListaServiceImpl() {
 		contenidoDao = new ContenidoDAOImpl();
 		listaDao = new ListaDAOImpl();
+		videoDao = new VideoDAOImpl();
 	}
-
 
 	@Override
 	public Lista crearLista(Lista lista) throws DataException {
@@ -41,8 +42,10 @@ public class ListaServiceImpl implements ListaService {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("Lista= {} ", lista);
 		}
+		
 		Connection connection = null;
 		Boolean commit = false;
+		
 		if(lista != null) {
 			try {
 				connection = ConnectionManager.getConnection();
@@ -73,17 +76,21 @@ public class ListaServiceImpl implements ListaService {
 		}
 
 		if(lista != null) {
-
+			Connection connection = null;
+			Boolean commit= false;
 			try {
-				Connection connection = ConnectionManager.getConnection();
-				listaDao.delete(connection, lista.getId());
-				JDBCUtils.closeConnection(connection);
+				connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(false);
+				listaDao.delete(connection, lista.getId());	
+				commit= true;
 			}
 			catch (SQLException e) { 
 				logger.warn(e.getMessage(), e);
 			}
 			catch (Exception e) { 
 				logger.warn(e.getMessage(), e);
+			} finally {
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}
@@ -122,21 +129,20 @@ public class ListaServiceImpl implements ListaService {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idSesion={} idLista= {} ",idSesion, idLista);
 		}
-
+		
 		Lista lista = null;
 		if(idLista != null) {
-			
+			Connection connection = null;
 			try {
-				Connection connection = ConnectionManager.getConnection();
+				connection = ConnectionManager.getConnection();
 				lista = listaDao.findById(connection, idSesion, idLista);
-				JDBCUtils.closeConnection(connection);
-
+				
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				//JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection);
 			}
 		}
 		return lista;
@@ -149,14 +155,12 @@ public class ListaServiceImpl implements ListaService {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idLista= {} ", idLista);
 		}
-		
-		VideoDAO videoDao = null;
+				
 		Connection connection = null;
 
 		if(idLista != null) {
 			try {
-				connection = ConnectionManager.getConnection();
-				videoDao = new VideoDAOImpl();
+				connection = ConnectionManager.getConnection();				
 				Results<Video> videos = videoDao.verVideosLista (connection, idLista, startIndex, count);				
 				return videos;
 				
@@ -171,6 +175,7 @@ public class ListaServiceImpl implements ListaService {
 		return null;
 	}
 	
+	
 	@Override
 	public List<Contenido> verContenidosLista(Long idLista) throws DataException {
 
@@ -178,13 +183,11 @@ public class ListaServiceImpl implements ListaService {
 			logger.debug ("idLista= {} ", idLista);
 		}
 		
-		VideoDAO videoDao = null;
 		Connection connection = null;
 
 		if(idLista != null) {
 			try {
 				connection = ConnectionManager.getConnection();
-				videoDao = new VideoDAOImpl();
 				List<Contenido> videos = videoDao.verContenidosLista (connection, idLista);				
 				return videos;
 				
@@ -282,65 +285,5 @@ public class ListaServiceImpl implements ListaService {
 		}
 		
 	}
-	
-	
-	
-	
-
-	/************************************************************************/
-	/********** FUNCIONES DE UTILIDAD NO EMPLEADAS ACTUALMENTE       ********/
-	/************************************************************************/
-	
-	@Override
-	public void meterVideo(Long idLista, Long idVideo, Integer posicion) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idLista= {} idVideo= {} posicion= {}", idLista, idVideo, posicion);
-		}
-
-		if(idLista!=null && idVideo!=null  && posicion!=null) {
-			Connection connection = null;
-			Boolean commit= false;
-			try {
-				connection = ConnectionManager.getConnection();
-				connection.setAutoCommit(false);
-				listaDao.insertInList(connection, idLista, idVideo, posicion);
-				commit=true;
-			}
-			catch (SQLException e) {  
-				logger.warn(e.getMessage(), e);
-			}
-			catch (Exception e) {  
-				logger.warn(e.getMessage(), e);
-			} finally {
-				JDBCUtils.closeConnection(connection, commit);
-			}
-		}
-	}
-
-
-	@Override
-	public void sacarVideo(Long idLista, Long idVideo) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idLista= {} idVideo= {} ", idLista, idVideo);
-		}
-
-		if(idLista!=null && idVideo!=null) {
-			
-			try {
-				Connection connection = ConnectionManager.getConnection();
-				listaDao.deleteFromList(connection, idLista, idVideo);
-				JDBCUtils.closeConnection(connection);
-			}
-			catch (SQLException e) {  
-				logger.warn(e.getMessage(), e);
-			}
-			catch (Exception e) {  
-				logger.warn(e.getMessage(), e);
-			}
-		}
-	}
-
 
 }

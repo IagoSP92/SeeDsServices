@@ -10,7 +10,6 @@ public class Video extends Contenido  implements Comparable<Video> {
 	private String url = null;
 
 	private Categoria categoria= null;
-	private List<Etiqueta> etiquetas = null;
 	private List<Comentario> comentarios= null;
 
 	public String toString() {
@@ -50,15 +49,6 @@ public class Video extends Contenido  implements Comparable<Video> {
 		this.categoria = categoria;
 	}
 
-
-	public List<Etiqueta> getEtiqueta() {
-		return etiquetas;
-	}
-
-
-	public void setEtiqueta(List<Etiqueta> etiquetas) {
-		this.etiquetas = etiquetas;
-	}
 
 
 	public List<Comentario> getComentarios() {

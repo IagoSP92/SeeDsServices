@@ -6,29 +6,12 @@ import java.util.List;
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
-import com.isp.seeds.model.Etiqueta;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
 import com.isp.seeds.service.util.Results;
 
 public interface ContenidoDAO {
 	
 	public Boolean exists (Connection connection, Long idContenido) 
-			throws DataException;	
-	
-	
-	public Contenido findById(Connection connection, Long idContenido) 
-			throws DataException;
-	
-//	public Contenido findByNombre(Connection connection, String nombreContenido, int startIndex, int count, String idioma) 
-//			throws DataException;
-	
-	public Results<Contenido> findByCriteria(Connection connection, ContenidoCriteria contenido, int startIndex, int count, String idioma)
-			throws DataException;	
-	
-	public Results<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) 
-			throws DataException;	
- 
-	public Double getValoracion(Connection connection, Long idContenido)
 			throws DataException;	
 	
 	public Contenido create (Connection connection, Contenido contenido)
@@ -39,18 +22,38 @@ public interface ContenidoDAO {
 	
 	public void delete (Connection connection, Long idContenido) 
 			throws DataException;	
+
+	
+	
+	public Contenido findById(Connection connection, Long idContenido) 
+			throws DataException;	
+	
+	public Results<Contenido> findByCriteria(Connection connection, ContenidoCriteria contenido, int startIndex, int count, String idioma)
+			throws DataException;	
+	
+	public Results<Contenido> findAll(Connection connection, int startIndex, int count, String idioma) 
+			throws DataException;	
+ 
+	
+	public Results<Contenido> cargarSeguidos (Connection connection, Long idContenido, int startIndex, int count)
+			throws DataException;
+	
+	public Results<Contenido> cargarGuardados (Connection connection, Long idContenido, int startIndex, int count)
+			throws DataException;
+	
+	public List<Contenido> verVideosAutor (Connection connection, Long idAutor)
+			throws DataException;
+	
 		
+
+		
+	
 	public void agignarCategoria (Connection connection, Long idContenido, Long idCategoria)
 			throws DataException;
 	
 	public void modificarCategoria (Connection connection,Long idContenido, Long idCategoria)
 			throws DataException;
 	
-	public void asignarEtiqueta (Connection connection, Long idContenido, Long idEtiqueta)
-			throws DataException;
-	
-	public void eliminarEtiqueta (Connection connection, Long idContenido, Long idEtiqueta)
-			throws DataException;	
 	
 	public Boolean comprobarExistenciaRelacion(Connection connection, Long idUsuario, Long idContenido) 
 			throws DataException;
@@ -61,10 +64,11 @@ public interface ContenidoDAO {
 	public Categoria verCategoria (Connection connection, Long id, String idioma) 
 			throws DataException;
 	
-	public List<Etiqueta> verEtiquetas (Connection connection, Long id, String idioma) 
+	
+		
+
+	public Double getValoracion(Connection connection, Long idContenido)
 			throws DataException;	
-	
-	
 	
 	public void seguirContenido (Connection connection, Long idUsuario, Long idContenido, Boolean siguiendo)
 			throws DataException;
@@ -80,32 +84,4 @@ public interface ContenidoDAO {
 	
 	public void comentarContenido (Connection connection, Long idUsuario, Long idContenido, String comentario)
 			throws DataException;
-	
-	/*	
-	public List<Contenido> verSeguidos (Connection connection, Long id) 
-			throws DataException;
-	
-	public List<Contenido> verDenunciados (Connection connection, Long id) 
-			throws DataException;
-	
-	public List<Contenido> verValorados (Connection connection, Long id) 
-			throws DataException;
-	
-	public List<Contenido> verGuardados (Connection connection, Long id) 
-			throws DataException;	
-	*/
-//	
-//	public Results<String> cargarComentarios (Connection connection, Long idContenido, int startIndex, int count)
-//			throws DataException;
-	
-	public Results<Contenido> cargarSeguidos (Connection connection, Long idContenido, int startIndex, int count)
-			throws DataException;
-	
-	public Results<Contenido> cargarGuardados (Connection connection, Long idContenido, int startIndex, int count)
-			throws DataException;
-	
-	public List<Contenido> verVideosAutor (Connection connection, Long idAutor)
-			throws DataException;
-	
-	
 }

@@ -49,10 +49,10 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 			if (resultSet.next()) {
 				c  = loadNext(resultSet);
 			} else {
-				throw new DataException("Non se encontrou a categoria "+id);
+				throw new DataException("Category with id="+id+" not found");
 			}
 			if (resultSet.next()) {
-				throw new DataException("Categoria "+id+" duplicado");
+				throw new DataException("Category with id="+id+" duplicated");
 			}
 
 		} catch (SQLException e) {

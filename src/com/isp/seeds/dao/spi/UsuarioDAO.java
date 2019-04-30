@@ -9,12 +9,6 @@ import com.isp.seeds.service.util.Results;
 
 public interface UsuarioDAO {	
 	
-	public Usuario findById(Connection connection, Long idSesion, Long idUsuario) 
-			throws DataException;
-	
-	public Usuario findByEmail(Connection connection, String email) 
-			throws DataException;
-	
 	public Usuario create (Connection connection, Usuario usuario) 
 			throws DataException;
 	
@@ -24,12 +18,20 @@ public interface UsuarioDAO {
 	public void delete (Connection connection, Long idUsuario) 
 			throws DataException;
 	
+	
+	public Usuario findById(Connection connection, Long idSesion, Long idUsuario) 
+			throws DataException;
+	
+	public Usuario findByEmail(Connection connection, String email) 
+			throws DataException;
+
+	
 	public Boolean verificarContrasena(Connection connection, String email, String contrasena)
 			throws DataException;
+	
 	
 	public Results<Contenido> cargarSeguidos(Connection connection, Long idSesion, int startIndex,
 			int count) throws DataException;
 	
-//	public List <Usuario> findAllUsers(Connection connection, int startIndex, int count, String idioma) 
-//			throws DataException;
+
 }

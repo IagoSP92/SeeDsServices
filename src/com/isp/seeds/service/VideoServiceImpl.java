@@ -30,8 +30,7 @@ public class VideoServiceImpl implements VideoService {
 		videoDao = new VideoDAOImpl();
 		contenidoDao = new ContenidoDAOImpl();		
 	}
-	
-	
+		
 
 	@Override
 	public Video crearVideo(Video video) throws DataException {

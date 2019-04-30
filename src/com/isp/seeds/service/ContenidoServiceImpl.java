@@ -55,34 +55,6 @@ public class ContenidoServiceImpl implements ContenidoService {
 		return contenido;
 	}
 
-/*
-	@Override
-	public Contenido buscarNombre(String nombreContenido, int startIndex, int count, String idioma) {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("nombreContenido= {} ", nombreContenido);
-		}
-
-		Contenido contenido = null;
-		if(nombreContenido != null) {
-
-			try {
-
-				Connection connection = ConnectionManager.getConnection();				
-				contenido = contenidoDao.findByNombre(connection, nombreContenido, startIndex, count, idioma);
-				JDBCUtils.closeConnection(connection);			
-
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-			} catch (DataException e) {
-				logger.warn(e.getMessage(), e);
-			}finally{
-				//JDBCUtils.closeConnection(connection);
-			}
-		}
-		return contenido;
-	}
-*/
 	
 
 	@Override
@@ -114,61 +86,6 @@ public class ContenidoServiceImpl implements ContenidoService {
 	}
 
 
-/*
-	@Override
-	public Results<Contenido> verTodos(int startIndex, int count, String idioma) {
-		
-		// LOGGER
-		
-		try {
-
-			Connection connection = ConnectionManager.getConnection();
-
-			Results<Contenido> contenido = contenidoDao.findAll(connection, startIndex, count, idioma);
-
-			JDBCUtils.closeConnection(connection);
-			return contenido;
-
-		} catch (SQLException e) {
-			logger.warn(e.getMessage(), e);
-		} catch (DataException e) {
-			logger.warn(e.getMessage(), e);
-		}finally{
-			//JDBCUtils.closeConnection(connection);
-		}
-		return null;
-	}
-*/
-	
-	
-/*	@Override
-	public Contenido crearContenido(Contenido contenido) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("Contenido= {} ", contenido);
-		}
-
-		if(contenido != null) {
-			Connection connection = null;
-
-			try {
-				connection = ConnectionManager.getConnection();
-				contenidoDao.create(connection, contenido);				
-				return contenido;			
-
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-			} catch (DataException e) {
-				logger.warn(e.getMessage(), e);
-			}finally{
-				JDBCUtils.closeConnection(connection);
-			}
-		}
-		return null;
-	}
-*/
-	
-	
 	@Override
 	public void eliminarContenido(Long idContenido) throws DataException {
 
@@ -178,11 +95,13 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 		if(idContenido != null) {
 			Connection connection = null;
+			Boolean commit = false;
 			try {
-
 				connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(false);
 				if (contenidoDao.exists(connection, idContenido)) {
 					contenidoDao.delete(connection, idContenido);
+					commit=true;
 				}		
 
 			} catch (SQLException e) {
@@ -190,78 +109,12 @@ public class ContenidoServiceImpl implements ContenidoService {
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}
 
 	
-	/*
-	@Override
-	public Contenido cambiarNombre(Contenido contenido) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("Contenido= {} ", contenido);
-		}
-
-		if(contenido != null) {
-
-			try {
-
-				Connection connection = ConnectionManager.getConnection();
-
-				contenidoDao.update(connection, contenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿?
-				contenido= contenidoDao.findById(connection, contenido.getIdContenido());
-
-				JDBCUtils.closeConnection(connection);
-
-				return contenido;
-
-
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-			} catch (DataException e) {
-				logger.warn(e.getMessage(), e);
-			}finally{
-				//JDBCUtils.closeConnection(connection);
-			}
-		}
-		return null;
-	}*/
-
-	
-/*	@Override
-	public Contenido cambiarNombre(Long idContenido, String nuevo, String idioma) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idContenido= {} Nuevo Nombre= {} ", idContenido, nuevo);
-		}
-
-		Contenido contenido = null;
-		if(idContenido != null && nuevo != null) {
-
-			try {
-
-				Connection connection = ConnectionManager.getConnection();
-
-				contenido = new Contenido();
-				contenido= contenidoDao.findById(connection, idContenido); // SI EL CONTENIDO NO EXISTE SE PERMITE QUE FALLE ¿? 
-				contenido.setNombre(nuevo);
-				contenidoDao.update(connection, contenido);
-				contenido= contenidoDao.findById(connection, idContenido);
-				JDBCUtils.closeConnection(connection);
-
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-			} catch (DataException e) {
-				logger.warn(e.getMessage(), e);
-			}finally{
-				//JDBCUtils.closeConnection(connection);
-			}
-		}
-		return contenido;
-	}
-*/
 	
 	
 	@Override
@@ -273,47 +126,24 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 		if(idContenido != null && idCategoria != null) {
 			Connection connection = null;
+			Boolean commit = false;
 			try {
 				connection = ConnectionManager.getConnection();
-				contenidoDao.agignarCategoria(connection, idContenido, idCategoria);				
+				connection.setAutoCommit(false);
+				contenidoDao.agignarCategoria(connection, idContenido, idCategoria);	
+				commit = true;
 
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}
 
 	
-/*	@Override
-	public void asignarEtiqueta(Long idContenido, Long idEtiqueta) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idContenido= {} idEtiqueta= {} ", idContenido, idEtiqueta);
-		}
-
-		if(idContenido != null && idEtiqueta != null) {
-
-			try {
-
-				Connection connection = ConnectionManager.getConnection();
-				contenidoDao.asignarEtiqueta(connection, idContenido, idEtiqueta);
-				JDBCUtils.closeConnection(connection);
-
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-			} catch (DataException e) {
-				logger.warn(e.getMessage(), e);
-			}finally{
-				//JDBCUtils.closeConnection(connection);
-			}
-		}
-
-	}
-*/
 		
 	@Override
 	public void modificarCategoria(Long idContenido, Long idCategoria) throws DataException {
@@ -324,47 +154,23 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 		if(idContenido != null && idCategoria != null) {
 			Connection connection = null;
+			Boolean commit = false;
 			try {
 				connection = ConnectionManager.getConnection();
-				contenidoDao.modificarCategoria(connection, idContenido, idCategoria);				
+				connection.setAutoCommit(false);
+				contenidoDao.modificarCategoria(connection, idContenido, idCategoria);
+				commit = true;
 
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}
 
-	
-/*	@Override
-	public void eliminarEtiqueta(Long idContenido, Long idEtiqueta) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idContenido= {} idEtiqueta= {} ", idContenido, idEtiqueta);
-		}
-
-		if(idContenido != null && idEtiqueta != null) {
-
-			try {
-
-				Connection connection = ConnectionManager.getConnection();
-				contenidoDao.eliminarEtiqueta(connection, idContenido, idEtiqueta);
-				JDBCUtils.closeConnection(connection);
-
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-			} catch (DataException e) {
-				logger.warn(e.getMessage(), e);
-			}finally{
-				//JDBCUtils.closeConnection(connection);
-			}
-		}
-
-	}
-*/
 
 	
 	@Override
@@ -391,36 +197,6 @@ public class ContenidoServiceImpl implements ContenidoService {
 	}
 
 	
-/*	@Override
-	public List<Etiqueta> verEtiquetas(Long idContenido, String idioma) throws DataException {
-
-		if(logger.isDebugEnabled()) {
-			logger.debug ("idContenido= {} idioma= {} ", idContenido, idioma);
-		}
-
-		if(idContenido != null && idioma != null) {
-
-			try {
-
-				Connection connection = ConnectionManager.getConnection();
-
-				List<Etiqueta> etiquetas= new ArrayList<Etiqueta>();
-				etiquetas = contenidoDao.verEtiquetas(connection, idContenido, idioma);
-
-				JDBCUtils.closeConnection(connection);
-				return etiquetas;
-
-			} catch (SQLException e) {
-				logger.warn(e.getMessage(), e);
-			} catch (DataException e) {
-				logger.warn(e.getMessage(), e);
-			}finally{
-				//JDBCUtils.closeConnection(connection);
-			}
-		}
-		return null;
-	}
-*/
 	
 	@Override
 	public void seguirContenido(Long idUsuario, Long idContenido, Boolean siguiendo) throws DataException {
@@ -431,17 +207,19 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 		if(idUsuario != null && idContenido != null && siguiendo != null) {
 			Connection connection = null;
+			Boolean commit = false;
 			try {
 				connection = ConnectionManager.getConnection();
-				connection.setAutoCommit(true);
-				contenidoDao.seguirContenido(connection, idUsuario, idContenido, siguiendo);				
+				connection.setAutoCommit(false);
+				contenidoDao.seguirContenido(connection, idUsuario, idContenido, siguiendo);
+				commit = true;
 
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}
@@ -456,17 +234,19 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 		if(idUsuario != null && idContenido != null && denunciado != null) {
 			Connection connection = null;
+			Boolean commit = false;
 			try {
-				connection = ConnectionManager.getConnection();				
-				connection.setAutoCommit(true);
-				contenidoDao.denunciarContenido(connection, idUsuario, idContenido, denunciado);				
+				connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(false);
+				contenidoDao.denunciarContenido(connection, idUsuario, idContenido, denunciado);
+				commit = true;
 
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}
@@ -481,17 +261,19 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 		if(idUsuario != null && idContenido != null) {
 			Connection connection = null;
+			Boolean commit = false;
 			try {
 				connection = ConnectionManager.getConnection();
-				connection.setAutoCommit(true);
-				contenidoDao.denunciarContenido(connection, idUsuario, idContenido, false);					
+				connection.setAutoCommit(false);
+				contenidoDao.denunciarContenido(connection, idUsuario, idContenido, false);
+				commit = true;
 
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				JDBCUtils.closeConnection(connection);		
+				JDBCUtils.closeConnection(connection, commit);		
 			}
 		}
 	}
@@ -506,17 +288,19 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 		if(idUsuario != null && idContenido != null && valoracion != null) {
 			Connection connection = null;
+			Boolean commit = false;
 			try {
 				connection = ConnectionManager.getConnection();
-				connection.setAutoCommit(true);
-				contenidoDao.valorarContenido(connection, idUsuario, idContenido, valoracion);				
+				connection.setAutoCommit(false);
+				contenidoDao.valorarContenido(connection, idUsuario, idContenido, valoracion);
+				commit = true;
 
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				JDBCUtils.closeConnection(connection);			
+				JDBCUtils.closeConnection(connection, commit);			
 			}
 		}
 	}
@@ -531,18 +315,19 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 		if(idUsuario != null && idContenido != null && guardado != null) {
 			Connection connection = null;
+			Boolean commit = false;
 			try {
-
 				connection = ConnectionManager.getConnection();
-				connection.setAutoCommit(true);
-				contenidoDao.guardarContenido(connection, idUsuario, idContenido, guardado);				
+				connection.setAutoCommit(false);
+				contenidoDao.guardarContenido(connection, idUsuario, idContenido, guardado);
+				commit = true;
 
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}
@@ -557,17 +342,19 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 		if(idUsuario != null && idContenido != null && comentario != null) {
 			Connection connection = null;
+			Boolean commit = true;
 			try {
 				connection = ConnectionManager.getConnection();
-				connection.setAutoCommit(true);
-				contenidoDao.comentarContenido(connection, idUsuario, idContenido, comentario);				
+				connection.setAutoCommit(false);
+				contenidoDao.comentarContenido(connection, idUsuario, idContenido, comentario);
+				commit = true;
 
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}
@@ -582,17 +369,19 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 		if(idUsuario != null && idContenido != null) {
 			Connection connection = null;
+			Boolean commit = false;
 			try {
 				connection = ConnectionManager.getConnection();
-				connection.setAutoCommit(true);
-				contenidoDao.comentarContenido(connection, idUsuario, idContenido, null);						
+				connection.setAutoCommit(false);
+				contenidoDao.comentarContenido(connection, idUsuario, idContenido, null);
+				commit = true;
 
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				JDBCUtils.closeConnection(connection);	
+				JDBCUtils.closeConnection(connection, commit);	
 			}
 		}
 	}
@@ -653,8 +442,10 @@ public class ContenidoServiceImpl implements ContenidoService {
 		if(logger.isDebugEnabled()) {
 			logger.debug ("idContenido= {} ", idContenido);
 		}
+		
 		Connection connection = null;
 		Double valoracion = null;
+		
 		if(idContenido!=null) {
 			try {
 				connection = ConnectionManager.getConnection();
@@ -681,16 +472,19 @@ public class ContenidoServiceImpl implements ContenidoService {
 
 		if(contenido != null) {
 			Connection connection = null;
+			Boolean commit = false;
 			try {
 				connection = ConnectionManager.getConnection();
+				connection.setAutoCommit(false);
 				contenidoDao.update(connection, contenido);
+				commit = true;
 
 			} catch (SQLException e) {
 				logger.warn(e.getMessage(), e);
 			} catch (DataException e) {
 				logger.warn(e.getMessage(), e);
 			}finally{
-				JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}

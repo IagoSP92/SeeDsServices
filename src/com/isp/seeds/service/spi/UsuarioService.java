@@ -23,8 +23,6 @@ public interface UsuarioService {
 	public void cambiarContraseña (String email, String contrasena)
 			throws DataException;
 	
-	public void recuperarContraseña (String email)
-			throws DataException;
 	
 	public Usuario buscarId (Long idSesion, Long idUsuario)
 			throws DataException;
@@ -34,10 +32,7 @@ public interface UsuarioService {
 	
 	public Results<Contenido> cargarSeguidos(Long idSesion, int startIndex,
 			int count) throws DataException;
-	
-//	public List<Usuario> buscarTodos (int startIndex, int count, String idioma) 
-//			throws DataException;
-	
+
 	
 	
 }

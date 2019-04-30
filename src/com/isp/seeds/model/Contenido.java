@@ -33,14 +33,6 @@ public class Contenido extends AbstractValueObject {
 		}
 		return false;
 	}
-	
-	@Override
-	public int hashCode() {
-		if(id==null) {
-			return Integer.MAX_VALUE;
-		}
-		return id.hashCode();
-	}
 
 	
 	public String toString() {

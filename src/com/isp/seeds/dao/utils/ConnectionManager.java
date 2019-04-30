@@ -11,13 +11,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 public class ConnectionManager	 {
 
-
 /*	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-	
-//	static final String DB_URL = "jdbc:mysql://10.53.124.231:3306/hr?"
-//			+ "useUnicode=true&useJDBCCompliantTimezoneShift=true"
-//			+ "&useLegacyDatetimeCode=false&serverTimezone=UTC";
-	
 	
 	//CASA
 	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/seeds?"

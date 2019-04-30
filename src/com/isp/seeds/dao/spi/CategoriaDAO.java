@@ -11,9 +11,6 @@ public interface CategoriaDAO {
 	public Categoria findById(Connection connection, Long id, String idioma) 
 			throws DataException;
 	
-//	public Long findByNombre(Connection connection, String nombreCategoria, String idioma) 
-//			throws DataException;
-
 	public List<Categoria> findAll(Connection connection, String idioma) 
 			throws DataException;
 

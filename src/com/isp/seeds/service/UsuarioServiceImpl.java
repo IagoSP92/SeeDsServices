@@ -28,13 +28,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 	
 	
-
-	@Override
-	public void recuperarContraseña(String email) throws DataException {
-	}
-
-	
-	
 	public Usuario crearCuenta (Usuario u) throws DataException {
 
 		if(logger.isDebugEnabled()) {
@@ -109,11 +102,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		
 		Connection connection = null;
+		Boolean commit = false;
 
 		if(idUsuario!=null) {
 			try {
 				connection = ConnectionManager.getConnection();
-				usuarioDao.delete(connection, idUsuario);				
+				connection.setAutoCommit(false);
+				usuarioDao.delete(connection, idUsuario);
+				commit = true;
 			}
 			catch (SQLException e) { 
 				logger.warn(e.getMessage(), e);
@@ -121,7 +117,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			catch (Exception e) { 
 				logger.warn(e.getMessage(), e);
 			} finally {
-				JDBCUtils.closeConnection(connection);
+				JDBCUtils.closeConnection(connection, commit);
 			}
 		}
 	}
@@ -270,34 +266,5 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		return null;
 	}
-	
-	
-
-//	@Override
-//	public List<Usuario> buscarTodos(int startIndex, int count, String idioma) throws DataException {
-//
-//		// LOGGER
-//		
-//		try {
-//
-//			Connection connection = ConnectionManager.getConnection();
-//
-//			List<Usuario> usuarios = new ArrayList<Usuario>();
-//			usuarios = usuarioDao.findAllUsers(connection, startIndex, count, idioma);
-//
-//			JDBCUtils.closeConnection(connection);
-//
-//			return usuarios;
-//
-//		} catch (SQLException e) {
-//			logger.warn(e.getMessage(), e);
-//		} catch (DataException e) {
-//			logger.warn(e.getMessage(), e);
-//		}finally{
-//			//JDBCUtils.closeConnection(connection);
-//		}
-//		return null;
-//	}
-
 
 }

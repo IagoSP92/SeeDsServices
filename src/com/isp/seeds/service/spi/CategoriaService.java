@@ -9,9 +9,6 @@ public interface CategoriaService {
 	
 	public Categoria findById( Long idCategoria, String idioma) 
 			throws DataException;
-	
-//	public Long findByNombre( String nombreCategoria, String idioma ) 
-//			throws DataException;
 
 	public List<Categoria> findAll(String idioma) 
 			throws DataException;
