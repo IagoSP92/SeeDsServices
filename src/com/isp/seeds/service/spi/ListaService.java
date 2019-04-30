@@ -26,6 +26,10 @@ public interface ListaService {
 	public Results<Video> verVideosLista (Long idLista, int startIndex, int count)
 			throws DataException;
 	
+	public List<Contenido> verContenidosLista (Long idLista)
+			throws DataException;
+	
+	
 	public void redefinirIncluidos(Long idLista, List<Long> listIdVideo)
 			throws DataException;
 	

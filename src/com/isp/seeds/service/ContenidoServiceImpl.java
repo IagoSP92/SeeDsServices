@@ -2,6 +2,7 @@ package com.isp.seeds.service;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -692,6 +693,29 @@ public class ContenidoServiceImpl implements ContenidoService {
 				JDBCUtils.closeConnection(connection);
 			}
 		}
+	}
+
+
+	@Override
+	public List<Contenido> verVideosAutor(Long idAutor) throws DataException {
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idAutor= {} ", idAutor);
+		}
+		Connection connection = null;
+		List<Contenido> resultados = null;
+		if(idAutor!=null) {
+			try {
+				connection = ConnectionManager.getConnection();
+				resultados = contenidoDao.verVideosAutor(connection, idAutor);
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				JDBCUtils.closeConnection(connection);
+			}
+		}
+		return resultados;
 	}
 
 

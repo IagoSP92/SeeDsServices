@@ -138,6 +138,56 @@ public class VideoDAOImpl extends ContenidoDAOImpl implements VideoDAO {
 		}
 		return null;
 	}
+	
+	
+	@Override
+	public List<Contenido> verContenidosLista(Connection connection, Long idLista) throws DataException {
+		
+		PreparedStatement preparedStatement = null; 
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
+					+" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "
+					+" INNER JOIN VIDEO_LISTA VL ON (VL.VIDEO_ID_CONTENIDO = V.ID_CONTENIDO ) "
+					+" LEFT OUTER JOIN USUARIO_CONTENIDO UC ON (C.ID_CONTENIDO = UC.CONTENIDO_ID_CONTENIDO ) "
+					+" WHERE VL.LISTA_ID_CONTENIDO = ? GROUP BY VL.VIDEO_ID_CONTENIDO ORDER BY VL.POSICION ");
+
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			preparedStatement.setLong(1, idLista);
+
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
+			resultSet = preparedStatement.executeQuery();
+			
+			List<Contenido> results = new ArrayList<Contenido>();    
+			Contenido video = null;
+
+			if (resultSet.next()) {
+				do {
+					video = ContenidoDAOImpl.loadNext(connection, resultSet);
+					results.add(video);  
+				} while (resultSet.next()) ;
+			}			
+			return results;
+
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+		} catch (DataException e) {
+			logger.warn(e.getMessage(), e);
+		}  finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		return null;
+	}
+	
+	
 
 	
 	@Override

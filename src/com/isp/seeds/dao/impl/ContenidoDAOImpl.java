@@ -201,7 +201,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	 * @param connection - Connection
 	 * @param nombreContenido - String
 	 * @return Contenido : Contenido que corresponde con el nombre recibido
-	 */
+	 *//*
 	@Override
 	public Contenido findByNombre(Connection connection, String nombreContenido, int startIndex, int count, String idioma) throws DataException {
 
@@ -246,7 +246,7 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 			JDBCUtils.closeResultSet(resultSet);
 			JDBCUtils.closeStatement(preparedStatement);
 		}	
-	}
+	}*/
 
 
 	@Override
@@ -1763,6 +1763,51 @@ public class ContenidoDAOImpl implements ContenidoDAO {
 	
 	private void addHaving(StringBuilder queryString, boolean first, String clause) {
 		queryString.append(first?" HAVING ": " AND ").append(clause);
+	}
+
+	@Override
+	public List<Contenido> verVideosAutor(Connection connection, Long idAutor) throws DataException {
+		
+		PreparedStatement preparedStatement = null; 
+		ResultSet resultSet = null;
+		StringBuilder queryString = null;
+
+		try {
+			queryString = new StringBuilder(
+					" SELECT C.ID_CONTENIDO, C.NOMBRE, C.FECHA_ALTA, C.FECHA_MOD, C.AUTOR_ID_CONTENIDO, C.TIPO, C.REPRODUCCIONES, AVG(UC.VALORACION) "
+					+" FROM VIDEO V INNER JOIN CONTENIDO C ON (C.ID_CONTENIDO = V.ID_CONTENIDO ) "
+					+" WHERE C.AUTOR_ID_CONTENIDO = ? GROUP C.ID_CONTENIDO ORDER BY C.FECHA_MOD ");
+
+			preparedStatement = connection.prepareStatement(queryString.toString(),
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
+			preparedStatement.setLong(1, idAutor);
+
+			if(logger.isDebugEnabled()) {
+				logger.debug("QUERY= {}",preparedStatement);
+			}
+			resultSet = preparedStatement.executeQuery();
+			
+			List<Contenido> results = new ArrayList<Contenido>();    
+			Contenido video = null;
+
+			if (resultSet.next()) {
+				do {
+					video = ContenidoDAOImpl.loadNext(connection, resultSet);
+					results.add(video);  
+				} while (resultSet.next()) ;
+			}			
+			return results;
+
+		} catch (SQLException e) {
+			logger.warn(e.getMessage(), e);
+		} catch (DataException e) {
+			logger.warn(e.getMessage(), e);
+		}  finally {
+			JDBCUtils.closeResultSet(resultSet);
+			JDBCUtils.closeStatement(preparedStatement);
+		}
+		return null;
 	}
 
 }

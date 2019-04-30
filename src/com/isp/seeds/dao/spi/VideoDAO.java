@@ -1,6 +1,7 @@
 package com.isp.seeds.dao.spi;
 
 import java.sql.Connection;
+import java.util.List;
 
 import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.model.Contenido;
@@ -13,6 +14,9 @@ public interface VideoDAO {
 			throws DataException;
 	
 	public Results<Video> verVideosLista (Connection connection, Long idLista, int startIndex, int count)
+			throws DataException;
+	
+	public List<Contenido> verContenidosLista (Connection connection, Long idLista)
 			throws DataException;
 	
 	public Video create (Connection connection, Video video) 

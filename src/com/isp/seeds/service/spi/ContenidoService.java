@@ -92,4 +92,7 @@ public interface ContenidoService {
 	public Results<Contenido> cargarGuardados (Long idContenido, int startIndex, int count)
 			throws DataException;
 	
+	public List<Contenido> verVideosAutor (Long idAutor)
+			throws DataException;
+	
 }

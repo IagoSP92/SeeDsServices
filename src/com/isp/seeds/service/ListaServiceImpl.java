@@ -170,6 +170,34 @@ public class ListaServiceImpl implements ListaService {
 		}
 		return null;
 	}
+	
+	@Override
+	public List<Contenido> verContenidosLista(Long idLista) throws DataException {
+
+		if(logger.isDebugEnabled()) {
+			logger.debug ("idLista= {} ", idLista);
+		}
+		
+		VideoDAO videoDao = null;
+		Connection connection = null;
+
+		if(idLista != null) {
+			try {
+				connection = ConnectionManager.getConnection();
+				videoDao = new VideoDAOImpl();
+				List<Contenido> videos = videoDao.verContenidosLista (connection, idLista);				
+				return videos;
+				
+			} catch (SQLException e) {
+				logger.warn(e.getMessage(), e);
+			} catch (DataException e) {
+				logger.warn(e.getMessage(), e);
+			}finally{
+				JDBCUtils.closeConnection(connection);
+			}
+		}
+		return null;
+	}
 
 
 	@Override

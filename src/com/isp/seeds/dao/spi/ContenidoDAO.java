@@ -19,8 +19,8 @@ public interface ContenidoDAO {
 	public Contenido findById(Connection connection, Long idContenido) 
 			throws DataException;
 	
-	public Contenido findByNombre(Connection connection, String nombreContenido, int startIndex, int count, String idioma) 
-			throws DataException;
+//	public Contenido findByNombre(Connection connection, String nombreContenido, int startIndex, int count, String idioma) 
+//			throws DataException;
 	
 	public Results<Contenido> findByCriteria(Connection connection, ContenidoCriteria contenido, int startIndex, int count, String idioma)
 			throws DataException;	
@@ -102,6 +102,9 @@ public interface ContenidoDAO {
 			throws DataException;
 	
 	public Results<Contenido> cargarGuardados (Connection connection, Long idContenido, int startIndex, int count)
+			throws DataException;
+	
+	public List<Contenido> verVideosAutor (Connection connection, Long idAutor)
 			throws DataException;
 	
 	
