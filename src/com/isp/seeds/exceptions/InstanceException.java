@@ -1,4 +1,4 @@
-package com.isp.seeds.Exceptions;
+package com.isp.seeds.exceptions;
 
 public abstract class InstanceException extends DataException {
 

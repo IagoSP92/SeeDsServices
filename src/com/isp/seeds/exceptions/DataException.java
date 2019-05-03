@@ -1,4 +1,4 @@
-package com.isp.seeds.Exceptions;
+package com.isp.seeds.exceptions;
 
 /**
  * NO confundir esta capa con la capa "M"odelo en MVC !!!

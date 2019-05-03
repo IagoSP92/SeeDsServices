@@ -1,4 +1,4 @@
-package com.isp.seeds.Exceptions;
+package com.isp.seeds.exceptions;
 
 //SI MOVO COMPANY EXCEPTION HAY QUE FACER O IMPORT
 
