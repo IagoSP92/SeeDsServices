@@ -5,7 +5,7 @@ import org.apache.commons.mail.HtmlEmail;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.isp.seeds.Exceptions.MailException;
+import com.isp.seeds.exceptions.MailException;
 import com.isp.seeds.service.spi.MailService;
 
 public class MailServiceImpl implements MailService {

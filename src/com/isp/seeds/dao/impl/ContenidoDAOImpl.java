@@ -13,10 +13,10 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.isp.seeds.Exceptions.DataException;
-import com.isp.seeds.Exceptions.InstanceNotFoundException;
 import com.isp.seeds.dao.spi.ContenidoDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.exceptions.DataException;
+import com.isp.seeds.exceptions.InstanceNotFoundException;
 import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.service.criteria.ContenidoCriteria;

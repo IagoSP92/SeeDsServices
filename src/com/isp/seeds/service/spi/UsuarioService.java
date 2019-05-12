@@ -1,7 +1,7 @@
 package com.isp.seeds.service.spi;
 
 
-import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.exceptions.DataException;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.model.Usuario;
 import com.isp.seeds.service.util.Results;

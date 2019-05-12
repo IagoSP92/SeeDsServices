@@ -10,7 +10,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.exceptions.DataException;
 import com.isp.seeds.model.Comentario;
 
 public class Utils {
@@ -37,7 +37,7 @@ public class Utils {
 
 			if(logger.isDebugEnabled()) {
 				logger.debug("QUERY= {}",preparedStatement);
-			}
+			}	
 			resultSet = preparedStatement.executeQuery();
 			
 			List<Comentario> comentarios = new ArrayList<Comentario>();

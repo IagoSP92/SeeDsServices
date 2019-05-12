@@ -1,6 +1,6 @@
 package com.isp.seeds.service.spi;
 
-import com.isp.seeds.Exceptions.MailException;
+import com.isp.seeds.exceptions.MailException;
 
 public interface MailService {
 	

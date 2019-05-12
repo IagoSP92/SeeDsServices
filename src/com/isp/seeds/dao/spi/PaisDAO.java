@@ -3,7 +3,7 @@ package com.isp.seeds.dao.spi;
 import java.sql.Connection;
 import java.util.List;
 
-import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.exceptions.DataException;
 import com.isp.seeds.model.Pais;
 
 public interface PaisDAO {

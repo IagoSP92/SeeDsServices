@@ -10,9 +10,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.isp.seeds.Exceptions.DataException;
 import com.isp.seeds.dao.spi.PaisDAO;
 import com.isp.seeds.dao.utils.JDBCUtils;
+import com.isp.seeds.exceptions.DataException;
 import com.isp.seeds.model.Pais;
 
 public class PaisDAOImpl implements PaisDAO{

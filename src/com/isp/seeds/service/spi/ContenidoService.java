@@ -2,7 +2,7 @@ package com.isp.seeds.service.spi;
 
 import java.util.List;
 
-import com.isp.seeds.Exceptions.DataException;
+import com.isp.seeds.exceptions.DataException;
 import com.isp.seeds.model.Categoria;
 import com.isp.seeds.model.Contenido;
 import com.isp.seeds.service.criteria.ContenidoCriteria;
